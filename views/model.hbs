@@ -204,16 +204,15 @@
                 {{#each this.SimpleReaction as |value key|}}
                 <div class="popup box-{{value.$.Name}}">
                     <div class='popup-text'>
-                        <h3>Reaction Name: <span>{{value.$.Name}}</span></h3>
 
 
                         {{!-- universal ID's  --}}
                         <div class="uid" id="reactionUID-{{value.$.Name}}">
-                            <h2>Universal ID's</h2>
+                            <h2>{{value.$.Name}} Universal ID's</h2>
                         </div>
                         {{!-- annotation --}}
                         <div class="textAnnotation" id="reactionTA-{{value.$.Name}}">
-                            <h2>Text Annotations</h2>
+                            <h2>{{value.$.Name}} Text Annotations</h2>
                         </div>
 
 
@@ -231,15 +230,15 @@
                 {{#each value.Kinetics}}
                 <div class="popup box-{{key}}">
                     <div class='popup-text block'>
-                        <h3>Reaction Name: <span>{{value.$.Name}}</span></h3>
                         {{!-- Expressions --}}
-                        <h2 id="reactionNameExp">Expressions</h2>
+                        <h2 id="reactionNameExp">Expressions for {{value.$.Name}}</h2>
 
 
                         {{#each this.Parameter}}
 
                         <div class="role">
                             <p class="role-title">{{this.$.Role}}</p>
+                            <p class="role-variable">{{this.$.Name}}</p>
                             <p class="role-text">{{this._}} <span class="unit">[{{this.$.Unit}}]</span> </p>
                         </div>
                         {{/each}}
@@ -257,7 +256,8 @@
             <div id="structures" class="optionData">
                 <h2 class="header">Structures</h2>
                 <div class="modelTable">
-                    <table id="content-table3" class="table-responsive-full sort-table">
+                    <!---should be id="content-table3" below, using test for js "getElementById()"--->
+                    <table id="TEST" class="table-responsive-full sort-table">
                         <thead>
                             <tr>
                                 <th class="Name">Name
@@ -329,15 +329,14 @@
                 {{#each this.Membrane as |value key|}}
                 <div class="popup box-{{value.$.Name}}">
                     <div class='popup-text'>
-                        <h3>Structure Name: <span>{{value.$.Name}}</span></h3>
 
                         {{!-- universal ID's  --}}
                         <div class="uid" id="structureUID-{{value.$.Name}}">
-                            <h2>Universal ID's</h2>
+                            <h2>{{value.$.Name}} Universal ID's</h2>
                         </div>
                         {{!-- annotation --}}
                         <div class="textAnnotation" id="structureTA-{{value.$.Name}}">
-                            <h2>Text Annotations</h2>
+                            <h2>{{value.$.Name}} Text Annotations</h2>
                         </div>
 
                     </div>
@@ -354,18 +353,15 @@
                 {{#each this.Feature as |value key|}}
                 <div class="popup box-{{value.$.Name}}">
                     <div class='popup-text'>
-                        <h3>Structure Name: <span>{{value.$.Name}}</span></h3>
-
+                        <!---removed: to save space <h3>Structure Name: <span>{{value.$.Name}}</span></h3>--->
                         {{!-- universal ID's  --}}
                         <div class="uid" id="structureUID-{{value.$.Name}}">
-                            <h2>Universal ID's</h2>
+                            <h2>{{value.$.Name}} Universal ID's</h2>
                         </div>
                         {{!-- annotation --}}
                         <div class="textAnnotation" id="structureTA-{{value.$.Name}}">
-                            <h2>Text Annotations</h2>
+                            <h2>{{value.$.Name}} Text Annotations</h2>
                         </div>
-
-
                     </div>
                     <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
@@ -426,15 +422,13 @@
                 {{#each this.LocalizedCompound as |value key|}}
                 <div class="popup box-{{value.$.Name}}">
                     <div class='popup-text'>
-                        <h3>Species Name: <span>{{value.$.Name}}</span></h3>
-
                         {{!-- universal ID's  --}}
                         <div class="uid" id="speciesUID-{{value.$.Name}}">
-                            <h2>Universal ID's</h2>
+                            <h2>{{value.$.Name}} Universal ID's</h2>
                         </div>
                         {{!-- annotation --}}
                         <div class="textAnnotation" id="speciesTA-{{value.$.Name}}">
-                            <h2>Text Annotations</h2>
+                            <h2>{{value.$.Name}} Text Annotations</h2>
                         </div>
 
                     </div>
@@ -515,15 +509,14 @@
                 {{#each this.MolecularType as |value key|}}
                 <div class="popup box-{{value.$.Name}}">
                     <div class='popup-text'>
-                        <h3>Molucule Name: <span>{{value.$.Name}}</span></h3>
 
                         {{!-- universal ID's  --}}
                         <div class="uid" id="moleculesUID-{{value.$.Name}}">
-                            <h2>Universal ID's</h2>
+                            <h2>{{value.$.Name}} Universal ID's</h2>
                         </div>
                         {{!-- annotation --}}
                         <div class="textAnnotation" id="moleculeTA-{{value.$.Name}}">
-                            <h2>Text Annotations</h2>
+                            <h2>{{value.$.Name}} Text Annotations</h2>
                         </div>
 
                     </div>
@@ -554,6 +547,16 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
+                                <th class="Structure">Structure
+                                    <div class="sort-table-arrows">
+                                        <a href="javascript:sort(true, 'Structure', 'content-table3');"><button
+                                                class="button" title="down arrow"><i
+                                                    class="fa fa-chevron-down"></i></button></a>
+                                        <a href="javascript:sort(false, 'Structure', 'content-table3');"><button
+                                                class="button" title="up arrow"><i
+                                                    class="fa fa-chevron-up"></i></button></a>
+                                    </div>
+                                </th>
                                 <th class="Domain">Domain
                                     <div class="sort-table-arrows">
                                         <a href="javascript:sort(true, 'Domain', 'content-table3');"><button
@@ -564,7 +567,7 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
-                                <th class="MolecularType">Molecular Type
+                                <th class="MolecularType">BNGL Definition
                                     <div class="sort-table-arrows">
                                         <a href="javascript:sort(true, 'MolecularType', 'content-table3');"><button
                                                 class="button" title="down arrow"><i
@@ -597,12 +600,11 @@
                             <tr>
                                 <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                                <td data-label="Structure" class="Structure">{{this.$.Structure}}</td>
                                 <td data-label="Domain" class="Domain">{{this.$.ObservableType}}</td>
                                 {{#each this.SpeciesPattern}}
                                 {{#each this.MolecularTypePattern}}
-                                {{#each this.MolecularType}}
-                                <td data-label="MolecularType" class="MolecularType">{{this.$.Name}}</td>
-                                {{/each}}
+                                <td data-label="MolecularType" class="MolecularType">{{#each this.MolecularType}}{{this.$.Name}}{{/each}}({{#each ComponentPattern}}{{this.$.MolecularComponent}}{{/each}}!?)<//td>
                                 {{/each}}
                                 {{/each}}
                                 <td data-label="SequenceType" class="SequenceType">{{this.$.Sequence}}</td>
@@ -627,15 +629,14 @@
                 {{#each this.Observable as |value key|}}
                 <div class="popup box-{{value.$.Name}}">
                     <div class='popup-text'>
-                        <h3>Observables Name: <span>{{value.$.Name}}</span></h3>
 
                         {{!-- universal ID's  --}}
                         <div class="uid" id="observableUID-{{value.$.Name}}">
-                            <h2>Universal ID's</h2>
+                            <h2>{{value.$.Name}} Universal ID's</h2>
                         </div>
                         {{!-- annotation --}}
                         <div class="textAnnotation" id="observableTA-{{value.$.Name}}">
-                            <h2>Text Annotations</h2>
+                            <h2>{{value.$.Name}} Text Annotations</h2>
                         </div>
 
                     </div>
@@ -706,17 +707,17 @@
                 {{#each data.vcml.BioModel}}
                 {{#each this.SimulationSpec as |value key|}}
                 <div class="popup box-{{value.$.Name}}">
-                    <div class='popup-text'>
-                        <h3>Application Name: <span>{{value.$.Name}}</span></h3>
-
-                        {{!-- annotation --}}
-                        <h2>Text Annotations</h2>
-                        <p>Annotations will come here</p>
-
-                        {{!-- universal ID's  --}}
-                        <h2>Universal ID's</h2>
-                        <p>RFID | pubmed</p>
-
+                    <div class='popup-text block'>
+                        <div class="role">
+                          {{!-- annotation --}}
+                          <h2>{{value.$.Name}} Text Annotations</h2>
+                          {{!-- universal ID's  --}}
+                          <h2>{{value.$.Name}} Universal ID's</h2>
+                        </div>
+                        <div class="role">
+                          <p>Annotations will come here</p>
+                          <p>RFID | pubmed</p>
+                        </div>
                     </div>
                     <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
@@ -729,7 +730,6 @@
             {{!-- for each application  --}}
             {{#each data.vcml.BioModel}}
             {{#each this.SimulationSpec as |value key|}}
-
             {{!-- specifications - Species table  --}}
             <div id="specsSpecies{{key}}" class="optionData">
                 <h2 class="header">Specifications (Species) - {{value.$.Name}} <span class="propertyBtn"><a
@@ -773,15 +773,24 @@
                             </tr>
                         </thead>
                         <tbody>
-
-                            {{#each value.ReactionContext}}
+                            {{#each this.ReactionContext}}
                             {{#each this.LocalizedCompoundSpec}}
                             <tr>
-                                <td data-label="Species" class="Species">{{this.$.LocalizedCompoundRef}}</td>
-                                <td data-label="Initial" class="Initial">{{this.InitialConcentration}}</td>
-                                <td data-label="Diffusion" class="Diffusion">{{this.Diffusion}}</td>
+                                <td data-label="Species" class="Species">
+                                  {{this.$.LocalizedCompoundRef}}
+                                  <!--{{#each data.vcml.BioModel}}
+                                  {{#each this.Model as |value key|}}
+                                  {{#each this.ModelUnitSystem}}
+                                  {{this.VolumeSubstanceUnit}}
+                                  {{/each}}-->
+                                </td>
+                                <td data-label="Initial" class="Initial">
+                                  {{this.InitialConcentration}}
+                                </td>
+                                <td data-label="Diffusion" class="Diffusion">
+                                  {{this.Diffusion}}
+                                </td>
                             </tr>
-
                             {{/each}}
                             {{/each}}
                         </tbody>
@@ -900,15 +909,13 @@
                 {{#each value.Simulation}}
                 <div class="popup box-{{this.$.Name}}">
                     <div class='popup-text'>
-                        <h3>Simulation Name: <span>{{this.$.Name}}</span></h3>
-
                         {{!-- universal ID's  --}}
                         <div class="uid" id="UID-{{this.$.Name}}">
-                            <h2>Universal ID's</h2>
+                            <h2>{{value.$.Name}} Universal ID's</h2>
                         </div>
                         {{!-- annotation --}}
                         <div class="textAnnotation" id="TA-{{this.$.Name}}">
-                            <h2>Text Annotations</h2>
+                            <h2>{{value.$.Name}} Text Annotations</h2>
                         </div>
 
                     </div>
@@ -976,15 +983,14 @@
                 {{#each this.Parameter}}
                 <div class="popup box-{{this.$.Name}}">
                     <div class='popup-text'>
-                        <h3>Global Parameter Name: <span>{{this.$.Name}}</span></h3>
 
                         {{!-- universal ID's  --}}
                         <div class="uid" id="parameterUID-{{this.$.Name}}">
-                            <h2>Universal ID's</h2>
+                            <h2>{{value.$.Name}} Universal ID's</h2>
                         </div>
                         {{!-- annotation --}}
                         <div class="textAnnotation" id="parameterTA-{{this.$.Name}}">
-                            <h2>Text Annotations</h2>
+                            <h2>{{value.$.Name}} Text Annotations</h2>
                         </div>
 
                     </div>
@@ -1062,7 +1068,13 @@
 
 
 <script>
-    // making the first popup visible 
+    //displaying electrical for only membrane compartments
+    var table = document.getElementById('TEST');
+    var cells = table.rows.item(1).cells;
+    if (cells.item(1).innerHTML != 'Membrane'){
+      cells.item(2).innerHTML = 'N/A';
+    }
+    // making the first popup visible
     var firstPopup = document.querySelector(".popup").firstChild;
     firstPopup.parentElement.classList.add("firstPopup");
 

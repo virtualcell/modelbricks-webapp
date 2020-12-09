@@ -974,9 +974,9 @@ fetch("/downloads/" + selectedModelName + ".sbml.xml").then((response) => {
     console.log(response);
     let selectedFile = document.getElementById(`sbmlFile`);
     selectedFile.innerHTML = `
-    <a href="${response.url}" download="${response.url}"> 
-    <button type="button">Download File</button> 
-    </a> 
+    <a href="${response.url}" download="${response.url}">
+    <button type="button">Download File</button>
+    </a>
     `;
   }
   if (!response.ok) {
@@ -994,9 +994,9 @@ fetch("/downloads/" + selectedModelName + ".m").then((response) => {
     console.log(response);
     let selectedFile = document.getElementById(`metlabFile`);
     selectedFile.innerHTML = `
-    <a href="${response.url}" download="${response.url}"> 
-    <button type="button">Download File</button> 
-    </a> 
+    <a href="${response.url}" download="${response.url}">
+    <button type="button">Download File</button>
+    </a>
     `;
   }
   if (!response.ok) {
@@ -1014,9 +1014,9 @@ fetch("/downloads/" + selectedModelName + ".bngl").then((response) => {
     console.log(response);
     let selectedFile = document.getElementById(`bnglFile`);
     selectedFile.innerHTML = `
-    <a href="${response.url}" download="${response.url}"> 
-    <button type="button">Download File</button> 
-    </a> 
+    <a href="${response.url}" download="${response.url}">
+    <button type="button">Download File</button>
+    </a>
     `;
   }
   if (!response.ok) {
@@ -1034,9 +1034,9 @@ fetch("/downloads/" + selectedModelName + "_formatted.xml").then((response) => {
     console.log(response);
     let selectedFile = document.getElementById(`fxmlFile`);
     selectedFile.innerHTML = `
-    <a href="${response.url}" download="${response.url}"> 
-    <button type="button">Download File</button> 
-    </a> 
+    <a href="${response.url}" download="${response.url}">
+    <button type="button">Download File</button>
+    </a>
     `;
   }
   if (!response.ok) {
@@ -1054,9 +1054,9 @@ fetch("/downloads/" + selectedModelName + ".sedml.xml").then((response) => {
     console.log(response);
     let selectedFile = document.getElementById(`sedmlFile`);
     selectedFile.innerHTML = `
-    <a href="${response.url}" download="${response.url}"> 
-    <button type="button">Download File</button> 
-    </a> 
+    <a href="${response.url}" download="${response.url}">
+    <button type="button">Download File</button>
+    </a>
     `;
   }
   if (!response.ok) {
@@ -1075,9 +1075,9 @@ fetch("/downloads/" + selectedModelName + "_Deterministic.xml").then(
       console.log(response);
       let selectedFile = document.getElementById(`dxmlFile`);
       selectedFile.innerHTML = `
-    <a href="${response.url}" download="${response.url}"> 
-    <button type="button">Download File</button> 
-    </a> 
+    <a href="${response.url}" download="${response.url}">
+    <button type="button">Download File</button>
+    </a>
     `;
     }
     if (!response.ok) {

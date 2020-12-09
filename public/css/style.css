@@ -2851,7 +2851,14 @@ span.dashboardBtn a:hover {
 
 .uid {
   width: 50%;
+  padding: 0;
   word-wrap: break-word;
+}
+
+.uid > p{
+  margin: 0;
+  margin-bottom: -20px;
+  padding: 0;
 }
 
 .textAnnotation {
@@ -2860,8 +2867,8 @@ span.dashboardBtn a:hover {
 }
 
 .popup .popup-text {
-  font-family: "Indie Flower", cursive;
-  margin-top: 6%;
+  font-family: "Roboto", cursive;
+  margin-top: 5px;
   color: #5a5a5a;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2873,7 +2880,6 @@ span.dashboardBtn a:hover {
   position: absolute;
   top: 10px;
   left: 10px;
-  margin-bottom: -20px;
 }
 
 .popup .popup-text h3 span {
@@ -2901,18 +2907,35 @@ span.dashboardBtn a:hover {
 }
 
 .popup .popup-text .role p {
-  width: 50%;
-  padding: 15px;
+  width: 85%;
+  padding: 0;
+  margin: 10px;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 .popup .popup-text .role .role-title {
   color: #333333;
   font-weight: bold;
-  width: 25%;
+  width: 15%;
+  margin-right: 10px;
 }
 
 .popup .popup-text .role .role-text {
-  width: 75%;
+}
+
+.popup .popup-text .role .role-variable {
+  width: 7%;
+}
+
+.popup .popup-text .role h2 {
+  border: 1px solid #c7c7c7;
+  background: #333;
+  margin: 0px;
+  padding: 10px;
+  text-align: center;
+  color: white;
+  width: 50%;
 }
 
 .popup .block {
