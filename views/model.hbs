@@ -482,15 +482,10 @@
                                         style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
 
                                 <td data-label="Description" class="Description">
-                                    {{this.$.Name}}
-                                    ({{#each this.MolecularComponent}}
-                                    {{this.$.Name}}
-                                    {{#if this.AllowableState}}
-                                    {{#each this.AllowableState}}
-                                    ~{{this.$.Name}}
-                                    {{/each}}
-                                    {{/if}}
-                                    {{/each}})
+                                  {{this.$.Name}}
+                                  {{#each this.MolecularComponent}}
+                                  ({{this.$.Name}}!?)
+                                  {{/each}}
                                 </td>
                             </tr>
                             {{/each}}
@@ -604,7 +599,14 @@
                                 <td data-label="Domain" class="Domain">{{this.$.ObservableType}}</td>
                                 {{#each this.SpeciesPattern}}
                                 {{#each this.MolecularTypePattern}}
-                                <td data-label="MolecularType" class="MolecularType">{{#each this.MolecularType}}{{this.$.Name}}{{/each}}({{#each ComponentPattern}}{{this.$.MolecularComponent}}{{/each}}!?)<//td>
+                                <td data-label="MolecularType" class="MolecularType">
+                                  {{#each this.MolecularType}}
+                                  {{this.$.Name}}
+                                  {{/each}}
+                                  {{#each ComponentPattern}}
+                                  ({{this.$.MolecularComponent}}!?)
+                                  {{/each}}
+                                </td>
                                 {{/each}}
                                 {{/each}}
                                 <td data-label="SequenceType" class="SequenceType">{{this.$.Sequence}}</td>
