@@ -375,45 +375,45 @@
             <div id="species" class="optionData">
                 <h2 class="header">Species</h2>
                 <div class="modelTable">
-                    <table id="content-table3" class="table-responsive-full sort-table">
+                    <table id="content-table3-species" class="table-responsive-full sort-table">
                         <thead>
                             <tr>
                                 <th class="Name">Name
                                     <div class="sort-table-arrows">
-                                        <a href="javascript:sort(true, 'Name', 'content-table3');"><button
+                                        <a href="javascript:sort(true, 'Name', 'content-table3-species');"><button
                                                 class="button" title="down arrow"><i
                                                     class="fa fa-chevron-down"></i></button></a>
-                                        <a href="javascript:sort(false, 'Name', 'content-table3');"><button
+                                        <a href="javascript:sort(false, 'Name', 'content-table3-species');"><button
                                                 class="button" title="up arrow"><i
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
                                 <th class="Structure">Structure
                                     <div class="sort-table-arrows">
-                                        <a href="javascript:sort(true, 'Structure', 'content-table3');"><button
+                                        <a href="javascript:sort(true, 'Structure', 'content-table3-species');"><button
                                                 class="button" title="down arrow"><i
                                                     class="fa fa-chevron-down"></i></button></a>
-                                        <a href="javascript:sort(false, 'Structure', 'content-table3');"><button
+                                        <a href="javascript:sort(false, 'Structure', 'content-table3-species');"><button
                                                 class="button" title="up arrow"><i
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
                                 <th class="Structure">BioNetGen Definition
                                     <div class="sort-table-arrows">
-                                        <a href="javascript:sort(true, 'Structure', 'content-table3');"><button
+                                        <a href="javascript:sort(true, 'Structure', 'content-table3-species');"><button
                                                 class="button" title="down arrow"><i
                                                     class="fa fa-chevron-down"></i></button></a>
-                                        <a href="javascript:sort(false, 'Structure', 'content-table3');"><button
+                                        <a href="javascript:sort(false, 'Structure', 'content-table3-species');"><button
                                                 class="button" title="up arrow"><i
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
                                 <th class="Structure">Depiction
                                     <div class="sort-table-arrows">
-                                        <a href="javascript:sort(true, 'Structure', 'content-table3');"><button
+                                        <a href="javascript:sort(true, 'Structure', 'content-table3-species');"><button
                                                 class="button" title="down arrow"><i
                                                     class="fa fa-chevron-down"></i></button></a>
-                                        <a href="javascript:sort(false, 'Structure', 'content-table3');"><button
+                                        <a href="javascript:sort(false, 'Structure', 'content-table3-species');"><button
                                                 class="button" title="up arrow"><i
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
@@ -429,22 +429,9 @@
                                 <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
                                 <td data-label="Structure" class="Structure">{{this.$.Structure}}</td>
+                                <td data-label="Structure" class="Structure">{{#each this.SpeciesPattern}}{{#each this.MolecularTypePattern}}{{#each this.MolecularType}}{{this.$.Name}}{{/each}}{{#each this.ComponentPattern}}({{this.$.MolecularComponent}}!{{this.$.BondType}}).{{/each}}{{/each}}{{/each}}</td>
                                 <td data-label="Structure" class="Structure">
-                                  {{#each this.SpeciesPattern}}
-                                  {{#each this.MolecularTypePattern}}
-                                  {{#each this.MolecularType}}
-                                  {{this.$.Name}}
-                                  {{/each}}
-                                  {{#each this.ComponentPattern}}({{this.$.MolecularComponent}}!{{this.$.BondType}}).{{/each}}
-                                  {{/each}}
-                                  {{/each}}
-                                  <!--{{this.$.SpeciesPattern.MolecularTypePattern.MolecularType.Name}}
-                                  {{#each this.MolecularComponent}}
-                                  ({{this.$.Name}}!{{this.$.BondType}})
-                                  {{/each}}-->
-                                </td>
-                                <td data-label="Structure" class="Structure">
-                                  <canvas id="{{this.$.Name}}_canvas" width="150" height="50"></canvas>
+                                  <canvas id="{{this.$.Name}}_canvas" width="120" height="45"></canvas>
                                 </td>
                             </tr>
                             {{/each}}
@@ -1222,13 +1209,28 @@
         }
       }
     }
-    //this is a bad implementation that only works for the rab5 switch, fix this
-    g1 = new Graphic('Rab5(BS!1).GDP(BS!1)');
-    g1.draw('Rab5_GDP_canvas', 0, 0);
-    g2 = new Graphic('Rab5(BS!1).GTP(BS!1)');
-    g2.draw('Rab5_GTP_canvas', 0, 0);
-    g3 = new Graphic('Rab7(BS!1).GTP(BS!1)');
-    g3.draw('Rab7_GTP_canvas', 0, 0);
+
+    //displaying graphics in table
+    var speciesTable = document.getElementById('content-table3-species');
+    const rowsLen = speciesTable.rows.length;
+    const cellsLen = speciesTable.rows.item(1).cells.length;
+
+    for (y = 1; y < rowsLen; y++) {
+        var CanvasHTML = speciesTable.rows.item(y).cells.item(3).innerHTML;
+        var bioNetGen = speciesTable.rows.item(y).cells.item(2).innerHTML;
+        bioNetGen = bioNetGen.slice(0, bioNetGen.length - 1);
+        speciesTable.rows.item(y).cells.item(2).innerHTML = bioNetGen;
+        console.log(bioNetGen);
+        var start = 0;
+
+        while (CanvasHTML[start] !== '""' && CanvasHTML[start - 1] !== "=") {start++;}
+        var index = start + 1;
+        while (CanvasHTML[index] !== '"') {index++;}
+
+        CanvasHTML = CanvasHTML.slice(start + 1, index);
+        var g = new Graphic(bioNetGen);
+        g.draw(CanvasHTML, 0, 0);
+    }
 
     //displaying electrical for only membrane compartments
     var table = document.getElementById('TEST');
@@ -1236,6 +1238,7 @@
     if (cells.item(1).innerHTML != 'Membrane'){
       cells.item(2).innerHTML = 'N/A';
     }
+
     // making the first popup visible
     var firstPopup = document.querySelector(".popup").firstChild;
     firstPopup.parentElement.classList.add("firstPopup");
