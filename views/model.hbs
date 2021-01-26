@@ -1132,6 +1132,21 @@
         }
         this.color = Math.floor(this.color);
         this.color = this.color.toString(16);
+        this.rbg = [];
+        for (i = 0; i < 3; i++) {
+          this.rbg.push(parseInt(this.color.slice(i, 2 + i), 16));
+        }
+        if (this.rbg.reduce((a, b) => a + b, 0) < 600) {
+          const buff = 255 - Math.max(this.rbg[0], this.rbg[1], this.rbg[2]);
+          for (i = 0; i < 3; i++) {
+            this.rbg[i] = this.rbg[i] + buff;
+          }
+          this.color = '';
+          for (i = 0; i < 3; i++) {
+            this.color += this.rbg[i].toString(16);
+          }
+        }
+        console.log(this.rbg);
         this.name = '';
         this.bond = '';
         this.process();
