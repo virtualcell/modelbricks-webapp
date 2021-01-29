@@ -2400,6 +2400,10 @@ li.card {
   background-color: rgba(158, 158, 158, 0.2);
 }
 
+.molecule_canvas {
+  margin: -9px;
+}
+
 @media (min-width: 480px) {
   .search1 #search-heading h1 {
     font-size: 175%;
