@@ -1105,9 +1105,11 @@
         var hash = 0, i, chr;
         for (var i = 0; i < this.length; i++) {
           chr   = this.charCodeAt(i);
-          hash  = ((hash << 5) - hash) + chr;
+          hash = (chr << (6 * i)) + hash;
+          //hash  = ((hash << 5) - hash) + chr;
           hash |= 0; // Convert to 32bit integer
         }
+        console.log(this, hash);
         //changing hash into rgb format:
         if (hash < 0) {
           hash *= -1;
@@ -1156,7 +1158,7 @@
     class Molecule {
       constructor(def) {
         this.def = def;
-        this.color = this.def.rgb();
+        this.color = '';
         this.name = '';
         this.sites = [];
         this.process();
@@ -1166,8 +1168,8 @@
 
       process() {
         var temp = splitString(this.def, '(');
-        console.log('temp',temp);
         this.name = temp[0];
+        this.color = this.name.rgb();
         var sites = temp[1].slice(0, -1);
         sites = splitString(sites, ',');
         var vkPairs = [];
@@ -1322,7 +1324,6 @@
         while (CanvasHTML[index] !== '"') {index++;}
 
         CanvasHTML = CanvasHTML.slice(start + 1, index);
-        console.log(bioNetGen);
         var g = new Graphic(bioNetGen);
         g.draw(CanvasHTML, 0, 0);
     }
@@ -1342,7 +1343,6 @@
         while (CanvasHTML[index] !== '"') {index++;}
 
         CanvasHTML = CanvasHTML.slice(start + 1, index);
-        console.log(bioNetGen);
         var m = new Molecule(bioNetGen);
         m.draw(CanvasHTML, 1, 1);
     }
