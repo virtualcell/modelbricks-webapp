@@ -468,7 +468,7 @@
             <div id="molecules" class="optionData">
                 <h2 class="header">Molecules</h2>
                 <div class="modelTable">
-                    <table id="content-table3" class="table-responsive-full sort-table">
+                    <table id="content-table3-molecules" class="table-responsive-full sort-table">
                         <thead>
                             <tr>
                                 <th class="Name">Name
@@ -491,7 +491,16 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
-
+                                <th class="Description">DEPICTION
+                                    <div class="sort-table-arrows">
+                                        <a href="javascript:sort(true, 'Description', 'content-table3');"><button
+                                                class="button" title="down arrow"><i
+                                                    class="fa fa-chevron-down"></i></button></a>
+                                        <a href="javascript:sort(false, 'Description', 'content-table3');"><button
+                                                class="button" title="up arrow"><i
+                                                    class="fa fa-chevron-up"></i></button></a>
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -505,11 +514,10 @@
                                 <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
 
-                                <td data-label="Description" class="Description">
-                                  {{this.$.Name}}
-                                  {{#each this.MolecularComponent}}
-                                  ({{this.$.Name}}!{{this.$.BondType}})
-                                  {{/each}}
+                                <td data-label="Description" class="Description">{{this.$.Name}}({{#each this.MolecularComponent}}{{this.$.Name}}{{#each AllowableState}}~{{this.$.Name}}{{/each}}{{/each}})</td>
+
+                                <td data-label="Depiction" class="Depiction">
+                                  <canvas id="{{this.$.Name}}_canvas" class="molecule_canvas" width="185" height="68"></canvas>
                                 </td>
                             </tr>
                             {{/each}}
@@ -1104,13 +1112,7 @@
         if (hash < 0) {
           hash *= -1;
         }
-        //increase random distribution;
-        hash *= 100000;
-        if (hash < 16777215) {
-          hash += 1;
-          hash *= 16001171;
-        }
-        //16777215 is 255 in basd 10
+        //16777215 is 255 in base 10
         while (hash > 16777215) {
           hash = hash / 16;
         }
@@ -1164,6 +1166,7 @@
 
       process() {
         var temp = splitString(this.def, '(');
+        console.log('temp',temp);
         this.name = temp[0];
         var sites = temp[1].slice(0, -1);
         sites = splitString(sites, ',');
@@ -1181,8 +1184,6 @@
       }
 
       //x and y give the top left corner of graphic
-      //need to add dynamic length
-      //need to make it look better
       draw(canvasID, x, y) {
         var canvas = document.getElementById(canvasID);
         var ctx = canvas.getContext('2d');
@@ -1304,10 +1305,10 @@
       }
     }
 
-    //displaying graphics in table
+    //displaying graphics in species
     var speciesTable = document.getElementById('content-table3-species');
-    const rowsLen = speciesTable.rows.length;
-    const cellsLen = speciesTable.rows.item(1).cells.length;
+    var rowsLen = speciesTable.rows.length;
+    var cellsLen = speciesTable.rows.item(1).cells.length;
 
     for (y = 1; y < rowsLen; y++) {
         var CanvasHTML = speciesTable.rows.item(y).cells.item(3).innerHTML;
@@ -1321,8 +1322,29 @@
         while (CanvasHTML[index] !== '"') {index++;}
 
         CanvasHTML = CanvasHTML.slice(start + 1, index);
+        console.log(bioNetGen);
         var g = new Graphic(bioNetGen);
         g.draw(CanvasHTML, 0, 0);
+    }
+
+    //displaying graphics in molecules
+    var speciesTable = document.getElementById('content-table3-molecules');
+    var rowsLen = speciesTable.rows.length;
+    var cellsLen = speciesTable.rows.item(1).cells.length;
+
+    for (y = 1; y < rowsLen; y++) {
+        var CanvasHTML = speciesTable.rows.item(y).cells.item(2).innerHTML;
+        var bioNetGen = speciesTable.rows.item(y).cells.item(1).innerHTML;
+        var start = 0;
+
+        while (CanvasHTML[start] !== '""' && CanvasHTML[start - 1] !== "=") {start++;}
+        var index = start + 1;
+        while (CanvasHTML[index] !== '"') {index++;}
+
+        CanvasHTML = CanvasHTML.slice(start + 1, index);
+        console.log(bioNetGen);
+        var m = new Molecule(bioNetGen);
+        m.draw(CanvasHTML, 1, 1);
     }
 
 
