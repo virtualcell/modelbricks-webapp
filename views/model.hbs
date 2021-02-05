@@ -1098,6 +1098,7 @@
 
 <script>
     //script for graphics
+
     //defining string rgb values by hashing them
     Object.defineProperty(String.prototype, 'rgb', {
       //hashing string
@@ -1106,10 +1107,8 @@
         for (var i = 0; i < this.length; i++) {
           chr   = this.charCodeAt(i);
           hash = (chr << (6 * i)) + hash;
-          //hash  = ((hash << 5) - hash) + chr;
           hash |= 0; // Convert to 32bit integer
         }
-        console.log(this, hash);
         //changing hash into rgb format:
         if (hash < 0) {
           hash *= -1;
@@ -1154,18 +1153,24 @@
     }
 
     //for a molecule in a BioNetGen definision
-    //need to add dynamic number of bonds
     class Molecule {
       constructor(def) {
+        //bionetgen definition
         this.def = def;
+        //6 digit rgb hex
         this.color = '';
+        //name of molecule
         this.name = '';
-        this.sites = [];
+        //this.sites is an object, keys: site names, values: list of state names
+        //this.sites, color, name initialized in process()
         this.process();
-        this.siteColors = ['#FBC6D0', '#00FDFF', '#FA26A0', '#99F3BD']
+        //colors used to draw states
+        this.stateColors = ['#FBC6D0', '#00FDFF', '#FA26A0', '#99F3BD'];
+        //object, keys: bond names, values: x,y pair of pt to draw bond
         this.bonds = new Object();
       }
 
+      //initialize this.color, sites, name from bionetgen def
       process() {
         var temp = splitString(this.def, '(');
         this.name = temp[0];
@@ -1185,14 +1190,11 @@
         this.sites = Object.fromEntries(vkPairs);
       }
 
-      //x and y give the top left corner of graphic
-      draw(canvasID, x, y) {
+      //draw rounded rect
+      drawRoundRect(canvasID, x, y, radius, length, rgb) {
         var canvas = document.getElementById(canvasID);
         var ctx = canvas.getContext('2d');
-        const radius = 15;
-        const length = 8 * this.name.length - radius / 2;
-        //drawing pill shape
-        ctx.fillStyle = '#' + this.color;
+        ctx.fillStyle = '#' + rgb;
         ctx.beginPath();
         ctx.arc(x + radius, y + radius, radius, Math.PI / 2, Math.PI * (3/2));
         ctx.arc(x + radius + length, y + radius, radius, Math.PI * (3/2), Math.PI / 2);
@@ -1201,22 +1203,18 @@
         ctx.fillStyle = '#000000';
         ctx.stroke();
         ctx.closePath();
-        //drawing sites
+      }
+
+      //draw bionetgen sites with states as small rects
+      drawSitesSimple(canvasID, x, y, radius) {
+        var canvas = document.getElementById(canvasID);
+        var ctx = canvas.getContext('2d');
         const siteRadius = 5;
         const keys = Object.keys(this.sites);
-        var c = 1;
         for (var i = 0; i < keys.length; i++) {
-          if (i * 2 * siteRadius > length) {
-            //if sites reach rounded edge
-            var angle = Math.PI / 2 + 2 * siteRadius * c / radius;
-            var dy = radius * Math.sin(angle) + radius;
-            var dx = -1 * radius * Math.cos(angle) + radius + length;
-            c++;
-          } else {
-            //bottom line
-            var dy = 2 * radius;
-            var dx = radius + i * 2 * siteRadius;
-          }
+          //bottom line of sites
+          var dy = 2 * radius;
+          var dx = radius + i * 2 * siteRadius;
           ctx.fillStyle = '#' + keys[i].rgb();
           ctx.beginPath();
           ctx.arc(x + dx, y + dy, siteRadius, 0, 2 * Math.PI);
@@ -1233,7 +1231,7 @@
           for (var u = 0; u < states.length; u++) {
             var sx = x + dx - siteRadius;
             var sy = y + dy + u * 6 + siteRadius;
-            ctx.fillStyle = this.siteColors[u];
+            ctx.fillStyle = this.stateColors[u];
             ctx.beginPath();
             ctx.rect(sx, sy, siteRadius * 2, siteRadius);
             ctx.fill();
@@ -1242,6 +1240,69 @@
             ctx.closePath();
           }
         }
+      }
+
+      //draw bionetgen sites with states labeled
+      drawSitesComplex(canvasID, x, y, radius) {
+        var canvas = document.getElementById(canvasID);
+        var ctx = canvas.getContext('2d');
+        const siteRadius = 8;
+        var siteLength = 0;
+        var stateLength = 0;
+        var longestState = 0;
+        const keys = Object.keys(this.sites);
+        var dx = radius - 2 * siteRadius;
+        for (var i = 0; i < keys.length; i++) {
+          //bottom line of sites
+          var dy = 2 * radius + 2;
+          dx = dx + 2 * siteRadius + siteLength;
+          if (longestState > 2 * siteRadius + siteLength) {
+            console.log(keys[i], longestState, siteLength);
+            dx = dx - siteLength + longestState - 2 * siteRadius;
+          }
+          siteLength = 4.2 * keys[i].length;
+          this.drawRoundRect(canvasID, x + dx - radius / 2, y + dy - radius / 2, siteRadius, siteLength, keys[i].rgb());
+          //drawing site names
+          ctx.fillStyle = '#000000';
+          ctx.font = "12px Arial";
+          ctx.fillText(keys[i], x + dx - siteRadius / 2, y + dy + siteRadius / 2);
+          //add bonds if necessary
+          if (keys[i].includes('!')) {
+            this.bonds[keys[i]] = [x + dx, y + dy + siteRadius];
+          }
+          //drawing states of sites
+          var states = this.sites[keys[i]];
+          for (var u = 0; u < states.length; u++) {
+            var sx = x + dx - siteRadius + 2;
+            var sy = y + dy + u * 13 + siteRadius;
+            //fix lengths
+            stateLength = this.sites[keys[i]][u].length * 10;
+            if (longestState < stateLength) {longestState = stateLength;}
+            ctx.fillStyle = this.stateColors[u];
+            ctx.beginPath();
+            ctx.rect(sx, sy, stateLength, 13);
+            ctx.fill();
+            ctx.fillStyle = '#000000';
+            ctx.stroke();
+            ctx.closePath();
+            //naming sites
+            ctx.fillStyle = '#000000';
+            //ctx.font = "12px Arial";
+            ctx.fillText(this.sites[keys[i]][u], sx + 1, sy + 11);
+          }
+        }
+      }
+
+      //x and y give the top left corner of graphic
+      draw(canvasID, x, y) {
+        var canvas = document.getElementById(canvasID);
+        var ctx = canvas.getContext('2d');
+        const radius = 15;
+        const length = 8 * this.name.length - radius / 2;
+        //drawing pill shape
+        this.drawRoundRect(canvasID, x, y, radius, length, this.color);
+        //drawing sites
+        this.drawSitesComplex(canvasID, x, y, radius);
         //drawing name
         ctx.fillStyle = '#000000';
         ctx.font = "15px Arial";
@@ -1343,7 +1404,7 @@
         while (CanvasHTML[index] !== '"') {index++;}
 
         CanvasHTML = CanvasHTML.slice(start + 1, index);
-        var m = new Molecule(bioNetGen);
+        var m = new Molecule("G_protein(State~GTP~GDP,GDI~GTP~GGGGGGG,Effector~GTP~GDP)");
         m.draw(CanvasHTML, 1, 1);
     }
 
