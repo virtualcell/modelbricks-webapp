@@ -431,7 +431,7 @@
                                 <td data-label="Structure" class="Structure">{{this.$.Structure}}</td>
                                 <td data-label="Structure" class="Structure">{{#each this.SpeciesPattern}}{{#each this.MolecularTypePattern}}{{#each this.MolecularType}}{{this.$.Name}}{{/each}}{{#each this.ComponentPattern}}({{this.$.MolecularComponent}}!{{this.$.BondType}}).{{/each}}{{/each}}{{/each}}</td>
                                 <td data-label="Structure" class="Structure">
-                                  <canvas id="{{this.$.Name}}_canvas" class="molecule_canvas" width="185" height="68"></canvas>
+                                  <canvas id="{{this.$.Name}}_species_canvas" class="molecule_canvas" width="185" height="68"></canvas>
                                 </td>
                             </tr>
                             {{/each}}
@@ -517,14 +517,10 @@
                                 <td data-label="Description" class="Description">{{this.$.Name}}({{#each this.MolecularComponent}}{{this.$.Name}}{{#each AllowableState}}~{{this.$.Name}}{{/each}}{{/each}})</td>
 
                                 <td data-label="Depiction" class="Depiction">
-                                  <canvas id="{{this.$.Name}}_canvas" class="molecule_canvas" width="185" height="68"></canvas>
+                                  <canvas id="{{this.$.Name}}_molecules_canvas" class="molecule_canvas" width="185" height="68"></canvas>
                                 </td>
                             </tr>
-                            {{/each}}
-                            {{/each}}
-                            {{/each}}
-                            {{/each}}
-                            {{/each}}
+                            {{/each}}{{/each}}{{/each}}{{/each}}{{/each}}
                         </tbody>
                     </table>
                 </div>
@@ -1113,6 +1109,10 @@
         if (hash < 0) {
           hash *= -1;
         }
+        if (hash < 65280) {
+          hash++;
+          hash *= 17777777;
+        }
         //16777215 is 255 in base 10
         while (hash > 16777215) {
           hash = hash / 16;
@@ -1257,7 +1257,6 @@
           var dy = 2 * radius + 2;
           dx = dx + 2 * siteRadius + siteLength;
           if (longestState > 2 * siteRadius + siteLength) {
-            console.log(keys[i], longestState, siteLength);
             dx = dx - siteLength + longestState - 2 * siteRadius;
           }
           siteLength = 4.2 * keys[i].length;
@@ -1266,10 +1265,6 @@
           ctx.fillStyle = '#000000';
           ctx.font = "12px Arial";
           ctx.fillText(keys[i], x + dx - siteRadius / 2, y + dy + siteRadius / 2);
-          //add bonds if necessary
-          if (keys[i].includes('!')) {
-            this.bonds[keys[i]] = [x + dx, y + dy + siteRadius];
-          }
           //drawing states of sites
           var states = this.sites[keys[i]];
           for (var u = 0; u < states.length; u++) {
@@ -1291,18 +1286,46 @@
             ctx.fillText(this.sites[keys[i]][u], sx + 1, sy + 11);
           }
         }
+        //return total length of sites to compare to default length
+        return(dx - x + radius);
       }
 
-      //x and y give the top left corner of graphic
-      draw(canvasID, x, y) {
+      //draw molecule with states and sites labled
+      drawComplex(canvasID, x, y) {
         var canvas = document.getElementById(canvasID);
         var ctx = canvas.getContext('2d');
         const radius = 15;
-        const length = 8 * this.name.length - radius / 2;
+        var length = 8 * this.name.length - radius / 2;
+        if (length < 0) {length *= -1;}
+        //notice drawSitesComplex() is called twice
+        //this is a bad implementation but it doesn't effect runtime noticably
+        var siteLength = this.drawSitesComplex(canvasID, x, y, radius);
+        if (length < siteLength) {
+          length = siteLength;
+        }
         //drawing pill shape
         this.drawRoundRect(canvasID, x, y, radius, length, this.color);
         //drawing sites
         this.drawSitesComplex(canvasID, x, y, radius);
+        //drawing name
+        ctx.fillStyle = '#000000';
+        ctx.font = "15px Arial";
+        ctx.fillText(this.name, x + radius / 2, y + radius + 5);
+        //return length of molecule for Graphic class
+        return (radius * 2 + length);
+      }
+
+      //draw molecule with states and sites as unlabeled shapes
+      drawSimple(canvasID, x, y) {
+        var canvas = document.getElementById(canvasID);
+        var ctx = canvas.getContext('2d');
+        const radius = 15;
+        var length = 8 * this.name.length - radius / 2;
+        if (length < 0) {length *= -1;}
+        //drawing pill shape
+        this.drawRoundRect(canvasID, x, y, radius, length, this.color);
+        //drawing sites
+        this.drawSitesSimple(canvasID, x, y, radius);
         //drawing name
         ctx.fillStyle = '#000000';
         ctx.font = "15px Arial";
@@ -1315,8 +1338,11 @@
     //each bionetgen should have own Graphic instance
     class Graphic {
       constructor(def) {
+        //bionetgen definition
         this.def = def;
+        //list of instances of molecule classes
         this.molecules = [];
+        //initializing this.molecules
         this.process();
       }
 
@@ -1340,7 +1366,7 @@
           //extracting bonds
           for (var i = 0; i < this.molecules.length; i++) {
             //drawing molecules without bonds
-            length = this.molecules[i].draw(canvasID, 2 + length, 2);
+            length = this.molecules[i].drawSimple(canvasID, 2 + length, 2);
             bondNames = Object.keys(this.molecules[i].bonds);
             for (var g = 0; g < bondNames.length; g++) {
               bondName = bondNames[g];
@@ -1362,9 +1388,7 @@
             ctx.lineTo(pairs[i][1][0], pairs[i][1][1]);
             ctx.stroke();
           }
-        } else {
-          // canvas-unsupported code here
-        }
+        } else {/*canvas-unsupported code here*/}
       }
     }
 
@@ -1374,19 +1398,21 @@
     var cellsLen = speciesTable.rows.item(1).cells.length;
 
     for (y = 1; y < rowsLen; y++) {
-        var CanvasHTML = speciesTable.rows.item(y).cells.item(3).innerHTML;
-        var bioNetGen = speciesTable.rows.item(y).cells.item(2).innerHTML;
-        bioNetGen = bioNetGen.slice(0, bioNetGen.length - 1);
-        speciesTable.rows.item(y).cells.item(2).innerHTML = bioNetGen;
-        var start = 0;
+      var CanvasHTML = speciesTable.rows.item(y).cells.item(3).innerHTML;
+      var bioNetGen = speciesTable.rows.item(y).cells.item(2).innerHTML;
+      bioNetGen = bioNetGen.slice(0, bioNetGen.length - 1);
+      speciesTable.rows.item(y).cells.item(2).innerHTML = bioNetGen;
+      var start = 0;
 
-        while (CanvasHTML[start] !== '""' && CanvasHTML[start - 1] !== "=") {start++;}
-        var index = start + 1;
-        while (CanvasHTML[index] !== '"') {index++;}
+      while (CanvasHTML[start] !== '""' && CanvasHTML[start - 1] !== "=") {start++;}
+      var index = start + 1;
+      while (CanvasHTML[index] !== '"') {index++;}
 
-        CanvasHTML = CanvasHTML.slice(start + 1, index);
+      CanvasHTML = CanvasHTML.slice(start + 1, index);
+      if (bioNetGen.length != 0) {
         var g = new Graphic(bioNetGen);
         g.draw(CanvasHTML, 0, 0);
+      }
     }
 
     //displaying graphics in molecules
@@ -1395,17 +1421,17 @@
     var cellsLen = speciesTable.rows.item(1).cells.length;
 
     for (y = 1; y < rowsLen; y++) {
-        var CanvasHTML = speciesTable.rows.item(y).cells.item(2).innerHTML;
-        var bioNetGen = speciesTable.rows.item(y).cells.item(1).innerHTML;
-        var start = 0;
+      var CanvasHTML = speciesTable.rows.item(y).cells.item(2).innerHTML;
+      var bioNetGen = speciesTable.rows.item(y).cells.item(1).innerHTML;
+      var start = 0;
 
-        while (CanvasHTML[start] !== '""' && CanvasHTML[start - 1] !== "=") {start++;}
-        var index = start + 1;
-        while (CanvasHTML[index] !== '"') {index++;}
+      while (CanvasHTML[start] !== '""' && CanvasHTML[start - 1] !== "=") {start++;}
+      var index = start + 1;
+      while (CanvasHTML[index] !== '"') {index++;}
 
-        CanvasHTML = CanvasHTML.slice(start + 1, index);
-        var m = new Molecule("G_protein(State~GTP~GDP,GDI~GTP~GGGGGGG,Effector~GTP~GDP)");
-        m.draw(CanvasHTML, 1, 1);
+      CanvasHTML = CanvasHTML.slice(start + 1, index);
+      var m = new Molecule(bioNetGen);
+      m.drawComplex(CanvasHTML, 1, 1);
     }
 
 
