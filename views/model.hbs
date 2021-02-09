@@ -429,7 +429,7 @@
                                 <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
                                 <td data-label="Structure" class="Structure">{{this.$.Structure}}</td>
-                                <td data-label="Structure" class="Structure">{{#each this.SpeciesPattern}}{{#each this.MolecularTypePattern}}{{#each this.MolecularType}}{{this.$.Name}}{{/each}}{{#each this.ComponentPattern}}({{this.$.MolecularComponent}}!{{this.$.BondType}}).{{/each}}{{/each}}{{/each}}</td>
+                                <td data-label="Structure" class="Structure">{{#each this.SpeciesPattern}}{{#each this.MolecularTypePattern}}{{#each this.MolecularType}}{{this.$.Name}}({{/each}}{{#each this.ComponentPattern}}{{this.$.MolecularComponent}}{{#this.$.ComponentStatePattern}}~{{this}}{{/this.$.ComponentStatePattern}}{{!--this.$.BondType--}}{{/each}}).{{/each}}{{/each}}</td>
                                 <td data-label="Structure" class="Structure">
                                   <canvas id="{{this.$.Name}}_species_canvas" class="molecule_canvas" width="185" height="68"></canvas>
                                 </td>
