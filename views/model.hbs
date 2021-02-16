@@ -518,7 +518,7 @@
                                 <td data-label="Description" class="Description">{{this.$.Name}}({{#each this.MolecularComponent}}{{this.$.Name}}{{#each AllowableState}}~{{this.$.Name}}{{/each}}{{/each}})</td>
 
                                 <td data-label="Depiction" class="Depiction">
-                                  <canvas id="{{this.$.Name}}_molecules_canvas" class="molecule_canvas" width="185" height="68"></canvas>
+                                  <canvas id="{{this.$.Name}}_molecules_canvas" class="molecule_canvas" width="" height=""></canvas>
                                 </td>
                             </tr>
                             {{/each}}{{/each}}{{/each}}{{/each}}{{/each}}
@@ -644,7 +644,7 @@
                                 <td data-label="SequenceType" class="SequenceType">{{this.$.Sequence}}</td>
 
                                 <td>
-                                  <canvas id="{{this.$.Name}}_observables_canvas" class="molecule_canvas" width="185" height="68"></canvas>
+                                  <canvas id="{{this.$.Name}}_observables_canvas" class="molecule_canvas" width="" height=""></canvas>
                                 </td>
 
                             </tr>
@@ -1187,6 +1187,7 @@
 
     //class for molecules
     //to do for graphics:
+    //fix canvas dims for states
     //make each tags readable
     //seperate script from html to increase readability
     //can we parse vcmls using only one run?
@@ -1267,6 +1268,7 @@
         var longestState = 0;
         var tallestState = 0;
         var keys = [];
+        var hasStates = false;
         for (var i = 0; i < this.sites.length; i++) {
           keys.push(this.sites[i].name);
         }
@@ -1294,6 +1296,8 @@
           var states = this.sites[i].states;
           if (states.length == 0) {
             longestState = 0;
+          } else if (!hasStates) {
+            hasStates = true;
           }
           //add bonds to stateless sites
           if (this.sites[i].bondName != null) {
@@ -1333,7 +1337,18 @@
           }
         }
         //return total [length, height] to compare to default dimensions
-        return([dx, tallestState]);
+        var dims = []
+        if (sx) {
+          dims.push(sx);
+        } else {
+          dims.push(dx);
+        }
+        if (hasStates) {
+          dims.push(tallestState);
+        } else {
+          dims.push(radius * 2 + siteRadius + 2);
+        }
+        return (dims);
       }
 
       //draw molecule with states and sites labled
@@ -1442,7 +1457,11 @@
             ctx.stroke();
           }
         } else {/*canvas-unsupported code here*/}
-        return ([length + 5, maxHeight + 10]);
+        if (maxHeight + 10 > height + 5) {
+          return ([length + 5, maxHeight + 10]);
+        } else {
+          return ([length + 5, height + 5]);
+        }
       }
     }
 
@@ -1470,7 +1489,6 @@
         bioNetGen = bioNetGen.replace(',)', ')');
       }
       speciesTable.rows.item(y).cells.item(2).innerHTML = bioNetGen;
-      //var g = new Graphic('E(n~U!1,a!2,b!1,c!3).R(z!3,y!2,f))');
       var g = new Graphic(bioNetGen);
       dims = g.draw(HTMLiD, 0, 0);
       canvasHTML = canvasHTML.replace('width=""', 'width="' + dims[0] + '"');
@@ -1493,9 +1511,22 @@
       var index = start + 1;
       while (canvasHTML[index] !== '"') {index++;}
 
-      canvasHTML = canvasHTML.slice(start + 1, index);
+      HTMLiD = canvasHTML.slice(start + 1, index);
+      while (bioNetGen.includes('!-')) {
+        bioNetGen = bioNetGen.replace('!-', '');
+      }
+      while (bioNetGen.includes(',)')) {
+        bioNetGen = bioNetGen.replace(',)', ')');
+      }
+
       var m = new Molecule(bioNetGen);
-      m.drawComplex(canvasHTML, 1, 1);
+      dims = m.drawComplex(HTMLiD, 0, 0);
+      dims[0] += 5;
+      dims[1] += 5;
+      canvasHTML = canvasHTML.replace('width=""', 'width="' + dims[0] + '"');
+      canvasHTML = canvasHTML.replace('height=""', 'height="' + dims[1] + '"');
+      moleculesTable.rows.item(y).cells.item(2).innerHTML = canvasHTML;
+      m.drawComplex(HTMLiD, 1, 1);
     }
 
 
@@ -1514,13 +1545,20 @@
       var index = start + 1;
       while (canvasHTML[index] !== '"') {index++;}
 
-      canvasHTML = canvasHTML.slice(start + 1, index);
-      bioNetGen = bioNetGen.replace('!-', '');
-      //observablesTable.rows.item(y).cells.item(4).innerHTML = bioNetGen;
-      if (bioNetGen.length != 0) {
-        var g = new Graphic(bioNetGen);
-        g.draw(canvasHTML, 0, 0);
+      HTMLiD = canvasHTML.slice(start + 1, index);
+      while (bioNetGen.includes('!-')) {
+        bioNetGen = bioNetGen.replace('!-', '');
       }
+      while (bioNetGen.includes(',)')) {
+        bioNetGen = bioNetGen.replace(',)', ')');
+      }
+
+      var g = new Graphic(bioNetGen);
+      dims = g.draw(HTMLiD, 0, 0);
+      canvasHTML = canvasHTML.replace('width=""', 'width="' + dims[0] + '"');
+      canvasHTML = canvasHTML.replace('height=""', 'height="' + dims[1] + '"');
+      observablesTable.rows.item(y).cells.item(5).innerHTML = canvasHTML;
+      g.draw(HTMLiD, 0, 0);
     }
 
 
