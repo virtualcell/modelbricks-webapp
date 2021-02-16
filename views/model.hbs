@@ -1470,8 +1470,8 @@
         bioNetGen = bioNetGen.replace(',)', ')');
       }
       speciesTable.rows.item(y).cells.item(2).innerHTML = bioNetGen;
-      var g = new Graphic('E(n~U!1,a!2,b!1,c!3).R(z!3,y!2,f))');
-      //var g = new Graphic(bioNetGen);
+      //var g = new Graphic('E(n~U!1,a!2,b!1,c!3).R(z!3,y!2,f))');
+      var g = new Graphic(bioNetGen);
       dims = g.draw(HTMLiD, 0, 0);
       canvasHTML = canvasHTML.replace('width=""', 'width="' + dims[0] + '"');
       canvasHTML = canvasHTML.replace('height=""', 'height="' + dims[1] + '"');
