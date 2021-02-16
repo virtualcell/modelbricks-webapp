@@ -429,9 +429,10 @@
                                 <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
                                 <td data-label="Structure" class="Structure">{{this.$.Structure}}</td>
-                                <td data-label="Structure" class="Structure">{{#each this.SpeciesPattern}}{{#each this.MolecularTypePattern}}{{#each this.MolecularType}}{{this.$.Name}}({{/each}}{{#each this.ComponentPattern}}{{this.$.MolecularComponent}}{{#this.$.ComponentStatePattern}}~{{this}}{{/this.$.ComponentStatePattern}}!{{this.$.BondType}}{{!--this.$.BondType--}}{{/each}}).{{/each}}{{/each}}</td>
+                                <td data-label="Structure" class="Structure">{{#each this.SpeciesPattern}}{{#each this.MolecularTypePattern}}{{#each this.MolecularType}}{{this.$.Name}}({{/each}}{{#each this.ComponentPattern}}{{this.$.MolecularComponent}}{{#this.$.ComponentStatePattern}}~{{this}}{{/this.$.ComponentStatePattern}}!{{this.$.BondType}},{{/each}}).{{/each}}{{/each}}</td>
                                 <td data-label="Structure" class="Structure">
-                                  <canvas id="{{this.$.Name}}_species_canvas" class="molecule_canvas" width="185" height="68"></canvas>
+                                  {{!-- dimensions of this canvas are variable --}}
+                                  <canvas id="{{this.$.Name}}_species_canvas" class="molecule_canvas" width="" height=""></canvas>
                                 </td>
                             </tr>
                             {{/each}}
@@ -580,7 +581,7 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
-                                <th class="Domain">Domain
+                                <th class="Domain">Count
                                     <div class="sort-table-arrows">
                                         <a href="javascript:sort(true, 'Domain', 'content-table3');"><button
                                                 class="button" title="down arrow"><i
@@ -1159,11 +1160,36 @@
       return(list);
     }
 
-    //to do for graphics:
-    //variable canvas dimensions
-    //capacity for more than 1 bond
-    //label bonds
+
+    //simple class to hold data from molecule's sites
+    class Site {
+      constructor(name, states) {
+        this.bondName = null;
+        for (var i = 0; i < states.length; i++) {
+          if (states[i].includes('!')) {
+            var pair = splitString(states[i], '!');
+            states[i] = pair[0];
+            this.bondName = parseInt(pair[1]);
+          }
+        }
+        if (name.includes('!')) {
+          var pair = splitString(name, '!');
+          name = pair[0];
+          this.bondName = parseInt(pair[1]);
+        }
+        this.name = name;
+        this.states = states; //list of state names
+        this.stateObjects = Object();
+        this.position = null; //x y coords of where to draw bond
+      }
+    }
+
+
     //class for molecules
+    //to do for graphics:
+    //make each tags readable
+    //seperate script from html to increase readability
+    //can we parse vcmls using only one run?
     class Molecule {
       constructor(def) {
         //bionetgen definition
@@ -1173,7 +1199,7 @@
         //name of molecule
         this.name = '';
         //this.sites is an object, keys: site names, values: list of state names
-        //this.sites, color, name initialized in process()
+        //this.sites, list of Site() instances
         this.process();
         //colors used to draw states
         this.stateColors = ['#FBC6D0', '#00FDFF', '#FA26A0', '#99F3BD'];
@@ -1188,26 +1214,31 @@
         this.name = temp[0];
         this.color = this.name.rgb();
         var sites = temp[1].slice(0, -1);
+        //sites = sites.slice(sites.length - 2);
         sites = splitString(sites, ',');
-        var vkPairs = [];
+        var siteList = [];
         var temp = '';
         for (var i = 0; i < sites.length; i++) {
+          if (sites[i].includes(')')) {
+            sites[i] = sites[i].replace(')', '');
+          }
           if (sites[i].includes('~')) {
             //if sites have states
             temp = splitString(sites[i], '~');
-            vkPairs.push([temp[0], temp.slice(1)]);
+            var states = temp.slice(1);
+            siteList.push(new Site(temp[0], states));
           } else if (sites[i].length != 0) {
             //if there are sites but no states
-            vkPairs.push([sites[i], []]);
+            siteList.push(new Site(sites[i], []));
           } else {
             //if there are no sites
-            vkPairs = null;
+            siteList = null;
           }
         }
-        if (vkPairs == null) {
-          this.sites = Object();
+        if (siteList == null) {
+          this.sites = [];
         } else {
-          this.sites = Object.fromEntries(vkPairs);
+          this.sites = siteList;
         }
       }
 
@@ -1234,11 +1265,15 @@
         var siteLength = 0;
         var stateLength = 0;
         var longestState = 0;
-        const keys = Object.keys(this.sites);
-        //removing bond info from site name
+        var tallestState = 0;
+        var keys = [];
+        for (var i = 0; i < this.sites.length; i++) {
+          keys.push(this.sites[i].name);
+        }
+        //adding sites
         var siteNames = [];
         for (var i = 0; i < keys.length; i++) {
-          siteNames.push(splitString(keys[i], '!')[0]);
+          siteNames.push(keys[i]);
         }
         var dx = radius - 2 * siteRadius;
         for (var i = 0; i < keys.length; i++) {
@@ -1248,10 +1283,6 @@
           if (longestState > 2 * siteRadius + siteLength) {
             dx = dx - siteLength + longestState - 2 * siteRadius;
           }
-          //add bonds if necessary
-          if (keys[i].includes('!')) {
-            this.bonds[keys[i]] = [x + dx, y + dy + siteRadius];
-          }
           //drawing sites
           siteLength = 4.2 * siteNames[i].length;
           this.drawRoundRect(canvasID, x + dx - radius / 2, y + dy - radius / 2, siteRadius, siteLength, siteNames[i].rgb());
@@ -1260,32 +1291,49 @@
           ctx.font = "12px Arial";
           ctx.fillText(siteNames[i], x + dx - siteRadius / 2, y + dy + siteRadius / 2 + 1);
           //drawing states of sites
-          var states = this.sites[keys[i]];
+          var states = this.sites[i].states;
+          if (states.length == 0) {
+            longestState = 0;
+          }
+          //add bonds to stateless sites
+          if (this.sites[i].bondName != null) {
+            if (this.sites[i].states.length == 0) {
+              this.sites[i].position = [x + dx, y + dy + siteRadius];
+            }
+          }
           for (var u = 0; u < states.length; u++) {
             var sx = x + dx - siteRadius + 2;
             var sy = y + dy + u * 13 + siteRadius;
             //fix lengths
-            stateLength = this.sites[keys[i]][u].length * 10;
+            stateLength = this.sites[i].states[u].length * 10;
             if (stateLength == 10) {
               stateLength = 15;
             }
             if (longestState < stateLength) {longestState = stateLength;}
+            //add bonds to sites with states
+            if (this.sites[i].bondName != null) {
+              this.sites[i].position = [sx + stateLength / 2, sy + 13];
+            }
+            //draw states
             var colorIndex = u;
             if (colorIndex > 3) {colorIndex = colorIndex % 3;}
             ctx.fillStyle = this.stateColors[colorIndex];
             ctx.beginPath();
             ctx.rect(sx, sy, stateLength, 13);
+            if (sy + 13 > tallestState) {
+              tallestState = sy + 13;
+            }
             ctx.fill();
             ctx.fillStyle = '#000000';
             ctx.stroke();
             ctx.closePath();
-            //naming sites
+            //naming states
             ctx.fillStyle = '#000000';
-            ctx.fillText(this.sites[keys[i]][u], sx + 3, sy + 11);
+            ctx.fillText(this.sites[i].states[u], sx + 3, sy + 11);
           }
         }
-        //return total length of sites to compare to default length
-        return(dx - x + radius);
+        //return total [length, height] to compare to default dimensions
+        return([dx, tallestState]);
       }
 
       //draw molecule with states and sites labled
@@ -1297,9 +1345,9 @@
         if (length < 0) {length *= -1;}
         //notice drawSitesComplex() is called twice
         //this is a bad implementation but it doesn't effect runtime noticably
-        var siteLength = this.drawSitesComplex(canvasID, x, y, radius);
-        if (length < siteLength) {
-          length = siteLength;
+        var dims = this.drawSitesComplex(canvasID, x, y, radius);
+        if (length < dims[0]) {
+          length = dims[0];
         }
         //drawing pill shape
         this.drawRoundRect(canvasID, x, y, radius, length, this.color);
@@ -1309,8 +1357,8 @@
         ctx.fillStyle = '#000000';
         ctx.font = "15px Arial";
         ctx.fillText(this.name, x + radius / 2, y + radius + 5);
-        //return length of molecule for Graphic class
-        return (radius * 2 + length);
+        //return [length, height] of molecule for Graphic class
+        return ([radius * 2 + length, dims[1]]);
       }
     }
 
@@ -1336,39 +1384,65 @@
       //only works for species with two molecules or less, fix this
       draw(canvasID, x, y) {
         var length = 0;
-        var pairs = [];
-        var bondName = '';
-        var bondNames = [];
+        var height = 0;
+        var names = new Set();
+        var pairs = [];//list of pairs of xy coords for each bond
         //drawing the graphics on the canvas
         var canvas = document.getElementById(canvasID);
         if (canvas.getContext) {
           var ctx = canvas.getContext('2d');
           //extracting bonds
           for (var i = 0; i < this.molecules.length; i++) {
-            //drawing molecules without bonds
-            length = this.molecules[i].drawComplex(canvasID, 2 + length, 2);
-            bondNames = Object.keys(this.molecules[i].bonds);
-            for (var g = 0; g < bondNames.length; g++) {
-              bondName = bondNames[g];
-              for (var u = 0; u < this.molecules.length; u++) {
-                if (u != i) {
-                  if (bondName in this.molecules[u].bonds) {
-                    pairs.push([this.molecules[u].bonds[bondName], this.molecules[i].bonds[bondName]]);
+            var dims = this.molecules[i].drawComplex(canvasID, 2 + length, 2);
+            length += dims[0];
+            if (dims[1] > height) {
+              height = dims[1];
+            }
+          }
+          for (var i = 0; i < this.molecules.length; i++) {
+            for (var y = 0; y < this.molecules[i].sites.length; y++) {
+              var m1 = this.molecules[i].sites[y];
+              if (m1.bondName != null && !names.has(m1.bondName)) {
+                names.add(m1.bondName);
+                var newPair = [m1.position];
+                //check all sites in species for matching bond type
+                for (var u = 0; u < this.molecules.length; u++) {
+                  for (var z = 0; z < this.molecules[u].sites.length; z++) {
+                    // vv to ensure a molecule doesnt bond to itself vv
+                    if (z != y || u != i) {
+                      var m2 = this.molecules[u].sites[z];
+                      if (m2.bondName == m1.bondName) {
+                        newPair.push(m2.position);
+                        newPair.push(m2.bondName);
+                        pairs.push(newPair);
+                      }
+                    }
                   }
                 }
               }
             }
           }
           //drawing bonds
+          ctx.fillStyle = '#000000';
+          ctx.font = "10px Arial";
+          var maxHeight = 0;
           for (var i = 0; i < pairs.length; i++) {
+            if (pairs[i][0][1] > maxHeight) {
+              maxHeight = pairs[i][0][1];
+            }
+            if (pairs[i][1][1] > maxHeight) {
+              maxHeight = pairs[i][1][1];
+            }
             ctx.beginPath();
             ctx.moveTo(pairs[i][0][0], pairs[i][0][1]);
+            ctx.fillText(pairs[i][2], pairs[i][0][0] - 7, pairs[i][0][1] + 8.5);
             ctx.lineTo(pairs[i][0][0], pairs[i][0][1] + 5 * i + 5);
-            ctx.lineTo(pairs[i][1][0], pairs[i][1][1] + 5 * i + 5);
+            ctx.lineTo(pairs[i][1][0], pairs[i][0][1] + 5 * i + 5);
             ctx.lineTo(pairs[i][1][0], pairs[i][1][1]);
             ctx.stroke();
           }
         } else {/*canvas-unsupported code here*/}
+        return ([length + 5, maxHeight + 10]);
       }
     }
 
@@ -1378,24 +1452,31 @@
     var cellsLen = speciesTable.rows.item(1).cells.length;
 
     for (y = 1; y < rowsLen; y++) {
-      var CanvasHTML = speciesTable.rows.item(y).cells.item(3).innerHTML;
+      var canvasHTML = speciesTable.rows.item(y).cells.item(3).innerHTML;
+
       var bioNetGen = speciesTable.rows.item(y).cells.item(2).innerHTML;
       bioNetGen = bioNetGen.slice(0, bioNetGen.length - 1);
-      speciesTable.rows.item(y).cells.item(2).innerHTML = bioNetGen;
       var start = 0;
 
-      while (CanvasHTML[start] !== '""' && CanvasHTML[start - 1] !== "=") {start++;}
+      while (canvasHTML[start] !== '""' && canvasHTML[start - 1] !== "=") {start++;}
       var index = start + 1;
-      while (CanvasHTML[index] !== '"') {index++;}
+      while (canvasHTML[index] !== '"') {index++;}
 
-      CanvasHTML = CanvasHTML.slice(start + 1, index);
-      if (bioNetGen.includes('!-')) {
+      HTMLiD = canvasHTML.slice(start + 1, index);
+      while (bioNetGen.includes('!-')) {
         bioNetGen = bioNetGen.replace('!-', '');
-        speciesTable.rows.item(y).cells.item(2).innerHTML = bioNetGen;
       }
-      //var g = new Graphic('E(mod~U!2,e0!3,e1!1,e3!1.R(r0!2,r1!3))');
-      var g = new Graphic(bioNetGen);
-      g.draw(CanvasHTML, 0, 0);
+      while (bioNetGen.includes(',)')) {
+        bioNetGen = bioNetGen.replace(',)', ')');
+      }
+      speciesTable.rows.item(y).cells.item(2).innerHTML = bioNetGen;
+      var g = new Graphic('E(n~U!1,a!2,b!1,c!3).R(z!3,y!2,f))');
+      //var g = new Graphic(bioNetGen);
+      dims = g.draw(HTMLiD, 0, 0);
+      canvasHTML = canvasHTML.replace('width=""', 'width="' + dims[0] + '"');
+      canvasHTML = canvasHTML.replace('height=""', 'height="' + dims[1] + '"');
+      speciesTable.rows.item(y).cells.item(3).innerHTML = canvasHTML;
+      g.draw(HTMLiD, 0, 0);
     }
 
     //displaying graphics in molecules
@@ -1404,44 +1485,41 @@
     var cellsLen = moleculesTable.rows.item(1).cells.length;
 
     for (y = 1; y < rowsLen; y++) {
-      var CanvasHTML = moleculesTable.rows.item(y).cells.item(2).innerHTML;
+      var canvasHTML = moleculesTable.rows.item(y).cells.item(2).innerHTML;
       var bioNetGen = moleculesTable.rows.item(y).cells.item(1).innerHTML;
       var start = 0;
 
-      while (CanvasHTML[start] !== '""' && CanvasHTML[start - 1] !== "=") {start++;}
+      while (canvasHTML[start] !== '""' && canvasHTML[start - 1] !== "=") {start++;}
       var index = start + 1;
-      while (CanvasHTML[index] !== '"') {index++;}
+      while (canvasHTML[index] !== '"') {index++;}
 
-      CanvasHTML = CanvasHTML.slice(start + 1, index);
+      canvasHTML = canvasHTML.slice(start + 1, index);
       var m = new Molecule(bioNetGen);
-      m.drawComplex(CanvasHTML, 1, 1);
+      m.drawComplex(canvasHTML, 1, 1);
     }
 
 
     //displaying graphics in observables
     var observablesTable = document.getElementById('content-table3-observables');
-    var rowsLen = speciesTable.rows.length;
-    var cellsLen = speciesTable.rows.item(1).cells.length;
+    var rowsLen = observablesTable.rows.length;
+    var cellsLen = observablesTable.rows.item(1).cells.length;
 
     for (y = 1; y < rowsLen; y++) {
-      var CanvasHTML = observablesTable.rows.item(y).cells.item(5).innerHTML;
+      var canvasHTML = observablesTable.rows.item(y).cells.item(5).innerHTML;
       var bioNetGen = observablesTable.rows.item(y).cells.item(3).innerHTML;
       bioNetGen = bioNetGen.slice(0, bioNetGen.length - 1);
-      observablesTable.rows.item(y).cells.item(2).innerHTML = bioNetGen;
       var start = 0;
 
-      while (CanvasHTML[start] !== '""' && CanvasHTML[start - 1] !== "=") {start++;}
+      while (canvasHTML[start] !== '""' && canvasHTML[start - 1] !== "=") {start++;}
       var index = start + 1;
-      while (CanvasHTML[index] !== '"') {index++;}
+      while (canvasHTML[index] !== '"') {index++;}
 
-      CanvasHTML = CanvasHTML.slice(start + 1, index);
-      if (bioNetGen.includes('!-')) {
-        bioNetGen = bioNetGen.replace('!-', '');
-        speciesTable.rows.item(y).cells.item(2).innerHTML = bioNetGen;
-      }
+      canvasHTML = canvasHTML.slice(start + 1, index);
+      bioNetGen = bioNetGen.replace('!-', '');
+      //observablesTable.rows.item(y).cells.item(4).innerHTML = bioNetGen;
       if (bioNetGen.length != 0) {
         var g = new Graphic(bioNetGen);
-        g.draw(CanvasHTML, 0, 0);
+        g.draw(canvasHTML, 0, 0);
       }
     }
 
