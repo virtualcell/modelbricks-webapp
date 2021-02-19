@@ -429,7 +429,21 @@
                                 <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
                                 <td data-label="Structure" class="Structure">{{this.$.Structure}}</td>
-                                <td data-label="Structure" class="Structure">{{#each this.SpeciesPattern}}{{#each this.MolecularTypePattern}}{{#each this.MolecularType}}{{this.$.Name}}({{/each}}{{#each this.ComponentPattern}}{{this.$.MolecularComponent}}{{#this.$.ComponentStatePattern}}~{{this}}{{/this.$.ComponentStatePattern}}!{{this.$.BondType}},{{/each}}).{{/each}}{{/each}}</td>
+                                <td data-label="Structure" class="Structure">
+                                  {{~#each this.SpeciesPattern~}}
+                                  {{#each this.MolecularTypePattern~}}
+                                  {{#each this.MolecularType~}}
+                                  {{this.$.Name~}}(
+                                  {{~/each~}}
+                                  {{#each this.ComponentPattern~}}
+                                  {{this.$.MolecularComponent~}}
+                                  {{#this.$.ComponentStatePattern~}}~
+                                  {{~this~}}
+                                  {{/this.$.ComponentStatePattern~}}!
+                                  {{~this.$.BondType~}},
+                                  {{~/each~}}).
+                                  {{~/each~}}
+                                  {{/each}}</td>
                                 <td data-label="Structure" class="Structure">
                                   {{!-- dimensions of this canvas are variable --}}
                                   <canvas id="{{this.$.Name}}_species_canvas" class="molecule_canvas" width="" height=""></canvas>
@@ -515,8 +529,14 @@
                                 <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
 
-                                <td data-label="Description" class="Description">{{this.$.Name}}({{#each this.MolecularComponent}}{{this.$.Name}}{{#each AllowableState}}~{{this.$.Name}}{{/each}}{{/each}})</td>
-
+                                <td data-label="Description" class="Description">
+                                  {{~this.$.Name}}(
+                                  {{~#each this.MolecularComponent~}}
+                                  {{this.$.Name~}}
+                                  {{#each AllowableState}}~
+                                  {{~this.$.Name~}}
+                                  {{/each~}}
+                                  {{/each}})</td>
                                 <td data-label="Depiction" class="Depiction">
                                   <canvas id="{{this.$.Name}}_molecules_canvas" class="molecule_canvas" width="" height=""></canvas>
                                 </td>
@@ -638,7 +658,18 @@
                                 <td data-label="Domain" class="Domain">{{this.$.ObservableType}}</td>
                                 {{#each this.SpeciesPattern}}
                                 {{#each this.MolecularTypePattern}}
-                                <td data-label="MolecularType" class="MolecularType">{{#each this.MolecularType}}{{this.$.Name}}{{/each}}()</td>
+                                <td data-label="MolecularType" class="MolecularType">
+                                  {{~#each this.MolecularType~}}
+                                  {{this.$.Name~}}(
+                                  {{~/each~}}
+                                  {{#each this.ComponentPattern~}}
+                                  {{this.$.MolecularComponent~}}
+                                  {{#this.$.ComponentStatePattern~}}~
+                                  {{~this~}}
+                                  {{/this.$.ComponentStatePattern~}}!
+                                  {{~this.$.BondType~}},
+                                  {{~/each~}})
+                                </td>
                                 {{/each}}
                                 {{/each}}
                                 <td data-label="SequenceType" class="SequenceType">{{this.$.Sequence}}</td>
@@ -1286,7 +1317,7 @@
             dx = dx - siteLength + longestState - 2 * siteRadius;
           }
           //drawing sites
-          siteLength = 4.2 * siteNames[i].length;
+          siteLength = 4.9 * siteNames[i].length;
           this.drawRoundRect(canvasID, x + dx - radius / 2, y + dy - radius / 2, siteRadius, siteLength, siteNames[i].rgb());
           //drawing site names
           ctx.fillStyle = '#000000';
@@ -1338,8 +1369,8 @@
         }
         //return total [length, height] to compare to default dimensions
         var dims = []
-        if (sx) {
-          dims.push(sx);
+        if (this.sites.length > 0) {
+          dims.push(x + dx - radius / 2 + siteLength);
         } else {
           dims.push(dx);
         }
@@ -1450,7 +1481,8 @@
             }
             ctx.beginPath();
             ctx.moveTo(pairs[i][0][0], pairs[i][0][1]);
-            ctx.fillText(pairs[i][2], pairs[i][0][0] - 7, pairs[i][0][1] + 8.5);
+            //functioning code for bond labels below, omitted for style
+            //ctx.fillText(pairs[i][2], pairs[i][0][0] - 7, pairs[i][0][1] + 8.5);
             ctx.lineTo(pairs[i][0][0], pairs[i][0][1] + 5 * i + 5);
             ctx.lineTo(pairs[i][1][0], pairs[i][0][1] + 5 * i + 5);
             ctx.lineTo(pairs[i][1][0], pairs[i][1][1]);
@@ -1521,7 +1553,7 @@
 
       var m = new Molecule(bioNetGen);
       dims = m.drawComplex(HTMLiD, 0, 0);
-      dims[0] += 5;
+      dims[0] += 60;
       dims[1] += 5;
       canvasHTML = canvasHTML.replace('width=""', 'width="' + dims[0] + '"');
       canvasHTML = canvasHTML.replace('height=""', 'height="' + dims[1] + '"');
@@ -1552,6 +1584,7 @@
       while (bioNetGen.includes(',)')) {
         bioNetGen = bioNetGen.replace(',)', ')');
       }
+      observablesTable.rows.item(y).cells.item(3).innerHTML = bioNetGen;
 
       var g = new Graphic(bioNetGen);
       dims = g.draw(HTMLiD, 0, 0);
