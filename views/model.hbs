@@ -668,7 +668,8 @@
                                   {{~this~}}
                                   {{/this.$.ComponentStatePattern~}}!
                                   {{~this.$.BondType~}},
-                                  {{~/each~}})
+                                  {{~/each~}}).
+                                  {{~null~}}
                                 </td>
                                 {{/each}}
                                 {{/each}}
@@ -1340,7 +1341,7 @@
             var sx = x + dx - siteRadius + 2;
             var sy = y + dy + u * 13 + siteRadius;
             //fix lengths
-            stateLength = this.sites[i].states[u].length * 10;
+            stateLength = this.sites[i].states[u].length * 9;
             if (stateLength == 10) {
               stateLength = 15;
             }
@@ -1364,16 +1365,21 @@
             ctx.closePath();
             //naming states
             ctx.fillStyle = '#000000';
-            ctx.fillText(this.sites[i].states[u], sx + 3, sy + 11);
+            ctx.fillText(this.sites[i].states[u], sx + 1.5, sy + 10.5);
           }
         }
         //return total [length, height] to compare to default dimensions
         var dims = []
-        if (this.sites.length > 0) {
-          dims.push(x + dx - radius / 2 + siteLength);
-        } else {
-          dims.push(dx);
+        //use either end of site, state, or molecule for x component
+        var possibleLengths = [x + dx - radius / 2 + siteLength, dx, sx + stateLength];
+        for (var i = 0; i < 3; i++) {
+          if (isNaN(possibleLengths[i])) {
+            possibleLengths[i] = 0;
+          }
         }
+        dims.push(possibleLengths.reduce(function (a, b) {
+          return (Math.max(a, b));
+        }));
         if (hasStates) {
           dims.push(tallestState);
         } else {
@@ -1553,7 +1559,7 @@
 
       var m = new Molecule(bioNetGen);
       dims = m.drawComplex(HTMLiD, 0, 0);
-      dims[0] += 60;
+      dims[0] += 5;
       dims[1] += 5;
       canvasHTML = canvasHTML.replace('width=""', 'width="' + dims[0] + '"');
       canvasHTML = canvasHTML.replace('height=""', 'height="' + dims[1] + '"');
