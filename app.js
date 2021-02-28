@@ -133,17 +133,21 @@ app.get("/curatedList/search", async (req, res) => {
 // main Dashboard for dynamic models selected from curated list page
 app.get("/curatedList/model/:name", (req, res) => {
   // var info = "null";
+  const api_url =
+    'https://vcellapi-beta.cam.uchc.edu:8080/biomodel/' + req.params.name + '/biomodel.vcml';
   var parser = new xml2js.Parser();
-  fs.readFile("./files/" + req.params.name + ".vcml", (err, data) => {
-    parser.parseString(data, (err, result) => {
-      data = result;
-      res.render("model", {
-        title: "ModelBricks - Model Page",
-        data,
+  fetch(api_url).then(function(response) {
+    return response.text().then(function(text) {
+      parser.parseString(text, (err, result) => {
+        data = result;
+        res.render("model", {
+          title: "ModelBricks - Model Page",
+          data,
+        });
       });
     });
   });
-  var parser = new xml2js.Parser();
+  /*var parser = new xml2js.Parser();
   fs.readFile(
     "./files/" + req.params.name + "_annotations.xml",
     (err, data) => {
@@ -153,7 +157,7 @@ app.get("/curatedList/model/:name", (req, res) => {
         fs.writeFileSync("./public/json/" + "annotations" + ".json", jsonData);
       });
     }
-  );
+  );*/
 });
 
 // dynamic printable pages, option available on dashboard page
