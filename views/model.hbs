@@ -565,6 +565,16 @@
 
                     </div>
                     <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
+                    {{#each this.annotations}}
+                    <script>
+                    //where we will add annotations
+                    try {
+                      var element = document.getElementById('moleculeTA-{{this.label}}');
+                      var node = document.createTextNode("{{this.freetext}}");
+                      element.appendChild(node);
+                    } catch {}
+                    </script>
+                    {{/each}}
                 </div>
                 {{/each}}
                 {{/each}}

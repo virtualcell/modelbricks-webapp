@@ -3,7 +3,6 @@ console.log("Hi from JSON.js");
 fetch("/json/annotations.json")
   .then((response) => response.json())
   .then((json) => {
-    console.log(json);
 
     // getting global publications and UID's
     for (i in json.BioModel.url) {

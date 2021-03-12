@@ -8,6 +8,7 @@ const xml2js = require("xml2js");
 // const util = require("util");
 const fetch = require("node-fetch");
 // const htmlparser2 = require("htmlparser2");
+const aPrs = require("./helpers/annotation-parser.js");
 const PORT = process.env.PORT || 4002;
 
 var indexRouter = require("./routes/index");
@@ -140,6 +141,7 @@ app.get("/curatedList/model/:name", (req, res) => {
     return response.text().then(function(text) {
       parser.parseString(text, (err, result) => {
         data = result;
+        new aPrs.AnnParser(data);
         res.render("model", {
           title: "ModelBricks - Model Page",
           data,
