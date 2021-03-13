@@ -141,7 +141,7 @@ app.get("/curatedList/model/:name", (req, res) => {
     return response.text().then(function(text) {
       parser.parseString(text, (err, result) => {
         data = result;
-        new aPrs.AnnParser(data);
+        //new aPrs.AnnParser(data);
         res.render("model", {
           title: "ModelBricks - Model Page",
           data,
