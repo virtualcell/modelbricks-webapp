@@ -141,7 +141,8 @@ app.get("/curatedList/model/:name", (req, res) => {
     return response.text().then(function(text) {
       parser.parseString(text, (err, result) => {
         data = result;
-        //new aPrs.AnnParser(data);
+        let annoData = new aPrs.AnnParser(data).getString();
+        fs.writeFileSync("./public/json/" + "annotations" + ".json", annoData);
         res.render("model", {
           title: "ModelBricks - Model Page",
           data,
@@ -149,8 +150,7 @@ app.get("/curatedList/model/:name", (req, res) => {
       });
     });
   });
-  /*var parser = new xml2js.Parser();
-  fs.readFile(
+  /*fs.readFile(
     "./files/" + req.params.name + "_annotations.xml",
     (err, data) => {
       parser.parseString(data, (err, result) => {

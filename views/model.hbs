@@ -567,12 +567,13 @@
                     <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                     {{#each this.annotations}}
                     <script>
-                    //where we will add annotations
+                    /*
+                    //old method for adding annotations
                     try {
                       var element = document.getElementById('moleculeTA-{{this.label}}');
                       var node = document.createTextNode("{{this.freetext}}");
                       element.appendChild(node);
-                    } catch {}
+                    } catch {}*/
                     </script>
                     {{/each}}
                 </div>

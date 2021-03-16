@@ -1,9 +1,37 @@
+/*The Plan-
+1. use AnnParser object to extract and format annoation data from vcml Object
+2. use object augmentation to add reformatted data to correct section of vcml
+3. pass object onto model.hbs like is already being done
+3. change model.hbs to use this instead of main.js for annotations
+*/
 const ss = require("./split-string.js");
 
+//classes to correctly format annotaiton data
+class Name {
+  constructor(name) {
+    this.name = name
+  }
+}
+
 class VCMLElement {
-  constructor(label, freetext) {
-    this.label = label;
-    this.freetext = freetext;
+  constructor(name, freetext) {
+    this.$ = new Name(name);
+    this._ = freetext;
+  }
+}
+
+class ModelWrapper {
+  constructor(name, text) {
+    this.$ = new Name(name);
+    this.math = [];
+    this.text = text;
+    this.url = [];
+  }
+}
+
+class BioModel {
+  constructor(biomodel) {
+    this.BioModel = biomodel
   }
 }
 
@@ -16,7 +44,7 @@ class AnnParser {
   stripHTML(html) {
     let end = html.indexOf('</p>');
     let temp = end;
-    while (html[temp] != '>') {
+    while (html[temp] != '>' && temp >= 0) {
       temp --;
     }
     return (html.slice(temp + 1, end));
@@ -46,28 +74,28 @@ class AnnParser {
       let identifier = temp[1].slice(0, temp[1].length - 1);
       //molecules
       if (section == 'MolecularType') {
-        this.molecules[vcid] = new VCMLElement(identifier, textAnno.trim());
+        this.molecules[vcid] = new VCMLElement(vcid, this.txtAnnos[i].freetext[0]);
       }
     }
 
+    //addition for the old method
     //add the annotations into vcml object
     let element = this.vcmlObj.vcml.BioModel[0].Model[0].RbmModelContainer[0].MolecularTypeList[0].MolecularType;
     let values = Object.values(this.molecules);
     for (let i = 0; i < element.length; i++) {
       element[i].annotations = [values[i]];
     }
+    //addition for the new method
+    this.JSONwrapper = new ModelWrapper('PLACEHOLDER', values);
 
-    console.log(this.vcmlObj.vcml.BioModel[0].Model[0].RbmModelContainer[0].MolecularTypeList[0].MolecularType[0].annotations);
+    //console.log(this.vcmlObj.vcml.BioModel[0].Model[0].RbmModelContainer[0].MolecularTypeList[0].MolecularType[0].annotations);
+  }
+
+  getString() {
+    return (JSON.stringify(new BioModel(this.JSONwrapper)));
   }
 }
 
 
 exports.AnnParser = AnnParser;
 exports.VCMLElement = VCMLElement;
-
-/*The Plan-
-1. use AnnParser object to extract and format annoation data from vcml Object
-2. use object augmentation to add reformatted data to correct section of vcml
-3. pass object onto model.hbs like is already being done
-3. change model.hbs to use this instead of main.js for annotations
-*/
