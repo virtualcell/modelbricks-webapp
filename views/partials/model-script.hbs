@@ -422,6 +422,7 @@ for (y = 1; y < rowsLen; y++) {
     bioNetGen = bioNetGen.replace(',)', ')');
   }
 
+  moleculesTable.rows.item(y).cells.item(1).innerHTML = bioNetGen;
   var m = new Molecule(bioNetGen);
   dims = m.drawComplex(HTMLiD, 0, 0);
   dims[0] += 5;

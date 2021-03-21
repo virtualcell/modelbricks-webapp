@@ -20,12 +20,19 @@ class VCMLElement {
   }
 }
 
+class Url {
+  constructor(name, link = '') {
+    this.$ = new Name(name);
+    this._ = link;
+  }
+}
+
 class ModelWrapper {
-  constructor(name, text) {
+  constructor(name, text, urls) {
     this.$ = new Name(name);
     this.math = [];
     this.text = text;
-    this.url = [];
+    this.url = urls;
   }
 }
 
@@ -36,8 +43,7 @@ class BioModel {
 }
 
 //todo:
-//text annos are assigned randomly, but they should be assigned to their element
-//add capacity to link text anno and UIDs
+//add capacity for more than 1 anno and uri
 class AnnParser {
 
   //annotations are given as html, so they must be stripped
@@ -64,18 +70,29 @@ class AnnParser {
     this.obsers = new Object();
     this.diagram = new Object();
 
+    //retrieve uri bindings
+    let urls = new Object;
+    //get uri binding
+    for (let i = 0; i < this.uriBinds.length; i++) {
+      let thisBind = this.uriBinds[i].$;
+      urls[thisBind.uri] = new Url(thisBind.vcid);
+    }
+    let bindings = this.vcmlObj.vcml.BioModel[0].vcmetadata[0]['rdf:RDF'][0]['rdf:Description'];
+    for (let i = 0; i < bindings.length; i ++) {
+      let binding = bindings[i]['$']['rdf:about'];
+      let thisURI = bindings[i]['bqbiol:isVersionOf'][0]['rdf:Bag'][0]['rdf:_1'][0]['rdf:Description'][0]['$']['rdf:about'];
+      console.log(thisURI);
+      urls[binding]._ = thisURI;
+    }
+
     //organize annotaitons into temporary objects
     for (let i = 0; i < this.txtAnnos.length; i++) {
       let vcid = this.txtAnnos[i].$.vcid;
-      //console.log(this.txtAnnos[i].freetext[0]);
       let textAnno = this.stripHTML(this.txtAnnos[i].freetext[0]);
       let temp = ss(vcid, '(');
       let section = temp[0];
       let identifier = temp[1].slice(0, temp[1].length - 1);
-      //molecules
-      if (section == 'MolecularType') {
-        this.molecules[vcid] = new VCMLElement(vcid, this.txtAnnos[i].freetext[0]);
-      }
+      this.molecules[vcid] = new VCMLElement(vcid, this.txtAnnos[i].freetext[0]);
     }
 
     //addition for the old method
@@ -86,9 +103,7 @@ class AnnParser {
       element[i].annotations = [values[i]];
     }
     //addition for the new method
-    this.JSONwrapper = new ModelWrapper('PLACEHOLDER', values);
-
-    //console.log(this.vcmlObj.vcml.BioModel[0].Model[0].RbmModelContainer[0].MolecularTypeList[0].MolecularType[0].annotations);
+    this.JSONwrapper = new ModelWrapper('PLACEHOLDER', values, urls);
   }
 
   getString() {
