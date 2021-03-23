@@ -3,7 +3,7 @@ console.log("Hi from JSON.js");
 fetch("/json/annotations.json")
   .then((response) => response.json())
   .then((json) => {
-    console.log('json annos:', json.BioModel.url);
+    console.log('json annos:', json.BioModel);
     return (json)})
   .then((json) => {
 

@@ -1,8 +1,6 @@
 /*The Plan-
 1. use AnnParser object to extract and format annoation data from vcml Object
-2. use object augmentation to add reformatted data to correct section of vcml
-3. pass object onto model.hbs like is already being done
-3. change model.hbs to use this instead of main.js for annotations
+2. pass vcml object into main.js through json file
 */
 
 //classes to correctly format annotaiton data
@@ -23,6 +21,7 @@ class Url {
   constructor(name, link = '') {
     this.$ = new Name(name);
     this._ = link;
+    this.vcid = name;
   }
 }
 
@@ -45,6 +44,8 @@ class BioModel {
 //add capacity for more than 1 anno and urls
 //fix functionality for complex models like "Initial_events_EGFR_signaling"
 //remove try catch block
+//some rdf bindings don't map to anything, I need to find out why
+//stop using annotations.json, use different files for each model
 
 //class to process annotations and urls from vcml
 class AnnParser {
@@ -55,31 +56,56 @@ class AnnParser {
     this.txtAnnos = this.vcmlObj.vcml.BioModel[0].vcmetadata[0].nonrdfAnnotationList[0].nonrdfAnnotation;
     this.annotations = new Object();
 
-    try {
-      //retrieve uri bindings
-      let urls = new Object;
-      for (let i = 0; i < this.uriBinds.length; i++) {
-        let thisBind = this.uriBinds[i].$;
-        urls[thisBind.uri] = new Url(thisBind.vcid);
-      }
-      let bindings = this.vcmlObj.vcml.BioModel[0].vcmetadata[0]['rdf:RDF'][0]['rdf:Description'];
-      //compare binding in "uriBinding" to that in "rdf" and find matches
-      for (let i = 0; i < bindings.length; i ++) {
-        let binding = bindings[i]['$']['rdf:about'];
-        let thisURI = bindings[i]['bqbiol:isVersionOf'][0]['rdf:Bag'][0]['rdf:_1'][0]['rdf:Description'][0]['$']['rdf:about'];
-        urls[binding]._ = thisURI;
-      }
+    //retrieve uri bindings
+    let urls = new Object;
+    for (let i = 0; i < this.uriBinds.length; i++) {
+      let thisBind = this.uriBinds[i].$;
+      urls[thisBind.uri] = new Url(thisBind.vcid);
+    }
+    let bindings = this.vcmlObj.vcml.BioModel[0].vcmetadata[0]['rdf:RDF'][0]['rdf:Description'];
 
-      //get vcids
-      for (let i = 0; i < this.txtAnnos.length; i++) {
-        let vcid = this.txtAnnos[i].$.vcid;
+    //compare binding in "uriBinding" to that in "rdf" and find matches
+    for (let i = 0; i < bindings.length; i ++) {
+      let binding = bindings[i]['$']['rdf:about'];
+      let thisRDF = bindings[i];
+      //get all the keys, which are <rdf:qualifier> elements in vcml
+      let RDFkeys = Object.keys(thisRDF);
+
+      for (let i = 0; i < RDFkeys.length; i++) {
+        //some rdf bindings don't map to anything, I need to find out why
+        if (binding in urls) {
+          let URLObj = urls[binding];
+          let vcid = URLObj.vcid;
+
+          //make sure we get keys we want
+          if (RDFkeys[i].includes('bqbiol') || RDFkeys[i].includes('bqmodel')) {
+            let thisURI = thisRDF[RDFkeys[i]][0]['rdf:Bag'][0]['rdf:_1'][0]['rdf:Description'][0]['$']['rdf:about'];
+            if (i == 0) {
+              //add the first key to the existing url Object
+              URLObj._ = thisURI;
+            } else {
+              //push all the next keys as new url objects onto urls
+              let key = '$' + i.toString() + vcid;
+              urls[key] = new Url(vcid);
+              urls[key]._ = thisURI;
+            }
+          }
+        }
+      }
+    }
+
+    //get vcids
+    for (let i = 0; i < this.txtAnnos.length; i++) {
+      let vcid = this.txtAnnos[i].$.vcid;
+      console.log(i, this.txtAnnos[i]);
+      try {
         this.annotations[vcid] = new VCMLElement(vcid, this.txtAnnos[i].freetext[0]);
-      }
+      } catch{}
+    }
 
-      //organize data into JSON file that will be used by main.js
-      let values = Object.values(this.annotations);
-      this.JSONwrapper = new ModelWrapper('PLACEHOLDER', values, urls);
-    } catch(err) {}
+    //organize data into JSON file that will be used by main.js
+    let values = Object.values(this.annotations);
+    this.JSONwrapper = new ModelWrapper('PLACEHOLDER', values, urls);
   }
 
   getString() {
