@@ -31,6 +31,7 @@ class ModelWrapper {
     this.math = [];
     this.text = text;
     this.url = urls;
+    this.qualifier = '';
   }
 }
 
@@ -83,11 +84,17 @@ class AnnParser {
             if (i == 0) {
               //add the first key to the existing url Object
               URLObj._ = thisURI;
+              URLObj.qualifier = '(' + RDFkeys[i].replace(':', ') ');
+              URLObj.qualifier = URLObj.qualifier.replace('bqbiol', 'bio');
+              URLObj.qualifier = URLObj.qualifier.replace('bqmodel', 'model');
             } else {
               //push all the next keys as new url objects onto urls
               let key = '$' + i.toString() + vcid;
               urls[key] = new Url(vcid);
               urls[key]._ = thisURI;
+              urls[key].qualifier = '(' + RDFkeys[i].replace(':', ') ');
+              urls[key].qualifier = urls[key].qualifier.replace('bqbiol', 'bio');
+              urls[key].qualifier = urls[key].qualifier.replace('bqmodel', 'model');
             }
           }
         }
@@ -97,7 +104,6 @@ class AnnParser {
     //get vcids
     for (let i = 0; i < this.txtAnnos.length; i++) {
       let vcid = this.txtAnnos[i].$.vcid;
-      console.log(i, this.txtAnnos[i]);
       try {
         this.annotations[vcid] = new VCMLElement(vcid, this.txtAnnos[i].freetext[0]);
       } catch{}
