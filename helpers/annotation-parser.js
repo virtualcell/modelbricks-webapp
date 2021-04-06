@@ -42,10 +42,9 @@ class BioModel {
 }
 
 //todo:
-//add capacity for more than 1 anno and urls
-//fix functionality for complex models like "Initial_events_EGFR_signaling"
-//remove try catch block
 //some rdf bindings don't map to anything, I need to find out why
+//multiple links mapped to one element still arent processed correctly
+//^ because im only looking at multiple uris in a bag
 //stop using annotations.json, use different files for each model
 
 //class to process annotations and urls from vcml
@@ -80,26 +79,33 @@ class AnnParser {
 
           //make sure we get keys we want
           if (RDFkeys[i].includes('bqbiol') || RDFkeys[i].includes('bqmodel')) {
-            let thisURI = thisRDF[RDFkeys[i]][0]['rdf:Bag'][0]['rdf:_1'][0]['rdf:Description'][0]['$']['rdf:about'];
-            if (i == 0) {
-              //add the first key to the existing url Object
-              URLObj._ = thisURI;
-              URLObj.qualifier = '(' + RDFkeys[i].replace(':', ') ');
-              URLObj.qualifier = URLObj.qualifier.replace('bqbiol', 'bio');
-              URLObj.qualifier = URLObj.qualifier.replace('bqmodel', 'model');
-            } else {
-              //push all the next keys as new url objects onto urls
-              let key = '$' + i.toString() + vcid;
-              urls[key] = new Url(vcid);
-              urls[key]._ = thisURI;
-              urls[key].qualifier = '(' + RDFkeys[i].replace(':', ') ');
-              urls[key].qualifier = urls[key].qualifier.replace('bqbiol', 'bio');
-              urls[key].qualifier = urls[key].qualifier.replace('bqmodel', 'model');
+
+            //each key mapping can have >1 rdf:bag
+            let keyMap = thisRDF[RDFkeys[i]];
+            for (let j = 0; j < keyMap.length; j++) {
+
+              //each rdf:Bag obj can have >1 key
+              let rdfBag = keyMap[j]['rdf:Bag'][0];
+              let bagKeys = Object.keys(rdfBag);
+              for (let u = 0; u < bagKeys.length; u++) {
+                if (bagKeys[u].includes('rdf:')) {
+                  let thisURI = rdfBag[bagKeys[u]][0]['rdf:Description'][0]['$']['rdf:about'];
+
+                  //push all the next keys as new url objects onto urls
+                  let key = '$' + j.toString() + u.toString() + i.toString() + vcid;
+                  urls[key] = new Url(vcid);
+                  urls[key]._ = thisURI;
+                  urls[key].qualifier = '(' + RDFkeys[i].replace(':', ') ');
+                  urls[key].qualifier = urls[key].qualifier.replace('bqbiol', 'bio');
+                  urls[key].qualifier = urls[key].qualifier.replace('bqmodel', 'model');
+                }
+              }
             }
           }
         }
       }
     }
+    console.log(urls);
 
     //get vcids
     for (let i = 0; i < this.txtAnnos.length; i++) {
@@ -116,6 +122,15 @@ class AnnParser {
 
   getString() {
     return (JSON.stringify(new BioModel(this.JSONwrapper)));
+  }
+
+  getName() {
+    //get name of model
+    let temp = this.vcmlObj.vcml.BioModel[0].$.Name;
+    let tempIndex = temp.indexOf('::');
+    this.name = temp.slice(tempIndex + 2, temp.length);
+
+    return (this.name);
   }
 }
 

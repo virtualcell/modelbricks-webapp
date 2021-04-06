@@ -119,7 +119,7 @@
                 {{!-- popup --}}
             </div>
 
-            {{!-- Rections Table  --}}
+            {{!-- Reactions Table  --}}
             <div id="reactions" class="optionData">
                 <h2 class="header">Reactions</h2>
                 <div class="modelTable">
@@ -182,7 +182,7 @@
                                     {{this.$.LocalizedCompoundRef}}
                                     {{/each}}
                                 </td>
-                                <td data-label="Name" class="Name"><a id={{value.$.Name}} onClick="reply_click(this.id)"
+                                <td data-label="Name" class="Name"><a id="{{value.$.Name}}" onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{value.$.Name}}</a></td>
                                 <td data-label="Structure" class="Structure">{{value.$.Structure}}</td>
                                 {{#each value.Kinetics}}
@@ -1142,8 +1142,7 @@
 </div>
 
 
-
-<script>{{> model-script}}</script>
+<script>{{> model-graphics}}</script>
 
 <script src="/js/main.js"></script>
 

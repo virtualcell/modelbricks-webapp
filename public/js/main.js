@@ -1,10 +1,5 @@
-console.log("Hi from JSON.js");
-
 fetch("/json/annotations.json")
   .then((response) => response.json())
-  .then((json) => {
-    console.log('json annos:', json.BioModel);
-    return (json)})
   .then((json) => {
 
     // getting global publications and UID's

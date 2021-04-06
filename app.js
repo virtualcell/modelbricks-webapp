@@ -141,7 +141,9 @@ app.get("/curatedList/model/:name", (req, res) => {
     return response.text().then(function(text) {
       parser.parseString(text, (err, result) => {
         data = result;
-        let annoData = new aPrs.AnnParser(data).getString();
+        let annoObj = new aPrs.AnnParser(data);
+        let annoData = annoObj.getString();
+        let modelName = annoObj.getName();
         fs.writeFileSync("./public/json/" + "annotations" + ".json", annoData);
         res.render("model", {
           title: "ModelBricks - Model Page",
