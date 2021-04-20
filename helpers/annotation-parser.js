@@ -92,7 +92,7 @@ class AnnParser {
           let vcid = URLObj.vcid;
 
           //make sure we get keys we want
-          if (RDFkeys[i].includes('bqbiol') || RDFkeys[i].includes('bqmodel')) {
+          if (RDFkeys[i].includes('bqbiol') || RDFkeys[i].includes('bqmodel') || RDFkeys[i].includes('CopasiMT')) {
 
             //each key mapping can have >1 rdf:bag
             let keyMap = thisRDF[RDFkeys[i]];
