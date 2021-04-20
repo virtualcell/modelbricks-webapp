@@ -47,6 +47,12 @@ class BioModel {
 //^ because im only looking at multiple uris in a bag
 //stop using annotations.json, use different files for each model
 
+//how to fix:
+//the names of the uri bindings being passed to main.js are wrong
+//look into localizedcompound and find the correct mapping for the names
+//there is a seperate issue for some reactions, maybe the level of some elements
+//is different
+
 //class to process annotations and urls from vcml
 class AnnParser {
 
@@ -54,7 +60,15 @@ class AnnParser {
     this.vcmlObj = vcml;
     this.uriBinds = this.vcmlObj.vcml.BioModel[0].vcmetadata[0].uriBindingList[0].uriBinding;
     this.txtAnnos = this.vcmlObj.vcml.BioModel[0].vcmetadata[0].nonrdfAnnotationList[0].nonrdfAnnotation;
+    //lczCpds short for LocalizedCompound
+    this.lczCpds = this.vcmlObj.vcml.BioModel[0].Model[0].LocalizedCompound;
     this.annotations = new Object();
+
+    //create compound ref to true name mapping for use later
+    let compoundRefMap = new Object();
+    for (let i = 0; i < this.lczCpds.length; i++) {
+      compoundRefMap[this.lczCpds[i].$.CompoundRef] = this.lczCpds[i].$.Name;
+    }
 
     //retrieve uri bindings
     let urls = new Object;
@@ -92,6 +106,15 @@ class AnnParser {
                   let thisURI = rdfBag[bagKeys[u]][0]['rdf:Description'][0]['$']['rdf:about'];
 
                   //push all the next keys as new url objects onto urls
+                  //remove unneeded characters from vcid
+                  let pIndex = vcid.indexOf('(');
+                  let vcidType = vcid.slice(0, pIndex);
+                  let strippedVcid = vcid.slice(pIndex + 1, vcid.length - 1);
+                  //see if vcid is actually compound ref
+                  if (compoundRefMap[strippedVcid] != undefined) {
+                    vcid = vcidType + '(' + compoundRefMap[strippedVcid] + ')';
+                  }
+                  //key must be unique
                   let key = '$' + j.toString() + u.toString() + i.toString() + vcid;
                   urls[key] = new Url(vcid);
                   urls[key]._ = thisURI;
@@ -105,7 +128,6 @@ class AnnParser {
         }
       }
     }
-    console.log(urls);
 
     //get vcids
     for (let i = 0; i < this.txtAnnos.length; i++) {
