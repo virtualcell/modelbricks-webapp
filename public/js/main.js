@@ -239,6 +239,16 @@ fetch("/json/annotations.json")
             </p>
             `;
           }
+          else {
+            var indexToSlice = link.lastIndexOf("SBO");
+            var length = link.length;
+            var linkId = link.slice(indexToSlice, length);
+            annotationDiv.innerHTML += `
+            <p>${qual} <a href="${link}">${linkId}</a>
+
+            </p>
+            `;
+          }
         }
       }
 

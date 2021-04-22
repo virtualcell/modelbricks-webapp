@@ -70,6 +70,7 @@ class AnnParser {
       compoundRefMap[this.lczCpds[i].$.CompoundRef] = this.lczCpds[i].$.Name;
     }
 
+    //---uri bindings---
     //retrieve uri bindings
     let urls = new Object;
     for (let i = 0; i < this.uriBinds.length; i++) {
@@ -86,7 +87,7 @@ class AnnParser {
       let RDFkeys = Object.keys(thisRDF);
 
       for (let i = 0; i < RDFkeys.length; i++) {
-        //some rdf bindings don't map to anything, I need to find out why
+
         if (binding in urls) {
           let URLObj = urls[binding];
           let vcid = URLObj.vcid;
@@ -129,9 +130,26 @@ class AnnParser {
       }
     }
 
+    //clean empty url instaces from object
+    let urlKeys = Object.keys(urls);
+    for (let i = 0; i < urlKeys.length; i++) {
+      if (urls[urlKeys[i]]._ == '') {
+        delete urls[urlKeys[i]];
+      }
+    }
+
+    //---text annos---
     //get vcids
     for (let i = 0; i < this.txtAnnos.length; i++) {
       let vcid = this.txtAnnos[i].$.vcid;
+      //remove unneeded characters from vcid
+      let pIndex = vcid.indexOf('(');
+      let vcidType = vcid.slice(0, pIndex);
+      let strippedVcid = vcid.slice(pIndex + 1, vcid.length - 1);
+      //see if vcid is actually compound ref
+      if (compoundRefMap[strippedVcid] != undefined) {
+        vcid = vcidType + '(' + compoundRefMap[strippedVcid] + ')';
+      }
       try {
         this.annotations[vcid] = new VCMLElement(vcid, this.txtAnnos[i].freetext[0]);
       } catch{}
