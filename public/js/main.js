@@ -7,8 +7,26 @@ fetch("/json/annotations.json")
 
     // getting global publications and UID's
     for (i in json.BioModel.url) {
+
+      //define link, name, and qual
       var link = json.BioModel.url[i]._;
+      //fix formatting for links
+      link = link.replace('obo.go:', 'go/');
+      link = link.replace('sbo:', 'sbo/');
+      link = link.replace('%3A', ':');
+      let prefixes = ['miriam:obo.go', 'miriam'];
+      for (p in prefixes) {
+        let pre = prefixes[p];
+        if (link.includes(pre)) {
+          var indexToSlice = link.indexOf(pre) + pre.length + 1;
+          //console.log(indexToSlice, pre, link);
+          link = 'http://identifiers.org/' + link.slice(indexToSlice, link.length);
+        }
+      }
+
       var name = json.BioModel.url[i].$.name;
+      name = name.replace('%3', ':');
+
       var qual = json.BioModel.url[i].qualifier;
 
       // global publications
@@ -246,14 +264,6 @@ fetch("/json/annotations.json")
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
             <p>${qual} <a href="${link}">${linkId}</a>
-
-            </p>
-            `;
-          }
-          //catch all
-          else {
-            annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Link</a>
 
             </p>
             `;
