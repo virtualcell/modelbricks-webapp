@@ -55,6 +55,7 @@ fetch("/json/annotations.json")
           //add annotation
           indexToSlice = link.lastIndexOf("identifiers.org/") + 16;
           let linkId = link.slice(indexToSlice, link.length);
+          linkId = linkId.replace('Chebi:', '');
           if (element != null) {
             element.innerHTML += `
         <p>${qual} <a href="${link}">Chebi:${linkId}</a>
