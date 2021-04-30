@@ -143,7 +143,7 @@ app.get("/curatedList/model/:name", (req, res) => {
         data = result;
         let annoObj = new aPrs.AnnParser(data);
         let annoData = annoObj.getString();
-        let modelName = annoObj.getName();
+        console.log(annoObj.getVersionId());
         fs.writeFileSync("./public/json/" + "annotations" + ".json", annoData);
         res.render("model", {
           title: "ModelBricks - Model Page",
