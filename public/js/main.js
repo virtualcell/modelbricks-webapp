@@ -19,7 +19,6 @@ fetch("/json/annotations.json")
         let pre = prefixes[p];
         if (link.includes(pre)) {
           var indexToSlice = link.indexOf(pre) + pre.length + 1;
-          //console.log(indexToSlice, pre, link);
           link = 'http://identifiers.org/' + link.slice(indexToSlice, link.length);
         }
       }
@@ -29,7 +28,45 @@ fetch("/json/annotations.json")
 
       var qual = json.BioModel.url[i].qualifier;
 
-      // global publications
+      //map vcml name to html element name
+      let nameMap = new Object();
+      nameMap["BioModel"] = 'globalPublications';
+      nameMap["ReactionStep"] = "reactionUID-!";
+      nameMap["Structure"] = "structureUID-!";
+      nameMap["MolecularType"] = "moleculesUID-!";
+      nameMap["Species"] = "speciesUID-!";
+      nameMap["RbmObservable"] = "observableUID-!";
+      nameMap["ModelParameter"] = "parameterUID-!";
+
+      let vcmlNames = Object.keys(nameMap);
+
+      for (i in vcmlNames) {
+        vcmlName = vcmlNames[i];
+        if (name.includes(vcmlName)) {
+
+          //get the html element
+          let indexToSlice = name.indexOf("(") + 1;
+          let length = name.indexOf(")");
+          let idenitifier = name.slice(indexToSlice, length);
+          let elementName = nameMap[vcmlName];
+          elementName = elementName.replace('!', idenitifier);
+          let element = document.getElementById(elementName);
+
+          //add annotation
+          indexToSlice = link.lastIndexOf("identifiers.org/") + 16;
+          let linkId = link.slice(indexToSlice, link.length);
+          if (element != null) {
+            element.innerHTML += `
+        <p>${qual} <a href="${link}">Chebi:${linkId}</a>
+        </p>
+        `;
+          }
+
+          break;
+        }
+      }
+
+      /*// global publications
       let globalPublications = document.getElementById("globalPublications");
       if (name.includes("BioModel")) {
         if (globalPublications != null) {
@@ -869,7 +906,7 @@ fetch("/json/annotations.json")
             `;
           }
         }
-      }
+      }*/
     }
 
     // UID COMPLETED ---------------------->
@@ -999,7 +1036,7 @@ fetch("/json/annotations.json")
     }
   });
 
-// downloads section
+/*// downloads section
 console.log(selectedModel.innerHTML);
 var selectedModelName = selectedModel.innerHTML;
 console.log(selectedModelName);
@@ -1124,4 +1161,4 @@ fetch("/downloads/" + selectedModelName + "_Deterministic.xml").then(
       throw new Error("Not 2xx response");
     }
   }
-);
+);*/
