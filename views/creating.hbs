@@ -1,0 +1,144 @@
+<div class="infoPages">
+    <h2 class="pageHeading">ModelBricks Construction</h2>
+    
+       
+ <div class="pageContent">
+ 
+ <h3 class="pageSubheading">The original model</h3>
+ 
+ The creation of ModelBricks begins with a full model. As an example, we can take this model of a Rho GTPase cycle, which was published by Ota et al. in 2015 (PMID: <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=25628036">25628036</a>). 
+
+<center>
+  <table>
+    <td align="center" width="500">
+      <a href="/CM_PM25628036_SBGN.png">
+        <img width="450" style="vertical-align:middle" src="/images/CM_PM25628036_SBGN.png"/>
+      </a>
+    </td>
+    <tr>
+      <td align="center"> 
+        SBGN visualization
+        <br />
+        Figure 1B from publication
+      </td>
+    </tr>
+  </table>
+</center>
+
+In this publication, the authors are investigating possible positive regulation of Rho GTPase activity by RhoGDIs. 
+<ul>
+  <li><b>Rho family GTPases</b>: Act as molecular switches, controlling processes including actin cytoskeletal organization, microtubule dynamics, and vesicle trafficking</li>
+  <li><b>Guanine nucleotide exchange factors</b> (GEFs): Activate small G proteins by promoting the exchange of GDP for GTP</li>
+  <li><b>GTPase activating proteins</b> (GAPs): Inactivate small G proteins by promoting GTP hydrolysis</li>
+  <li><b>GDP-dissociation inhibitors</b> (GDIs): Negative role is to suppress overall Rho activity by inhibiting GEFs, while positive role is to sustain Rho activation by inhibiting GAPs.</li>
+</ul>
+
+The SBML file provided in the publication was first imported into VCell. Simulations were run in VCell and confirmed to replicate those from the publication. As the concentration of intracellular free GDIs increases, Rho activation is prolonged, despite the overall decrease in Rho activity over time.
+
+<center>
+  <table>
+    <td align="center" width="300">
+      <a href="/images/CM_PM25628036_Sim2B.png">
+        <img width="250" style="vertical-align:middle" src="/images/CM_PM25628036_Sim2B.png"/>
+      </a>
+    </td>
+    <td align="center" width="300">
+      <a href="/images/CM_PM25628036_Sim2B_VCell.png">
+        <img width="250" style="vertical-align:middle" src="/images/CM_PM25628036_Sim2B_VCell.png"/>
+      </a>
+    </td>
+    <tr>
+      <td align="center"> 
+        Simulation: Publication
+        <br />
+        Figure 2B
+      </td>
+      <td align="center">
+        VCell: Simulation
+      </td>
+    </tr>
+  </table>
+</center>
+
+<h3 class="pageSubheading">Annotating the model</h3>
+
+<center>
+  <table>
+    <td align="center" width="500">
+      <a href="/images/CM_RhoGTP_VCellDiagram.png">
+        <img width="450" style="vertical-align:middle" src="/images/CM_RhoGTP_VCellDiagram.png"/>
+      </a>
+    </td>
+    <tr>
+      <td align="center"> 
+        VCell reaction diagram
+      </td>
+    </tr>
+  </table>
+</center>
+
+The model was then fully annotated to give the viewer a more thorough understanding of the model. Both textual and database annotations were added. 
+
+<center>
+  <table>
+    <td align="center" width="800">
+      <a href="/images/CM_PM25628036_annotation.png">
+        <img width="750" style="vertical-align:middle" src="/images/CM_PM25628036_annotation.png"/>
+      </a>
+    </td>
+    <tr>
+      <td align="center"> 
+        Annotation of original model in VCell
+      </td>
+    </tr>
+  </table>
+</center>
+
+Species were modified so that they were constructed of individual molecules. By completing this step, each species became much more comprehensive and the constituent parts were clearly displayed. 
+
+<center>
+  <table>
+    <td align="center" width="500">
+      <a href="/images/CM_PM25628036_molecularization.png">
+        <img width="450" style="vertical-align:middle" src="/images/CM_PM25628036_molecularization.png"/>
+      </a>
+    </td>
+    <tr>
+      <td align="center"> 
+        Species composed of individual molecules
+      </td>
+    </tr>
+  </table>
+</center>
+
+<h3 class="pageSubheading">ModelBrick creation</h3>
+
+<center>
+  <table>
+    <td align="center" width="700">
+      <a href="/images/CM_PM25628036_bricks1.png">
+        <img width="650" style="vertical-align:middle" src="/images/CM_PM25628036_bricks1.png"/>
+      </a>
+    </td>
+  </table>
+</center>
+
+The first ModelBrick derived from the full model describes the activation of GEF and the degradation of the activator. The remaining portion of the model is its own ModelBrick, but it was further broken into two additional ModelBricks as well.
+
+<center>
+  <table>
+    <td align="center" width="700">
+      <a href="/images/CM_PM25628036_bricks2.png">
+        <img width="650" style="vertical-align:middle" src="/images/CM_PM25628036_bricks2.png"/>
+      </a>
+    </td>
+  </table>
+</center>
+
+The two additional ModelBricks were created with one of them describing a much simpler Rho GTPase cycle and the other describing complex formation with GDIs and G proteins.
+
+All ModelBricks are independent entities that can be combined to construct full models that are fully annotated and computable. 
+
+</div>
+ 
+</div>

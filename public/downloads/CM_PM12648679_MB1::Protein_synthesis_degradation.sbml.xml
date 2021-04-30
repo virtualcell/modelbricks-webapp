@@ -1,0 +1,302 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model areaUnits="um2" id="CM_PM12648679_MB1__Protein_synthesis_degradation_Linear" lengthUnits="um" metaid="metaid_188716002" name="CM_PM12648679_MB1::Protein_synthesis_degradation_Linear" substanceUnits="molecules" timeUnits="s" volumeUnits="um3">
+    <notes>
+      <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body>
+    <p class="MsoNormal" style="margin-bottom: .0001pt; line-height: normal">
+      <span>
+              <font size="12.0pt" face="Times New Roman,serif" color="black">This 
+      ModelBrick from the article, “<i>Sniffers, buzzers, toggles and 
+      blinkers…</i>” describes protein synthesis and degradation that 
+      yields a linear signal-response curve.</font></span>
+    </p>
+  </body>
+</html>
+    </notes>
+    <annotation>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <rdf:Description rdf:about="http://sourceforge.net/projects/vcell/vcml/cbit.vcell.biomodel.BioModel/metaid_188716002">
+          <bqbiol:hasProperty xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Bag rdf:nodeID="node0">
+              <rdf:_1>
+                <rdf:Description rdf:about="urn:miriam:mamo:MAMO_0000046"/></rdf:_1></rdf:Bag></bqbiol:hasProperty><bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Bag rdf:nodeID="node1">
+              <rdf:_1>
+                <rdf:Description rdf:about="urn:miriam:obo.go:GO%3A0051098"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf><bqmodel:isDescribedBy xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Bag rdf:nodeID="node2">
+              <rdf:_1>
+                <rdf:Description rdf:about="urn:miriam:pubmed:12648679"/></rdf:_1></rdf:Bag></bqmodel:isDescribedBy><bqmodel:isDescribedBy xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Bag rdf:nodeID="node3">
+              <rdf:_1>
+                <rdf:Description rdf:about="urn:miriam:doi:10.1016%2FS0955-0674%2803%2900017-6"/></rdf:_1></rdf:Bag></bqmodel:isDescribedBy></rdf:Description></rdf:RDF>
+    </annotation>
+      <listOfUnitDefinitions>
+      <unitDefinition id="molecules">
+        <listOfUnits>
+          <unit exponent="1" kind="item" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="um3">
+        <listOfUnits>
+          <unit exponent="3" kind="metre" multiplier="1" scale="-6"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="um2">
+        <listOfUnits>
+          <unit exponent="2" kind="metre" multiplier="1" scale="-6"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="um">
+        <listOfUnits>
+          <unit exponent="1" kind="metre" multiplier="1" scale="-6"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="s">
+        <listOfUnits>
+          <unit exponent="1" kind="second" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="K">
+        <listOfUnits>
+          <unit exponent="1" kind="kelvin" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="_one_">
+        <listOfUnits>
+          <unit exponent="1" kind="dimensionless" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="C_mol_1">
+        <listOfUnits>
+          <unit exponent="1" kind="coulomb" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="C_nmol_1">
+        <listOfUnits>
+          <unit exponent="1" kind="coulomb" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="-9"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="molecules_pmol_1">
+        <listOfUnits>
+          <unit exponent="1" kind="item" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="-12"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="_one_000000000">
+        <listOfUnits>
+          <unit exponent="1" kind="dimensionless" multiplier="1000000000" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="mV_C_K_1_mol_1">
+        <listOfUnits>
+          <unit exponent="1" kind="volt" multiplier="1" scale="-3"/>
+          <unit exponent="1" kind="coulomb" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="kelvin" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="mV_V_1">
+        <listOfUnits>
+          <unit exponent="1" kind="dimensionless" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="uM_um3_molecules_1">
+        <listOfUnits>
+          <unit exponent="1" kind="mole" multiplier="1" scale="-6"/>
+          <unit exponent="-1" kind="litre" multiplier="1" scale="0"/>
+          <unit exponent="3" kind="metre" multiplier="1" scale="-6"/>
+          <unit exponent="-1" kind="item" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="uM_s_1">
+        <listOfUnits>
+          <unit exponent="1" kind="mole" multiplier="1" scale="-6"/>
+          <unit exponent="-1" kind="litre" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="second" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="s_1">
+        <listOfUnits>
+          <unit exponent="-1" kind="second" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment constant="true" id="c0" metaid="metaid_2102227835" name="c0" size="50000" spatialDimensions="3" units="um3">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://sourceforge.net/projects/vcell/vcml/cbit.vcell.model.Feature/metaid_2102227835">
+              <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="urn:miriam:obo.go:GO%3A0005623"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+            </compartment>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species boundaryCondition="false" compartment="c0" constant="false" hasOnlySubstanceUnits="false" id="R" initialConcentration="0" metaid="metaid_1694813691" substanceUnits="molecules">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body>
+    <p style="margin-top: 0">
+      R = response element. For example, R could be the concentration of 
+      protein.
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="#metaid_1694813691">
+              <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="urn:miriam:chebi:CHEBI%3A36080"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+            </species>
+      <species boundaryCondition="false" compartment="c0" constant="false" hasOnlySubstanceUnits="false" id="S" substanceUnits="molecules">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body>
+    <p style="margin-top: 0">
+      S = signal strength. For example, S could be the concentration of mRNA.
+    </p>
+  </body>
+</html>
+        </notes>
+      </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter constant="true" id="_T_" units="K" value="300"/>
+      <parameter constant="true" id="_PI_" units="_one_" value="3.141592653589793"/>
+      <parameter constant="true" id="_F_" units="C_mol_1" value="9.64853321E4"/>
+      <parameter constant="true" id="_F_nmol_" units="C_nmol_1" value="9.64853321E-5"/>
+      <parameter constant="true" id="_N_pmol_" units="molecules_pmol_1" value="6.02214179E11"/>
+      <parameter constant="true" id="_K_GHK_" units="_one_000000000" value="1E-9"/>
+      <parameter constant="true" id="_R_" units="mV_C_K_1_mol_1" value="8314.46261815"/>
+      <parameter constant="true" id="K_millivolts_per_volt" units="mV_V_1" value="1000"/>
+      <parameter constant="true" id="KMOLE" units="uM_um3_molecules_1" value="0.001660538783162726"/>
+      <parameter constant="true" id="kd_R_degradation" units="s_1" value="5"/>
+      <parameter constant="false" id="Kf_R_degradation" units="s_1"/>
+      <parameter constant="true" id="k_R_synthesis" units="s_1" value="1"/>
+    </listOfParameters>
+    <listOfInitialAssignments>
+      <initialAssignment symbol="S">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time"> t </csymbol>
+        </math>
+            </initialAssignment>
+    </listOfInitialAssignments>
+    <listOfRules>
+      <assignmentRule variable="Kf_R_degradation">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <ci> kd_R_degradation </ci>
+        </math>
+            </assignmentRule>
+    </listOfRules>
+    <listOfReactions>
+      <reaction fast="false" id="R_degradation" metaid="metaid_2043546989" name="R_degradation" reversible="true">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body>
+    <p style="margin-top: 0">
+      Degradation of the response element (R)
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://sourceforge.net/projects/vcell/vcml/cbit.vcell.model.SimpleReaction/metaid_2043546989">
+              <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="urn:miriam:obo.go:GO%3A0009056"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+              <listOfReactants>
+          <speciesReference constant="true" id="R_degradation_Rr" species="R" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <apply>
+                <times/>
+                <ci> Kf_R_degradation </ci>
+                <ci> R </ci>
+              </apply>
+              <ci> c0 </ci>
+            </apply>
+          </math>
+                  <listOfLocalParameters>
+            <localParameter id="Kr" units="uM_s_1" value="0"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="R_synthesis" metaid="metaid_1490270091" name="R_synthesis" reversible="true">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body>
+    <p style="margin-top: 0">
+      Synthesis of the response element (R)
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://sourceforge.net/projects/vcell/vcml/cbit.vcell.model.SimpleReaction/metaid_1490270091">
+              <bqmodel:isDescribedBy xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="urn:miriam:obo.go:GO%3A0009058"/></rdf:_1></rdf:Bag></bqmodel:isDescribedBy></rdf:Description></rdf:RDF>
+        </annotation>
+              <listOfProducts>
+          <speciesReference constant="true" id="R_synthesis_Rp" species="R" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="S"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <apply>
+                <times/>
+                <ci> k_R_synthesis </ci>
+                <ci> S </ci>
+              </apply>
+              <ci> c0 </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

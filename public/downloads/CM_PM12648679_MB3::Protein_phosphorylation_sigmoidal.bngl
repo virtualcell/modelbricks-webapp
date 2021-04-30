@@ -1,0 +1,35 @@
+begin model
+
+begin compartments
+c0	3	1
+end compartments
+
+begin parameters
+end parameters
+
+begin molecule types
+R(mod~P~U)
+S()
+end molecule types
+
+begin seed species
+1 @c0:S() t
+2 @c0:R(mod~U) 1.0
+3 @c0:R(mod~P) 0.0
+end seed species
+
+begin observables
+Molecules O0_R_tot @c0:R()
+Molecules O0_S_tot @c0:S()
+end observables
+
+begin functions
+end functions
+
+begin reaction rules
+end reaction rules
+
+end model
+
+generate_network({max_iter=>3,max_agg=>10,max_stoich=>{R=>100,S=>100},overwrite=>1})
+

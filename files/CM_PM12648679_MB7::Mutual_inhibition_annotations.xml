@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BioModel name="CM_PM12648679_MB7::Mutual_inhibition">
+  <math name="Deterministic">Deterministic (ODE), Compartmental</math>
+  <url name="MolecularType(E)">http://identifiers.org/chebi:CHEBI%3A36080</url>
+  <url name="MolecularType(R)">http://identifiers.org/obo.go:GO%3A0016301</url>
+  <url name="MolecularType(R)">http://identifiers.org/chebi:CHEBI%3A36080</url>
+  <url name="BioModel(CM_PM12648679_MB7::Mutual_inhibition)">http://identifiers.org/mamo/MAMO_0000046</url>
+  <url name="BioModel(CM_PM12648679_MB7::Mutual_inhibition)">http://identifiers.org/taxonomy/131567</url>
+  <url name="BioModel(CM_PM12648679_MB7::Mutual_inhibition)">http://identifiers.org/go/GO:0051098</url>
+  <url name="BioModel(CM_PM12648679_MB7::Mutual_inhibition)">http://identifiers.org/biomodels.db/MODEL1102100002</url>
+  <url name="BioModel(CM_PM12648679_MB7::Mutual_inhibition)">http://identifiers.org/biomodels.db/BIOMD0000000310</url>
+  <url name="BioModel(CM_PM12648679_MB7::Mutual_inhibition)">http://identifiers.org/pubmed/12648679</url>
+  <url name="BioModel(CM_PM12648679_MB7::Mutual_inhibition)">http://identifiers.org/doi:10.1016%2FS0955-0674%2803%2900017-6</url>
+  <url name="Structure(env)">http://identifiers.org/go/GO:0005623</url>
+  <url name="Species(R)">http://identifiers.org/go/GO:0016301</url>
+  <url name="Species(R)">http://identifiers.org/chebi/CHEBI:36080</url>
+  <url name="Species(Ep)">http://identifiers.org/psimod/MOD:00696</url>
+  <url name="Species(Ep)">http://identifiers.org/kegg.compound/C00562</url>
+  <url name="Species(E)">http://identifiers.org/chebi/CHEBI:36080</url>
+  <url name="ReactionStep(R_synthesis)">http://identifiers.org/go/GO:0009058</url>
+  <url name="ReactionStep(R_synthesis2)">http://identifiers.org/go/GO:0009058</url>
+  <url name="ReactionStep(R_degradation)">http://identifiers.org/go/GO:0009056</url>
+  <url name="ReactionStep(R_degradation2)">http://identifiers.org/go/GO:0009056</url>
+  <url name="ReactionStep(E_dephosphorylation)">http://identifiers.org/go/GO:0006470</url>
+  <url name="ReactionStep(E_phosphorylation)">http://identifiers.org/go/GO:0006468</url>
+  <text name="BioModel(CM_PM12648679_MB7::Mutual_inhibition)">     This ModelBrick from the article, " Sniffers, buzzers, toggles and blinkers …" is a toggle switch that describes mutual inhibition, where the response element (R) inhibits a protein E, and E promotes the degradation of R. R and E are mutually antagonistic.    </text>
+  <text name="ReactionStep(R_degradation2)">     Degradation of the response element (R) modulated by E, a protein involved with R in mutual inhibition    </text>
+  <text name="Species(S)">     signal strength    </text>
+  <text name="MolecularType(E)">     a protein involved with R in mutual inhibition    </text>
+  <text name="ReactionStep(R_degradation)">     degradation of the response element (R)    </text>
+  <text name="ReactionStep(R_synthesis)">     Synthesis of the response element (R)    </text>
+  <text name="ReactionStep(E_phosphorylation)">     phosphorylation of E, a protein involved with R in mutual inhibition    </text>
+  <text name="ReactionStep(R_synthesis2)">     synthesis of the response element (R) modulated by the signal strength (S)    </text>
+  <text name="Species(Ep)">     phosphorylated form of E, a protein involved with R in mutual inhibition    </text>
+  <text name="ReactionStep(E_dephosphorylation)">     dephosphorylation of E, a protein involved with R in mutual inhibition    </text>
+  <text name="MolecularType(R)">     response element    </text>
+  <text name="Species(E)">     a protein involved with R in mutual inhibition    </text>
+  <text name="Species(R)">     response element    </text>
+  <text name="MolecularType(S)">     signal strength    </text>
+</BioModel>

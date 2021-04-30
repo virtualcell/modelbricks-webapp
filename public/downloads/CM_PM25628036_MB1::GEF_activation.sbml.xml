@@ -1,0 +1,391 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model areaUnits="m2" id="CM_PM25628036_MB1__GEF_activation_Canonical_Application" lengthUnits="m" metaid="untitled" name="CM_PM25628036_MB1::GEF_activation_Canonical Application" substanceUnits="umol" timeUnits="min" volumeUnits="l">
+    <notes>
+      <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body>
+    <p class="MsoNormal" style="margin-bottom: .0001pt; line-height: normal">
+      <span>
+              <font size="12.0pt" face="Times New Roman,serif">This ModelBrick 
+      from the article, "<i>Positive regulation of Rho GTPase activity by 
+      RhoGDIs as a result of their direct interaction with GAPs</i>" describes 
+      the activation of GEF and the degradation of the activator. GDIs inhibit 
+      GEF and GAP activities by sequestering GTPase (kinetic law was adjusted 
+      to eliminate effect of GDI on both GEF and GAP).</font></span>
+    </p>
+  </body>
+</html>
+    </notes>
+    <annotation>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/untitled">
+          <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Bag rdf:nodeID="node0">
+              <rdf:_1>
+                <rdf:Description rdf:about="urn:miriam:doi:10.1146%2Fannurev.cellbio.21.020604.150721"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf><bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Bag rdf:nodeID="node1">
+              <rdf:_1>
+                <rdf:Description rdf:about="urn:miriam:pubmed:16212495"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf><bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Bag rdf:nodeID="node2">
+              <rdf:_1>
+                <rdf:Description rdf:about="urn:miriam:obo.go:GO%3A0043087"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf><bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Bag rdf:nodeID="node3">
+              <rdf:_1>
+                <rdf:Description rdf:about="urn:miriam:reactome:R-HSA-194315.4"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf><bqmodel:isDescribedBy xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Bag rdf:nodeID="node4">
+              <rdf:_1>
+                <rdf:Description rdf:about="urn:miriam:doi:10.1186%2Fs12918-015-0143-5"/></rdf:_1></rdf:Bag></bqmodel:isDescribedBy><bqmodel:isDescribedBy xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Bag rdf:nodeID="node5">
+              <rdf:_1>
+                <rdf:Description rdf:about="urn:miriam:pubmed:25628036"/></rdf:_1></rdf:Bag></bqmodel:isDescribedBy></rdf:Description></rdf:RDF>
+    </annotation>
+      <listOfUnitDefinitions>
+      <unitDefinition id="umol">
+        <listOfUnits>
+          <unit exponent="1" kind="mole" multiplier="1" scale="-6"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="l">
+        <listOfUnits>
+          <unit exponent="1" kind="litre" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="m2">
+        <listOfUnits>
+          <unit exponent="2" kind="metre" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="m">
+        <listOfUnits>
+          <unit exponent="1" kind="metre" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="min">
+        <listOfUnits>
+          <unit exponent="1" kind="second" multiplier="60" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="min_1">
+        <listOfUnits>
+          <unit exponent="-1" kind="second" multiplier="60" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="umol_l_1">
+        <listOfUnits>
+          <unit exponent="1" kind="mole" multiplier="1" scale="-6"/>
+          <unit exponent="-1" kind="litre" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="l_umol_1_min_1">
+        <listOfUnits>
+          <unit exponent="1" kind="litre" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="-6"/>
+          <unit exponent="-1" kind="second" multiplier="60" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="K">
+        <listOfUnits>
+          <unit exponent="1" kind="kelvin" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="_one_">
+        <listOfUnits>
+          <unit exponent="1" kind="dimensionless" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="C_mol_1">
+        <listOfUnits>
+          <unit exponent="1" kind="coulomb" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="C_nmol_1">
+        <listOfUnits>
+          <unit exponent="1" kind="coulomb" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="-9"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="molecules_pmol_1">
+        <listOfUnits>
+          <unit exponent="1" kind="item" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="-12"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="_one_000000000">
+        <listOfUnits>
+          <unit exponent="1" kind="dimensionless" multiplier="1000000000" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="mV_C_K_1_mol_1">
+        <listOfUnits>
+          <unit exponent="1" kind="volt" multiplier="1" scale="-3"/>
+          <unit exponent="1" kind="coulomb" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="kelvin" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="mV_V_1">
+        <listOfUnits>
+          <unit exponent="1" kind="dimensionless" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="uM_um3_molecules_1">
+        <listOfUnits>
+          <unit exponent="1" kind="mole" multiplier="1" scale="-6"/>
+          <unit exponent="-1" kind="litre" multiplier="1" scale="0"/>
+          <unit exponent="3" kind="metre" multiplier="1" scale="-6"/>
+          <unit exponent="-1" kind="item" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment constant="true" id="default" metaid="default" name="default" size="1" spatialDimensions="3" units="l"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species boundaryCondition="false" compartment="default" constant="false" hasOnlySubstanceUnits="false" id="Activator" initialConcentration="1" metaid="s1" name="Activator" substanceUnits="umol">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body>
+    The authors used 1 uM for the cellular concentration of the activator 
+    (arbitrary value).
+  </body>
+</html>
+        </notes>
+      </species>
+      <species boundaryCondition="false" compartment="default" constant="false" hasOnlySubstanceUnits="false" id="GEF" initialConcentration="0.31" metaid="s3" name="GEF" substanceUnits="umol">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body>
+    guanine nucleotide exchange factor (GEF)- regulator of RhoGTPases. <span align="left" style="letter-spacing: normal; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: rgb(255, 255, 255); display: inline !important; float: none">
+                <font color="rgb(0, 0, 0)" face="Times New Roman, stixgeneral, serif" size="15.9991px">GEFs 
+    activate GTPases by promoting the exchange of GDP for GTP. GAPs inactivate 
+    GTPases by stimulating their intrinsic GTP-hydrolyzing activity.</font></span><font color="rgb(0, 0, 0)" face="Times New Roman, stixgeneral, serif" size="15.9991px">
+                <span> The 
+    authors used 0.31 uM for the cellular concentration of GEF (Aoki, 2007).</span></font>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/s3">
+              <bqbiol:hasVersion xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node7">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="urn:miriam:uniprot:Q92888"/></rdf:_1></rdf:Bag></bqbiol:hasVersion><bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node8">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="urn:miriam:obo.go:GO%3A0005089"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf><bqmodel:isDerivedFrom xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                <rdf:Bag rdf:nodeID="node9">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="urn:miriam:pubmed:17535963"/></rdf:_1></rdf:Bag></bqmodel:isDerivedFrom><bqmodel:isDerivedFrom xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+                <rdf:Bag rdf:nodeID="node10">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="urn:miriam:doi:10.1083%2Fjcb.200609017"/></rdf:_1></rdf:Bag></bqmodel:isDerivedFrom></rdf:Description></rdf:RDF>
+        </annotation>
+            </species>
+      <species boundaryCondition="false" compartment="default" constant="false" hasOnlySubstanceUnits="false" id="Active_GEF" initialConcentration="0" metaid="s4" name="Active GEF" substanceUnits="umol">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body>
+    guanine nucleotide exchange factor (GEF)- regulator of RhoGTPases. <span align="left" style="letter-spacing: normal; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: rgb(255, 255, 255); display: inline !important; float: none">
+                <font color="rgb(0, 0, 0)" face="Times New Roman, stixgeneral, serif" size="15.9991px">GEFs 
+    activate GTPases by promoting the exchange of GDP for GTP. GAPs inactivate 
+    GTPases by stimulating their intrinsic GTP-hydrolyzing activity.</font></span><font color="rgb(0, 0, 0)" face="Times New Roman, stixgeneral, serif" size="15.9991px">
+                <span> </span></font>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/s4">
+              <bqbiol:hasVersion xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="urn:miriam:uniprot:Q92888"/></rdf:_1></rdf:Bag></bqbiol:hasVersion><bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node1">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="urn:miriam:obo.go:GO%3A0005089"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+            </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter constant="true" id="k3" units="min_1" value="0.5"/>
+      <parameter constant="true" id="k2" units="min_1" value="0.1"/>
+      <parameter constant="true" id="kcatGEF" units="min_1" value="5.64"/>
+      <parameter constant="true" id="KmGEFRho" units="umol_l_1" value="24.5"/>
+      <parameter constant="true" id="KmGEFGDI" units="umol_l_1" value="1"/>
+      <parameter constant="true" id="k1" units="l_umol_1_min_1" value="1"/>
+      <parameter constant="true" id="_T_" units="K" value="300"/>
+      <parameter constant="true" id="_PI_" units="_one_" value="3.141592653589793"/>
+      <parameter constant="true" id="_F_" units="C_mol_1" value="9.64853321E4"/>
+      <parameter constant="true" id="_F_nmol_" units="C_nmol_1" value="9.64853321E-5"/>
+      <parameter constant="true" id="_N_pmol_" units="molecules_pmol_1" value="6.02214179E11"/>
+      <parameter constant="true" id="_K_GHK_" units="_one_000000000" value="1E-9"/>
+      <parameter constant="true" id="_R_" units="mV_C_K_1_mol_1" value="8314.46261815"/>
+      <parameter constant="true" id="K_millivolts_per_volt" units="mV_V_1" value="1000"/>
+      <parameter constant="true" id="KMOLE" units="uM_um3_molecules_1" value="0.001660538783162726"/>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction fast="false" id="GEF_activation" metaid="metaid_1698375497" name="GEF_activation" reversible="true">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body>
+    <p style="margin-top: 0">
+      Activation of GEF.
+    </p>
+    <p style="margin-top: 0">
+      The forward reaction rate parameter (k1) is assigned an arbitrary value 
+      (1 uM-1min-1).
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://sourceforge.net/projects/vcell/vcml/cbit.vcell.model.SimpleReaction/metaid_1698375497">
+              <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="urn:miriam:obo.go:GO%3A0005085"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+              <listOfReactants>
+          <speciesReference constant="true" id="GEF_activation_GEFr" species="GEF" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference constant="true" id="GEF_activation_Active_GEFp" species="Active_GEF" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="Activator"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <apply>
+                <times/>
+                <ci> Activator </ci>
+                <ci> GEF </ci>
+                <ci> k1 </ci>
+              </apply>
+              <ci> default </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="GEF_inactivation" metaid="metaid_1997526566" name="GEF_inactivation" reversible="true">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body>
+    <p style="margin-top: 0">
+      Inactivation of GEF.
+    </p>
+    <p style="margin-top: 0">
+      The forward reaction rate parameter (k2) is assigned an arbitrary value 
+      (0.1 min-1).
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://sourceforge.net/projects/vcell/vcml/cbit.vcell.model.SimpleReaction/metaid_1997526566">
+              <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="urn:miriam:obo.go:GO%3A0005085"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+              <listOfReactants>
+          <speciesReference constant="true" id="GEF_inactivation_Active_GEFr" species="Active_GEF" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference constant="true" id="GEF_inactivation_GEFp" species="GEF" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <apply>
+                <times/>
+                <ci> Active_GEF </ci>
+                <ci> k2 </ci>
+              </apply>
+              <ci> default </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="Activator_degradation" name="Activator_degradation" reversible="true">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body>
+    <p style="margin-top: 0">
+      Activator degradation. 
+    </p>
+    <p style="margin-top: 0">
+      The forward reaction rate parameter (k3) is assigned an arbitrary value 
+      (1 uM-1min-1).
+    </p>
+  </body>
+</html>
+        </notes>
+        <listOfReactants>
+          <speciesReference constant="true" id="Activator_degradation_Activatorr" species="Activator" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <apply>
+                <times/>
+                <ci> Activator </ci>
+                <ci> k3 </ci>
+              </apply>
+              <ci> default </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

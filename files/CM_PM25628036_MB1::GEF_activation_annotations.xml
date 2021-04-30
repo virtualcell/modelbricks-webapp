@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BioModel name="CM_PM25628036_MB1::GEF_activation">
+  <math name="Canonical Application">Deterministic (ODE), Compartmental</math>
+  <url name="ReactionStep(GEF_activation)">http://identifiers.org/obo.go:GO%3A0005085</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/obo.go:GO%3A0005085</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/uniprot:Q7L0Q8</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/doi:10.1042%2Fbj3480241</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/uniprot:P52565</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/uniprot:Q92888</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/obo.go:GO%3A0005089</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/uniprot:Q92888</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/obo.go:GO%3A0005089</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/pubmed:17535963</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/doi:10.1083%2Fjcb.200609017</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/uniprot:Q92888</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/obo.go:GO%3A0005089</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/uniprot:Q7L0Q8</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/uniprot:Q7L0Q8</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/uniprot:P52565</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/uniprot:Q07960</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/doi:10.1042%2Fbj3480241+</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/doi:10.1146%2Fannurev.cellbio.21.020604.150721</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/pubmed:16212495</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/obo.go:GO%3A0043087</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/reactome:R-HSA-194315.4</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/doi:10.1186%2Fs12918-015-0143-5</url>
+  <url name="ReactionStep(GEF_inactivation)">http://identifiers.org/pubmed:25628036</url>
+  <text name="ReactionStep(Activator_degradation)">     Activator degradation.   The forward reaction rate parameter (k3) is assigned an arbitrary value (1 uM-1min-1).    </text>
+  <text name="MolecularType(RhoGEF)">    guanine nucleotide exchange factor (GEF)- regulator of RhoGTPases. GEFs activate GTPases by promoting the exchange of GDP for GTP. GAPs inactivate GTPases by stimulating their intrinsic GTP-hydrolyzing activity.     </text>
+  <text name="SpeciesContext(GEF)">     guanine nucleotide exchange factors: Activate small G proteins by promoting exchange of GDP for GTP    </text>
+  <text name="ReactionStep(GEF_inactivation)">     Inactivation of GEF.   The forward reaction rate parameter (k2) is assigned an arbitrary value (0.1 min-1).    </text>
+  <text name="Species(s4)">    guanine nucleotide exchange factor (GEF)- regulator of RhoGTPases. GEFs activate GTPases by promoting the exchange of GDP for GTP. GAPs inactivate GTPases by stimulating their intrinsic GTP-hydrolyzing activity.     </text>
+  <text name="SimulationContext(Canonical Application)">       </text>
+  <text name="ReactionStep(GEF_activation)">     Activation of GEF.   The forward reaction rate parameter (k1) is assigned an arbitrary value (1 uM-1min-1).    </text>
+  <text name="Species(s1)">    The authors used 1 uM for the cellular concentration of the activator (arbitrary value).   </text>
+  <text name="BioModel(CM_PM25628036_MB1::GEF_activation)">     This ModelBrick from the article, " Positive regulation of Rho GTPase activity by RhoGDIs as a result of their direct interaction with GAPs " describes the activation of GEF and the degradation of the activator. GDIs inhibit GEF and GAP activities by sequestering GTPase (kinetic law was adjusted to eliminate effect of GDI on both GEF and GAP).    </text>
+  <text name="Species(s3)">    guanine nucleotide exchange factor (GEF)- regulator of RhoGTPases. GEFs activate GTPases by promoting the exchange of GDP for GTP. GAPs inactivate GTPases by stimulating their intrinsic GTP-hydrolyzing activity.  The authors used 0.31 uM for the cellular concentration of GEF (Aoki, 2007).   </text>
+</BioModel>

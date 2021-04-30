@@ -29,26 +29,26 @@ class DataList {
     this.options = options;
   }
 
-  create(filter = "") {
-    const list = document.getElementById(this.listId);
-    const filterOptions = this.options.filter(
-      (d) =>
-        filter === "" || d.text.toLowerCase().includes(filter.toLowerCase())
-    );
-    if (filterOptions.length === 0) {
-      list.classList.remove("active");
-      filterOptions.push({
-        value: "",
-        text: "No value found with theses parameters.",
-      });
-    } else {
-      list.classList.add("active");
-    }
+  // create(filter = "") {
+  //   const list = document.getElementById(this.listId);
+  //   const filterOptions = this.options.filter(
+  //     (d) =>
+  //       filter === "" || d.text.toLowerCase().includes(filter.toLowerCase())
+  //   );
+  //   if (filterOptions.length === 0) {
+  //     list.classList.remove("active");
+  //     filterOptions.push({
+  //       value: "",
+  //       text: "No value found with theses parameters.",
+  //     });
+  //   } else {
+  //     list.classList.add("active");
+  //   }
 
-    list.innerHTML = filterOptions
-      .map((o) => `<li data-value=${o.value}><span>${o.text}</span></li>`)
-      .join("");
-  }
+  //   list.innerHTML = filterOptions
+  //     .map((o) => `<li data-value=${o.value}><span>${o.text}</span></li>`)
+  //     .join("");
+  // }
 
   addListeners(datalist) {
     const container = document.getElementById(this.containerId);
@@ -106,39 +106,39 @@ class DataList {
   }
 }
 
-const data = [
-  {
-    value: "1",
-    text: "all",
-  },
-  {
-    value: "2",
-    text: "public",
-  },
-  {
-    value: "3",
-    text: "shared",
-  },
-  {
-    value: "4",
-    text: "mine",
-  },
-  {
-    value: "5",
-    text: "tutorials",
-  },
-  {
-    value: "6",
-    text: "educational",
-  },
-];
+// const data = [
+//   {
+//     value: "1",
+//     text: "all",
+//   },
+//   {
+//     value: "2",
+//     text: "public",
+//   },
+//   {
+//     value: "3",
+//     text: "shared",
+//   },
+//   {
+//     value: "4",
+//     text: "mine",
+//   },
+//   {
+//     value: "5",
+//     text: "tutorials",
+//   },
+//   {
+//     value: "6",
+//     text: "educational",
+//   },
+// ];
 
-const datalist = new DataList(
-  "datalist",
-  "datalist-input",
-  "datalist-ul",
-  data
-);
+// const datalist = new DataList(
+//   "datalist",
+//   "datalist-input",
+//   "datalist-ul",
+//   data
+// );
 
-datalist.create();
-datalist.addListeners(datalist);
+// datalist.create();
+// datalist.addListeners(datalist);

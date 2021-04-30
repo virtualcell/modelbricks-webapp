@@ -19,6 +19,12 @@ router.get("/motivation", (req, res) => {
   });
 });
 
+router.get("/creating", (req, res) => {
+  res.render("creating", {
+    title: "ModelBricks - Creation",
+  });
+});
+
 router.get("/egfr", (req, res) => {
   res.render("egfr", {
     title: "ModelBricks - EGFR",

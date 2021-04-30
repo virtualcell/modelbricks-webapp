@@ -13,77 +13,13 @@
   </head>
 
   <body>
-    <!-- header  -->
-    <!-- Navbar -->
-    <div class="mainNavbar">
-      <nav class="navbar">
-        <div class="container">
-          <div class="navbar-header">
-            <button class="navbar-toggler" data-toggle="open-navbar1">
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-            <a href="#">
-              <h4>Model<span>Bricks</span></h4>
-            </a>
-          </div>
-
-          <div class="navbar-menu" id="open-navbar1">
-            <ul class="navbar-nav">
-              <li><a href="/">Home</a></li>
-              <li><a href="/motivation">Motivation</a></li>
-
-              {{!--
-              <li class="active">--}}</li>
-              <li>
-                <a href="/curatedList">Curated List</a>
-              </li>
-              {{!--
-              <li><a href="/egfr">EGFR</a></li>
-              --}}
-              <li><a href="/search1">Search</a></li>
-
-              <li class="navbar-dropdown">
-                <a
-                  href="#"
-                  class="dropdown-toggler"
-                  data-dropdown="my-dropdown-id"
-                >
-                  Tools <i class="fa fa-angle-down"></i>
-                </a>
-                <ul class="dropdown" id="my-dropdown-id">
-                  <li><a href="#">Actions</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li class="separator"></li>
-                  <li><a href="#">Seprated link</a></li>
-                  <li class="separator"></li>
-                  <li><a href="#">One more seprated link.</a></li>
-                </ul>
-              </li>
-              <li class="navbar-dropdown">
-                <a href="#" class="dropdown-toggler" data-dropdown="blog">
-                  Blog <i class="fa fa-angle-down"></i>
-                </a>
-                <ul class="dropdown" id="blog">
-                  <li><a href="#">Some category</a></li>
-                  <li><a href="#">Some another category</a></li>
-                  <li class="separator"></li>
-                  <li><a href="#">Seprated link</a></li>
-                  <li class="separator"></li>
-                  <li><a href="#">One more seprated link.</a></li>
-                </ul>
-              </li>
-              <li><a href="/about">About</a></li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
-
-    <!-- model data  -->
     <div class="sectionDescription">
       {{#each data.vcml.BioModel}} {{#each this.Version}}
+      <span class="dashboardBtn"
+        ><a href="/curatedList/model/{{this.$.Name}}#dashboard"
+          ><i class="fa fa-undo" aria-hidden="true"></i> Dashboard</a
+        ></span
+      >
       <h2>Name - <span>{{this.$.Name}}</span></h2>
       <h2>BioModel ID - <span>{{this.$.KeyValue}}</span></h2>
       {{/each}} {{/each}}
@@ -108,6 +44,12 @@
         <table class="responsive-table">
           <caption>
             Reactions
+            <span class="dashboardBtn"
+              ><a href="/curatedList/model/{{modelName}}#reactions"
+                ><i class="fa fa-undo" aria-hidden="true"></i> See in
+                Dashboard</a
+              ></span
+            >
           </caption>
           <thead>
             <tr>
@@ -124,7 +66,7 @@
               <td data-title="Reaction">
                 {{#each this.Reactant}} {{this.$.LocalizedCompoundRef}}
                 {{/each}}
-                <span style="color: #666666;">--></span>
+                <span style="color: #666666">--></span>
                 {{#each this.Product}} {{this.$.LocalizedCompoundRef}} {{/each}}
               </td>
               <td data-title="Name">{{this.$.Name}}</td>
@@ -132,6 +74,38 @@
               <td data-title="Kinetics">
                 {{#each this.Kinetics}} {{this.$.KineticsType}} {{/each}}
               </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- universal ID's --}}
+                  <div class="printUID" id="reactionUID-{{this.$.Name}}">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- annotation --}}
+                  <div class="printTA" id="reactionTA-{{this.$.Name}}">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+              {{#each this.Kinetics}} {{#each this.Parameter}}
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- Kinetics --}}
+                  <div class="printTA">
+                    <p class="heading">
+                      Reaction rate: {{this._}}
+                      <span class="unit">[{{this.$.Unit}}]</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+              {{/each}} {{/each}}
             </tr>
             {{/each}} {{/each}} {{/each}}
           </tbody>
@@ -145,6 +119,12 @@
         <table class="responsive-table">
           <caption>
             Structures
+            <span class="dashboardBtn"
+              ><a href="/curatedList/model/{{modelName}}#structures"
+                ><i class="fa fa-undo" aria-hidden="true"></i> See in
+                Dashboard</a
+              ></span
+            >
           </caption>
           <thead>
             <tr>
@@ -164,6 +144,24 @@
                 {{this.$.NegativeFeature}}(-)
               </td>
             </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- universal ID's --}}
+                  <div class="printUID" id="structureUID-{{this.$.Name}}">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- annotation --}}
+                  <div class="printTA" id="structureTA-{{this.$.Name}}">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
             {{/each}} {{/each}} {{/each}} {{#each data.vcml.BioModel}} {{#each
             this.Model}} {{#each this.Feature}}
             <tr>
@@ -172,6 +170,24 @@
               <td data-title="Electrical">
                 {{this.$.PositiveFeature}}(+) &nbsp;
                 {{this.$.NegativeFeature}}(-)
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- universal ID's --}}
+                  <div class="printUID" id="structureUID-{{this.$.Name}}">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- annotation --}}
+                  <div class="printTA" id="structureTA-{{this.$.Name}}">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
               </td>
             </tr>
             {{/each}} {{/each}} {{/each}}
@@ -186,6 +202,12 @@
         <table class="responsive-table">
           <caption>
             Species
+            <span class="dashboardBtn"
+              ><a href="/curatedList/model/{{modelName}}#species"
+                ><i class="fa fa-undo" aria-hidden="true"></i> See in
+                Dashboard</a
+              ></span
+            >
           </caption>
           <thead>
             <tr>
@@ -200,6 +222,24 @@
               <td data-title="Name">{{this.$.Name}}</td>
               <td data-title="Structure">{{this.$.Structure}}</td>
             </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- universal ID's --}}
+                  <div class="printUID" id="speciesUID-{{this.$.Name}}">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- annotation --}}
+                  <div class="printTA" id="speciesTA-{{this.$.Name}}">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
             {{/each}} {{/each}} {{/each}}
           </tbody>
         </table>
@@ -212,21 +252,52 @@
         <table class="responsive-table">
           <caption>
             Molecules
+            <span class="dashboardBtn"
+              ><a href="/curatedList/model/{{modelName}}#molecules"
+                ><i class="fa fa-undo" aria-hidden="true"></i> See in
+                Dashboard</a
+              ></span
+            >
           </caption>
           <thead>
             <tr>
               <th scope="col">Name</th>
-              <th scope="col">Link</th>
+              <th scope="col">Description</th>
             </tr>
           </thead>
           <tbody>
             {{#each data.vcml.BioModel}} {{#each this.Model}} {{#each
-            this.LocalizedCompound}}
+            this.RbmModelContainer}} {{#each this.MolecularTypeList}} {{#each
+            this.MolecularType}}
+
             <tr>
               <td data-title="Name">{{this.$.Name}}</td>
-              <td data-title="Link">{{this.$.Structure}}</td>
+
+              <td data-title="Description">
+                {{#each this.MolecularComponent}} {{this.$.Name}} {{#if
+                this.AllowableState}} {{#each this.AllowableState}}
+                ~{{this.$.Name}} {{/each}} {{/if}} . {{/each}}
+              </td>
             </tr>
-            {{/each}} {{/each}} {{/each}}
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- universal ID's --}}
+                  <div class="printUID" id="moleculesUID-{{this.$.Name}}">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- annotation --}}
+                  <div class="printTA" id="moleculesTA-{{this.$.Name}}">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            {{/each}} {{/each}} {{/each}} {{/each}} {{/each}}
           </tbody>
         </table>
       </div>
@@ -238,6 +309,12 @@
         <table class="responsive-table">
           <caption>
             Observables
+            <span class="dashboardBtn"
+              ><a href="/curatedList/model/{{modelName}}#observables"
+                ><i class="fa fa-undo" aria-hidden="true"></i> See in
+                Dashboard</a
+              ></span
+            >
           </caption>
           <thead>
             <tr>
@@ -248,12 +325,40 @@
             </tr>
           </thead>
           <tbody>
+            {{#each data.vcml.BioModel}} {{#each this.Model}} {{#each
+            this.RbmModelContainer}} {{#each this.RbmObservableList}} {{#each
+            this.Observable}}
+
             <tr>
-              <td data-title="Name">name</td>
-              <td data-title="Type">type</td>
-              <td data-title="BioNetGen Defination">bioNetGen defination</td>
-              <td data-title="Count">count</td>
+              <td data-title="Name">{{this.$.Name}}</td>
+              <td data-title="Domain">{{this.$.ObservableType}}</td>
+
+              {{#each this.SpeciesPattern}} {{#each this.MolecularTypePattern}}
+              {{#each this.MolecularType}}
+              <td data-title="MolecularType">{{this.$.Name}}</td>
+              {{/each}} {{/each}} {{/each}}
+              <td data-title="SequenceType">{{this.$.Sequence}}</td>
             </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- universal ID's --}}
+                  <div class="printUID" id="observableUID-{{this.$.Name}}">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- annotation --}}
+                  <div class="printTA" id="observableUID-{{this.$.Name}}">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            {{/each}} {{/each}} {{/each}} {{/each}} {{/each}}
           </tbody>
         </table>
       </div>
@@ -300,12 +405,11 @@
       <div class="container">
         <table class="responsive-table">
           <caption>
-            Specifications - {{value.$.Name}}
+            Specifications(Species) - {{value.$.Name}}
           </caption>
           <thead>
             <tr>
               <th scope="col">Species</th>
-              <th scope="col">Structure</th>
               <th scope="col">Initial Condition</th>
               <th scope="col">Diffusion Constant</th>
             </tr>
@@ -314,11 +418,35 @@
             {{#each value.ReactionContext}} {{#each this.LocalizedCompoundSpec}}
             <tr>
               <td data-title="Species">{{this.$.LocalizedCompoundRef}}</td>
-              <td data-title="Structure"></td>
               <td data-title="Initial Condition">
                 {{this.InitialConcentration}}
               </td>
               <td data-title="Diffusion Constant">{{this.Diffusion}}</td>
+            </tr>
+            {{/each}} {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {{!-- specifications table --}}
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Specifications(Reaction) - {{value.$.Name}}
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Reaction Mapping</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each value.ReactionContext}} {{#each this.ReactionSpec}}
+            <tr>
+              <td data-title="Name">{{this.$.ReactionStepRef}}</td>
+              <td data-title="ReactionMapping">{{this.$.ReactionMapping}}</td>
             </tr>
             {{/each}} {{/each}}
           </tbody>
@@ -368,6 +496,12 @@
         <table class="responsive-table">
           <caption>
             Global Parameters
+            <span class="dashboardBtn"
+              ><a href="/curatedList/model/{{modelName}}#global"
+                ><i class="fa fa-undo" aria-hidden="true"></i> See in
+                Dashboard</a
+              ></span
+            >
           </caption>
           <thead>
             <tr>
@@ -382,18 +516,37 @@
               <td data-title="Name">{{ this.$.Name}}</td>
               <td data-title="Expression">{{this._}}</td>
             </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- universal ID's --}}
+                  <div class="printUID" id="parameterUID-{{this.$.Name}}">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  {{!-- annotation --}}
+                  <div class="printTA" id="parameterTA-{{this.$.Name}}">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
             {{/each}} {{/each}} {{/each}} {{/each}}
           </tbody>
         </table>
       </div>
     </div>
+    <hr />
 
     <!-- <script src="/js/imageZoom.js"></script> -->
 
     <script src="../public/js/curatedListTable.js"></script>
     <script src="../public/js/subMenu.js"></script>
     <script src="../public/js/navbar.js"></script>
-    <script src="../public/js/json.js"></script>
+    <script src="../public/js/main.js"></script>
     <script src="../public/js/searchForm.js"></script>
     <script src="../public/js/search1.js"></script>
   </body>

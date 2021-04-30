@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BioModel name="CM_PM12648679_MB8::Negative_feedback_homeostasis">
+  <math name="Deterministic">Deterministic (ODE), Compartmental</math>
+  <url name="MolecularType(E)">http://identifiers.org/chebi:CHEBI%3A36080</url>
+  <url name="MolecularType(R)">http://identifiers.org/obo.go:GO%3A0016301</url>
+  <url name="MolecularType(R)">http://identifiers.org/chebi:CHEBI%3A36080</url>
+  <url name="BioModel(CM_PM12648679_MB8::Negative_feedback_homeostasis)">http://identifiers.org/mamo/MAMO_0000046</url>
+  <url name="BioModel(CM_PM12648679_MB8::Negative_feedback_homeostasis)">http://identifiers.org/taxonomy/131567</url>
+  <url name="BioModel(CM_PM12648679_MB8::Negative_feedback_homeostasis)">http://identifiers.org/go/GO:0051098</url>
+  <url name="BioModel(CM_PM12648679_MB8::Negative_feedback_homeostasis)">http://identifiers.org/biomodels.db/MODEL1102100003</url>
+  <url name="BioModel(CM_PM12648679_MB8::Negative_feedback_homeostasis)">http://identifiers.org/biomodels.db/BIOMD0000000309</url>
+  <url name="BioModel(CM_PM12648679_MB8::Negative_feedback_homeostasis)">http://identifiers.org/doi:10.1016%2FS0955-0674%2803%2900017-6</url>
+  <url name="BioModel(CM_PM12648679_MB8::Negative_feedback_homeostasis)">http://identifiers.org/pubmed/12648679</url>
+  <url name="Structure(env)">http://identifiers.org/go/GO:0005623</url>
+  <url name="Species(R)">http://identifiers.org/go/GO:0016301</url>
+  <url name="Species(R)">http://identifiers.org/chebi/CHEBI:36080</url>
+  <url name="Species(Ep)">http://identifiers.org/psimod/MOD:00696</url>
+  <url name="Species(Ep)">http://identifiers.org/kegg.compound/C00562</url>
+  <url name="Species(E)">http://identifiers.org/chebi/CHEBI:36080</url>
+  <url name="ReactionStep(R_synthesis)">http://identifiers.org/go/GO:0009058</url>
+  <url name="ReactionStep(R_degradation)">http://identifiers.org/go/GO:0009056</url>
+  <url name="ReactionStep(E_dephosphorylation)">http://identifiers.org/go/GO:0006470</url>
+  <url name="ReactionStep(E_phosphorylation)">http://identifiers.org/go/GO:0006468</url>
+  <text name="Species(R)">     response element    </text>
+  <text name="Structure(env)">         </text>
+  <text name="Species(Ep)">     phosphorylated form of E, a protein involved with R in mutual inhibition    </text>
+  <text name="MolecularType(R)">     response element    </text>
+  <text name="MolecularType(S)">     signal strength. The signal in this case is the demand for R    </text>
+  <text name="ReactionStep(E_dephosphorylation)">     Dephosphorylation of the enzymatic protein E    </text>
+  <text name="MolecularType(E)">     a protein involved with R in mutual inhibition    </text>
+  <text name="Species(E)">     a protein involved with R in mutual inhibition    </text>
+  <text name="Species(S)">     signal strength. The signal in this case is the demand for R    </text>
+  <text name="ReactionStep(R_synthesis)">     Synthesis of the response element (R) modulated by the enzymatic protein E    </text>
+  <text name="ReactionStep(R_degradation)">     Degradation of the response element (R) modulated by the signal strength    </text>
+  <text name="BioModel(CM_PM12648679_MB8::Negative_feedback_homeostasis)">     This ModelBrick from the article, " Sniffers, buzzers, toggles and blinkers …" describes negative feedback in which the response counteracts stimulus effects. The response element, R, inhibits the enzyme catalyzing its synthesis (E); hence, the rate of production of R is a sigmoidal decreasing function of R. The steady state concentration of R is confines to a narrow window for a broad range of signal strengths, because the supply of R adjusts to its demand. This type of regulation, commonly employed in biosynthetic pathways, is called homeostasis.    </text>
+  <text name="ReactionStep(E_phosphorylation)">     R inhibits the phosphorylation of the enzymatic protein (E) that catalyzes its synthesis    </text>
+</BioModel>

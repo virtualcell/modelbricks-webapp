@@ -1,0 +1,738 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model areaUnits="m2" id="CM_PM12648679_MB7__Mutual_inhibition_Deterministic" lengthUnits="m" metaid="_492100" name="CM_PM12648679_MB7::Mutual_inhibition_Deterministic" substanceUnits="mol" timeUnits="s" volumeUnits="litre_base">
+    <notes>
+      <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body xmlns="http://www.w3.org/1999/xhtml">
+    <p style="margin-top: 0in">
+      This ModelBrick from the article, "<i>Sniffers, buzzers, toggles 
+      and blinkers</i>…" is a toggle switch that describes mutual inhibition, 
+      where the response element (R) inhibits a protein E, and E promotes the 
+      degradation of R. R and E are mutually antagonistic.
+    </p>
+  </body>
+</html>
+    </notes>
+    <annotation>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/_492100">
+          <bqbiol:hasProperty xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Bag rdf:nodeID="node0">
+              <rdf:_1>
+                <rdf:Description rdf:about="http://identifiers.org/mamo/MAMO_0000046"/></rdf:_1></rdf:Bag></bqbiol:hasProperty><bqbiol:hasTaxon xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Bag rdf:nodeID="node1">
+              <rdf:_1>
+                <rdf:Description rdf:about="http://identifiers.org/taxonomy/131567"/></rdf:_1></rdf:Bag></bqbiol:hasTaxon><bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+            <rdf:Bag rdf:nodeID="node2">
+              <rdf:_1>
+                <rdf:Description rdf:about="http://identifiers.org/go/GO:0051098"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf><bqmodel:is xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Bag rdf:nodeID="node3">
+              <rdf:_1>
+                <rdf:Description rdf:about="http://identifiers.org/biomodels.db/MODEL1102100002"/></rdf:_1></rdf:Bag></bqmodel:is><bqmodel:is xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Bag rdf:nodeID="node4">
+              <rdf:_1>
+                <rdf:Description rdf:about="http://identifiers.org/biomodels.db/BIOMD0000000310"/></rdf:_1></rdf:Bag></bqmodel:is><bqmodel:isDescribedBy xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Bag rdf:nodeID="node5">
+              <rdf:_1>
+                <rdf:Description rdf:about="urn:miriam:doi:10.1016%2FS0955-0674%2803%2900017-6"/></rdf:_1></rdf:Bag></bqmodel:isDescribedBy><bqmodel:isDescribedBy xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Bag rdf:nodeID="node6">
+              <rdf:_1>
+                <rdf:Description rdf:about="http://identifiers.org/pubmed/12648679"/></rdf:_1></rdf:Bag></bqmodel:isDescribedBy><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">
+            <rdf:Bag rdf:nodeID="node7">
+              <rdf:_1>
+                <rdf:Description rdf:nodeID="node10">
+                  <vcard:EMAIL xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#">lukas@ebi.ac.uk</vcard:EMAIL><vcard:N xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#">
+                    <rdf:Description rdf:nodeID="node12">
+                      <vcard:Family>Endler</vcard:Family><vcard:Given>Lukas</vcard:Given></rdf:Description></vcard:N><vcard:ORG xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#">
+                    <rdf:Description rdf:nodeID="node13">
+                      <vcard:Orgname>EMBL-EBI</vcard:Orgname></rdf:Description></vcard:ORG></rdf:Description></rdf:_1><rdf:_2>
+                <rdf:Description rdf:nodeID="node11">
+                  <vcard:EMAIL xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#">tyson@vt.edu</vcard:EMAIL><vcard:N xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#">
+                    <rdf:Description rdf:nodeID="node14">
+                      <vcard:Family>Tyson</vcard:Family><vcard:Given>John J</vcard:Given></rdf:Description></vcard:N><vcard:ORG xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#">
+                    <rdf:Description rdf:nodeID="node15">
+                      <vcard:Orgname>Department of Biology, Virginia Polytechnic Institute and State University, Blacksburg, VA 24061, USA</vcard:Orgname></rdf:Description></vcard:ORG></rdf:Description></rdf:_2></rdf:Bag></dc:creator><dcterms:created xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:nodeID="node8">
+              <dcterms:W3CDTF>2011-02-10T03:06:32Z</dcterms:W3CDTF></rdf:Description></dcterms:created><dcterms:modified xmlns:dcterms="http://purl.org/dc/terms/">
+            <rdf:Description rdf:nodeID="node9">
+              <dcterms:W3CDTF>2014-04-06T20:06:02Z</dcterms:W3CDTF></rdf:Description></dcterms:modified></rdf:Description></rdf:RDF>
+    </annotation>
+      <listOfUnitDefinitions>
+      <unitDefinition id="mol">
+        <listOfUnits>
+          <unit exponent="1" kind="mole" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="litre_base" name="Base unit litre">
+        <listOfUnits>
+          <unit exponent="1" kind="litre" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="m2">
+        <listOfUnits>
+          <unit exponent="2" kind="metre" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="m">
+        <listOfUnits>
+          <unit exponent="1" kind="metre" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="s">
+        <listOfUnits>
+          <unit exponent="1" kind="second" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="mol_s_1_l_1">
+        <listOfUnits>
+          <unit exponent="1" kind="mole" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="second" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="litre" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="s_1">
+        <listOfUnits>
+          <unit exponent="-1" kind="second" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="M_1_s_1">
+        <listOfUnits>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="0"/>
+          <unit exponent="1" kind="litre" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="second" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="_one_">
+        <listOfUnits>
+          <unit exponent="1" kind="dimensionless" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="M">
+        <listOfUnits>
+          <unit exponent="1" kind="mole" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="litre" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="K">
+        <listOfUnits>
+          <unit exponent="1" kind="kelvin" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="C_mol_1">
+        <listOfUnits>
+          <unit exponent="1" kind="coulomb" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="C_nmol_1">
+        <listOfUnits>
+          <unit exponent="1" kind="coulomb" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="-9"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="molecules_pmol_1">
+        <listOfUnits>
+          <unit exponent="1" kind="item" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="-12"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="_one_000000000">
+        <listOfUnits>
+          <unit exponent="1" kind="dimensionless" multiplier="1000000000" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="mV_C_K_1_mol_1">
+        <listOfUnits>
+          <unit exponent="1" kind="volt" multiplier="1" scale="-3"/>
+          <unit exponent="1" kind="coulomb" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="kelvin" multiplier="1" scale="0"/>
+          <unit exponent="-1" kind="mole" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="mV_V_1">
+        <listOfUnits>
+          <unit exponent="1" kind="dimensionless" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="uM_um3_molecules_1">
+        <listOfUnits>
+          <unit exponent="1" kind="mole" multiplier="1" scale="-6"/>
+          <unit exponent="-1" kind="litre" multiplier="1" scale="0"/>
+          <unit exponent="3" kind="metre" multiplier="1" scale="-6"/>
+          <unit exponent="-1" kind="item" multiplier="1" scale="0"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment constant="true" id="env" metaid="_492102" name="env" size="1" spatialDimensions="3" units="litre_base">
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/_492102">
+              <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="http://identifiers.org/go/GO:0005623"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+            </compartment>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species boundaryCondition="false" compartment="env" constant="false" hasOnlySubstanceUnits="false" id="R" initialConcentration="0" metaid="_492103" substanceUnits="mol">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body xmlns="http://www.w3.org/1999/xhtml">
+    <p style="margin-top: 0">
+      response element
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/_492103">
+              <bqbiol:hasProperty xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="http://identifiers.org/go/GO:0016301"/></rdf:_1></rdf:Bag></bqbiol:hasProperty><bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node1">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="http://identifiers.org/chebi/CHEBI:36080"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="env" constant="false" hasOnlySubstanceUnits="false" id="S" initialConcentration="0" metaid="_492104" substanceUnits="mol">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body xmlns="http://www.w3.org/1999/xhtml">
+    <p style="margin-top: 0">
+      signal strength
+    </p>
+  </body>
+</html>
+        </notes>
+      </species>
+      <species boundaryCondition="true" compartment="env" constant="false" hasOnlySubstanceUnits="false" id="Ep" metaid="_492105" substanceUnits="mol">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body xmlns="http://www.w3.org/1999/xhtml">
+    <p style="margin-top: 0">
+      phosphorylated form of E, a protein involved with R in mutual inhibition
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/_492105">
+              <bqbiol:hasVersion xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="http://identifiers.org/psimod/MOD:00696"/></rdf:_1></rdf:Bag></bqbiol:hasVersion><bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node1">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="http://identifiers.org/kegg.compound/C00562"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+            </species>
+      <species boundaryCondition="true" compartment="env" constant="false" hasOnlySubstanceUnits="false" id="E" metaid="_492108" substanceUnits="mol">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body xmlns="http://www.w3.org/1999/xhtml">
+    <p style="margin-top: 0">
+      a protein involved with R in mutual inhibition
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/_492108">
+              <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="http://identifiers.org/chebi/CHEBI:36080"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+            </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter constant="true" id="k0" units="mol_s_1_l_1" value="0"/>
+      <parameter constant="true" id="k1" units="s_1" value="0.05"/>
+      <parameter constant="true" id="k2" units="s_1" value="0.1"/>
+      <parameter constant="true" id="k2_prime" units="M_1_s_1" value="0.5"/>
+      <parameter constant="true" id="k3" units="mol_s_1_l_1" value="0.2"/>
+      <parameter constant="true" id="J3" units="_one_" value="0.05"/>
+      <parameter constant="true" id="k4" units="s_1" value="1"/>
+      <parameter constant="true" id="J4" units="_one_" value="0.05"/>
+      <parameter constant="true" id="Et" units="M" value="1"/>
+      <parameter constant="false" id="Km3" units="M"/>
+      <parameter constant="false" id="Km4" units="M"/>
+      <parameter constant="true" id="_T_" units="K" value="300"/>
+      <parameter constant="true" id="_PI_" units="_one_" value="3.141592653589793"/>
+      <parameter constant="true" id="_F_" units="C_mol_1" value="9.64853321E4"/>
+      <parameter constant="true" id="_F_nmol_" units="C_nmol_1" value="9.64853321E-5"/>
+      <parameter constant="true" id="_N_pmol_" units="molecules_pmol_1" value="6.02214179E11"/>
+      <parameter constant="true" id="_K_GHK_" units="_one_000000000" value="1E-9"/>
+      <parameter constant="true" id="_R_" units="mV_C_K_1_mol_1" value="8314.46261815"/>
+      <parameter constant="true" id="K_millivolts_per_volt" units="mV_V_1" value="1000"/>
+      <parameter constant="true" id="KMOLE" units="uM_um3_molecules_1" value="0.001660538783162726"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="Km3">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <times/>
+            <ci> J3 </ci>
+            <ci> Et </ci>
+          </apply>
+        </math>
+            </assignmentRule>
+      <assignmentRule variable="Km4">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <times/>
+            <ci> J4 </ci>
+            <ci> Et </ci>
+          </apply>
+        </math>
+            </assignmentRule>
+      <assignmentRule variable="E">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <times/>
+            <ci> Et </ci>
+            <apply>
+              <times/>
+              <apply>
+                <times/>
+                <cn> 2 </cn>
+                <ci> k3 </ci>
+                <ci> J4 </ci>
+              </apply>
+              <apply>
+                <divide/>
+                <cn> 1 </cn>
+                <apply>
+                  <plus/>
+                  <apply>
+                    <plus/>
+                    <apply>
+                      <times/>
+                      <ci> k4 </ci>
+                      <ci> R </ci>
+                    </apply>
+                    <apply>
+                      <minus/>
+                      <ci> k3 </ci>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <times/>
+                    <ci> J3 </ci>
+                    <apply>
+                      <times/>
+                      <ci> k4 </ci>
+                      <ci> R </ci>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <times/>
+                    <ci> J4 </ci>
+                    <ci> k3 </ci>
+                  </apply>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <plus/>
+                      <apply>
+                        <power/>
+                        <apply>
+                          <plus/>
+                          <apply>
+                            <plus/>
+                            <apply>
+                              <times/>
+                              <ci> k4 </ci>
+                              <ci> R </ci>
+                            </apply>
+                            <apply>
+                              <minus/>
+                              <ci> k3 </ci>
+                            </apply>
+                          </apply>
+                          <apply>
+                            <times/>
+                            <ci> J3 </ci>
+                            <apply>
+                              <times/>
+                              <ci> k4 </ci>
+                              <ci> R </ci>
+                            </apply>
+                          </apply>
+                          <apply>
+                            <times/>
+                            <ci> J4 </ci>
+                            <ci> k3 </ci>
+                          </apply>
+                        </apply>
+                        <cn> 2 </cn>
+                      </apply>
+                      <apply>
+                        <minus/>
+                        <apply>
+                          <times/>
+                          <cn> 4 </cn>
+                          <apply>
+                            <plus/>
+                            <apply>
+                              <times/>
+                              <ci> k4 </ci>
+                              <ci> R </ci>
+                            </apply>
+                            <apply>
+                              <minus/>
+                              <ci> k3 </ci>
+                            </apply>
+                          </apply>
+                          <ci> k3 </ci>
+                          <ci> J4 </ci>
+                        </apply>
+                      </apply>
+                    </apply>
+                    <apply>
+                      <times/>
+                      <cn> 1 </cn>
+                      <apply>
+                        <divide/>
+                        <cn> 1 </cn>
+                        <cn> 2 </cn>
+                      </apply>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+            </assignmentRule>
+      <assignmentRule variable="Ep">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">        
+          <apply>
+            <plus/>
+            <ci> Et </ci>
+            <apply>
+              <minus/>
+              <ci> E </ci>
+            </apply>
+          </apply>
+        </math>
+            </assignmentRule>
+    </listOfRules>
+    <listOfReactions>
+      <reaction fast="false" id="R_synthesis" metaid="_492109" name="R_synthesis" reversible="true">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body xmlns="http://www.w3.org/1999/xhtml">
+    <p style="margin-top: 0">
+      Synthesis of the response element (R)
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/_492109">
+              <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="http://identifiers.org/go/GO:0009058"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+              <listOfProducts>
+          <speciesReference constant="true" id="R_synthesis_Rp" species="R" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <ci> k0 </ci>
+              <ci> env </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="R_synthesis2" metaid="_492110" name="R_synthesis2" reversible="true">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body xmlns="http://www.w3.org/1999/xhtml">
+    <p style="margin-top: 0">
+      synthesis of the response element (R) modulated by the signal strength 
+      (S)
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/_492110">
+              <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="http://identifiers.org/go/GO:0009058"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+              <listOfProducts>
+          <speciesReference constant="true" id="R_synthesis2_Rp" species="R" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="S"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <apply>
+                <times/>
+                <ci> k1 </ci>
+                <ci> S </ci>
+              </apply>
+              <ci> env </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="R_degradation" metaid="_492111" name="R_degradation" reversible="true">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body xmlns="http://www.w3.org/1999/xhtml">
+    <p style="margin-top: 0">
+      degradation of the response element (R)
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/_492111">
+              <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="http://identifiers.org/go/GO:0009056"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+              <listOfReactants>
+          <speciesReference constant="true" id="R_degradation_Rr" species="R" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <apply>
+                <times/>
+                <ci> k2 </ci>
+                <ci> R </ci>
+              </apply>
+              <ci> env </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="R_degradation2" metaid="_492114" name="R_degradation2" reversible="true">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body xmlns="http://www.w3.org/1999/xhtml">
+    <p style="margin-top: 0">
+      Degradation of the response element (R) modulated by E, a protein 
+      involved with R in mutual inhibition
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/_492114">
+              <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="http://identifiers.org/go/GO:0009056"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+              <listOfReactants>
+          <speciesReference constant="true" id="R_degradation2_Rr" species="R" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfReactants>
+        <listOfModifiers>
+          <modifierSpeciesReference species="E"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <apply>
+                <times/>
+                <ci> k2_prime </ci>
+                <ci> R </ci>
+                <ci> E </ci>
+              </apply>
+              <ci> env </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="E_dephosphorylation" metaid="_492115" name="E_dephosphorylation" reversible="true">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body xmlns="http://www.w3.org/1999/xhtml">
+    <p style="margin-top: 0">
+      dephosphorylation of E, a protein involved with R in mutual inhibition
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/_492115">
+              <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="http://identifiers.org/go/GO:0006470"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+              <listOfReactants>
+          <speciesReference constant="true" id="E_dephosphorylation_Epr" species="Ep" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference constant="true" id="E_dephosphorylation_Ep" species="E" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <apply>
+                <times/>
+                <ci> k3 </ci>
+                <ci> Ep </ci>
+                <apply>
+                  <divide/>
+                  <cn> 1 </cn>
+                  <apply>
+                    <plus/>
+                    <ci> Km3 </ci>
+                    <ci> Ep </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> env </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="E_phosphorylation" metaid="_492118" name="E_phosphorylation" reversible="true">
+        <notes>
+          <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+  </head>
+  <body xmlns="http://www.w3.org/1999/xhtml">
+    <p style="margin-top: 0">
+      phosphorylation of E, a protein involved with R in mutual inhibition
+    </p>
+  </body>
+</html>
+        </notes>
+        <annotation>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <rdf:Description rdf:about="http://www.sbml.org/sbml/level2/version4/_492118">
+              <bqbiol:isVersionOf xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
+                <rdf:Bag rdf:nodeID="node0">
+                  <rdf:_1>
+                    <rdf:Description rdf:about="http://identifiers.org/go/GO:0006468"/></rdf:_1></rdf:Bag></bqbiol:isVersionOf></rdf:Description></rdf:RDF>
+        </annotation>
+              <listOfReactants>
+          <speciesReference constant="true" id="E_phosphorylation_Er" species="E" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference constant="true" id="E_phosphorylation_Epp" species="Ep" stoichiometry="1">
+            <notes>
+              <p xmlns="http://www.w3.org/1999/xhtml">VCELL guess: how do we know if reaction is constant?</p>
+            </notes>
+          </speciesReference>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="R"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <times/>
+              <apply>
+                <times/>
+                <ci> k4 </ci>
+                <ci> R </ci>
+                <ci> E </ci>
+                <apply>
+                  <divide/>
+                  <cn> 1 </cn>
+                  <apply>
+                    <plus/>
+                    <ci> Km4 </ci>
+                    <ci> E </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> env </ci>
+            </apply>
+          </math>
+                </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

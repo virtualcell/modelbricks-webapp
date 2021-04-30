@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BioModel name="CM_PM12648679_MB3::Protein_phosphorylation_sigmoidal">
+  <math name="Sigmoidal">Deterministic (ODE), Compartmental</math>
+  <url name="BioModel(CM_PM12648679_MB3::Protein_phosphorylation_sigmoidal)">http://identifiers.org/mamo:MAMO_0000046</url>
+  <url name="BioModel(CM_PM12648679_MB3::Protein_phosphorylation_sigmoidal)">http://identifiers.org/obo.go:GO%3A0051098</url>
+  <url name="BioModel(CM_PM12648679_MB3::Protein_phosphorylation_sigmoidal)">http://identifiers.org/doi:10.1016%2Fs0955-0674%2803%2900017-6+</url>
+  <url name="BioModel(CM_PM12648679_MB3::Protein_phosphorylation_sigmoidal)">http://identifiers.org/pubmed:12648679</url>
+  <url name="Structure(c0)">http://identifiers.org/obo.go:GO%3A0005623</url>
+  <url name="ReactionStep(protein_phos)">http://identifiers.org/obo.go:GO%3A0006468</url>
+  <url name="ReactionStep(protein_dephos)">http://identifiers.org/obo.go:GO%3A0006470</url>
+  <url name="Species(s7)">http://identifiers.org/kegg.compound:C00562</url>
+  <url name="Species(s6)">http://identifiers.org/chebi:CHEBI%3A36080</url>
+  <url name="MolecularType(R)">http://identifiers.org/chebi:CHEBI%3A36080</url>
+  <text name="BioModel(CM_PM12648679_MB3::Protein_phosphorylation_sigmoidal)">     This ModelBrick from the article, " Sniffers, buzzers, toggles and blinkers …" describes protein phosphorylation and dephosphorylation reactions governed by Michelis-Menten kinetics, yielding a sigmoidal signal-response curve.    </text>
+  <text name="ReactionStep(protein_phos)">     Phosphorylation of the response element.    </text>
+  <text name="MolecularType(S)">     S = signal strength. For example, S could be the concentration of mRNA.    </text>
+  <text name="Species(s7)">     phosphorylated form of the response element. The phosphorylated form of R is supposed to be the active form.    </text>
+  <text name="Species(s5)">     signal strength. For example, S could be the concentration of mRNA.    </text>
+  <text name="MolecularType(R)">     response magnitude. For example, R could be the concentration of protein. The phosphorylated form of R is supposed to be the active form.    </text>
+  <text name="ReactionStep(protein_dephos)">     Dephosphorylation of the response element.    </text>
+  <text name="Species(s6)">     response magnitude. For example, R could be the concentration of protein.    </text>
+</BioModel>

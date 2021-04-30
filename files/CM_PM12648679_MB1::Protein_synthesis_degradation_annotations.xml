@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BioModel name="CM_PM12648679_MB1::Protein_synthesis_degradation">
+  <math name="Linear">Deterministic (ODE), Compartmental</math>
+  <url name="BioModel(CM_PM12648679_MB1::Protein_synthesis_degradation)">http://identifiers.org/mamo:MAMO_0000046</url>
+  <url name="BioModel(CM_PM12648679_MB1::Protein_synthesis_degradation)">http://identifiers.org/obo.go:GO%3A0051098</url>
+  <url name="BioModel(CM_PM12648679_MB1::Protein_synthesis_degradation)">http://identifiers.org/pubmed:12648679</url>
+  <url name="BioModel(CM_PM12648679_MB1::Protein_synthesis_degradation)">http://identifiers.org/doi:10.1016%2FS0955-0674%2803%2900017-6</url>
+  <url name="Structure(c0)">http://identifiers.org/obo.go:GO%3A0005623</url>
+  <url name="ReactionStep(R_synthesis)">http://identifiers.org/obo.go:GO%3A0009058</url>
+  <url name="ReactionStep(R_degradation)">http://identifiers.org/obo.go:GO%3A0009056</url>
+  <url name="Species(s0)">http://identifiers.org/chebi:CHEBI%3A36080</url>
+  <url name="MolecularType(R)">http://identifiers.org/chebi:CHEBI%3A36080</url>
+  <text name="MolecularType(R)">     R = response element. For example, R could be the concentration of protein.    </text>
+  <text name="Species(s1)">     S = signal strength. For example, S could be the concentration of mRNA.    </text>
+  <text name="BioModel(CM_PM12648679_MB1::Protein_synthesis_degradation)">     This ModelBrick from the article, “ Sniffers, buzzers, toggles and blinkers… ” describes protein synthesis and degradation that yields a linear signal-response curve.    </text>
+  <text name="ReactionStep(R_synthesis)">     Synthesis of the response element (R)    </text>
+  <text name="ReactionStep(R_degradation)">     Degradation of the response element (R)    </text>
+  <text name="Species(s0)">     R = response element. For example, R could be the concentration of protein.    </text>
+  <text name="MolecularType(S)">     S = signal strength. For example, S could be the concentration of mRNA.    </text>
+</BioModel>

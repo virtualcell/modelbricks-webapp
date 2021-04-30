@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BioModel name="CM_PM12648679_MB4::Perfect_adaptation">
+  <math name="PerfectlyAdapted">Deterministic (ODE), Compartmental</math>
+  <url name="BioModel(CM_PM12648679_MB4::Perfect_adaptation)">http://identifiers.org/mamo:MAMO_0000046</url>
+  <url name="BioModel(CM_PM12648679_MB4::Perfect_adaptation)">http://identifiers.org/obo.go:GO%3A0051098</url>
+  <url name="BioModel(CM_PM12648679_MB4::Perfect_adaptation)">http://identifiers.org/biomodels.db:BIOMD0000000312</url>
+  <url name="BioModel(CM_PM12648679_MB4::Perfect_adaptation)">http://identifiers.org/biomodels.db:MODEL1102100000</url>
+  <url name="BioModel(CM_PM12648679_MB4::Perfect_adaptation)">http://identifiers.org/pubmed:12648679</url>
+  <url name="BioModel(CM_PM12648679_MB4::Perfect_adaptation)">http://identifiers.org/doi:10.1016%2FS0955-0674%2803%2900017-6</url>
+  <url name="Structure(c0)">http://identifiers.org/obo.go:GO%3A0005623</url>
+  <url name="ReactionStep(R_degradation)">http://identifiers.org/obo.go:GO%3A0009056</url>
+  <url name="ReactionStep(X_degradation)">http://identifiers.org/obo.go:GO%3A0009056</url>
+  <url name="ReactionStep(X_synthesis)">http://identifiers.org/obo.go:GO%3A0009058</url>
+  <url name="ReactionStep(R_synthesis)">http://identifiers.org/obo.go:GO%3A0009058</url>
+  <url name="Species(s10)">http://identifiers.org/chebi:CHEBI%3A36080</url>
+  <url name="Species(s9)">http://identifiers.org/chebi:CHEBI%3A36080</url>
+  <url name="MolecularType(X)">http://identifiers.org/chebi:CHEBI%3A36080</url>
+  <url name="MolecularType(R)">http://identifiers.org/chebi:CHEBI%3A36080</url>
+  <text name="MolecularType(X)">     Species X. Provides a second signaling pathway in the model.    </text>
+  <text name="Species(s10)">     Species X. Provides a second signaling pathway in the model.    </text>
+  <text name="MolecularType(S)">     S = signal strength. For example, S could be the concentration of mRNA.    </text>
+  <text name="ReactionStep(R_degradation)">     Degradation of the response element    </text>
+  <text name="Species(s8)">     S = signal strength. For example, S could be the concentration of mRNA.    </text>
+  <text name="Species(s9)">     response element. For example, R could be the concentration of protein.    </text>
+  <text name="BioModel(CM_PM12648679_MB4::Perfect_adaptation)">     This ModelBrick from the article, " Sniffers, buzzers, toggles and blinkers …” describes a simple linear response element supplemented with a second signaling pathway (through species X), creating a response mechanism that exhibits perfect adaptation to the signal. Although the signaling pathway exhibits a transient response to changes in signal strength, its steady-state response is independent of the signal strength (S).    </text>
+  <text name="MolecularType(R)">     response magnitude. For example, R could be the concentration of protein.    </text>
+  <text name="ReactionStep(X_synthesis)">     Synthesis of species X    </text>
+  <text name="ReactionStep(R_synthesis)">     Synthesis of the response element.    </text>
+  <text name="ReactionStep(X_degradation)">     Degradation of species X    </text>
+</BioModel>
