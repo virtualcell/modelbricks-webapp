@@ -18,10 +18,8 @@ Object.defineProperty(String.prototype, 'rgb', {
       hash++;
       hash *= 17777777;
     }
-    //16777215 is 255 in base 10
-    while (hash > 16777215) {
-      hash = hash / 16;
-    }
+    //16777215 is FFFFFF in base 16
+    hash = hash % 16777215;
     color = Math.floor(hash);
     color = color.toString(16);
     var rgb = [];

@@ -19,7 +19,6 @@ fetch("/json/annotations.json")
         let pre = prefixes[p];
         if (link.includes(pre)) {
           var indexToSlice = link.indexOf(pre) + pre.length + 1;
-          //console.log(indexToSlice, pre, link);
           link = 'http://identifiers.org/' + link.slice(indexToSlice, link.length);
         }
       }
@@ -29,7 +28,45 @@ fetch("/json/annotations.json")
 
       var qual = json.BioModel.url[i].qualifier;
 
-      // global publications
+      //map vcml name to html element name
+      let nameMap = new Object();
+      nameMap["BioModel"] = 'globalPublications';
+      nameMap["ReactionStep"] = "reactionUID-!";
+      nameMap["Structure"] = "structureUID-!";
+      nameMap["MolecularType"] = "moleculesUID-!";
+      nameMap["Species"] = "speciesUID-!";
+      nameMap["RbmObservable"] = "observableUID-!";
+      nameMap["ModelParameter"] = "parameterUID-!";
+
+      let vcmlNames = Object.keys(nameMap);
+
+      for (i in vcmlNames) {
+        vcmlName = vcmlNames[i];
+        if (name.includes(vcmlName)) {
+
+          //get the html element
+          let indexToSlice = name.indexOf("(") + 1;
+          let length = name.indexOf(")");
+          let idenitifier = name.slice(indexToSlice, length);
+          let elementName = nameMap[vcmlName];
+          elementName = elementName.replace('!', idenitifier);
+          let element = document.getElementById(elementName);
+
+          //add annotation
+          indexToSlice = link.lastIndexOf("identifiers.org/") + 16;
+          let linkId = link.slice(indexToSlice, link.length);
+          if (element != null) {
+            element.innerHTML += `
+        <p>${qual} <a href="${link}">${linkId}</a>
+        </p>
+        `;
+          }
+
+          break;
+        }
+      }
+
+      /*// global publications
       let globalPublications = document.getElementById("globalPublications");
       if (name.includes("BioModel")) {
         if (globalPublications != null) {
@@ -40,7 +77,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               globalPublications.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
           `;
             } else {
@@ -48,7 +85,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               globalPublications.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
 
           `;
@@ -60,7 +97,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             globalPublications.innerHTML += `
-          <p>${qual} <a href="${link}">Mamo : ${linkId}</a>
+          <p>${qual} <a href="${link}">Mamo:${linkId}</a>
           </p>
           `;
           }
@@ -70,7 +107,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             globalPublications.innerHTML += `
-          <p>${qual} <a href="${link}">BioModels : ${linkId}</a>
+          <p>${qual} <a href="${link}">BioModels:${linkId}</a>
           </p>
           `;
           }
@@ -80,7 +117,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             globalPublications.innerHTML += `
-            <p>${qual} <a href="${link}">Taxonomy : ${linkId}</a>
+            <p>${qual} <a href="${link}">Taxonomy:${linkId}</a>
 
             </p>
             `;
@@ -91,7 +128,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             globalPublications.innerHTML += `
-            <p>${qual} <a href="${link}">Pubmed : ${linkId}</a>
+            <p>${qual} <a href="${link}">Pubmed:${linkId}</a>
 
             </p>
             `;
@@ -102,7 +139,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             globalPublications.innerHTML += `
-            <p>${qual} <a href="${link}">Uniprot : ${linkId}</a>
+            <p>${qual} <a href="${link}">Uniprot:${linkId}</a>
 
             </p>
             `;
@@ -113,7 +150,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             globalPublications.innerHTML += `
-            <p>${qual} <a href="${link}">Go : ${linkId}</a>
+            <p>${qual} <a href="${link}">Go:${linkId}</a>
 
             </p>
             `;
@@ -124,15 +161,18 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             globalPublications.innerHTML += `
-            <p>${qual} <a href="${link}">Reactome : ${linkId}</a>
+            <p>${qual} <a href="${link}">Reactome:${linkId}</a>
 
             </p>
             `;
           }
           //DOI
           if (link.includes("doi")) {
+            var indexToSlice = link.lastIndexOf("identifiers.org/") + "identifiers.org/".length;
+            var length = link.length;
+            var linkId = link.slice(indexToSlice, length);
             globalPublications.innerHTML += `
-            <p>${qual} <a href="${link}">DOI</a>
+            <p>${qual} <a href="${link}">${linkId}</a>
 
             </p>
             `;
@@ -160,7 +200,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
           `;
             } else {
@@ -168,7 +208,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
 
           `;
@@ -180,7 +220,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Mamo : ${linkId}</a>
+          <p>${qual} <a href="${link}">Mamo:${linkId}</a>
           </p>
           `;
           }
@@ -190,7 +230,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">BioModels : ${linkId}</a>
+          <p>${qual} <a href="${link}">BioModels:${linkId}</a>
           </p>
           `;
           }
@@ -200,7 +240,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Taxonomy : ${linkId}</a>
+            <p>${qual} <a href="${link}">Taxonomy:${linkId}</a>
 
             </p>
             `;
@@ -211,7 +251,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Pubmed : ${linkId}</a>
+            <p>${qual} <a href="${link}">Pubmed:${linkId}</a>
 
             </p>
             `;
@@ -222,7 +262,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Uniprot : ${linkId}</a>
+            <p>${qual} <a href="${link}">Uniprot:${linkId}</a>
 
             </p>
             `;
@@ -233,7 +273,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Go : ${linkId}</a>
+            <p>${qual} <a href="${link}">Go:${linkId}</a>
 
             </p>
             `;
@@ -244,15 +284,18 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Reactome : ${linkId}</a>
+            <p>${qual} <a href="${link}">Reactome:${linkId}</a>
 
             </p>
             `;
           }
           //DOI
           if (link.includes("doi")) {
+            var indexToSlice = link.lastIndexOf("/") + 1;
+            var length = link.length;
+            var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">DOI</a>
+            <p>${qual} <a href="${link}">${linkId}</a>
 
             </p>
             `;
@@ -290,7 +333,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
           `;
             } else {
@@ -298,7 +341,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
 
           `;
@@ -310,7 +353,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Mamo : ${linkId}</a>
+          <p>${qual} <a href="${link}">Mamo:${linkId}</a>
           </p>
           `;
           }
@@ -320,7 +363,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">BioModels : ${linkId}</a>
+          <p>${qual} <a href="${link}">BioModels:${linkId}</a>
           </p>
           `;
           }
@@ -330,7 +373,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Taxonomy : ${linkId}</a>
+            <p>${qual} <a href="${link}">Taxonomy:${linkId}</a>
 
             </p>
             `;
@@ -341,7 +384,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Pubmed : ${linkId}</a>
+            <p>${qual} <a href="${link}">Pubmed:${linkId}</a>
 
             </p>
             `;
@@ -352,7 +395,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Uniprot : ${linkId}</a>
+            <p>${qual} <a href="${link}">Uniprot:${linkId}</a>
 
             </p>
             `;
@@ -363,7 +406,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Go : ${linkId}</a>
+            <p>${qual} <a href="${link}">Go:${linkId}</a>
 
             </p>
             `;
@@ -374,7 +417,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Reactome : ${linkId}</a>
+            <p>${qual} <a href="${link}">Reactome:${linkId}</a>
 
             </p>
             `;
@@ -382,7 +425,7 @@ fetch("/json/annotations.json")
           //DOI
           if (link.includes("doi")) {
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">DOI</a>
+            <p>${qual} <a href="${link}">${linkId}</a>
 
             </p>
             `;
@@ -409,7 +452,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
           `;
             } else {
@@ -417,7 +460,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
 
           `;
@@ -429,7 +472,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Mamo : ${linkId}</a>
+          <p>${qual} <a href="${link}">Mamo:${linkId}</a>
           </p>
           `;
           }
@@ -439,7 +482,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">BioModels : ${linkId}</a>
+          <p>${qual} <a href="${link}">BioModels:${linkId}</a>
           </p>
           `;
           }
@@ -449,7 +492,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Taxonomy : ${linkId}</a>
+            <p>${qual} <a href="${link}">Taxonomy:${linkId}</a>
 
             </p>
             `;
@@ -460,7 +503,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Pubmed : ${linkId}</a>
+            <p>${qual} <a href="${link}">Pubmed:${linkId}</a>
 
             </p>
             `;
@@ -471,7 +514,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Uniprot : ${linkId}</a>
+            <p>${qual} <a href="${link}">Uniprot:${linkId}</a>
 
             </p>
             `;
@@ -482,7 +525,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Go : ${linkId}</a>
+            <p>${qual} <a href="${link}">Go:${linkId}</a>
 
             </p>
             `;
@@ -493,7 +536,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Reactome : ${linkId}</a>
+            <p>${qual} <a href="${link}">Reactome:${linkId}</a>
 
             </p>
             `;
@@ -501,7 +544,7 @@ fetch("/json/annotations.json")
           //DOI
           if (link.includes("doi")) {
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">DOI</a>
+            <p>${qual} <a href="${link}">${linkId}</a>
 
             </p>
             `;
@@ -527,7 +570,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
           `;
             } else {
@@ -535,7 +578,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
 
           `;
@@ -547,7 +590,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Mamo : ${linkId}</a>
+          <p>${qual} <a href="${link}">Mamo:${linkId}</a>
           </p>
           `;
           }
@@ -557,7 +600,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">BioModels : ${linkId}</a>
+          <p>${qual} <a href="${link}">BioModels:${linkId}</a>
           </p>
           `;
           }
@@ -567,7 +610,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Taxonomy : ${linkId}</a>
+            <p>${qual} <a href="${link}">Taxonomy:${linkId}</a>
 
             </p>
             `;
@@ -578,7 +621,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Pubmed : ${linkId}</a>
+            <p>${qual} <a href="${link}">Pubmed:${linkId}</a>
 
             </p>
             `;
@@ -589,7 +632,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Uniprot : ${linkId}</a>
+            <p>${qual} <a href="${link}">Uniprot:${linkId}</a>
 
             </p>
             `;
@@ -600,7 +643,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Go : ${linkId}</a>
+            <p>${qual} <a href="${link}">Go:${linkId}</a>
 
             </p>
             `;
@@ -611,7 +654,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Reactome : ${linkId}</a>
+            <p>${qual} <a href="${link}">Reactome:${linkId}</a>
 
             </p>
             `;
@@ -619,7 +662,7 @@ fetch("/json/annotations.json")
           //DOI
           if (link.includes("doi")) {
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">DOI</a>
+            <p>${qual} <a href="${link}">${linkId}</a>
 
             </p>
             `;
@@ -646,7 +689,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
           `;
             } else {
@@ -654,7 +697,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
 
           `;
@@ -666,7 +709,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Mamo : ${linkId}</a>
+          <p>${qual} <a href="${link}">Mamo:${linkId}</a>
           </p>
           `;
           }
@@ -676,7 +719,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">BioModels : ${linkId}</a>
+          <p>${qual} <a href="${link}">BioModels:${linkId}</a>
           </p>
           `;
           }
@@ -686,7 +729,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Taxonomy : ${linkId}</a>
+            <p>${qual} <a href="${link}">Taxonomy:${linkId}</a>
 
             </p>
             `;
@@ -697,7 +740,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Pubmed : ${linkId}</a>
+            <p>${qual} <a href="${link}">Pubmed:${linkId}</a>
 
             </p>
             `;
@@ -708,7 +751,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Uniprot : ${linkId}</a>
+            <p>${qual} <a href="${link}">Uniprot:${linkId}</a>
 
             </p>
             `;
@@ -719,7 +762,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Go : ${linkId}</a>
+            <p>${qual} <a href="${link}">Go:${linkId}</a>
 
             </p>
             `;
@@ -730,7 +773,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Reactome : ${linkId}</a>
+            <p>${qual} <a href="${link}">Reactome:${linkId}</a>
 
             </p>
             `;
@@ -738,7 +781,7 @@ fetch("/json/annotations.json")
           //DOI
           if (link.includes("doi")) {
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">DOI</a>
+            <p>${qual} <a href="${link}">${linkId}</a>
 
             </p>
             `;
@@ -765,7 +808,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
           `;
             } else {
@@ -773,7 +816,7 @@ fetch("/json/annotations.json")
               var length = link.length;
               var linkId = link.slice(indexToSlice, length);
               annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Chebi : ${linkId}</a>
+          <p>${qual} <a href="${link}">Chebi:${linkId}</a>
           </p>
 
           `;
@@ -785,7 +828,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">Mamo : ${linkId}</a>
+          <p>${qual} <a href="${link}">Mamo:${linkId}</a>
           </p>
           `;
           }
@@ -795,7 +838,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-          <p>${qual} <a href="${link}">BioModels : ${linkId}</a>
+          <p>${qual} <a href="${link}">BioModels:${linkId}</a>
           </p>
           `;
           }
@@ -805,7 +848,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Taxonomy : ${linkId}</a>
+            <p>${qual} <a href="${link}">Taxonomy:${linkId}</a>
 
             </p>
             `;
@@ -816,7 +859,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Pubmed : ${linkId}</a>
+            <p>${qual} <a href="${link}">Pubmed:${linkId}</a>
 
             </p>
             `;
@@ -827,7 +870,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Uniprot : ${linkId}</a>
+            <p>${qual} <a href="${link}">Uniprot:${linkId}</a>
 
             </p>
             `;
@@ -838,7 +881,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Go : ${linkId}</a>
+            <p>${qual} <a href="${link}">Go:${linkId}</a>
 
             </p>
             `;
@@ -849,7 +892,7 @@ fetch("/json/annotations.json")
             var length = link.length;
             var linkId = link.slice(indexToSlice, length);
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">Reactome : ${linkId}</a>
+            <p>${qual} <a href="${link}">Reactome:${linkId}</a>
 
             </p>
             `;
@@ -857,13 +900,13 @@ fetch("/json/annotations.json")
           //DOI
           if (link.includes("doi")) {
             annotationDiv.innerHTML += `
-            <p>${qual} <a href="${link}">DOI</a>
+            <p>${qual} <a href="${link}">${linkId}</a>
 
             </p>
             `;
           }
         }
-      }
+      }*/
     }
 
     // UID COMPLETED ---------------------->
@@ -993,7 +1036,7 @@ fetch("/json/annotations.json")
     }
   });
 
-// downloads section
+/*// downloads section
 console.log(selectedModel.innerHTML);
 var selectedModelName = selectedModel.innerHTML;
 console.log(selectedModelName);
@@ -1118,4 +1161,4 @@ fetch("/downloads/" + selectedModelName + "_Deterministic.xml").then(
       throw new Error("Not 2xx response");
     }
   }
-);
+);*/

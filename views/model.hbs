@@ -1103,13 +1103,23 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {{#each data.vcml.BioModel}}
+                            {{#each this.Version}}
+                            <!--vcml-->
+                            <tr id="deterministicXml">
+                                <td data-label="Format" class="Format">VCML</td>
+                                <td data-label="File" class="File"><a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.vcml">
+                                  VCML File
+                                </a>
+                                </td>
+                            </tr>
                             <tr id="bngl">
                                 <td data-label="Format" class="Format">BNGL</td>
                                 <td data-label="File" class="File"><span id="bnglFile" class="unit"></span>
                                 </td>
                             </tr>
                             <tr id="m">
-                                <td data-label="Format" class="Format">Metlab</td>
+                                <td data-label="Format" class="Format">MatLab</td>
                                 <td data-label="File" class="File"><span id="sbmlFile" class="unit"></span>
                                 </td>
                             </tr>
@@ -1127,11 +1137,8 @@
                                 <td data-label="File" class="File"><span id="sedmlFile" class="unit"></span>
                                 </td>
                             </tr>
-                            <tr id="deterministicXml">
-                                <td data-label="Format" class="Format">VCML</td>
-                                <td data-label="File" class="File"><span id="dxmlFile" class="unit"></span>
-                                </td>
-                            </tr>
+                            {{/each}}
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>

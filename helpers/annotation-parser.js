@@ -172,6 +172,11 @@ class AnnParser {
 
     return (this.name);
   }
+
+  getVersionId() {
+    this.VersionId = this.vcmlObj.vcml.BioModel[0].Version[0].$.KeyValue;
+    return this.VersionId;
+  }
 }
 
 //export this object to app.js
