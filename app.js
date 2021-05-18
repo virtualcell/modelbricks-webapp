@@ -57,6 +57,12 @@ const hbs = exphbs.create({
         return string;
       }
     },
+    add: function (a, b) {
+      return (parseInt(a) + parseInt(b));
+    },
+    sub: function (a, b) {
+      return (parseInt(a) - parseInt(b));
+    },
   },
 });
 
@@ -102,15 +108,19 @@ app.get("/curatedList/model", (req, res) => {
 
 // main pages with dynamic content starts from here
 // Fetching Curated List of models from Vcel Beta API
-app.get("/curatedList", async (req, res) => {
+app.get("/curatedList/page/:num", async (req, res) => {
+  const page = req.params.num;
+  const maxModels = 5;
+  const APIrow = page * maxModels - maxModels - 1;
   const api_url =
-    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel?bmName=&bmId=&category=all&owner=ModelBrick&savedLow=&savedHigh=&startRow=1&maxRows=1000&orderBy=date_desc";
+    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel?bmName=&bmId=&category=all&owner=ModelBrick&savedLow=&savedHigh=&startRow=" + APIrow + "&maxRows=" + maxModels + "&orderBy=date_desc";
 
   const fetch_response = await fetch(api_url);
   const json = await fetch_response.json();
   res.render("curatedList", {
     title: "ModelBricks - Curated List",
     json,
+    page,
   });
 });
 
@@ -120,7 +130,7 @@ app.get("/curatedList/search", async (req, res) => {
   const api_url =
     "https://vcellapi-beta.cam.uchc.edu:8080/biomodel?bmName=" +
     bmName +
-    "&bmId=&category=all&owner=ModelBrick&savedLow=&savedHigh=&startRow=1&maxRows=1000&orderBy=date_desc";
+    "&bmId=&category=all&owner=&savedLow=&savedHigh=&startRow=1&maxRows=1000&orderBy=date_desc";
 
   const fetch_response = await fetch(api_url);
   const json = await fetch_response.json();
@@ -166,8 +176,25 @@ app.get("/curatedList/model/:name", (req, res) => {
 // dynamic printable pages, option available on dashboard page
 app.get("/curatedList/printModel/:name", (req, res) => {
   modelName = req.params.name;
+  const api_url =
+    'https://vcellapi-beta.cam.uchc.edu:8080/biomodel/' + modelName + '/biomodel.vcml';
   var parser = new xml2js.Parser();
-  fs.readFile("./files/" + req.params.name + ".vcml", (err, data) => {
+  fetch(api_url).then(function(response) {
+    return response.text().then(function(text) {
+      parser.parseString(text, (err, result) => {
+        data = result;
+        let annoObj = new aPrs.AnnParser(data);
+        let annoData = annoObj.getString();
+        fs.writeFileSync("./public/json/" + "annotations" + ".json", annoData);
+        res.render("printModel", {
+          title: "ModelBricks - Model Print Page",
+          data,
+          modelName,
+        });
+      });
+    });
+  });
+  /*fs.readFile("./files/" + req.params.name + ".vcml", (err, data) => {
     parser.parseString(data, (err, result) => {
       const data = result;
       // generating static html pages in ./public/html
@@ -200,7 +227,7 @@ app.get("/curatedList/printModel/:name", (req, res) => {
         );
       });
     }
-  );
+  );*/
 });
 
 // displaying static pages (searched by GOOGLE)

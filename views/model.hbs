@@ -70,7 +70,8 @@
             {{#each this.Version}}
             <li><a id="modelName" href="#dashboard">{{trimString this.$.Name}} -
                     {{this.$.KeyValue}}</a></li>
-            <li class="printable"><a href="/curatedList/printModel/{{this.$.Name}}"><i class="fa fa-print"
+                    this.VersionId = this.vcmlObj.vcml.BioModel[0].Version[0].$.KeyValue;
+            <li class="printable"><a href="/curatedList/printModel/{{this.$.KeyValue}}"><i class="fa fa-print"
                         aria-hidden="true"></i></a>
             </li>
 
