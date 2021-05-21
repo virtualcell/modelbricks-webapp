@@ -108,12 +108,24 @@ app.get("/curatedList/model", (req, res) => {
 
 // main pages with dynamic content starts from here
 // Fetching Curated List of models from Vcel Beta API
-app.get("/curatedList/page/:num", async (req, res) => {
-  const page = req.params.num;
+app.get("/curatedList/:search", async (req, res) => {
+  //TODO make sure "&" CANNOT be in any search criteria
+  //search parameter mirror the format of API Urls except for page term
+  const search = req.params.search;
+  //format search string into object
+  var terms = search.split("&");
+  for (let i = 0; i < terms.length; i++) {
+    terms[i] = terms[i].split("=");
+  }
+  var termMap = Object.fromEntries(terms);
+
+  //some vars for startRow and maxRow terms
+  const page = termMap["page"]
   const maxModels = 5;
   const APIrow = page * maxModels - maxModels - 1;
+
   const api_url =
-    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel?bmName=&bmId=&category=all&owner=ModelBrick&savedLow=&savedHigh=&startRow=" + APIrow + "&maxRows=" + maxModels + "&orderBy=date_desc";
+    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel?bmName=" + termMap["bmName"] + "&bmId=" + termMap["bmId"] + "&category=" + termMap["category"] + "&owner=" + termMap["owner"] + "&savedLow=" + termMap["savedLow"] + "&savedHigh=" + termMap["savedHigh"] + "&startRow=" + APIrow + "&maxRows=" + maxModels + "&orderBy=" + termMap["orderBy"];
 
   const fetch_response = await fetch(api_url);
   const json = await fetch_response.json();
