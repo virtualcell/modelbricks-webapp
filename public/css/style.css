@@ -1062,7 +1062,7 @@ li.card {
   border: 1px solid #0085a6;
   background: none;
   border-radius: 3px;
-  color: #0085a6;
+  color: /*#0085a6;*/ blue;
   font-size: 1em;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
@@ -3020,4 +3020,10 @@ span.unit {
   background-color: #0a74ff ;
   padding: 10px ;
   border: 2px solid blue ;
+}
+
+#list-empty {
+  text-align: center;
+  margin: auto;
+  margin-top: 120px;
 }

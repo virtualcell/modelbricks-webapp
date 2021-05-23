@@ -70,7 +70,6 @@
             {{#each this.Version}}
             <li><a id="modelName" href="#dashboard">{{trimString this.$.Name}} -
                     {{this.$.KeyValue}}</a></li>
-                    this.VersionId = this.vcmlObj.vcml.BioModel[0].Version[0].$.KeyValue;
             <li class="printable"><a href="/curatedList/printModel/{{this.$.KeyValue}}"><i class="fa fa-print"
                         aria-hidden="true"></i></a>
             </li>
@@ -341,7 +340,7 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
+                    <a class='popup-close' href="#structures"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -364,7 +363,7 @@
                             <h2>{{value.$.Name}} Text Annotations</h2>
                         </div>
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
+                    <a class='popup-close' href="#structures"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -1155,8 +1154,5 @@
 <script src="/js/main.js"></script>
 
 <script>
-    alerting = (variable) => {
-        console.log("alert is on");
-        console.log(variable);
-    };
+    alerting = (variable) => {};
 </script>

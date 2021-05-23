@@ -63,6 +63,9 @@ const hbs = exphbs.create({
     sub: function (a, b) {
       return (parseInt(a) - parseInt(b));
     },
+    greater: function (a, b) {
+      return (a > b);
+    },
   },
 });
 
@@ -109,7 +112,7 @@ app.get("/curatedList/model", (req, res) => {
 // main pages with dynamic content starts from here
 // Fetching Curated List of models from Vcel Beta API
 app.get("/curatedList/:search", async (req, res) => {
-  //TODO make sure "&" CANNOT be in any search criteria
+  //TODO how to get max num of pages?
   //search parameter mirror the format of API Urls except for page term
   const search = req.params.search;
   //format search string into object
@@ -124,32 +127,32 @@ app.get("/curatedList/:search", async (req, res) => {
   const maxModels = 5;
   const APIrow = page * maxModels - maxModels - 1;
 
+  //used for actual data
   const api_url =
     "https://vcellapi-beta.cam.uchc.edu:8080/biomodel?bmName=" + termMap["bmName"] + "&bmId=" + termMap["bmId"] + "&category=" + termMap["category"] + "&owner=" + termMap["owner"] + "&savedLow=" + termMap["savedLow"] + "&savedHigh=" + termMap["savedHigh"] + "&startRow=" + APIrow + "&maxRows=" + maxModels + "&orderBy=" + termMap["orderBy"];
 
   const fetch_response = await fetch(api_url);
   const json = await fetch_response.json();
+
+  //some vars to render page
+  const bmName = termMap["bmName"];
+  const bmId = termMap["bmId"];
+  const category = termMap["category"];
+  const owner = termMap["owner"];
+  const savedLow = termMap["savedLow"];
+  const savedHigh = termMap["savedHigh"];
+  const orderBy = termMap["orderBy"];
+  let isNotEmpty = true;
+  if (json.length == 0) {
+    isNotEmpty = false;
+  }
+
   res.render("curatedList", {
     title: "ModelBricks - Curated List",
     json,
     page,
-  });
-});
-
-// search function (filter) on curated list page
-app.get("/curatedList/search", async (req, res) => {
-  var bmName = req.query.bmName;
-  const api_url =
-    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel?bmName=" +
-    bmName +
-    "&bmId=&category=all&owner=&savedLow=&savedHigh=&startRow=1&maxRows=1000&orderBy=date_desc";
-
-  const fetch_response = await fetch(api_url);
-  const json = await fetch_response.json();
-  res.render("curatedList", {
-    title: "ModelBricks - Curated List",
-    json,
     bmName,
+    isNotEmpty,
   });
 });
 
