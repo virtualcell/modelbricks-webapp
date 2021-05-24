@@ -1062,7 +1062,7 @@ li.card {
   border: 1px solid #0085a6;
   background: none;
   border-radius: 3px;
-  color: /*#0085a6;*/ blue;
+  color: #0085a6;
   font-size: 1em;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;

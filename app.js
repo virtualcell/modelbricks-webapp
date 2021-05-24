@@ -66,6 +66,9 @@ const hbs = exphbs.create({
     greater: function (a, b) {
       return (a > b);
     },
+    eq: function (a, b) {
+      return (parseInt(a) == parseInt(b))
+    }
   },
 });
 
@@ -123,9 +126,8 @@ app.get("/curatedList/:search", async (req, res) => {
   var termMap = Object.fromEntries(terms);
 
   //some vars for startRow and maxRow terms
-  const page = termMap["page"]
   const maxModels = 5;
-  const APIrow = page * maxModels - maxModels - 1;
+  const APIrow = termMap['page'] * maxModels - maxModels - 1;
 
   //used for actual data
   const api_url =
@@ -134,14 +136,7 @@ app.get("/curatedList/:search", async (req, res) => {
   const fetch_response = await fetch(api_url);
   const json = await fetch_response.json();
 
-  //some vars to render page
-  const bmName = termMap["bmName"];
-  const bmId = termMap["bmId"];
-  const category = termMap["category"];
-  const owner = termMap["owner"];
-  const savedLow = termMap["savedLow"];
-  const savedHigh = termMap["savedHigh"];
-  const orderBy = termMap["orderBy"];
+  //if page is empty
   let isNotEmpty = true;
   if (json.length == 0) {
     isNotEmpty = false;
@@ -150,8 +145,7 @@ app.get("/curatedList/:search", async (req, res) => {
   res.render("curatedList", {
     title: "ModelBricks - Curated List",
     json,
-    page,
-    bmName,
+    termMap,
     isNotEmpty,
   });
 });

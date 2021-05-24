@@ -4,7 +4,7 @@
 <div class="searchForm subMenu" id="simple-search">
     <form id="custom-form-simple" class="custom-form">
         <div class="custom-form__group">
-            <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{bmName}}">
+            <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}">
             <label class="group__label" for="name">Name</label>
         </div>
         <button type="submit" class="custom-form__submit">
@@ -20,25 +20,32 @@
 <div class="searchForm subMenu" id="advanced-search">
     <form id="custom-form-advanced" class="custom-form">
         <div class="custom-form__group">
-            <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{bmName}}">
+            <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}">
+            <label class="group__label" for="name">Name</label>
         </div>
         <div class="custom-form__group">
-            <input type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{bmId}}">
+            <input type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}">
+            <label class="group__label" for="name">ID</label>
         </div>
         <div class="custom-form__group">
-            <input type="text" name="category" id="category" placeholder="Category" value="{{category}}">
+            <input type="text" name="category" id="category" placeholder="Category" value="{{termMap.category}}">
+            <label class="group__label" for="name">Category</label>
         </div>
         <div class="custom-form__group">
-            <input type="text" name="owner" id="owner" placeholder="Owner" value="{{owner}}">
+            <input type="text" name="owner" id="owner" placeholder="Owner" value="{{termMap.owner}}">
+            <label class="group__label" for="name">Owner</label>
         </div>
         <div class="custom-form__group">
-            <input type="text" name="savedLow" id="savedLow" placeholder="savedLow" value="{{savedLow}}">
+            <input type="text" name="savedLow" id="savedLow" placeholder="savedLow" value="{{termMap.savedLow}}">
+            <label class="group__label" for="name">savedLow</label>
         </div>
         <div class="custom-form__group">
-            <input type="text" name="savedHigh" id="savedHigh" placeholder="savedHigh" value="{{savedHigh}}">
+            <input type="text" name="savedHigh" id="savedHigh" placeholder="savedHigh" value="{{termMap.savedHigh}}">
+            <label class="group__label" for="name">savedHigh</label>
         </div>
         <div class="custom-form__group">
-            <input type="text" name="orderBy" id="orderBy" placeholder="orderBy" value="{{orderBy}}">
+            <input type="text" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}">
+            <label class="group__label" for="name">Order</label>
         </div>
         <button type="submit" class="custom-form__submit">
             Filter
@@ -49,21 +56,113 @@
     </form>
 </div>
 
+{{!--temporary elements for testing funcitonality--}}
+{{#if isNotEmpty}}
+<a id="nextLink">Next Page</a>
+{{/if}}
+{{#if (greater termMap.page 1)}}
+<a id="prevLink">Previous Page</a>
+{{/if}}
+<button onclick="toggleSearch()" class="next-button">Toggle Advanced Search</button>
+
 {{!-- Script for Custom Form Submition Event --}}
 <script>
-    const simpleForm = document.getElementById("custom-form-simple");
-    const advancedForm = document.getElementById("custom-form-advanced");
+    //toggle simple vs advanced search
+    //get elements
+    var simple = document.getElementById("simple-search");
+    var advanced = document.getElementById("advanced-search");
+    var currentFormState = {{termMap.advanced}};
 
     //convert key val pair (from itr below) to format for url
     function convertPair(pair) {
       let a = pair[0];
       let b = pair[1];
       //remove dangerous chars
-      a.replace('=', '');
-      a.replace('&', '');
-      b.replace('=', '');
-      b.replace('&', '');
+      if (typeof a == typeof '') {
+        a.replace('=', '');
+        a.replace('&', '');
+      }
+      if (typeof b == typeof '') {
+        b.replace('=', '');
+        b.replace('&', '');
+      }
       return (pair[0] + '=' + pair[1]);
+    }
+
+    //to make links for next and prev buttons
+    function makeLink(kind, advanced) {
+      //get location
+      old = window.location.href;
+      old = old.replace('https://', '');
+      old = old.replace('http://', '');
+      old = old.replace('localhost:4002', '');
+      old = old.replace('modelbricks.org', '');
+      old = old.replace('/curatedList/', '');
+
+      //make term map
+      var terms = old.split("&");
+      for (let i = 0; i < terms.length; i++) {
+        terms[i] = terms[i].split("=");
+      }
+      var termMap = Object.fromEntries(terms);
+
+      //fill entries
+      if (kind == 'next') {
+        termMap['page'] = parseInt(termMap['page']) + 1;
+      } else {
+        termMap['page'] = parseInt(termMap['page']) - 1;
+      }
+      termMap['advanced'] = advanced;
+
+      //assemble new link
+      n = '';
+      let keyValues = Object.entries(termMap);
+      for (pair of keyValues) {
+        n += convertPair(pair) + '&';
+      }
+      //remove tailing "&"
+      n = n.slice(0, n.length - 1);
+
+      return (n);
+    }
+
+    //set initial disp conditions
+    if (currentFormState) {
+      simple.style.display = "none";
+      advanced.style.display = "block";
+      currentFormState = "true";
+    } else {
+      simple.style.display = "block";
+      advanced.style.display = "none";
+      currentFormState = "false";
+    }
+
+    //initialize links
+    try {
+      document.getElementById("nextLink").href = '/curatedList/' + makeLink('next', currentFormState);
+    } catch{}
+    try {
+      document.getElementById("prevLink").href = '/curatedList/' + makeLink('prev', currentFormState);
+    } catch{}
+
+    //toggle funciton
+    function toggleSearch() {
+      if (currentFormState == "true") {
+        simple.style.display = "block";
+        advanced.style.display = "none";
+        currentFormState = "false";
+      } else {
+        simple.style.display = "none";
+        advanced.style.display = "block";
+        currentFormState = "true";
+      }
+      //change links
+      try {
+        document.getElementById("nextLink").href = '/curatedList/' + makeLink('next', currentFormState);
+      } catch{}
+      try {
+        document.getElementById("prevLink").href = '/curatedList/' + makeLink('prev', currentFormState);
+      } catch{}
     }
 
     function whenPressed(e) {
@@ -79,7 +178,9 @@
         fd.append("savedHigh","");
         fd.append("orderBy","date_desc");
       }
+      //add other atributes
       fd.append("page","1");
+      fd.append("advanced", currentFormState);
 
       //construct url params for resutls page
       const itr = fd.entries();
@@ -94,36 +195,13 @@
       window.location.assign('/curatedList/' + url);
     }
 
+    //custom event listners for form submition
+    const simpleForm = document.getElementById("custom-form-simple");
+    const advancedForm = document.getElementById("custom-form-advanced");
+
     //apply listerners
     simpleForm.addEventListener("submit", (e) => {whenPressed(e);});
     advancedForm.addEventListener("submit", (e) => {whenPressed(e);});
-</script>
-
-{{!--temporary elements for testing funcitonality--}}
-<a href="/curatedList/bmName=&bmId=&category=all&owner=ModelBrick&savedLow=&savedHigh=&page={{add page 1}}&orderBy=date_desc">Next Page</a>
-{{#if (greater page 1)}}
-<a href="/curatedList/bmName=&bmId=&category=all&owner=ModelBrick&savedLow=&savedHigh=&page={{sub page 1}}&orderBy=date_desc">Previous Page</a>
-{{/if}}
-<button onclick="toggleSearch()">Toggle Advanced Search</button>
-
-<script>
-  //get elements
-  var simple = document.getElementById("simple-search");
-  var advanced = document.getElementById("advanced-search");
-
-  //initally hide advanced
-  advanced.style.display = "none";
-
-  //toggle
-  function toggleSearch() {
-    if (simple.style.display === "none") {
-      simple.style.display = "block";
-      advanced.style.display = "none";
-    } else {
-      simple.style.display = "none";
-      advanced.style.display = "block";
-    }
-  }
 </script>
 
 {{#if isNotEmpty}}
@@ -188,5 +266,9 @@
       </table>
   </div>
 {{else}}
-  <p id="list-empty">looks like there aren't any public models that have "<b>{{bmName}}</b>" in their name.</p>
+{{#if (eq page 1)}}
+  <p id="list-empty">looks like there aren't any public models that match the given search terms.</p>
+{{else}}
+  <p id="list-empty">looks like there aren't any more public models that match the given search terms.</p>
+{{/if}}
 {{/if}}
