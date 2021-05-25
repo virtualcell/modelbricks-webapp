@@ -175,10 +175,13 @@
     function makeLink(kind, advanced) {
       //get location
       old = window.location.href;
+      //this is a bad implementation that requires attention whenever url changes
+      //fix later
       old = old.replace('https://', '');
       old = old.replace('http://', '');
       old = old.replace('localhost:4002', '');
       old = old.replace('modelbricks.org', '');
+      old = old.replace('model-bricks-testing.herokuapp.com', '');
       old = old.replace('/curatedList/', '');
 
       //make term map
