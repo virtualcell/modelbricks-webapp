@@ -47,6 +47,10 @@
             <input type="text" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}">
             <label class="group__label" for="name">Order</label>
         </div>
+        <div class="custom-form__group">
+            <input type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}">
+            <label class="group__label" for="name">Models per Page</label>
+        </div>
         <button type="submit" class="custom-form__submit">
             Filter
             <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
@@ -56,14 +60,91 @@
     </form>
 </div>
 
-{{!--temporary elements for testing funcitonality--}}
+{{!--buttons for toggling advanced search--}}
+<button onclick="toggleSearch()" id="toggle-advanced" class="page-button">Advanced Search</button>
+
+
 {{#if isNotEmpty}}
-<a id="nextLink">Next Page</a>
+  {{!-- Main sorting table  --}}
+  <div class="curatedListTable">
+
+
+      <table id="content-table3" class="table-responsive-full sort-table">
+          <thead>
+              <tr>
+                  <th class="title">BioModel ID
+                      <div class="sort-table-arrows">
+                          <a href="javascript:sort(true, 'title', 'content-table3');"><button class="button"
+                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                          <a href="javascript:sort(false, 'title', 'content-table3');"><button class="button"
+                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                      </div>
+                  </th>
+                  <th class="composer">BioModel name
+                      <div class="sort-table-arrows">
+                          <a href="javascript:sort(true, 'composer', 'content-table3');"><button class="button"
+                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                          <a href="javascript:sort(false, 'composer', 'content-table3');"><button class="button"
+                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                      </div>
+                  </th>
+                  <th class="lyrics">Owner
+                      <div class="sort-table-arrows">
+                          <a href="javascript:sort(true, 'lyrics', 'content-table3');"><button class="button"
+                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                          <a href="javascript:sort(false, 'lyrics', 'content-table3');"><button class="button"
+                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                      </div>
+                  </th>
+                  <th class="set">Date Saved
+                      <div class="sort-table-arrows">
+                          <a href="javascript:sort(true, 'set', 'content-table3');"><button class="button"
+                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                          <a href="javascript:sort(false, 'set', 'content-table3');"><button class="button"
+                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                      </div>
+                  </th>
+                  <th class="arranger">"Applications" - Simulations</th>
+              </tr>
+          </thead>
+          <tbody>
+              {{#each json}}
+              <tr>
+                  <td data-label="Title" class="title"><a
+                          href="/curatedList/model/{{this.bmKey}}#dashboard">{{this.bmKey}}</a></td>
+                  <td data-label="Composer" class="composer">{{trimString this.name}}</td>
+                  <td data-label="Lyrics" class="lyrics">{{this.ownerName}}</td>
+                  <td data-label="Set" class="set">{{toDate this.savedDate}}</td>
+                  <td data-label="Arranger">
+                    {{~#each this.simulations~}}
+                    "{{this.bioModelLink.simContextName}}" - {{this.name}}
+                    {{~/each~}}
+                  </td>
+              </tr>
+              {{/each}}
+          </tbody>
+      </table>
+  </div>
+
+{{else}}
+{{#if (eq page 1)}}
+  <p id="list-empty">looks like there aren't any public models that match the given search terms.</p>
+{{else}}
+  <p id="list-empty">looks like there aren't any more public models that match the given search terms.</p>
 {{/if}}
-{{#if (greater termMap.page 1)}}
-<a id="prevLink">Previous Page</a>
 {{/if}}
-<button onclick="toggleSearch()" class="next-button">Toggle Advanced Search</button>
+
+<div id="curated-list-button-holder">
+
+    {{#if (greater termMap.page 1)}}
+    <a id="prevLink" class=page-button>Previous Page</a>
+    {{/if}}
+
+    {{#if isNotEmpty}}
+    <a id="nextLink" class=page-button>Next Page</a>
+    {{/if}}
+
+</div>
 
 {{!-- Script for Custom Form Submition Event --}}
 <script>
@@ -71,6 +152,7 @@
     //get elements
     var simple = document.getElementById("simple-search");
     var advanced = document.getElementById("advanced-search");
+    var toggle = document.getElementById("toggle-advanced");
     var currentFormState = {{termMap.advanced}};
 
     //convert key val pair (from itr below) to format for url
@@ -150,10 +232,12 @@
       if (currentFormState == "true") {
         simple.style.display = "block";
         advanced.style.display = "none";
+        toggle.textContent = "Advanced Search";
         currentFormState = "false";
       } else {
         simple.style.display = "none";
         advanced.style.display = "block";
+        toggle.textContent = "Simple Search";
         currentFormState = "true";
       }
       //change links
@@ -203,72 +287,3 @@
     simpleForm.addEventListener("submit", (e) => {whenPressed(e);});
     advancedForm.addEventListener("submit", (e) => {whenPressed(e);});
 </script>
-
-{{#if isNotEmpty}}
-  {{!-- Main sorting table  --}}
-  <div class="curatedListTable">
-
-
-      <table id="content-table3" class="table-responsive-full sort-table">
-          <thead>
-              <tr>
-                  <th class="title">BioModel ID
-                      <div class="sort-table-arrows">
-                          <a href="javascript:sort(true, 'title', 'content-table3');"><button class="button"
-                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                          <a href="javascript:sort(false, 'title', 'content-table3');"><button class="button"
-                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                      </div>
-                  </th>
-                  <th class="composer">BioModel name
-                      <div class="sort-table-arrows">
-                          <a href="javascript:sort(true, 'composer', 'content-table3');"><button class="button"
-                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                          <a href="javascript:sort(false, 'composer', 'content-table3');"><button class="button"
-                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                      </div>
-                  </th>
-                  <th class="lyrics">Owner
-                      <div class="sort-table-arrows">
-                          <a href="javascript:sort(true, 'lyrics', 'content-table3');"><button class="button"
-                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                          <a href="javascript:sort(false, 'lyrics', 'content-table3');"><button class="button"
-                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                      </div>
-                  </th>
-                  <th class="set">Date Saved
-                      <div class="sort-table-arrows">
-                          <a href="javascript:sort(true, 'set', 'content-table3');"><button class="button"
-                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                          <a href="javascript:sort(false, 'set', 'content-table3');"><button class="button"
-                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                      </div>
-                  </th>
-                  <th class="arranger">"Applications" - Simulations</th>
-              </tr>
-          </thead>
-          <tbody>
-              {{#each json}}
-              <tr>
-                  <td data-label="Title" class="title"><a
-                          href="/curatedList/model/{{this.bmKey}}#dashboard">{{this.bmKey}}</a></td>
-                  <td data-label="Composer" class="composer">{{trimString this.name}}</td>
-                  <td data-label="Lyrics" class="lyrics">{{this.ownerName}}</td>
-                  <td data-label="Set" class="set">{{toDate this.savedDate}}</td>
-                  <td data-label="Arranger">
-                    {{~#each this.simulations~}}
-                    "{{this.bioModelLink.simContextName}}" - {{this.name}}
-                    {{~/each~}}
-                  </td>
-              </tr>
-              {{/each}}
-          </tbody>
-      </table>
-  </div>
-{{else}}
-{{#if (eq page 1)}}
-  <p id="list-empty">looks like there aren't any public models that match the given search terms.</p>
-{{else}}
-  <p id="list-empty">looks like there aren't any more public models that match the given search terms.</p>
-{{/if}}
-{{/if}}

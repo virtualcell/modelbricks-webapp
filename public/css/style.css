@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 html {
   scroll-behavior: smooth;
 }
@@ -11,9 +11,9 @@ html {
 }
 
 body {
-  font-family: "Roboto", sans-serif;
   font-size: 0.925rem;
   overflow-x: hidden;
+  font-family: "Roboto", sans-serif;
 }
 
 a {
@@ -397,7 +397,6 @@ a {
   height: 690px;
   background-color: white;
   position: relative;
-  font-family: helvetica, verdana, sans-serif;
 }
 
 .main .topbar {
@@ -936,7 +935,6 @@ li.card {
   background-color: #3eb8fe;
   height: 44px;
   text-transform: uppercase;
-  font-family: sans-serif;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
 }
@@ -1032,7 +1030,6 @@ li.card {
   /*18px*/
   width: 100%;
   height: 100%;
-  font-family: "Roboto", sans-serif;
   color: #333;
   -webkit-font-smoothing: antialiased;
   line-height: 1.42857143;
@@ -1317,7 +1314,6 @@ li.card {
   /*18px*/
   width: 100%;
   height: 100%;
-  font-family: "Roboto", sans-serif;
   color: #333;
   -webkit-font-smoothing: antialiased;
   line-height: 1.42857143;
@@ -2030,6 +2026,46 @@ li.card {
   border-bottom-color: #3cb2dd;
 }
 
+/*page button similar to search form buttons*/
+.page-button {
+  display: inline-block;
+  padding: 10px;
+  margin-right: 15px;
+  margin-left: -10px;
+  background-color: white;
+  color: #3683A3;
+  border-style: solid;
+  border: 1px solid #3683A3;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.page-button:hover {
+  color: white;
+  background-color: #3683A3;
+}
+
+#curated-list-button-holder {
+  width: inherit;/*166px;*/
+  display: block;
+  position:relative;
+  float:right;
+}
+
+.page-button #nextLink {
+  display: inline-block;
+}
+
+.page-button #prevLink {
+  display: inline-block;
+}
+
+#toggle-advanced.page-button {
+  display: block;
+  width: 100px;
+  margin: 0px auto;
+}
+
 @media only screen and (max-width: 767px) {
   .searchForm .datalist-ul {
     top: unset;
@@ -2062,7 +2098,6 @@ li.card {
 }
 
 .sectionHeading {
-  font-family: sans-serif;
   color: #333;
   text-align: center;
   padding: 40px;
@@ -2073,7 +2108,6 @@ li.card {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   height: 100%;
-  font-family: sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
@@ -2186,7 +2220,6 @@ li.card {
 
 .search1 #search-heading h1 {
   text-align: center;
-  font-family: "Roboto Slab", serif;
   font-size: 125%;
   font-weight: 300;
   margin-bottom: 25px;
@@ -2315,7 +2348,6 @@ li.card {
   box-shadow: rgba(0, 0, 0, 0.137255) 0px 4px 5px 0px,
     rgba(0, 0, 0, 0.117647) 0px 1px 10px 0px,
     rgba(0, 0, 0, 0.2) 0px 2px 4px -1px;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: 16px;
   font-weight: 400;
   background-color: #fff;
@@ -2448,7 +2480,6 @@ li.card {
 }
 
 .pmTable body {
-  font-family: sans-serif;
   color: #5e5d52;
 }
 
@@ -2766,7 +2797,6 @@ span.dashboardBtn a:hover {
 }
 
 .sectionTitle {
-  font-family: sans-serif;
   text-align: center;
   padding: 40px;
   color: #333;
@@ -2788,7 +2818,6 @@ span.dashboardBtn a:hover {
 .gcs-heading {
   color: #333333;
   font-size: 1.9em;
-  font-family: "Roboto", sans-serif;
   font-weight: 300;
   text-align: center;
   margin: 40px;
@@ -2832,7 +2861,6 @@ span.dashboardBtn a:hover {
 .popup {
   position: absolute;
   background-color: #ffffff;
-  font-family: "Oswald";
   display: none;
   position: relative;
   /* Not rocket science here */
@@ -2871,7 +2899,6 @@ span.dashboardBtn a:hover {
 }
 
 .popup .popup-text {
-  font-family: "Roboto", cursive;
   margin-top: 5px;
   color: #5a5a5a;
   display: -webkit-box;
@@ -2949,7 +2976,6 @@ span.dashboardBtn a:hover {
 .box-diagram {
   position: absolute;
   background-color: #ffffff;
-  font-family: "Oswald";
   display: block;
   position: relative;
   /* Not rocket science here */
@@ -3024,6 +3050,5 @@ span.unit {
 
 #list-empty {
   text-align: center;
-  margin: auto;
-  margin-top: 120px;
+  margin: 50px auto;
 }

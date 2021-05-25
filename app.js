@@ -126,12 +126,11 @@ app.get("/curatedList/:search", async (req, res) => {
   var termMap = Object.fromEntries(terms);
 
   //some vars for startRow and maxRow terms
-  const maxModels = 5;
-  const APIrow = termMap['page'] * maxModels - maxModels - 1;
+  const APIrow = termMap['page'] * termMap['maxModels'] - termMap['maxModels'] - 1;
 
   //used for actual data
   const api_url =
-    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel?bmName=" + termMap["bmName"] + "&bmId=" + termMap["bmId"] + "&category=" + termMap["category"] + "&owner=" + termMap["owner"] + "&savedLow=" + termMap["savedLow"] + "&savedHigh=" + termMap["savedHigh"] + "&startRow=" + APIrow + "&maxRows=" + maxModels + "&orderBy=" + termMap["orderBy"];
+    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel?bmName=" + termMap["bmName"] + "&bmId=" + termMap["bmId"] + "&category=" + termMap["category"] + "&owner=" + termMap["owner"] + "&savedLow=" + termMap["savedLow"] + "&savedHigh=" + termMap["savedHigh"] + "&startRow=" + APIrow + "&maxRows=" + termMap['maxModels'] + "&orderBy=" + termMap["orderBy"];
 
   const fetch_response = await fetch(api_url);
   const json = await fetch_response.json();
