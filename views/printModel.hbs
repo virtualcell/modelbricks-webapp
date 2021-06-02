@@ -62,6 +62,7 @@
                 </tr>
                 <tr>
                     <td class="printAnnotationWrap">
+                        {{!--reaction row--}}
                         <div class="printAnnotation">
 
                             {{!-- universal ID's  --}}
@@ -72,6 +73,7 @@
                     </td>
 
                     <td class="printAnnotationWrap">
+                        {{!--name row--}}
                         <div class="printAnnotation">
 
                             {{!-- annotation --}}
@@ -80,20 +82,28 @@
                             </div>
                         </div>
                     </td>
-                    {{#each this.Kinetics}}
-                    {{#each this.Parameter}}
+
                     <td class="printAnnotationWrap">
+                        {{!--structure row--}}
+                        <div class="printAnnotation">
+                        </div>
+                    </td>
+
+                    <td class="printAnnotationWrap">
+                        {{!--kinetics row--}}
                         <div class="printAnnotation">
 
                             {{!-- Kinetics --}}
                             <div class="printTA">
+                                {{#each this.Kinetics}}
+                                {{#each this.Parameter}}
                                 <p class="heading"> Reaction rate: {{this._}} <span
                                         class="unit">[{{this.$.Unit}}]</span></p>
+                                {{/each}}
+                                {{/each}}
                             </div>
                         </div>
                     </td>
-                    {{/each}}
-                    {{/each}}
 
                 </tr>
                 {{/each}}

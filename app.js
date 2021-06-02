@@ -170,16 +170,6 @@ app.get("/curatedList/model/:name", (req, res) => {
       });
     });
   });
-  /*fs.readFile(
-    "./files/" + req.params.name + "_annotations.xml",
-    (err, data) => {
-      parser.parseString(data, (err, result) => {
-        info = result;
-        let jsonData = JSON.stringify(info);
-        fs.writeFileSync("./public/json/" + "annotations" + ".json", jsonData);
-      });
-    }
-  );*/
 });
 
 // dynamic printable pages, option available on dashboard page
@@ -203,40 +193,6 @@ app.get("/curatedList/printModel/:name", (req, res) => {
       });
     });
   });
-  /*fs.readFile("./files/" + req.params.name + ".vcml", (err, data) => {
-    parser.parseString(data, (err, result) => {
-      const data = result;
-      // generating static html pages in ./public/html
-      var template = handlebars.compile(
-        fs.readFileSync("./temp/modelTemplate.html", "utf8")
-      );
-      var generated = template({ data: data });
-      fs.writeFileSync(
-        "./views/" + "static_" + req.params.name + ".hbs",
-        generated,
-        "utf-8"
-      );
-      res.render("printModel", {
-        title: "ModelBricks - Model Print Page",
-        data,
-        modelName,
-      });
-    });
-  });
-  var parser = new xml2js.Parser();
-  fs.readFile(
-    "./files/" + req.params.name + "_annotations.xml",
-    (err, data) => {
-      parser.parseString(data, (err, result) => {
-        info = result;
-        let jsonData = JSON.stringify(info);
-        fs.writeFileSync(
-          "./public/json/" + req.params.name + ".json",
-          jsonData
-        );
-      });
-    }
-  );*/
 });
 
 // displaying static pages (searched by GOOGLE)

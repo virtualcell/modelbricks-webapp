@@ -31,10 +31,11 @@
             <input type="text" name="category" id="category" placeholder="Category" value="{{termMap.category}}">
             <label class="group__label" for="name">Category</label>
         </div>
+        {{!--    For now changing owner is disabled, default set to ModelBricks
         <div class="custom-form__group">
             <input type="text" name="owner" id="owner" placeholder="Owner" value="{{termMap.owner}}">
             <label class="group__label" for="name">Owner</label>
-        </div>
+        </div>   Code fully functional if you wish to reenable    --}}
         <div class="custom-form__group">
             <input type="text" name="savedLow" id="savedLow" placeholder="savedLow" value="{{termMap.savedLow}}">
             <label class="group__label" for="name">savedLow</label>
@@ -260,13 +261,13 @@
       if (fd.get("bmId") == null) {
         fd.append("bmId","");
         fd.append("category","all");
-        fd.append("owner","");
         fd.append("savedLow","");
         fd.append("savedHigh","");
         fd.append("orderBy","date_desc");
       }
       //add other atributes
       fd.append("page","1");
+      fd.append("owner","ModelBrick");
       fd.append("advanced", currentFormState);
 
       //construct url params for resutls page

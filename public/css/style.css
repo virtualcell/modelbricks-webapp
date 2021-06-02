@@ -2722,9 +2722,7 @@ li.card {
 
 .pmTable .printAnnotationWrap .printAnnotation {
   background: #fff;
-  width: 286%;
-  max-width: 286%;
-  min-width: 286%;
+  width: inherit;
   margin: 0;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2741,7 +2739,7 @@ li.card {
 .pmTable .printAnnotationWrap .printAnnotation .printUID {
   min-width: 100%;
   max-width: 100%;
-  width: 100%;
+  width: inherit;
   word-wrap: break-word;
   padding: 5px 0px;
 }
