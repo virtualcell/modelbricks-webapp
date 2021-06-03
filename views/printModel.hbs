@@ -42,7 +42,7 @@
                 {{#each this.Model}}
                 {{#each this.SimpleReaction}}
                 <tr>
-                    <td data-title="Reaction">
+                    <td class="print-descriptor" data-title="Reaction">
                         {{#each this.Reactant}}
                         {{this.$.LocalizedCompoundRef}}
                         {{/each}}
@@ -51,9 +51,9 @@
                         {{this.$.LocalizedCompoundRef}}
                         {{/each}}
                     </td>
-                    <td data-title="Name">{{this.$.Name}}</td>
-                    <td data-title="Structure"> {{this.$.Structure}}</td>
-                    <td data-title="Kinetics">
+                    <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
+                    <td class="print-descriptor" data-title="Structure"> {{this.$.Structure}}</td>
+                    <td class="print-descriptor" data-title="Kinetics">
                         {{#each this.Kinetics}}
                         {{this.$.KineticsType}}
                         {{/each}}
@@ -86,6 +86,7 @@
                     <td class="printAnnotationWrap">
                         {{!--structure row--}}
                         <div class="printAnnotation">
+                          <p class="printable-n-a-p">N/A</p>
                         </div>
                     </td>
 
@@ -94,11 +95,14 @@
                         <div class="printAnnotation">
 
                             {{!-- Kinetics --}}
-                            <div class="printTA">
+                            <div class="printTA" id="kinetics">
                                 {{#each this.Kinetics}}
                                 {{#each this.Parameter}}
-                                <p class="heading"> Reaction rate: {{this._}} <span
-                                        class="unit">[{{this.$.Unit}}]</span></p>
+                                <p class="reaction-rate-p">Reaction rate: {{this._}}<br></br>
+                                    Role: {{this.$.Role}}<br></br>
+                                    Role Variable: {{this.$.Name}}<br></br>
+                                    Unit: [{{this.$.Unit}}]</p>
+                                    <hr class="printable-hr">
                                 {{/each}}
                                 {{/each}}
                             </div>
@@ -131,45 +135,13 @@
                     <th scope="col">Electrical (Membrane Polarity)</th>
                 </tr>
             </thead>
-            <tbody>
-                {{#each data.vcml.BioModel}}
-                {{#each this.Model}}
-                {{#each this.Membrane}}
-                <tr>
-                    <td data-title="Name">{{this.$.Name}}</td>
-                    <td data-title="Type">Membrane</td>
-                    <td data-title="Electrical">{{this.$.PositiveFeature}}(+) &nbsp; {{this.$.NegativeFeature}}(-)</td>
-                </tr>
-                <tr>
-                    <td class="printAnnotationWrap">
-                        <div class="printAnnotation">
-
-                            {{!-- universal ID's  --}}
-                            <div class="printUID" id="structureUID-{{this.$.Name}}">
-                                <p class="heading">Universal ID's: </p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="printAnnotationWrap">
-                        <div class="printAnnotation">
-
-                            {{!-- annotation --}}
-                            <div class="printTA" id="structureTA-{{this.$.Name}}">
-                                <p class="heading"> Text Annotations: </p>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                {{/each}}
-                {{/each}}
-                {{/each}}
                 {{#each data.vcml.BioModel}}
                 {{#each this.Model}}
                 {{#each this.Feature}}
                 <tr>
-                    <td data-title="Name">{{this.$.Name}}</td>
-                    <td data-title="Type">Compartment</td>
-                    <td data-title="Electrical">{{this.$.PositiveFeature}}(+) &nbsp; {{this.$.NegativeFeature}}(-)</td>
+                    <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
+                    <td class="print-descriptor" data-title="Type">Compartment</td>
+                    <td class="print-descriptor" data-title="Electrical">{{this.$.PositiveFeature}}(+) &nbsp; {{this.$.NegativeFeature}}(-)</td>
                 </tr>
                 <tr>
                     <td class="printAnnotationWrap">
@@ -189,6 +161,10 @@
                                 <p class="heading"> Text Annotations: </p>
                             </div>
                         </div>
+                    </td>
+                    <td class="printAnnotationWrap">
+                        {{!-- empty element to finish table --}}
+                        <p class="printable-n-a-p">N/A</p>
                     </td>
                 </tr>
                 {{/each}}
@@ -212,6 +188,7 @@
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Structure</th>
+                    <th scope="col">BioNetGen Definition</th>
                 </tr>
             </thead>
             <tbody>
@@ -220,8 +197,23 @@
                 {{#each this.Model}}
                 {{#each this.LocalizedCompound}}
                 <tr>
-                    <td data-title="Name">{{this.$.Name}}</td>
-                    <td data-title="Structure"> {{this.$.Structure}}</td>
+                    <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
+                    <td class="print-descriptor" data-title="Structure"> {{this.$.Structure}}</td>
+                    <td id="printable-bionetgen" class="print-descriptor" data-title="BioNetGen">
+                      {{~#each this.SpeciesPattern~}}
+                      {{#each this.MolecularTypePattern~}}
+                      {{#each this.MolecularType~}}
+                      {{this.$.Name~}}(
+                      {{~/each~}}
+                      {{#each this.ComponentPattern~}}
+                      {{this.$.MolecularComponent~}}
+                      {{#this.$.ComponentStatePattern~}}~
+                      {{~this~}}
+                      {{/this.$.ComponentStatePattern~}}!
+                      {{~this.$.BondType~}},
+                      {{~/each~}}).
+                      {{~/each~}}
+                      {{/each}}</td>
                 </tr>
                 <tr>
                     <td class="printAnnotationWrap">
@@ -241,6 +233,9 @@
                                 <p class="heading"> Text Annotations: </p>
                             </div>
                         </div>
+                    </td>
+                    <td>
+                        Put depiction here
                     </td>
                 </tr>
                 {{/each}}
@@ -275,9 +270,9 @@
                 {{#each this.MolecularType}}
 
                 <tr>
-                    <td data-title="Name">{{this.$.Name}}</td>
+                    <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
 
-                    <td data-title="Description">
+                    <td class="print-descriptor" data-title="Description">
                         {{#each this.MolecularComponent}}
                         {{this.$.Name}}
                         {{#if this.AllowableState}}
@@ -346,17 +341,17 @@
                 {{#each this.Observable}}
 
                 <tr>
-                    <td data-title="Name">{{this.$.Name}}</td>
-                    <td data-title="Domain">{{this.$.ObservableType}}</td>
+                    <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
+                    <td class="print-descriptor" data-title="Domain">{{this.$.ObservableType}}</td>
 
                     {{#each this.SpeciesPattern}}
                     {{#each this.MolecularTypePattern}}
                     {{#each this.MolecularType}}
-                    <td data-title="MolecularType">{{this.$.Name}}</td>
+                    <td class="print-descriptor" data-title="MolecularType">{{this.$.Name}}</td>
                     {{/each}}
                     {{/each}}
                     {{/each}}
-                    <td data-title="SequenceType">{{this.$.Sequence}}</td>
+                    <td class="print-descriptor" data-title="SequenceType">{{this.$.Sequence}}</td>
 
                 </tr>
                 <tr>
@@ -581,3 +576,18 @@
 
 {{!-- fetching annotations  --}}
 <script src="/js/main.js"></script>
+<script>
+  var bngElements = document.querySelectorAll("#printable-bionetgen.print-descriptor");
+
+  function removeTrailingSyntax(element) {
+    s = element.innerHTML;
+    s = s.replace(').', ')');
+    s = s.replace(',)', ')');
+    s = s.replace('-)', ')');
+    s = s.replace('!)', ')');
+    element.innerHTML = s;
+  }
+
+  bngElements.forEach(removeTrailingSyntax);
+
+</script>

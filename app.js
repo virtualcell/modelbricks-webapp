@@ -5,11 +5,8 @@ const exphbs = require("express-handlebars");
 const handlebars = require("handlebars");
 const path = require("path");
 const xml2js = require("xml2js");
-// const util = require("util");
 const fetch = require("node-fetch");
-// const htmlparser2 = require("htmlparser2");
 const aPrs = require("./helpers/annotation-parser.js");
-//const secrets = require("./secrets.js");
 const PORT = process.env.PORT || 4002;
 
 var indexRouter = require("./routes/index");
