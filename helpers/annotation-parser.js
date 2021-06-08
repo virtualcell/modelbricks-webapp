@@ -1,7 +1,11 @@
-/*The Plan-
+/*How this works-
 1. use AnnParser object to extract and format annoation data from vcml Object
 2. pass vcml object into main.js through json file
 */
+
+//for manipulating text annos
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 
 //classes to correctly format annotaiton data
 class Name {
@@ -41,20 +45,26 @@ class BioModel {
   }
 }
 
-//todo:
-//some rdf bindings don't map to anything, I need to find out why
-//multiple links mapped to one element still arent processed correctly
-//^ because im only looking at multiple uris in a bag
-//stop using annotations.json, use different files for each model
-
-//how to fix:
-//the names of the uri bindings being passed to main.js are wrong
-//look into localizedcompound and find the correct mapping for the names
-//there is a seperate issue for some reactions, maybe the level of some elements
-//is different
-
 //class to process annotations and urls from vcml
 class AnnParser {
+
+  //function to extract text from HTML string
+  //credit to https://stackoverflow.com/questions/28899298/extract-the-text-out-of-html-string-using-javascript
+  extractContent(s, space=false) {
+    const dom = new JSDOM();
+    var span= dom.window.document.createElement('span');
+    span.innerHTML= s;
+    if(space) {
+      var children= span.querySelectorAll('*');
+      for(var i = 0 ; i < children.length ; i++) {
+        if(children[i].textContent)
+          children[i].textContent+= ' ';
+        else
+          children[i].innerText+= ' ';
+      }
+    }
+    return [span.textContent || span.innerText].toString().replace(/ +/g,' ');
+  };
 
   constructor(vcml) {
     this.vcmlObj = vcml;
@@ -151,7 +161,8 @@ class AnnParser {
         vcid = vcidType + '(' + compoundRefMap[strippedVcid] + ')';
       }
       try {
-        this.annotations[vcid] = new VCMLElement(vcid, this.txtAnnos[i].freetext[0]);
+        let txtAnno = this.extractContent(this.txtAnnos[i].freetext[0]);
+        this.annotations[vcid] = new VCMLElement(vcid, txtAnno);
       } catch{}
     }
 

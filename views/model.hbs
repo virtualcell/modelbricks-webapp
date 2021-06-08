@@ -95,7 +95,7 @@
                 <div class="reactionDiagram" id="diagram">
                     {{#each data.vcml.BioModel}}
                     {{#each this.Version}}
-                    <img src="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/diagram"
+                    <img class="model-page-diagram" src="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/diagram"
                         alt="reactionDiagram" draggable="false" />
                     {{/each}}
                     {{/each}}
@@ -1154,5 +1154,52 @@
 <script src="/js/main.js"></script>
 
 <script>
+    //draw graphics
+    //species
+    drawGraphics('content-table3-species', 2, 3, 'g');
+    //molecules
+    drawGraphics('content-table3-molecules', 1, 2, 'm');
+    //observables
+    drawGraphics('content-table3-observables', 3, 5, 'g');
+
+    //displaying electrical for only membrane compartments
+    var table = document.getElementById('TEST');
+    var cells = table.rows.item(1).cells;
+    if (cells.item(1).innerHTML != 'Membrane'){
+      cells.item(2).innerHTML = 'N/A';
+    }
+
+    // making the first popup visible
+    var firstPopup = document.querySelector(".popup").firstChild;
+    firstPopup.parentElement.classList.add("firstPopup");
+
+
+    // Open popup
+    var open = 1;
+    function reply_click(clicked_id) {
+        if (open == 1) {
+            $(".popup").css("opacity", 0);
+            $(".overlay").css("opacity", 0);
+            $(".popup").css("display", "none");
+            $(".overlay").css("display", "none");
+        }
+        $(`[class="popup box-${clicked_id}"]`).css("opacity", 1);
+        $(`[class="popup box-${clicked_id} firstPopup"]`).css("opacity", 1);
+        $(".overlay").css("opacity", 0.8);
+        $(`[class="popup box-${clicked_id}"]`).css("display", "block");
+        $(`[class="popup box-${clicked_id} firstPopup"]`).css("display", "block");
+        $(".overlay").css("display", "block");
+        open = 1;
+    };
+    // close popup
+    $(".popup-close").click(function () {
+        open = 0;
+        $(".popup").css("opacity", 0);
+        $(".overlay").css("opacity", 0);
+        setTimeout(function () {
+            $(".popup").css("display", "none");
+            $(".overlay").css("display", "none");
+        }, 1000);
+    });
     alerting = (variable) => {};
 </script>

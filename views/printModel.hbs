@@ -179,7 +179,7 @@
 {{!-- Species table  --}}
 <div class="pmTable">
     <div class="container">
-        <table class="responsive-table">
+        <table id="print-species-table" class="responsive-table">
             <caption>Species <span class="dashboardBtn"><a href="/curatedList/model/{{modelName}}#species"><i
                             class="fa fa-undo" aria-hidden="true"></i>
                         See in Dashboard</a></span>
@@ -234,8 +234,22 @@
                             </div>
                         </div>
                     </td>
-                    <td>
-                        Put depiction here
+                    <td class="printAnnotationWrap">
+                        <canvas class="molecule_canvas" title='g' width="0" height="0" id=
+                            "{{~#each this.SpeciesPattern~}}
+                            {{#each this.MolecularTypePattern~}}
+                            {{#each this.MolecularType~}}
+                            {{this.$.Name~}}(
+                            {{~/each~}}
+                            {{#each this.ComponentPattern~}}
+                            {{this.$.MolecularComponent~}}
+                            {{#this.$.ComponentStatePattern~}}~
+                            {{~this~}}
+                            {{/this.$.ComponentStatePattern~}}!
+                            {{~this.$.BondType~}},
+                            {{~/each~}}).
+                            {{~/each~}}
+                            {{/each}}">
                     </td>
                 </tr>
                 {{/each}}
@@ -249,7 +263,7 @@
 {{!-- Molecules table  --}}
 <div class="pmTable">
     <div class="container">
-        <table class="responsive-table">
+        <table id="print-molecules-table" class="responsive-table">
             <caption>Molecules <span class="dashboardBtn"><a href="/curatedList/model/{{modelName}}#molecules"><i
                             class="fa fa-undo" aria-hidden="true"></i>
                         See in Dashboard</a></span>
@@ -258,7 +272,8 @@
             <thead>
                 <tr>
                     <th scope="col">Name</th>
-                    <th scope="col">Description</th>
+                    <th scope="col">Text Annotations</th>
+                    <th scope="col">BioNetGen Definition</th>
                 </tr>
             </thead>
             <tbody>
@@ -272,18 +287,16 @@
                 <tr>
                     <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
 
-                    <td class="print-descriptor" data-title="Description">
-                        {{#each this.MolecularComponent}}
-                        {{this.$.Name}}
-                        {{#if this.AllowableState}}
-                        {{#each this.AllowableState}}
-                        ~{{this.$.Name}}
-                        {{/each}}
-                        {{/if}}
-                        .
-                        {{/each}}
+                    <td class="print-descriptor" data-title="Text Annotations">Text Annotations</td>
 
-                    </td>
+                    <td id="printable-bionetgen" class="print-descriptor" data-title="Description">
+                      {{~this.$.Name}}(
+                      {{~#each this.MolecularComponent~}}
+                      {{this.$.Name~}}
+                      {{#each AllowableState}}~
+                      {{~this.$.Name~}}
+                      {{/each~}},
+                      {{~/each}})</td>
 
                 </tr>
                 <tr>
@@ -296,15 +309,28 @@
                             </div>
                         </div>
                     </td>
+
                     <td class="printAnnotationWrap">
                         <div class="printAnnotation">
 
                             {{!-- annotation --}}
-                            <div class="printTA" id="moleculesTA-{{this.$.Name}}">
+                            <div class="printTA" id="moleculeTA-{{this.$.Name}}">
                                 <p class="heading"> Text Annotations: </p>
                             </div>
                         </div>
                     </td>
+
+                    <td class="printAnnotationWrap">
+                        <canvas class='molecule_canvas' title='m' width='0' height='0' id=
+                        '{{~this.$.Name}}(
+                        {{~#each this.MolecularComponent~}}
+                        {{this.$.Name~}}
+                        {{#each AllowableState}}~
+                        {{~this.$.Name~}}
+                        {{/each~}},
+                        {{~/each}})'>
+                    </td>
+
                 </tr>
                 {{/each}}
                 {{/each}}
@@ -319,7 +345,7 @@
 {{!-- Observables table  --}}
 <div class="pmTable">
     <div class="container">
-        <table class="responsive-table">
+        <table id="print-observables-table" class="responsive-table">
             <caption>Observables <span class="dashboardBtn"><a href="/curatedList/model/{{modelName}}#observables"><i
                             class="fa fa-undo" aria-hidden="true"></i>
                         See in Dashboard</a></span>
@@ -329,7 +355,7 @@
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Type</th>
-                    <th scope="col">BioNetGen Defination</th>
+                    <th scope="col">BioNetGen Definition</th>
                     <th scope="col">Count</th>
                 </tr>
             </thead>
@@ -344,13 +370,22 @@
                     <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
                     <td class="print-descriptor" data-title="Domain">{{this.$.ObservableType}}</td>
 
-                    {{#each this.SpeciesPattern}}
-                    {{#each this.MolecularTypePattern}}
-                    {{#each this.MolecularType}}
-                    <td class="print-descriptor" data-title="MolecularType">{{this.$.Name}}</td>
-                    {{/each}}
-                    {{/each}}
-                    {{/each}}
+                    <td id="printable-bionetgen" class="print-descriptor" data-title="MolecularType">
+                    {{~#each this.SpeciesPattern~}}
+                    {{~#each this.MolecularTypePattern~}}
+                    {{~#each this.MolecularType~}}
+                    {{this.$.Name~}}(
+                    {{~/each~}}
+                    {{#each this.ComponentPattern~}}
+                    {{this.$.MolecularComponent~}}
+                    {{#this.$.ComponentStatePattern~}}~
+                    {{~this~}}
+                    {{/this.$.ComponentStatePattern~}}!
+                    {{~this.$.BondType~}},
+                    {{~/each~}}).
+                    {{~/each~}}
+                    {{~/each~}}</td>
+
                     <td class="print-descriptor" data-title="SequenceType">{{this.$.Sequence}}</td>
 
                 </tr>
@@ -364,6 +399,7 @@
                             </div>
                         </div>
                     </td>
+
                     <td class="printAnnotationWrap">
                         <div class="printAnnotation">
                             {{!-- annotation --}}
@@ -372,6 +408,31 @@
                             </div>
                         </div>
                     </td>
+
+                    <td class="printAnnotationWrap">
+                        <canvas class='molecule_canvas' title='g' width='0' height='0' id=
+                        '{{~#each this.SpeciesPattern~}}
+                        {{~#each this.MolecularTypePattern~}}
+                        {{~#each this.MolecularType~}}
+                        {{this.$.Name~}}(
+                        {{~/each~}}
+                        {{#each this.ComponentPattern~}}
+                        {{this.$.MolecularComponent~}}
+                        {{#this.$.ComponentStatePattern~}}~
+                        {{~this~}}
+                        {{/this.$.ComponentStatePattern~}}!
+                        {{~this.$.BondType~}},
+                        {{~/each~}}).
+                        {{~/each~}}
+                        {{~/each~}}'>
+                    </td>
+
+                    <td class="printAnnotationWrap">
+                        <div class="printAnnotation">
+                            <p class="printable-n-a-p">N/A</p>
+                        </div>
+                    </td>
+
                 </tr>
 
                 {{/each}}
@@ -576,18 +637,78 @@
 
 {{!-- fetching annotations  --}}
 <script src="/js/main.js"></script>
-<script>
-  var bngElements = document.querySelectorAll("#printable-bionetgen.print-descriptor");
 
+{{!-- drawing graphics--}}
+<script>{{> model-graphics}}</script>
+
+<script>
+
+  //remove trailing syntax
   function removeTrailingSyntax(element) {
     s = element.innerHTML;
-    s = s.replace(').', ')');
-    s = s.replace(',)', ')');
-    s = s.replace('-)', ')');
-    s = s.replace('!)', ')');
+    s = s.replace(/,\)/g, ')');
+    s = s.replace(/-\)/g, ')');
+    s = s.replace(/!\)/g, ')');
+    if (s[s.length - 1] == '.') {
+      s = s.slice(0, s.length - 1);
+    }
     element.innerHTML = s;
   }
 
+  function removeTrailingSyntaxID(element) {
+    s = element.id;
+    s = s.replace(/,\)/g, ')');
+    s = s.replace(/-\)/g, ')');
+    s = s.replace(/!\)/g, ')');
+    if (s[s.length - 1] == '.') {
+      s = s.slice(0, s.length - 1);
+    }
+    element.id = s;
+  }
+
+  //bng p elements
+  var bngElements = document.querySelectorAll("#printable-bionetgen.print-descriptor");
   bngElements.forEach(removeTrailingSyntax);
+  //canvas graphics elemetns
+  var canvasElements = document.querySelectorAll(".molecule_canvas");
+  canvasElements.forEach(removeTrailingSyntaxID);
+
+  //steps for each canvas
+  function drawGraphicsPrintable(canvasElm, drawType) {
+    bioNetGen = canvasElm.id;
+    if (drawType == 'g') {
+
+        var drawObj = new Graphic(bioNetGen);
+        dims = drawObj.draw(canvasElm, 0, 0);
+
+        //resize canvas
+        canvasElm.width = dims[0];
+        canvasElm.height = dims[1];
+
+        //draw graphic
+        drawObj.draw(canvasElm, 0, 0);
+
+    } else if (drawType == 'm') {
+
+        var drawObj = new Molecule(bioNetGen);
+        dims = drawObj.drawComplex(canvasElm, 0, 0);
+
+        //resize canvas
+        canvasElm.width = dims[0] + 5;
+        canvasElm.height = dims[1] + 5;
+
+        //draw graphic
+        drawObj.drawComplex(canvasElm, 1, 1);
+
+    } else {
+        throw 'drawType ' + drawType + ' is not valid, use only m or g';
+    }
+  }
+
+  for (let i = 0; i < canvasElements.length; i++) {
+    cvsElm = canvasElements[i];
+    drawType = cvsElm.title;
+    drawGraphicsPrintable(cvsElm, drawType);
+  }
 
 </script>
