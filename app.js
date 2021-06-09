@@ -126,7 +126,6 @@ app.get("/curatedList/:search", async (req, res) => {
 
 // main Dashboard for dynamic models selected from curated list page
 app.get("/curatedList/model/:name", (req, res) => {
-  // var info = "null";
   const api_url =
     'https://vcellapi-beta.cam.uchc.edu:8080/biomodel/' + req.params.name + '/biomodel.vcml';
   var parser = new xml2js.Parser();
