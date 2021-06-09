@@ -73,29 +73,6 @@ const hbs = exphbs.create({
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 
-// some pages for development purposes
-// for viewing model json file in browser
-app.get("/json", (req, res) => {
-  var parser = new xml2js.Parser();
-  fs.readFile("./biomodels/Biomodel_176191843.vcml", (err, data) => {
-    parser.parseString(data, (err, result) => {
-      res.send(result);
-    });
-  });
-});
-// for viewing model's annotation json file
-app.get("/ajson", (req, res) => {
-  var parser = new xml2js.Parser();
-  fs.readFile(
-    "./files/CM_PM25628036_MB4::Rho_GDI_binding_annoations.xml",
-    (err, data) => {
-      parser.parseString(data, (err, result) => {
-        res.send(result);
-      });
-    }
-  );
-});
-
 // single model page for development purposes
 app.get("/curatedList/model", (req, res) => {
   var parser = new xml2js.Parser();
@@ -181,6 +158,16 @@ app.get("/curatedList/printModel/:name", (req, res) => {
         data = result;
         let annoObj = new aPrs.AnnParser(data);
         let annoData = annoObj.getString();
+        // generating static html pages in ./public/html
+        var template = handlebars.compile(
+          fs.readFileSync("./temp/modelTemplate.html", "utf8")
+        );
+        var generated = template({ data: data });
+        fs.writeFileSync(
+          "./views/" + "static_" + req.params.name + ".hbs",
+          generated,
+          "utf-8"
+        );
         fs.writeFileSync("./public/json/" + "annotations" + ".json", annoData);
         res.render("printModel", {
           title: "ModelBricks - Model Print Page",

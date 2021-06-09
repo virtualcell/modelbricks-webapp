@@ -945,7 +945,6 @@ fetch("/json/annotations.json")
 
       // for Structures
       if (name.includes("Structure")) {
-        console.log('found one:', name);
         var indexToSlice = name.indexOf("(") + 1;
         var length = name.indexOf(")");
         var elementName = name.slice(indexToSlice, length);
