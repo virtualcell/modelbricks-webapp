@@ -30,29 +30,42 @@
             </caption>
             <thead>
                 <tr>
-                    <th scope="col">Reaction</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Structure</th>
+                    <th scope="col">
+                      Reaction
+                    </th>
+                    <th id="flex-td" scope="col">
+                      <div id="vert-line-left" class="vert-line">
+                          Name
+                      </div>
+                      <div id="vert-line-right" class="vert-line">
+                          Structure
+                      </div>
+                    </th>
                     <th scope="col">Kinetics</th>
                 </tr>
             </thead>
             <tbody>
-
                 {{#each data.vcml.BioModel}}
                 {{#each this.Model}}
                 {{#each this.SimpleReaction}}
                 <tr>
                     <td class="print-descriptor" data-title="Reaction">
-                        {{#each this.Reactant}}
-                        {{this.$.LocalizedCompoundRef}}
-                        {{/each}}
-                        <span style="color:#666666">--></span>
-                        {{#each this.Product}}
-                        {{this.$.LocalizedCompoundRef}}
-                        {{/each}}
+                      {{~#each this.Reactant~}}
+                      {{~this.$.LocalizedCompoundRef~}}
+                      {{~/each~}}
+                      <span style="color:#666666">--></span>
+                      {{~#each this.Product~}}
+                      {{~this.$.LocalizedCompoundRef~}}
+                      {{~/each~}}
                     </td>
-                    <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
-                    <td class="print-descriptor" data-title="Structure"> {{this.$.Structure}}</td>
+                    <td id="flex-td" class="print-descriptor" data-title="Name">
+                      <div id="vert-line-left" class="vert-line">
+                        {{~this.$.Name~}}
+                      </div>
+                      <div id="vert-line-right" class="vert-line">
+                        {{~this.$.Structure~}}
+                      </div>
+                    </td>
                     <td class="print-descriptor" data-title="Kinetics">
                         {{#each this.Kinetics}}
                         {{this.$.KineticsType}}
@@ -84,13 +97,6 @@
                     </td>
 
                     <td class="printAnnotationWrap">
-                        {{!--structure row--}}
-                        <div class="printAnnotation">
-                          <p class="printable-n-a-p">N/A</p>
-                        </div>
-                    </td>
-
-                    <td class="printAnnotationWrap">
                         {{!--kinetics row--}}
                         <div class="printAnnotation">
 
@@ -98,11 +104,10 @@
                             <div class="printTA" id="kinetics">
                                 {{#each this.Kinetics}}
                                 {{#each this.Parameter}}
-                                <p class="reaction-rate-p">Reaction rate: {{this._}}<br></br>
-                                    Role: {{this.$.Role}}<br></br>
-                                    Role Variable: {{this.$.Name}}<br></br>
-                                    Unit: [{{this.$.Unit}}]</p>
-                                    <hr class="printable-hr">
+                                {{~this.$.Role}} ({{this.$.Name}}):<br></br>
+                                {{~this._~}}
+                                <span class="unit">[{{this.$.Unit}}]</span>
+                                <hr class="printable-hr">
                                 {{/each}}
                                 {{/each}}
                             </div>
@@ -131,8 +136,14 @@
             <thead>
                 <tr>
                     <th scope="col">Name</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Electrical (Membrane Polarity)</th>
+                    <th id="flex-td" scope="col">
+                      <div id="vert-line-left" class="vert-line">
+                          Type
+                      </div>
+                      <div id="vert-line-right" class="vert-line">
+                          Electrical (Membrane Polarity)
+                      </div>
+                    </th>
                 </tr>
             </thead>
                 {{#each data.vcml.BioModel}}
@@ -140,8 +151,14 @@
                 {{#each this.Feature}}
                 <tr>
                     <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
-                    <td class="print-descriptor" data-title="Type">Compartment</td>
-                    <td class="print-descriptor" data-title="Electrical">{{this.$.PositiveFeature}}(+) &nbsp; {{this.$.NegativeFeature}}(-)</td>
+                    <td id="flex-td" class="print-descriptor" data-title="Electrical">
+                      <div id="vert-line-left" class="vert-line">
+                          Compartment
+                      </div>
+                      <div id="vert-line-right" class="vert-line">
+                          {{this.$.PositiveFeature}}(+) &nbsp; {{this.$.NegativeFeature}}(-)
+                      </div>
+                    </td>
                 </tr>
                 <tr>
                     <td class="printAnnotationWrap">
@@ -161,10 +178,6 @@
                                 <p class="heading"> Text Annotations: </p>
                             </div>
                         </div>
-                    </td>
-                    <td class="printAnnotationWrap">
-                        {{!-- empty element to finish table --}}
-                        <p class="printable-n-a-p">N/A</p>
                     </td>
                 </tr>
                 {{/each}}
@@ -315,7 +328,6 @@
 
                             {{!-- annotation --}}
                             <div class="printTA" id="moleculeTA-{{this.$.Name}}">
-                                <p class="heading"> Text Annotations: </p>
                             </div>
                         </div>
                     </td>
@@ -354,9 +366,15 @@
             <thead>
                 <tr>
                     <th scope="col">Name</th>
-                    <th scope="col">Type</th>
+                    <th id="flex-td" scope="col">
+                      <div id="vert-line-left" class="vert-line">
+                          Type
+                      </div>
+                      <div id="vert-line-right" class="vert-line">
+                          Count
+                      </div>
+                    </th>
                     <th scope="col">BioNetGen Definition</th>
-                    <th scope="col">Count</th>
                 </tr>
             </thead>
             <tbody>
@@ -368,7 +386,14 @@
 
                 <tr>
                     <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
-                    <td class="print-descriptor" data-title="Domain">{{this.$.ObservableType}}</td>
+                    <td id="flex-td" class="print-descriptor" data-title="Domain">
+                        <div id="vert-line-left" class="vert-line">
+                            <p class="inline-tp">{{this.$.ObservableType}}</p>
+                        </div>
+                        <div id="vert-line-right" class="vert-line">
+                            <p class="inline-tp">{{this.$.Sequence}}</p>
+                        </div>
+                    </td>
 
                     <td id="printable-bionetgen" class="print-descriptor" data-title="MolecularType">
                     {{~#each this.SpeciesPattern~}}
@@ -385,8 +410,6 @@
                     {{~/each~}}).
                     {{~/each~}}
                     {{~/each~}}</td>
-
-                    <td class="print-descriptor" data-title="SequenceType">{{this.$.Sequence}}</td>
 
                 </tr>
                 <tr>
@@ -427,12 +450,6 @@
                         {{~/each~}}'>
                     </td>
 
-                    <td class="printAnnotationWrap">
-                        <div class="printAnnotation">
-                            <p class="printable-n-a-p">N/A</p>
-                        </div>
-                    </td>
-
                 </tr>
 
                 {{/each}}
@@ -454,8 +471,14 @@
 <div class="pmTable">
     <div class="container">
         <table class="responsive-table">
-            <caption>Applications
-
+            <caption>
+              Applications
+              <span class="dashboardBtn">
+                <a href="/curatedList/model/{{modelName}}#applications">
+                  <i class="fa fa-undo" aria-hidden="true"></i>
+                  See in Dashboard
+                </a>
+              </span>
             </caption>
             <thead>
                 <tr>
@@ -468,14 +491,19 @@
             </thead>
             <tbody>
                 {{#each data.vcml.BioModel}}
-                {{#each this.SimulationSpec as |value key|}}
                 <tr>
-                    <td data-title="Name">{{value.$.Name}}</td>
+                    <td data-title="Name">
+                      {{#each this.SimulationSpec as |value key|}}
+                      {{value.$.Name}}
+                      {{/each}}
+                    </td>
                     <td data-title="Math Type"></td>
-                    <td data-title="Annotation">{{value.Annotation}}</td>
+                    <td data-title="Annotation">
+                      {{#each this.SimulationSpec as |value key|}}
+                      {{value.Annotation}}
+                      {{/each}}
+                    </td>
                 </tr>
-
-                {{/each}}
                 {{/each}}
             </tbody>
         </table>
@@ -487,11 +515,18 @@
 {{#each this.SimulationSpec as |value key|}}
 <h2 class="sectionTitle">{{key}} - {{value.$.Name}}</h2>
 
-{{!-- specifications table  --}}
+{{!-- specifications table species --}}
 <div class="pmTable">
     <div class="container">
         <table class="responsive-table">
-            <caption>Specifications(Species) - {{value.$.Name}}
+            <caption>
+              Specifications(Species) - {{value.$.Name}}
+              <span class="dashboardBtn">
+                <a href="/curatedList/model/{{../../modelName}}#specsSpecies0">
+                  <i class="fa fa-undo" aria-hidden="true"></i>
+                  See in Dashboard
+                </a>
+              </span>
             </caption>
             <thead>
                 <tr>
@@ -506,21 +541,33 @@
                 <tr>
                     <td data-title="Species">{{this.$.LocalizedCompoundRef}}</td>
                     <td data-title="Initial Condition">{{this.InitialConcentration}}</td>
-                    <td data-title="Diffusion Constant">{{this.Diffusion}}</td>
+                    <td data-title="Diffusion Constant">
+                      {{~this.Diffusion~}}
+                      <span class="unit">
+                        [{{../../../this.Model.[0].ModelUnitSystem.[0].$.AreaUnit~}}
+                        /{{../../../this.Model.[0].ModelUnitSystem.[0].$.TimeUnit}}]
+                        {{~/each~}}
+                        {{~/each~}}
+                      </span>
+                    </td>
                 </tr>
-                {{/each}}
-                {{/each}}
             </tbody>
         </table>
     </div>
 </div>
 
-{{!-- specifications table  --}}
+{{!-- specifications table reaction --}}
 <div class="pmTable">
     <div class="container">
         <table class="responsive-table">
-            <caption>Specifications(Reaction) - {{value.$.Name}}
-
+            <caption>
+              Specifications(Reaction) - {{value.$.Name}}
+              <span class="dashboardBtn">
+                <a href="/curatedList/model/{{../../modelName}}#specsReaction0">
+                  <i class="fa fa-undo" aria-hidden="true"></i>
+                  See in Dashboard
+                </a>
+              </span>
             </caption>
             <thead>
                 <tr>
@@ -547,7 +594,14 @@
 <div class="pmTable">
     <div class="container">
         <table class="responsive-table">
-            <caption>Simulations - {{value.$.Name}}
+            <caption>
+              Simulations - {{value.$.Name}}
+              <span class="dashboardBtn">
+                <a href="/curatedList/model/{{../../modelName}}#simulations0">
+                  <i class="fa fa-undo" aria-hidden="true"></i>
+                  See in Dashboard
+                </a>
+              </span>
             </caption>
             <thead>
                 <tr>
@@ -562,10 +616,21 @@
                     <td data-title="Name">{{ this.$.Name}}</td>
                     {{#each this.SolverTaskDescription}}
                     {{#each this.TimeBound}}
-                    <td data-title="End Time">{{ this.$.EndTime}}</td>
+                    <td data-title="End Time">
+                      {{ this.$.EndTime}}
+                      <span class="unit">
+                        [{{../../../../this.Model.[0].ModelUnitSystem.[0].$.TimeUnit}}]
+                      </span>
+                    </td>
                     {{/each}}
                     {{#each this.OutputOptions}}
-                    <td data-title="Output Options">every {{ this.$.OutputTimeStep}}</td>
+                    {{#each this}}
+                    <td data-title="Output Options">
+                      {{#each this}}
+                      {{@key}} {{this}}<br></br>
+                      {{/each}}
+                    </td>
+                    {{/each}}
                     {{/each}}
                     {{/each}}
                 </tr>

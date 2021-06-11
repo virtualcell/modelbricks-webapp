@@ -2432,8 +2432,14 @@ li.card {
   background-color: rgba(158, 158, 158, 0.2);
 }
 
+/*canvas for drawing depictions in model.hbs*/
 .molecule_canvas {
   margin: -9px;
+}
+
+/*canvases in printable*/
+.printAnnotationWrap > .molecule_canvas{
+  margin: 0px;
 }
 
 @media (min-width: 480px) {
@@ -2716,7 +2722,7 @@ li.card {
 
 .pmTable .printAnnotationWrap {
   margin: 0;
-  padding: 0;
+  padding: 5px 0px !important;
   border-top: none !important;
   border-bottom: none !important;
   background-color: white;
@@ -2752,7 +2758,7 @@ li.card {
   max-width: 100%;
   width: inherit;
   word-wrap: break-word;
-  padding: 5px 0px;
+  padding: 0px 5px !important;
 }
 
 .pmTable .printAnnotationWrap .printAnnotation .printTA {
@@ -2761,7 +2767,7 @@ li.card {
   margin: auto;
   word-wrap: break-word;
   opacity: 0.8;
-  padding: 5px 0px;
+  padding: 0px 0px;
 }
 
 .sectionDescription {
@@ -3075,16 +3081,7 @@ span.unit {
 /*UID p tags
 in printable view*/
 .p-UID {
-  padding: 5px;
-}
-
-.reaction-rate-p {
-  padding: 5px;
-}
-
-.printable-n-a-p {
-  display: block;
-  margin: auto;
+  /*nothing to style yet*/
 }
 
 .printable-hr {
@@ -3096,4 +3093,18 @@ in printable view*/
 
 #kinetics.printTA :nth-last-child(1){
   display: none;
+}
+
+/*combining td while keeping th seperate*/
+.vert-line {
+  flex-grow: 1;
+  flex-basis: 0
+}
+
+#vert-line-right {
+  border-left: 1px solid #4594AF;
+}
+
+#flex-td {
+  display: flex;
 }
