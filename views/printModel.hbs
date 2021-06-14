@@ -485,8 +485,6 @@
                     <th scope="col">Name</th>
                     <th scope="col">Math Type</th>
                     <th scope="col">Annotation</th>
-
-
                 </tr>
             </thead>
             <tbody>
@@ -497,7 +495,9 @@
                       {{value.$.Name}}
                       {{/each}}
                     </td>
-                    <td data-title="Math Type"></td>
+                    <td data-title="Math Type">
+                      {{this.SimulationSpec.[0].MathDescription.[0].$.Name}}
+                    </td>
                     <td data-title="Annotation">
                       {{#each this.SimulationSpec as |value key|}}
                       {{value.Annotation}}
@@ -623,15 +623,11 @@
                       </span>
                     </td>
                     {{/each}}
-                    {{#each this.OutputOptions}}
-                    {{#each this}}
                     <td data-title="Output Options">
-                      {{#each this}}
-                      {{@key}} {{this}}<br></br>
+                      {{#each ../../../../outputOptions}}
+                      <p>{{this.key}} {{this.val}}</p>
                       {{/each}}
                     </td>
-                    {{/each}}
-                    {{/each}}
                     {{/each}}
                 </tr>
                 {{/each}}
@@ -668,7 +664,9 @@
                 {{#each this.Parameter}}
                 <tr>
                     <td data-title="Name">{{ this.$.Name}}</td>
-                    <td data-title="Expression">{{this._}}</td>
+                    <td data-title="Expression">
+                      {{this._}}<span class="unit">[{{this.$.Unit}}]</span>
+                    </td>
                 </tr>
                 <tr>
                     <td class="printAnnotationWrap">

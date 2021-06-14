@@ -864,7 +864,11 @@
                                   {{this.InitialConcentration}}
                                 </td>
                                 <td data-label="Diffusion" class="Diffusion">
-                                  {{this.Diffusion}}
+                                  {{~this.Diffusion~}}
+                                  <span class="unit">
+                                    [{{../../../this.Model.[0].ModelUnitSystem.[0].$.AreaUnit~}}
+                                    /{{../../../this.Model.[0].ModelUnitSystem.[0].$.TimeUnit}}]
+                                  </span>
                                 </td>
                             </tr>
                             {{/each}}
@@ -1042,8 +1046,9 @@
                             <tr>
                                 <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
-                                <td data-label="Expression" class="Expression">{{this._}}<span
-                                        class="unit">[{{this.$.Unit}}]</span></td>
+                                <td data-label="Expression" class="Expression">
+                                  {{this._}}<span class="unit">[{{this.$.Unit}}]</span>
+                                </td>
                             </tr>
                             {{/each}}
                             {{/each}}

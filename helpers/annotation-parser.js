@@ -45,6 +45,13 @@ class BioModel {
   }
 }
 
+class KeyValContainer {
+  constructor(key, val) {
+    this.key = key;
+    this.val = val;
+  }
+}
+
 //class to process annotations and urls from vcml
 class AnnParser {
 
@@ -169,6 +176,23 @@ class AnnParser {
     //organize data into JSON file that will be used by main.js
     let values = Object.values(this.annotations);
     this.JSONwrapper = new ModelWrapper('PLACEHOLDER', values, urls);
+  }
+
+  getOutputOptions() {
+    try {
+      let outOps = this.vcmlObj.vcml.BioModel[0].SimulationSpec[0].Simulation[0].SolverTaskDescription[0].OutputOptions[0].$;
+      let entries = Object.entries(outOps);
+      let list = [];
+      for (let i = 0; i < entries.length; i++) {
+        let e = entries[i];
+        let key = e[0];
+        let val = e[1];
+        list.push(new KeyValContainer(key, val));
+      }
+      return (list);
+    } catch {
+      return null;
+    }
   }
 
   getString() {

@@ -157,6 +157,7 @@ app.get("/curatedList/printModel/:name", (req, res) => {
         data = result;
         let annoObj = new aPrs.AnnParser(data);
         let annoData = annoObj.getString();
+        let outputOptions = annoObj.getOutputOptions();
         // generating static html pages in ./public/html
         var template = handlebars.compile(
           fs.readFileSync("./temp/modelTemplate.html", "utf8")
@@ -172,6 +173,7 @@ app.get("/curatedList/printModel/:name", (req, res) => {
           title: "ModelBricks - Model Print Page",
           data,
           modelName,
+          outputOptions,
         });
       });
     });
