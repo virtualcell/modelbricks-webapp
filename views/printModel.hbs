@@ -19,7 +19,47 @@
     {{/each}}
 </div>
 
+{{!-- physiology table --}}
 <h2 class="sectionTitle">Physiology</h2>
+
+<div class="pmTable">
+    <div class="container">
+        <table class="responsive-table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                      Universal ID's
+                    </th>
+                    <th scope="col">
+                      Text Annotations
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="printAnnotationWrap">
+                        <div class="printAnnotation">
+
+                            {{!-- universal ID's  --}}
+                            <div class="printUID" id="globalPublications">
+                            </div>
+                        </div>
+                    </td>
+
+                    <td class="printAnnotationWrap">
+                        <div class="printAnnotation">
+
+                            {{!-- annotation --}}
+                            <div class="printTA" id="globalAnnotations">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 {{!-- reactions table  --}}
 <div class="pmTable">
     <div class="container">
@@ -104,7 +144,7 @@
                             <div class="printTA" id="kinetics">
                                 {{#each this.Kinetics}}
                                 {{#each this.Parameter}}
-                                {{~this.$.Role}} ({{this.$.Name}}):<br></br>
+                                {{~this.$.Role}} ({{this.$.Name}}):&nbsp;
                                 {{~this._~}}
                                 <span class="unit">[{{this.$.Unit}}]</span>
                                 <hr class="printable-hr">
@@ -496,7 +536,32 @@
                       {{/each}}
                     </td>
                     <td data-title="Math Type">
-                      {{this.SimulationSpec.[0].MathDescription.[0].$.Name}}
+                      {{#each this.SimulationSpec}}
+                        {{#if (eq "true" this.$.Stochastic)}}
+                          {{#if (eq "true" this.$.RuleBased)}}
+                          Stochastic agent-based (NFSim)
+                          {{else}}
+                          Stochastic (SSA)
+                          {{/if}}
+                        {{else}}
+                          {{#if (eq "true" this.$.RuleBased)}}
+                          Deterministic rule-based (BioNetGen)
+                          {{else}}
+                          Deterministic (ODE)
+                          {{/if}}
+                        {{/if}}
+                        {{#each this.Geometry}}
+                          {{#if (eq "0" this.$.Dimension)}}
+                          Compartmental
+                          {{/if}}
+                          {{#if (eq "2" this.$.Dimension)}}
+                          Spatial (2D)
+                          {{/if}}
+                          {{#if (eq "3" this.$.Dimension)}}
+                          Spatial (3D)
+                          {{/if}}
+                        {{/each}}
+                      {{/each}}
                     </td>
                     <td data-title="Annotation">
                       {{#each this.SimulationSpec as |value key|}}

@@ -372,7 +372,6 @@ function drawGraphics(tableID, BngColumn, CanvasColumn, drawType) {
         var bioNetGen = speciesTable.rows.item(y).cells.item(BngColumn).innerHTML;
 
         //remove bng trailing syntax leftover from mustache templating
-        console.log(bioNetGen);
         bioNetGen = bioNetGen.replace(/,\)/g, ')');
         bioNetGen = bioNetGen.replace(/-\)/g, ')');
         bioNetGen = bioNetGen.replace(/!\)/g, ')');

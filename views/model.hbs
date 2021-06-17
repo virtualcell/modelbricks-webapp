@@ -776,7 +776,32 @@
                                         Reaction</a> <br>
                                     <a href="#simulations{{key}}" style="cursor:pointer; color:#3EB9FE">Simulations</a>
                                 </td>
-                                <td data-label="Type" class="Type" id="mathType"></td>
+                                <td data-label="Type" class="Type" id="mathType">
+                                  {{#if (eq "true" this.$.Stochastic)}}
+                                    {{#if (eq "true" this.$.RuleBased)}}
+                                    Stochastic agent-based (NFSim)
+                                    {{else}}
+                                    Stochastic (SSA)
+                                    {{/if}}
+                                  {{else}}
+                                    {{#if (eq "true" this.$.RuleBased)}}
+                                    Deterministic rule-based (BioNetGen)
+                                    {{else}}
+                                    Deterministic (ODE)
+                                    {{/if}}
+                                  {{/if}}
+                                  {{#each this.Geometry}}
+                                    {{#if (eq "0" this.$.Dimension)}}
+                                    Compartmental
+                                    {{/if}}
+                                    {{#if (eq "2" this.$.Dimension)}}
+                                    Spatial (2D)
+                                    {{/if}}
+                                    {{#if (eq "3" this.$.Dimension)}}
+                                    Spatial (3D)
+                                    {{/if}}
+                                  {{/each}}
+                                </td>
                             </tr>
 
                             {{/each}}
@@ -1207,4 +1232,7 @@
         }, 1000);
     });
     alerting = (variable) => {};
+
+    //fix whitespace
+    console.log(document);
 </script>

@@ -65,7 +65,7 @@ const hbs = exphbs.create({
       return (a > b);
     },
     eq: function (a, b) {
-      return (parseInt(a) == parseInt(b))
+      return (a == b)
     }
   },
 });
@@ -112,6 +112,7 @@ app.get("/curatedList/:search", async (req, res) => {
 
   //if page is empty
   let isNotEmpty = true;
+  let modelsPerPage = termMap['maxModels'];
   if (json.length == 0) {
     isNotEmpty = false;
   }
@@ -121,6 +122,7 @@ app.get("/curatedList/:search", async (req, res) => {
     json,
     termMap,
     isNotEmpty,
+    modelsPerPage,
   });
 });
 

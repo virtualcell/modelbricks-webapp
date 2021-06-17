@@ -1,6 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 html {
   scroll-behavior: smooth;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 * {
@@ -1034,6 +1036,8 @@ li.card {
   -webkit-font-smoothing: antialiased;
   line-height: 1.42857143;
   padding: 1em;
+  padding-bottom: 0;
+  padding-top: 0;
   /* Tables */
   /* Responsive scroll-y table */
   /* Default table */
@@ -1598,23 +1602,23 @@ li.card {
 .searchForm {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  -webkit-box-sizing: border-box;
+  /*-webkit-box-sizing: border-box;
   box-sizing: border-box;
-  line-height: 1.15;
-  display: -webkit-box;
+  line-height: 1.15;*/
+  /*display: -webkit-box;
   display: -ms-flexbox;
+  display: flex;*/
   display: flex;
-  -webkit-box-pack: center;
+  /*-webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
-  align-items: center;
+  align-items: center;*/
   margin: 0;
   -webkit-animation: animBg 30s ease infinite;
   animation: animBg 30s ease infinite;
   width: 40%;
-  margin: auto;
   /*#region Datalist */
   /*#endregion */
 }
@@ -2061,9 +2065,7 @@ li.card {
 }
 
 #toggle-advanced.page-button {
-  display: block;
-  width: 100px;
-  margin: 0px auto;
+  display: flex;
 }
 
 @media only screen and (max-width: 767px) {
@@ -3098,7 +3100,7 @@ in printable view*/
 /*combining td while keeping th seperate*/
 .vert-line {
   flex-grow: 1;
-  flex-basis: 0
+  flex-basis: 0;
 }
 
 #vert-line-right {
@@ -3107,4 +3109,45 @@ in printable view*/
 
 #flex-td {
   display: flex;
+}
+
+/*make contents of search div inline*/
+#total-search-container {
+  display: flex;
+}
+
+#simple-search {
+  margin: 0 !important;
+  margin-top: 15px;
+}
+
+#advanced-search {
+  margin: 0 !important;
+  margin-top: 15px;
+}
+
+#center-search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*make main navbar sticky*/
+.mainNavbar {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+/*do some tricks to the page content to make sicky header work*/
+.page-content {
+  margin-top: 70px;
+  min-height: calc(100vh - 70px);
+}
+
+/*get rid of curated list table margin*/
+.table-responsive-full.sort-table#content-table3 {
+  margin-bottom: 0;
+  margin-top: 0;
 }
