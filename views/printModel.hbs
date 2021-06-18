@@ -9,6 +9,7 @@
     {{/each}}
 </div>
 
+{{!-- reaction diagram --}}
 <div class=" rxnDiagram">
     <h2 class="sectionTitle">Reaction Diagram</h2>
     {{#each data.vcml.BioModel}}
@@ -22,7 +23,7 @@
 {{!-- physiology table --}}
 <h2 class="sectionTitle">Physiology</h2>
 
-<div class="pmTable">
+<div class="pmTable" id="physiology">
     <div class="container">
         <table class="responsive-table">
             <thead>
@@ -61,7 +62,7 @@
 </div>
 
 {{!-- reactions table  --}}
-<div class="pmTable">
+<div class="pmTable" id="reactions">
     <div class="container">
         <table class="responsive-table">
             <caption>Reactions <span class="dashboardBtn"><a href="/curatedList/model/{{modelName}}#reactions"><i
@@ -165,7 +166,7 @@
 </div>
 
 {{!-- Structures table  --}}
-<div class="pmTable">
+<div class="pmTable" id="structures">
     <div class="container">
         <table class="responsive-table">
             <caption>Structures <span class="dashboardBtn"><a href="/curatedList/model/{{modelName}}#structures"><i
@@ -230,7 +231,7 @@
 
 
 {{!-- Species table  --}}
-<div class="pmTable">
+<div class="pmTable" id="species">
     <div class="container">
         <table id="print-species-table" class="responsive-table">
             <caption>Species <span class="dashboardBtn"><a href="/curatedList/model/{{modelName}}#species"><i
@@ -314,7 +315,7 @@
 </div>
 
 {{!-- Molecules table  --}}
-<div class="pmTable">
+<div class="pmTable" id="molecules">
     <div class="container">
         <table id="print-molecules-table" class="responsive-table">
             <caption>Molecules <span class="dashboardBtn"><a href="/curatedList/model/{{modelName}}#molecules"><i
@@ -395,7 +396,7 @@
 </div>
 
 {{!-- Observables table  --}}
-<div class="pmTable">
+<div class="pmTable" id="observables">
     <div class="container">
         <table id="print-observables-table" class="responsive-table">
             <caption>Observables <span class="dashboardBtn"><a href="/curatedList/model/{{modelName}}#observables"><i
@@ -508,7 +509,7 @@
 
 <h2 class="sectionTitle">Applications</h2>
 {{!-- Applications table  --}}
-<div class="pmTable">
+<div class="pmTable" id="applications">
     <div class="container">
         <table class="responsive-table">
             <caption>
@@ -581,7 +582,7 @@
 <h2 class="sectionTitle">{{key}} - {{value.$.Name}}</h2>
 
 {{!-- specifications table species --}}
-<div class="pmTable">
+<div class="pmTable" id="specsSpecies{{@key}}">
     <div class="container">
         <table class="responsive-table">
             <caption>
@@ -622,7 +623,7 @@
 </div>
 
 {{!-- specifications table reaction --}}
-<div class="pmTable">
+<div class="pmTable" id="specsReaction{{@key}}">
     <div class="container">
         <table class="responsive-table">
             <caption>
@@ -656,7 +657,7 @@
 </div>
 
 {{!-- Simulations table  --}}
-<div class="pmTable">
+<div class="pmTable" id="simulations{{@key}}">
     <div class="container">
         <table class="responsive-table">
             <caption>
@@ -708,7 +709,7 @@
 <h2 class="sectionTitle">Global Parameters</h2>
 
 {{!-- Global Parameters table  --}}
-<div class="pmTable">
+<div class="pmTable" id="global-parameters">
     <div class="container">
         <table class="responsive-table">
             <caption>Global Parameters <span class="dashboardBtn"><a href="/curatedList/model/{{modelName}}#global"><i
@@ -838,5 +839,8 @@
     drawType = cvsElm.title;
     drawGraphicsPrintable(cvsElm, drawType);
   }
+
+  //fix link scrolling
+  setTimeout(() => {  window.scrollBy(0, -98); }, 100);
 
 </script>

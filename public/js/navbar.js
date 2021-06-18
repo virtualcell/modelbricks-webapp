@@ -54,5 +54,4 @@ function handleSmallScreens() {
   });
 }
 
-console.log("navbar hello");
 handleSmallScreens();

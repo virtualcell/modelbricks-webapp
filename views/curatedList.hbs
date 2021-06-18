@@ -1,67 +1,67 @@
 {{!-- searching form  --}}
-<div id="center-search">
-    <div id="total-search-container">
-        {{!--buttons for toggling advanced search--}}
-        <button onclick="toggleSearch()" id="toggle-advanced" class="page-button">Advanced Search</button>
-        <div class="searchForm subMenu" id="simple-search">
-            <form id="custom-form-simple" class="custom-form">
-                <div class="custom-form__group">
-                    <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}">
-                    <label class="group__label" for="name">Name</label>
-                </div>
-                <button type="submit" class="custom-form__submit">
-                    search
-                    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
-                        stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M5 12h14M12 5l7 7-7 7" /></svg>
-                </button>
-            </form>
-        </div>
 
-        {{!-- advanced searching form  --}}
-        <div class="searchForm subMenu" id="advanced-search">
-            <form id="custom-form-advanced" class="custom-form">
-                <div class="custom-form__group">
-                    <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}">
-                    <label class="group__label" for="name">Name</label>
-                </div>
-                <div class="custom-form__group">
-                    <input type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}">
-                    <label class="group__label" for="name">ID</label>
-                </div>
-                <div class="custom-form__group">
-                    <input type="text" name="category" id="category" placeholder="Category" value="{{termMap.category}}">
-                    <label class="group__label" for="name">Category</label>
-                </div>
-                {{!--    For now changing owner is disabled, default set to ModelBrick
-                <div class="custom-form__group">
-                    <input type="text" name="owner" id="owner" placeholder="Owner" value="{{termMap.owner}}">
-                    <label class="group__label" for="name">Owner</label>
-                </div>   Code fully functional if you wish to reenable    --}}
-                <div class="custom-form__group">
-                    <input type="text" name="savedLow" id="savedLow" placeholder="savedLow" value="{{termMap.savedLow}}">
-                    <label class="group__label" for="name">savedLow</label>
-                </div>
-                <div class="custom-form__group">
-                    <input type="text" name="savedHigh" id="savedHigh" placeholder="savedHigh" value="{{termMap.savedHigh}}">
-                    <label class="group__label" for="name">savedHigh</label>
-                </div>
-                <div class="custom-form__group">
-                    <input type="text" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}">
-                    <label class="group__label" for="name">Order</label>
-                </div>
-                <div class="custom-form__group">
-                    <input type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}">
-                    <label class="group__label" for="name">Models per Page</label>
-                </div>
-                <button type="submit" class="custom-form__submit">
-                    search
-                    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
-                        stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path d="M5 12h14M12 5l7 7-7 7" /></svg>
-                </button>
-            </form>
-        </div>
+<div id="test-flex">
+    {{!--buttons for toggling advanced search--}}
+    <button onclick="toggleSearch()" id="toggle-advanced" class="page-button">Advanced Search</button>
+    
+    <div class="searchForm subMenu" id="simple-search">
+        <form id="custom-form-simple" class="custom-form">
+            <div class="custom-form__group">
+                <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}">
+                <label class="group__label" for="name">Name</label>
+            </div>
+            <button type="submit" class="custom-form__submit">
+                search
+                <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </button>
+        </form>
+    </div>
+
+    {{!-- advanced searching form  --}}
+    <div class="searchForm subMenu" id="advanced-search">
+        <form id="custom-form-advanced" class="custom-form">
+            <div class="custom-form__group">
+                <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}">
+                <label class="group__label" for="name">Name</label>
+            </div>
+            <div class="custom-form__group">
+                <input type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}">
+                <label class="group__label" for="name">ID</label>
+            </div>
+            <div class="custom-form__group">
+                <input type="text" name="category" id="category" placeholder="Category" value="{{termMap.category}}">
+                <label class="group__label" for="name">Category</label>
+            </div>
+            {{!--    For now changing owner is disabled, default set to ModelBrick
+            <div class="custom-form__group">
+                <input type="text" name="owner" id="owner" placeholder="Owner" value="{{termMap.owner}}">
+                <label class="group__label" for="name">Owner</label>
+            </div>   Code fully functional if you wish to reenable    --}}
+            <div class="custom-form__group">
+                <input type="text" name="savedLow" id="savedLow" placeholder="savedLow" value="{{termMap.savedLow}}">
+                <label class="group__label" for="name">savedLow</label>
+            </div>
+            <div class="custom-form__group">
+                <input type="text" name="savedHigh" id="savedHigh" placeholder="savedHigh" value="{{termMap.savedHigh}}">
+                <label class="group__label" for="name">savedHigh</label>
+            </div>
+            <div class="custom-form__group">
+                <input type="text" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}">
+                <label class="group__label" for="name">Order</label>
+            </div>
+            <div class="custom-form__group">
+                <input type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}">
+                <label class="group__label" for="name">Models per Page</label>
+            </div>
+            <button type="submit" class="custom-form__submit">
+                search
+                <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </button>
+        </form>
     </div>
 </div>
 

@@ -10,19 +10,41 @@
                     Physiology<i class="fa fa-angle-up dynamic"></i>
                 </a>
                 <ul class="subMenu active">
-                    <li><a href="#dashboard" id="targeted"><i class="fa fa-picture-o static"
-                                aria-hidden="true"></i>Reaction
-                            Diagram</a></li>
-                    <li><a href="#reactions"><i class="fa fa-flask static" aria-hidden="true"></i>Reactions</a>
+                    <li>
+                      <a href="#dashboard" id="targeted" class="sidebar-link">
+                        <i class="fa fa-picture-o static" aria-hidden="true"></i>
+                        Reaction Diagram
+                      </a>
                     </li>
-                    <li><a href="#structures"><i class="fa fa-codepen static" aria-hidden="true"></i>Structures</a>
+                    <li>
+                      <a href="#reactions" class="sidebar-link">
+                        <i class="fa fa-flask static" aria-hidden="true"></i>
+                        Reactions
+                      </a>
                     </li>
-                    <li><a href="#species"><i class="fa fa-link static" aria-hidden="true"></i>
-                            Species</a>
+                    <li>
+                      <a href="#structures" class="sidebar-link">
+                        <i class="fa fa-codepen static" aria-hidden="true"></i>
+                        Structures
+                      </a>
                     </li>
-                    <li><a href="#molecules"><i class="fa fa-empire static" aria-hidden="true"></i>Molecules</a>
+                    <li>
+                      <a href="#species" class="sidebar-link">
+                        <i class="fa fa-link static" aria-hidden="true"></i>
+                        Species
+                      </a>
                     </li>
-                    <li><a href="#observables"><i class="fa fa-eercast static" aria-hidden="true"></i>Observables</a>
+                    <li>
+                      <a href="#molecules" class="sidebar-link">
+                        <i class="fa fa-empire static" aria-hidden="true"></i>
+                        Molecules
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#observables" class="sidebar-link">
+                        <i class="fa fa-eercast static" aria-hidden="true"></i>
+                        Observables
+                      </a>
                     </li>
                 </ul>
             </li>
@@ -68,10 +90,15 @@
         <ul class="topbar clearfix">
             {{#each data.vcml.BioModel}}
             {{#each this.Version}}
-            <li><a id="modelName" href="#dashboard">{{trimString this.$.Name}} -
-                    {{this.$.KeyValue}}</a></li>
-            <li class="printable"><a href="/curatedList/printModel/{{this.$.KeyValue}}"><i class="fa fa-print"
-                        aria-hidden="true"></i></a>
+            <li>
+              <a id="modelName" href="#dashboard">
+                {{~trimString this.$.Name}} - {{this.$.KeyValue~}}
+              </a>
+            </li>
+            <li class="printable">
+              <a id="print-link" href="/curatedList/printModel/{{this.$.KeyValue}}">
+                <i class="fa fa-print" aria-hidden="true"></i>
+              </a>
             </li>
 
             {{!-- var define for downloads section. used in main.js file. --}}
@@ -1233,6 +1260,30 @@
     });
     alerting = (variable) => {};
 
-    //fix whitespace
-    console.log(document);
+    //go to scroll given element in printable veiw
+    const printLink = document.getElementById('print-link');
+
+    function goToPrintable(e) {
+      e.preventDefault();
+
+      let url = window.location.href;
+      let poundIndex = url.lastIndexOf('#');
+      let elementID = url.slice(poundIndex, url.length);
+      printLink.href += elementID;
+
+      window.location.href = printLink.href;
+    }
+
+    printLink.addEventListener("click", (e) => {goToPrintable(e);});
+
+    //ensure window is scrolled to top
+    //initial fix
+    setTimeout(() => {  window.scroll(0, 0); }, 100);
+    //fix for each link
+    const links = document.querySelectorAll('.sidebar-link');
+    for (let i = 0; i < links.length; i++) {
+      links[i].addEventListener("click", (e) => {
+        setTimeout(() => {  window.scroll(0, 0); }, 100);
+      });
+    }
 </script>
