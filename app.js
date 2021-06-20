@@ -137,10 +137,13 @@ app.get("/curatedList/model/:name", (req, res) => {
         data = result;
         let annoObj = new aPrs.AnnParser(data);
         let annoData = annoObj.getString();
+        let outputOptions = annoObj.getOutputOptions();
+        annoObj.getInitialConditions();
         fs.writeFileSync("./public/json/" + "annotations" + ".json", annoData);
         res.render("model", {
           title: "ModelBricks - Model Page",
           data,
+          outputOptions,
         });
       });
     });

@@ -49,24 +49,39 @@
                 </ul>
             </li>
             <li class="drop">
-                <a href="#applications" class="dropTitle"><i class="fa fa-folder-o static" aria-hidden="true"></i>
-                    Applications <i class="fa fa-angle-down dynamic"></i>
+                <a href="#applications" class="dropTitle sidebar-link">
+                  <i class="fa fa-folder-o static" aria-hidden="true"></i>
+                  Applications
+                  <i class="fa fa-angle-down dynamic"></i>
                 </a>
                 <ul class="subMenu">
                     {{#each data.vcml.BioModel}}
                     {{#each this.SimulationSpec as |value key|}}
                     <li class="drop child">
-                        <a href="#specsSpecies{{key}}" class="dropTitle"><i class="fa fa-folder-o static"
-                                aria-hidden="true"></i>
-                            <span class="wordLimit">{{value.$.Name}}</span><i class="fa fa-angle-down dynamic"></i>
+                        <a href="#specsSpecies{{key}}" class="dropTitle sidebar-link">
+                          <i class="fa fa-folder-o static" aria-hidden="true"></i>
+                          <span class="wordLimit">{{value.$.Name}}</span>
+                          <i class="fa fa-angle-down dynamic"></i>
                         </a>
                         <ul class="subMenu">
-                            <li><a href="#specsSpecies{{key}}"><i class="fa fa-pencil-square-o static"
-                                        aria-hidden="true"></i>Specs - Species</a></li>
-                            <li><a href="#specsReaction{{key}}"><i class="fa fa-pencil-square-o static"
-                                        aria-hidden="true"></i>Specs - Reactions</a></li>
-                            <li><a href="#simulations{{key}}"><i class="fa fa-superpowers static"
-                                        aria-hidden="true"></i>Simulations</a></li>
+                            <li>
+                              <a href="#specsSpecies{{key}}" class="sidebar-link">
+                                <i class="fa fa-pencil-square-o static" aria-hidden="true"></i>
+                                Specs - Species
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#specsReaction{{key}}" class="sidebar-link">
+                                <i class="fa fa-pencil-square-o static" aria-hidden="true"></i>
+                                Specs - Reactions
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#simulations{{key}}" class="sidebar-link">
+                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
+                                Simulations
+                              </a>
+                            </li>
                         </ul>
                     </li>
                     {{/each}}
@@ -1021,16 +1036,24 @@
                         <tbody>
                             {{#each value.Simulation}}
                             <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                                <td data-label="Name" class="Name">
+                                  <a id={{this.$.Name}}
+                                    onClick="reply_click(this.id)"
+                                    style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
                                 {{#each this.SolverTaskDescription}}
                                 {{#each this.TimeBound}}
-                                <td data-label="endTime" class="endTime">{{ this.$.EndTime}}
+                                <td data-label="endTime" class="endTime">
+                                  {{ this.$.EndTime}}
                                 </td>
                                 {{/each}}
-                                {{#each this.OutputOptions}}
-                                <td data-label="Output" class="Output">{{this.$.OutputTimeStep}}</td>
-                                {{/each}}
+                                <td data-label="Output" class="Output">
+                                  {{#each ../../../../outputOptions}}
+                                  <p>{{this.key}} {{this.val}}</p>
+                                  {{/each}}
+                                </td>
                                 {{/each}}
                             </tr>
                             {{/each}}

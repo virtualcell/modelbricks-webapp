@@ -195,6 +195,17 @@ class AnnParser {
     }
   }
 
+  getInitialConditions() {
+    let species = this.vcmlObj.vcml.BioModel[0].Model[0].LocalizedCompound;
+    let features = this.vcmlObj.vcml.BioModel[0].SimulationSpec[0].GeometryContext[0].FeatureMapping
+    let speciesMap = [];
+    for (let i = 0; i < species.length; i++) {
+      let s = species[i].$;
+      speciesMap.push({name: s.Name, structure: s.Structure, unit: null});
+    }
+    console.log(features);
+  }
+
   getString() {
     return (JSON.stringify(new BioModel(this.JSONwrapper)));
   }
