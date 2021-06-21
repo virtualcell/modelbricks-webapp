@@ -1,6 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+
+scroll-behavior: auto;
+
 html {
   scroll-behavior: smooth;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 * {
@@ -11,9 +16,9 @@ html {
 }
 
 body {
-  font-family: "Roboto", sans-serif;
   font-size: 0.925rem;
   overflow-x: hidden;
+  font-family: "Roboto", sans-serif;
 }
 
 a {
@@ -397,7 +402,6 @@ a {
   height: 690px;
   background-color: white;
   position: relative;
-  font-family: helvetica, verdana, sans-serif;
 }
 
 .main .topbar {
@@ -936,7 +940,6 @@ li.card {
   background-color: #3eb8fe;
   height: 44px;
   text-transform: uppercase;
-  font-family: sans-serif;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
 }
@@ -1032,11 +1035,12 @@ li.card {
   /*18px*/
   width: 100%;
   height: 100%;
-  font-family: "Roboto", sans-serif;
   color: #333;
   -webkit-font-smoothing: antialiased;
   line-height: 1.42857143;
   padding: 1em;
+  padding-bottom: 0;
+  padding-top: 0;
   /* Tables */
   /* Responsive scroll-y table */
   /* Default table */
@@ -1317,7 +1321,6 @@ li.card {
   /*18px*/
   width: 100%;
   height: 100%;
-  font-family: "Roboto", sans-serif;
   color: #333;
   -webkit-font-smoothing: antialiased;
   line-height: 1.42857143;
@@ -1618,7 +1621,6 @@ li.card {
   -webkit-animation: animBg 30s ease infinite;
   animation: animBg 30s ease infinite;
   width: 40%;
-  margin: auto;
   /*#region Datalist */
   /*#endregion */
 }
@@ -2030,6 +2032,53 @@ li.card {
   border-bottom-color: #3cb2dd;
 }
 
+/*page button similar to search form buttons*/
+.page-button {
+  display: inline-block;
+  padding: 10px;
+  margin-right: 15px;
+  margin-left: -10px;
+  background-color: white;
+  color: #3683A3;
+  border-style: solid;
+  border: 1px solid #3683A3;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.page-button:hover {
+  color: white;
+  background-color: #3683A3;
+}
+
+#curated-list-button-holder {
+  width: inherit;/*166px;*/
+  display: block;
+  position:relative;
+  float:right;
+}
+
+.page-button #nextLink {
+  display: inline-block;
+}
+
+.page-button #prevLink {
+  display: inline-block;
+}
+
+#toggle-advanced.page-button {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+/*make advanced button + search form inline*/
+#test-flex {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media only screen and (max-width: 767px) {
   .searchForm .datalist-ul {
     top: unset;
@@ -2062,7 +2111,6 @@ li.card {
 }
 
 .sectionHeading {
-  font-family: sans-serif;
   color: #333;
   text-align: center;
   padding: 40px;
@@ -2073,7 +2121,6 @@ li.card {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   height: 100%;
-  font-family: sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
@@ -2186,7 +2233,6 @@ li.card {
 
 .search1 #search-heading h1 {
   text-align: center;
-  font-family: "Roboto Slab", serif;
   font-size: 125%;
   font-weight: 300;
   margin-bottom: 25px;
@@ -2315,7 +2361,6 @@ li.card {
   box-shadow: rgba(0, 0, 0, 0.137255) 0px 4px 5px 0px,
     rgba(0, 0, 0, 0.117647) 0px 1px 10px 0px,
     rgba(0, 0, 0, 0.2) 0px 2px 4px -1px;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: 16px;
   font-weight: 400;
   background-color: #fff;
@@ -2400,8 +2445,14 @@ li.card {
   background-color: rgba(158, 158, 158, 0.2);
 }
 
+/*canvas for drawing depictions in model.hbs*/
 .molecule_canvas {
   margin: -9px;
+}
+
+/*canvases in printable*/
+.printAnnotationWrap > .molecule_canvas{
+  margin: 0px;
 }
 
 @media (min-width: 480px) {
@@ -2448,7 +2499,6 @@ li.card {
 }
 
 .pmTable body {
-  font-family: sans-serif;
   color: #5e5d52;
 }
 
@@ -2685,15 +2735,24 @@ li.card {
 
 .pmTable .printAnnotationWrap {
   margin: 0;
-  padding: 0 !important;
-  border: none !important;
+  padding: 5px 0px !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  background-color: white;
+}
+
+/*for some reason border on all children will result in double border*/
+.responsive-table:last-child {
+    border-bottom: 1px solid #418CA5 !important;
+}
+
+.print-descriptor {
+  background-color: #bfdce6;
 }
 
 .pmTable .printAnnotationWrap .printAnnotation {
   background: #fff;
-  width: 286%;
-  max-width: 286%;
-  min-width: 286%;
+  width: inherit;
   margin: 0;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2702,7 +2761,7 @@ li.card {
 }
 
 .pmTable .printAnnotationWrap .printAnnotation .heading {
-  padding: 5px;
+  padding: 0;
   color: #333333;
   opacity: 0.9;
 }
@@ -2710,17 +2769,18 @@ li.card {
 .pmTable .printAnnotationWrap .printAnnotation .printUID {
   min-width: 100%;
   max-width: 100%;
-  width: 100%;
+  width: inherit;
   word-wrap: break-word;
-  padding: 5px 0px;
+  padding: 0px 5px !important;
 }
 
 .pmTable .printAnnotationWrap .printAnnotation .printTA {
   min-width: 300px;
   max-width: 300px;
+  margin: auto;
   word-wrap: break-word;
   opacity: 0.8;
-  padding: 5px 0px;
+  padding: 0px 0px;
 }
 
 .sectionDescription {
@@ -2766,17 +2826,14 @@ span.dashboardBtn a:hover {
 }
 
 .sectionTitle {
-  font-family: sans-serif;
   text-align: center;
   padding: 40px;
   color: #333;
 }
 
 .rxnDiagram {
-  border: 1px solid #ebebeb;
-  border-bottom: 1px solid black;
   margin-bottom: 2%;
-  width: 90%;
+  width: 50%;
   margin: 0 auto;
 }
 
@@ -2785,10 +2842,20 @@ span.dashboardBtn a:hover {
   height: 100%;
 }
 
+/*for some reason the API sends img with border only on top and left*/
+.image-zoom-available {
+  border: 1px solid black;
+  border-top: none;
+  border-left: none;
+}
+
+.model-page-diagram {
+  border-right: 1px solid black;
+}
+
 .gcs-heading {
   color: #333333;
   font-size: 1.9em;
-  font-family: "Roboto", sans-serif;
   font-weight: 300;
   text-align: center;
   margin: 40px;
@@ -2832,7 +2899,6 @@ span.dashboardBtn a:hover {
 .popup {
   position: absolute;
   background-color: #ffffff;
-  font-family: "Oswald";
   display: none;
   position: relative;
   /* Not rocket science here */
@@ -2871,7 +2937,6 @@ span.dashboardBtn a:hover {
 }
 
 .popup .popup-text {
-  font-family: "Roboto", cursive;
   margin-top: 5px;
   color: #5a5a5a;
   display: -webkit-box;
@@ -2949,7 +3014,6 @@ span.dashboardBtn a:hover {
 .box-diagram {
   position: absolute;
   background-color: #ffffff;
-  font-family: "Oswald";
   display: block;
   position: relative;
   /* Not rocket science here */
@@ -3020,4 +3084,81 @@ span.unit {
   background-color: #0a74ff ;
   padding: 10px ;
   border: 2px solid blue ;
+}
+
+#list-empty {
+  text-align: center;
+  margin: 50px auto;
+}
+
+/*UID p tags
+in printable view*/
+.p-UID {
+  /*nothing to style yet*/
+}
+
+.printable-hr {
+  width: 95%;
+  display: block;
+  margin: auto;
+  border: 0.5px solid #7DC8E2;
+}
+
+#kinetics.printTA :nth-last-child(1){
+  display: none;
+}
+
+/*combining td while keeping th seperate*/
+.vert-line {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+#vert-line-right {
+  border-left: 1px solid #4594AF;
+}
+
+#flex-td {
+  display: flex;
+}
+
+/*make contents of search div inline*/
+#total-search-container {
+  display: flex;
+}
+
+#simple-search {
+  margin: 0 !important;
+  margin-top: 15px;
+}
+
+#advanced-search {
+  margin: 0 !important;
+  margin-top: 15px;
+}
+
+#center-search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*make main navbar sticky*/
+.mainNavbar {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+/*do some tricks to the page content to make sicky header work*/
+.page-content {
+  margin-top: 70px;
+  min-height: calc(100vh - 70px);
+}
+
+/*get rid of curated list table margin*/
+.table-responsive-full.sort-table#content-table3 {
+  margin-bottom: 0;
+  margin-top: 0;
 }

@@ -16,12 +16,12 @@
     <div class="sectionDescription">
        
       <span class="dashboardBtn"
-        ><a href="/curatedList/model/CM_PM18628746_MB2::Rab7_switch#dashboard"
+        ><a href="/curatedList/model/aCalcium-ER_flux_Falkenburger_etal_2013#dashboard"
           ><i class="fa fa-undo" aria-hidden="true"></i> Dashboard</a
         ></span
       >
-      <h2>Name - <span>CM_PM18628746_MB2::Rab7_switch</span></h2>
-      <h2>BioModel ID - <span>195401510</span></h2>
+      <h2>Name - <span>aCalcium-ER_flux_Falkenburger_etal_2013</span></h2>
+      <h2>BioModel ID - <span>208228143</span></h2>
        
     </div>
 
@@ -30,7 +30,7 @@
        
       <img
         class="image-zoom-available"
-        src="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/195401510/diagram"
+        src="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/208228143/diagram"
         alt="reactionDiagram"
         draggable="false"
       />
@@ -62,61 +62,20 @@
               
             <tr>
               <td data-title="Reaction">
-                                <span style="color: #666666">--></span>
-                 Rab7_GDP 
-              </td>
-              <td data-title="Name">Recruitment of Rab7_GDP</td>
-              <td data-title="Structure">endosome</td>
-              <td data-title="Kinetics">
-                 GeneralLumpedKinetics 
-              </td>
-            </tr>
-            <tr>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printUID" id="reactionUID-Recruitment of Rab7_GDP">
-                    <p class="heading">Universal ID's:</p>
-                  </div>
-                </div>
-              </td>
-
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA" id="reactionTA-Recruitment of Rab7_GDP">
-                    <p class="heading">Text Annotations:</p>
-                  </div>
-                </div>
-              </td>
-               
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA">
-                    <p class="heading">
-                      Reaction rate: (endosome * K1)
-                      <span class="unit">[mole.s-1]</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
-               
-            </tr>
-            
-            <tr>
-              <td data-title="Reaction">
-                 Rab7_GDP
+                 noninactiveIP3R
                 <span style="color: #666666">--></span>
-                 Rab7_GTP 
+                 inactiveIP3R 
               </td>
-              <td data-title="Name">activation of Rab7 by GEF7</td>
-              <td data-title="Structure">endosome</td>
+              <td data-title="Name">h_reaction_IP3Rinactivation</td>
+              <td data-title="Structure">ERM</td>
               <td data-title="Kinetics">
-                 GeneralLumpedKinetics 
+                 GeneralKinetics 
               </td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="reactionUID-activation of Rab7 by GEF7">
+                  <div class="printUID" id="reactionUID-h_reaction_IP3Rinactivation">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
@@ -124,7 +83,7 @@
 
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="reactionTA-activation of Rab7 by GEF7">
+                  <div class="printTA" id="reactionTA-h_reaction_IP3Rinactivation">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -134,8 +93,8 @@
                 <div class="printAnnotation">
                   <div class="printTA">
                     <p class="heading">
-                      Reaction rate: (endosome * ((Rab7_GDP * ke * pow(Rab7_GTP,h)) / (kg + pow(Rab7_GTP,h))))
-                      <span class="unit">[mole.s-1]</span>
+                      Reaction rate:  - ((KD_inh_Ca_IP3R - ((Ca_C + KD_inh_Ca_IP3R) * h)) * Kon_Ca_IP3R)
+                      <span class="unit">[molecules.um-2.s-1]</span>
                     </p>
                   </div>
                 </div>
@@ -145,94 +104,8 @@
                 <div class="printAnnotation">
                   <div class="printTA">
                     <p class="heading">
-                      Reaction rate: 3.0
-                      <span class="unit">[1]</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
-              
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA">
-                    <p class="heading">
-                      Reaction rate: 0.21
-                      <span class="unit">[s-1]</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
-              
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA">
-                    <p class="heading">
-                      Reaction rate: 0.1
-                      <span class="unit">[tbd]</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
-               
-            </tr>
-            
-            <tr>
-              <td data-title="Reaction">
-                 Rab7_GDP
-                <span style="color: #666666">--></span>
-                 Rab7_GTP 
-              </td>
-              <td data-title="Name">activation of Rab7 by GEF5</td>
-              <td data-title="Structure">endosome</td>
-              <td data-title="Kinetics">
-                 GeneralLumpedKinetics 
-              </td>
-            </tr>
-            <tr>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printUID" id="reactionUID-activation of Rab7 by GEF5">
-                    <p class="heading">Universal ID's:</p>
-                  </div>
-                </div>
-              </td>
-
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA" id="reactionTA-activation of Rab7 by GEF5">
-                    <p class="heading">Text Annotations:</p>
-                  </div>
-                </div>
-              </td>
-               
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA">
-                    <p class="heading">
-                      Reaction rate: (endosome * ((ke * Rab7_GDP) / (1.0 + exp(((kg - Rab5_GTP) * kf)))))
-                      <span class="unit">[mole.s-1]</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
-              
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA">
-                    <p class="heading">
-                      Reaction rate: 0.021
-                      <span class="unit">[s-1]</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
-              
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA">
-                    <p class="heading">
-                      Reaction rate: 3.0
-                      <span class="unit">[M-1]</span>
+                      Reaction rate: 0.0
+                      <span class="unit">[pA.um-2]</span>
                     </p>
                   </div>
                 </div>
@@ -243,91 +116,29 @@
                   <div class="printTA">
                     <p class="heading">
                       Reaction rate: 1.0
-                      <span class="unit">[M]</span>
+                      <span class="unit">[1]</span>
                     </p>
                   </div>
                 </div>
               </td>
-               
-            </tr>
-            
-            <tr>
-              <td data-title="Reaction">
-                 Rab7_GDP
-                <span style="color: #666666">--></span>
-                
-              </td>
-              <td data-title="Name">Extraction of Rab7_GDP</td>
-              <td data-title="Structure">endosome</td>
-              <td data-title="Kinetics">
-                 GeneralLumpedKinetics 
-              </td>
-            </tr>
-            <tr>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printUID" id="reactionUID-Extraction of Rab7_GDP">
-                    <p class="heading">Universal ID's:</p>
-                  </div>
-                </div>
-              </td>
-
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA" id="reactionTA-Extraction of Rab7_GDP">
-                    <p class="heading">Text Annotations:</p>
-                  </div>
-                </div>
-              </td>
-               
+              
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
                   <div class="printTA">
                     <p class="heading">
-                      Reaction rate: (endosome * (kminus111 * Rab7_GDP))
-                      <span class="unit">[mole.s-1]</span>
+                      Reaction rate: 0.2
+                      <span class="unit">[uM]</span>
                     </p>
                   </div>
                 </div>
               </td>
-               
-            </tr>
-            
-            <tr>
-              <td data-title="Reaction">
-                 Rab7_GTP
-                <span style="color: #666666">--></span>
-                 Rab7_GDP 
-              </td>
-              <td data-title="Name">Hydrolysis of Rab7_GTP</td>
-              <td data-title="Structure">endosome</td>
-              <td data-title="Kinetics">
-                 GeneralLumpedKinetics 
-              </td>
-            </tr>
-            <tr>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printUID" id="reactionUID-Hydrolysis of Rab7_GTP">
-                    <p class="heading">Universal ID's:</p>
-                  </div>
-                </div>
-              </td>
-
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA" id="reactionTA-Hydrolysis of Rab7_GTP">
-                    <p class="heading">Text Annotations:</p>
-                  </div>
-                </div>
-              </td>
-               
+              
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
                   <div class="printTA">
                     <p class="heading">
-                      Reaction rate: (endosome * (kh * Rab7_GTP))
-                      <span class="unit">[mole.s-1]</span>
+                      Reaction rate: 2.7
+                      <span class="unit">[molecules.um-2.uM-1.s-1]</span>
                     </p>
                   </div>
                 </div>
@@ -360,9 +171,34 @@
             </tr>
           </thead>
           <tbody>
-                   
+              
             <tr>
-              <td data-title="Name">endosome</td>
+              <td data-title="Name">ERM</td>
+              <td data-title="Type">Membrane</td>
+              <td data-title="Electrical">
+                Ca_store(+) &nbsp;
+                C(-)
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="structureUID-ERM">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="structureTA-ERM">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+                 
+            <tr>
+              <td data-title="Name">Ca_store</td>
               <td data-title="Type">Compartment</td>
               <td data-title="Electrical">
                 (+) &nbsp;
@@ -372,14 +208,39 @@
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="structureUID-endosome">
+                  <div class="printUID" id="structureUID-Ca_store">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="structureTA-endosome">
+                  <div class="printTA" id="structureTA-Ca_store">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">C</td>
+              <td data-title="Type">Compartment</td>
+              <td data-title="Electrical">
+                (+) &nbsp;
+                (-)
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="structureUID-C">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="structureTA-C">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -412,20 +273,20 @@
           <tbody>
               
             <tr>
-              <td data-title="Name">Rab5_GTP</td>
-              <td data-title="Structure">endosome</td>
+              <td data-title="Name">inactiveIP3R</td>
+              <td data-title="Structure">ERM</td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="speciesUID-Rab5_GTP">
+                  <div class="printUID" id="speciesUID-inactiveIP3R">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="speciesTA-Rab5_GTP">
+                  <div class="printTA" id="speciesTA-inactiveIP3R">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -433,20 +294,20 @@
             </tr>
             
             <tr>
-              <td data-title="Name">Rab7_GDP</td>
-              <td data-title="Structure">endosome</td>
+              <td data-title="Name">Ca_C</td>
+              <td data-title="Structure">C</td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="speciesUID-Rab7_GDP">
+                  <div class="printUID" id="speciesUID-Ca_C">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="speciesTA-Rab7_GDP">
+                  <div class="printTA" id="speciesTA-Ca_C">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -454,20 +315,62 @@
             </tr>
             
             <tr>
-              <td data-title="Name">Rab7_GTP</td>
-              <td data-title="Structure">endosome</td>
+              <td data-title="Name">noninactiveIP3R</td>
+              <td data-title="Structure">ERM</td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="speciesUID-Rab7_GTP">
+                  <div class="printUID" id="speciesUID-noninactiveIP3R">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="speciesTA-Rab7_GTP">
+                  <div class="printTA" id="speciesTA-noninactiveIP3R">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">Ca_Ca_store</td>
+              <td data-title="Structure">Ca_store</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="speciesUID-Ca_Ca_store">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="speciesTA-Ca_Ca_store">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">IP3_C</td>
+              <td data-title="Structure">C</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="speciesUID-IP3_C">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="speciesTA-IP3_C">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -501,23 +404,23 @@
                 
 
             <tr>
-              <td data-title="Name">RAB5</td>
+              <td data-title="Name">IP3</td>
 
               <td data-title="Description">
-                 BS  . 
+                
               </td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="moleculesUID-RAB5">
+                  <div class="printUID" id="moleculesUID-IP3">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="moleculesTA-RAB5">
+                  <div class="printTA" id="moleculesTA-IP3">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -526,23 +429,23 @@
             
 
             <tr>
-              <td data-title="Name">Rab7</td>
+              <td data-title="Name">Ca</td>
 
               <td data-title="Description">
-                 bs  . 
+                
               </td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="moleculesUID-Rab7">
+                  <div class="printUID" id="moleculesUID-Ca">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="moleculesTA-Rab7">
+                  <div class="printTA" id="moleculesTA-Ca">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -551,48 +454,25 @@
             
 
             <tr>
-              <td data-title="Name">GTP</td>
+              <td data-title="Name">IP3R</td>
 
               <td data-title="Description">
-                 BS  . 
+                 act  
+                ~inact 
+                ~act   . 
               </td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="moleculesUID-GTP">
+                  <div class="printUID" id="moleculesUID-IP3R">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="moleculesTA-GTP">
-                    <p class="heading">Text Annotations:</p>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            
-
-            <tr>
-              <td data-title="Name">GDP</td>
-
-              <td data-title="Description">
-                 BS  . 
-              </td>
-            </tr>
-            <tr>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printUID" id="moleculesUID-GDP">
-                    <p class="heading">Universal ID's:</p>
-                  </div>
-                </div>
-              </td>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA" id="moleculesTA-GDP">
+                  <div class="printTA" id="moleculesTA-IP3R">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -628,25 +508,25 @@
                 
 
             <tr>
-              <td data-title="Name">O0_RAB5_tot</td>
+              <td data-title="Name">O0_IP3_tot</td>
               <td data-title="Domain">Molecules</td>
 
                
-              <td data-title="MolecularType">RAB5</td>
+              <td data-title="MolecularType">IP3</td>
                 
               <td data-title="SequenceType">Multimolecular</td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="observableUID-O0_RAB5_tot">
+                  <div class="printUID" id="observableUID-O0_IP3_tot">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="observableUID-O0_RAB5_tot">
+                  <div class="printTA" id="observableUID-O0_IP3_tot">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -656,25 +536,25 @@
             
 
             <tr>
-              <td data-title="Name">O0_Rab7_tot</td>
+              <td data-title="Name">O0_Ca_tot</td>
               <td data-title="Domain">Molecules</td>
 
                
-              <td data-title="MolecularType">Rab7</td>
+              <td data-title="MolecularType">Ca</td>
                 
               <td data-title="SequenceType">Multimolecular</td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="observableUID-O0_Rab7_tot">
+                  <div class="printUID" id="observableUID-O0_Ca_tot">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="observableUID-O0_Rab7_tot">
+                  <div class="printTA" id="observableUID-O0_Ca_tot">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -684,53 +564,25 @@
             
 
             <tr>
-              <td data-title="Name">O0_GTP_tot</td>
+              <td data-title="Name">O0_IP3R_tot</td>
               <td data-title="Domain">Molecules</td>
 
                
-              <td data-title="MolecularType">GTP</td>
+              <td data-title="MolecularType">IP3R</td>
                 
               <td data-title="SequenceType">Multimolecular</td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="observableUID-O0_GTP_tot">
+                  <div class="printUID" id="observableUID-O0_IP3R_tot">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="observableUID-O0_GTP_tot">
-                    <p class="heading">Text Annotations:</p>
-                  </div>
-                </div>
-              </td>
-            </tr>
-
-            
-
-            <tr>
-              <td data-title="Name">O0_GDP_tot</td>
-              <td data-title="Domain">Molecules</td>
-
-               
-              <td data-title="MolecularType">GDP</td>
-                
-              <td data-title="SequenceType">Multimolecular</td>
-            </tr>
-            <tr>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printUID" id="observableUID-O0_GDP_tot">
-                    <p class="heading">Universal ID's:</p>
-                  </div>
-                </div>
-              </td>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA" id="observableUID-O0_GDP_tot">
+                  <div class="printTA" id="observableUID-O0_IP3R_tot">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -760,140 +612,13 @@
             </tr>
           </thead>
           <tbody>
-             
-            <tr>
-              <td data-title="Name">Deterministic</td>
-              <td data-title="Math Type"></td>
-              <td data-title="Annotation">cloned from &#x27;Deterministic&#x27; owned by user ModelBrick
-</td>
-            </tr>
-
-             
+              
           </tbody>
         </table>
       </div>
     </div>
 
-      
-    <h2 class="sectionTitle">0 - Deterministic</h2>
-
-    <div class="pmTable">
-      <div class="container">
-        <table class="responsive-table">
-          <caption>
-            Specifications(Species) - Deterministic
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col">Species</th>
-              <th scope="col">Initial Condition</th>
-              <th scope="col">Diffusion Constant</th>
-            </tr>
-          </thead>
-          <tbody>
-             
-            <tr>
-              <td data-title="Species">Rab5_GTP</td>
-              <td data-title="Initial Condition">
-                0.001
-              </td>
-              <td data-title="Diffusion Constant">0.0</td>
-            </tr>
-            
-            <tr>
-              <td data-title="Species">Rab7_GDP</td>
-              <td data-title="Initial Condition">
-                1.0
-              </td>
-              <td data-title="Diffusion Constant">0.0</td>
-            </tr>
-            
-            <tr>
-              <td data-title="Species">Rab7_GTP</td>
-              <td data-title="Initial Condition">
-                0.001
-              </td>
-              <td data-title="Diffusion Constant">0.0</td>
-            </tr>
-             
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="pmTable">
-      <div class="container">
-        <table class="responsive-table">
-          <caption>
-            Specifications(Reaction) - Deterministic
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Reaction Mapping</th>
-            </tr>
-          </thead>
-          <tbody>
-             
-            <tr>
-              <td data-title="Name">Recruitment of Rab7_GDP</td>
-              <td data-title="ReactionMapping">included</td>
-            </tr>
-            
-            <tr>
-              <td data-title="Name">activation of Rab7 by GEF7</td>
-              <td data-title="ReactionMapping">included</td>
-            </tr>
-            
-            <tr>
-              <td data-title="Name">activation of Rab7 by GEF5</td>
-              <td data-title="ReactionMapping">included</td>
-            </tr>
-            
-            <tr>
-              <td data-title="Name">Extraction of Rab7_GDP</td>
-              <td data-title="ReactionMapping">included</td>
-            </tr>
-            
-            <tr>
-              <td data-title="Name">Hydrolysis of Rab7_GTP</td>
-              <td data-title="ReactionMapping">included</td>
-            </tr>
-             
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="pmTable">
-      <div class="container">
-        <table class="responsive-table">
-          <caption>
-            Simulations - Deterministic
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">End Time</th>
-              <th scope="col">Output Options</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-title="Name">Simulation0</td>
-               
-              <td data-title="End Time">1000.0</td>
-               
-              <td data-title="Output Options">
-                every 
-              </td>
-               
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-     
+       
 
     <hr />
     <h2 class="sectionTitle">Global Parameters</h2>
@@ -919,20 +644,20 @@
           <tbody>
                
             <tr>
-              <td data-title="Name">kminus111</td>
-              <td data-title="Expression">0.483</td>
+              <td data-title="Name">KD_act_Ca_IP3R</td>
+              <td data-title="Expression">0.2</td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="parameterUID-kminus111">
+                  <div class="printUID" id="parameterUID-KD_act_Ca_IP3R">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="parameterTA-kminus111">
+                  <div class="printTA" id="parameterTA-KD_act_Ca_IP3R">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -940,20 +665,20 @@
             </tr>
             
             <tr>
-              <td data-title="Name">kh</td>
-              <td data-title="Expression">0.15</td>
+              <td data-title="Name">KD_IP3_IP3R</td>
+              <td data-title="Expression">0.1</td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="parameterUID-kh">
+                  <div class="printUID" id="parameterUID-KD_IP3_IP3R">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="parameterTA-kh">
+                  <div class="printTA" id="parameterTA-KD_IP3_IP3R">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -961,20 +686,41 @@
             </tr>
             
             <tr>
-              <td data-title="Name">K1</td>
-              <td data-title="Expression">0.483</td>
+              <td data-title="Name">IP3R</td>
+              <td data-title="Expression">pow((h * IP3_C * Ca_C / (IP3_C + KD_IP3_IP3R) / (Ca_C + KD_act_Ca_IP3R)),3.0)</td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="parameterUID-K1">
+                  <div class="printUID" id="parameterUID-IP3R">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="parameterTA-K1">
+                  <div class="printTA" id="parameterTA-IP3R">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">h</td>
+              <td data-title="Expression">(noninactiveIP3R / (noninactiveIP3R + inactiveIP3R))</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="parameterUID-h">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="parameterTA-h">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>

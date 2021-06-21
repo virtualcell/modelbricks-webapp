@@ -16,12 +16,12 @@
     <div class="sectionDescription">
        
       <span class="dashboardBtn"
-        ><a href="/curatedList/model/CM_PM18628746_MB1::Rab5_switch#dashboard"
+        ><a href="/curatedList/model/CM_PM19804630_MB1::Initial_events_EGFR_signaling#dashboard"
           ><i class="fa fa-undo" aria-hidden="true"></i> Dashboard</a
         ></span
       >
-      <h2>Name - <span>CM_PM18628746_MB1::Rab5_switch</span></h2>
-      <h2>BioModel ID - <span>188458250</span></h2>
+      <h2>Name - <span>CM_PM19804630_MB1::Initial_events_EGFR_signaling</span></h2>
+      <h2>BioModel ID - <span>206037717</span></h2>
        
     </div>
 
@@ -30,7 +30,7 @@
        
       <img
         class="image-zoom-available"
-        src="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/188458250/diagram"
+        src="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/206037717/diagram"
         alt="reactionDiagram"
         draggable="false"
       />
@@ -62,19 +62,21 @@
               
             <tr>
               <td data-title="Reaction">
-                                <span style="color: #666666">--></span>
-                 Rab5_GDP 
+                 EGFR
+ EGF
+                <span style="color: #666666">--></span>
+                 LR 
               </td>
-              <td data-title="Name">Recruitment of Rab5_GDP</td>
-              <td data-title="Structure">endosome</td>
+              <td data-title="Name">EGF_Binding_Unbinding</td>
+              <td data-title="Structure">compartment</td>
               <td data-title="Kinetics">
-                 GeneralLumpedKinetics 
+                 GeneralKinetics 
               </td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="reactionUID-Recruitment of Rab5_GDP">
+                  <div class="printUID" id="reactionUID-EGF_Binding_Unbinding">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
@@ -82,7 +84,7 @@
 
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="reactionTA-Recruitment of Rab5_GDP">
+                  <div class="printTA" id="reactionTA-EGF_Binding_Unbinding">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -92,8 +94,8 @@
                 <div class="printAnnotation">
                   <div class="printTA">
                     <p class="heading">
-                      Reaction rate: (endosome * K1)
-                      <span class="unit">[mole.s-1]</span>
+                      Reaction rate: ((k1 * EGF * EGFR) - (k2 * LR))
+                      <span class="unit">[mmol.ml-1.min-1]</span>
                     </p>
                   </div>
                 </div>
@@ -103,8 +105,19 @@
                 <div class="printAnnotation">
                   <div class="printTA">
                     <p class="heading">
-                      Reaction rate: 1.0
-                      <span class="unit">[mol.s-1.l-1]</span>
+                      Reaction rate: 2.18503E-5
+                      <span class="unit">[ml.min-1.mmol-1]</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+              
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA">
+                    <p class="heading">
+                      Reaction rate: 0.121008
+                      <span class="unit">[min-1]</span>
                     </p>
                   </div>
                 </div>
@@ -114,20 +127,20 @@
             
             <tr>
               <td data-title="Reaction">
-                 Rab5_GDP
+                 LR
                 <span style="color: #666666">--></span>
-                 Rab5_GTP 
+                 EGFR_deg 
               </td>
-              <td data-title="Name">Activation of Rab5</td>
-              <td data-title="Structure">endosome</td>
+              <td data-title="Name">EGFReceptor_Degradation</td>
+              <td data-title="Structure">compartment</td>
               <td data-title="Kinetics">
-                 GeneralLumpedKinetics 
+                 GeneralKinetics 
               </td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="reactionUID-Activation of Rab5">
+                  <div class="printUID" id="reactionUID-EGFReceptor_Degradation">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
@@ -135,7 +148,7 @@
 
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="reactionTA-Activation of Rab5">
+                  <div class="printTA" id="reactionTA-EGFReceptor_Degradation">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -145,8 +158,8 @@
                 <div class="printAnnotation">
                   <div class="printTA">
                     <p class="heading">
-                      Reaction rate: (endosome * ((Rab5_GDP * ((ke * t) / (100.0 + t))) / (1.0 + exp(((kg - Rab5_GTP) * kf)))))
-                      <span class="unit">[mole.s-1]</span>
+                      Reaction rate: (k1 * LR)
+                      <span class="unit">[mmol.ml-1.min-1]</span>
                     </p>
                   </div>
                 </div>
@@ -156,30 +169,8 @@
                 <div class="printAnnotation">
                   <div class="printTA">
                     <p class="heading">
-                      Reaction rate: 0.3
-                      <span class="unit">[s-1]</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
-              
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA">
-                    <p class="heading">
-                      Reaction rate: 2.5
-                      <span class="unit">[M-1]</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
-              
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA">
-                    <p class="heading">
-                      Reaction rate: 0.1
-                      <span class="unit">[M]</span>
+                      Reaction rate: 0.2
+                      <span class="unit">[min-1]</span>
                     </p>
                   </div>
                 </div>
@@ -189,20 +180,20 @@
             
             <tr>
               <td data-title="Reaction">
-                 Rab5_GDP
+                 proEGFR
                 <span style="color: #666666">--></span>
-                
+                 EGFR 
               </td>
-              <td data-title="Name">extraction of Rab5_GDP</td>
-              <td data-title="Structure">endosome</td>
+              <td data-title="Name">EGFReceptor_Production</td>
+              <td data-title="Structure">compartment</td>
               <td data-title="Kinetics">
-                 GeneralLumpedKinetics 
+                 GeneralKinetics 
               </td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="reactionUID-extraction of Rab5_GDP">
+                  <div class="printUID" id="reactionUID-EGFReceptor_Production">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
@@ -210,7 +201,7 @@
 
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="reactionTA-extraction of Rab5_GDP">
+                  <div class="printTA" id="reactionTA-EGFReceptor_Production">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -220,8 +211,8 @@
                 <div class="printAnnotation">
                   <div class="printTA">
                     <p class="heading">
-                      Reaction rate: (endosome * (kminus1 * Rab5_GDP))
-                      <span class="unit">[mole.s-1]</span>
+                      Reaction rate: v
+                      <span class="unit">[mmol.ml-1.min-1]</span>
                     </p>
                   </div>
                 </div>
@@ -231,8 +222,8 @@
                 <div class="printAnnotation">
                   <div class="printTA">
                     <p class="heading">
-                      Reaction rate: 1.0
-                      <span class="unit">[s-1]</span>
+                      Reaction rate: 100.0
+                      <span class="unit">[mmol.min-1.ml-1]</span>
                     </p>
                   </div>
                 </div>
@@ -242,20 +233,20 @@
             
             <tr>
               <td data-title="Reaction">
-                 Rab5_GTP
+                 EGFR
                 <span style="color: #666666">--></span>
-                 Rab5_GDP 
+                 EGFR_deg 
               </td>
-              <td data-title="Name">Hydrolysis of Rab5_GTP</td>
-              <td data-title="Structure">endosome</td>
+              <td data-title="Name">EGFReceptor_Degradation_Free</td>
+              <td data-title="Structure">compartment</td>
               <td data-title="Kinetics">
-                 GeneralLumpedKinetics 
+                 GeneralKinetics 
               </td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="reactionUID-Hydrolysis of Rab5_GTP">
+                  <div class="printUID" id="reactionUID-EGFReceptor_Degradation_Free">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
@@ -263,7 +254,7 @@
 
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="reactionTA-Hydrolysis of Rab5_GTP">
+                  <div class="printTA" id="reactionTA-EGFReceptor_Degradation_Free">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -273,8 +264,8 @@
                 <div class="printAnnotation">
                   <div class="printTA">
                     <p class="heading">
-                      Reaction rate: (endosome * ((ke * Rab5_GTP) / (1.0 + exp(((kg - Rab7_GTP) * kf)))))
-                      <span class="unit">[mole.s-1]</span>
+                      Reaction rate: (k1 * EGFR)
+                      <span class="unit">[mmol.ml-1.min-1]</span>
                     </p>
                   </div>
                 </div>
@@ -284,83 +275,8 @@
                 <div class="printAnnotation">
                   <div class="printTA">
                     <p class="heading">
-                      Reaction rate: 0.31
-                      <span class="unit">[s-1]</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
-              
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA">
-                    <p class="heading">
-                      Reaction rate: 3.0
-                      <span class="unit">[M-1]</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
-              
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA">
-                    <p class="heading">
-                      Reaction rate: 0.3
-                      <span class="unit">[M]</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
-               
-            </tr>
-            
-            <tr>
-              <td data-title="Reaction">
-                 Rab5_GTP
-                <span style="color: #666666">--></span>
-                 Rab5_GDP 
-              </td>
-              <td data-title="Name">Hydrolysis of Rab5_GTP_d</td>
-              <td data-title="Structure">endosome</td>
-              <td data-title="Kinetics">
-                 GeneralLumpedKinetics 
-              </td>
-            </tr>
-            <tr>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printUID" id="reactionUID-Hydrolysis of Rab5_GTP_d">
-                    <p class="heading">Universal ID's:</p>
-                  </div>
-                </div>
-              </td>
-
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA" id="reactionTA-Hydrolysis of Rab5_GTP_d">
-                    <p class="heading">Text Annotations:</p>
-                  </div>
-                </div>
-              </td>
-               
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA">
-                    <p class="heading">
-                      Reaction rate: (endosome * (kh * Rab5_GTP))
-                      <span class="unit">[mole.s-1]</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
-              
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA">
-                    <p class="heading">
-                      Reaction rate: 0.06
-                      <span class="unit">[s-1]</span>
+                      Reaction rate: 0.00125
+                      <span class="unit">[min-1]</span>
                     </p>
                   </div>
                 </div>
@@ -395,7 +311,7 @@
           <tbody>
                    
             <tr>
-              <td data-title="Name">endosome</td>
+              <td data-title="Name">compartment</td>
               <td data-title="Type">Compartment</td>
               <td data-title="Electrical">
                 (+) &nbsp;
@@ -405,14 +321,14 @@
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="structureUID-endosome">
+                  <div class="printUID" id="structureUID-compartment">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="structureTA-endosome">
+                  <div class="printTA" id="structureTA-compartment">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -445,20 +361,20 @@
           <tbody>
               
             <tr>
-              <td data-title="Name">Rab5_GDP</td>
-              <td data-title="Structure">endosome</td>
+              <td data-title="Name">LR</td>
+              <td data-title="Structure">compartment</td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="speciesUID-Rab5_GDP">
+                  <div class="printUID" id="speciesUID-LR">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="speciesTA-Rab5_GDP">
+                  <div class="printTA" id="speciesTA-LR">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -466,20 +382,20 @@
             </tr>
             
             <tr>
-              <td data-title="Name">Rab5_GTP</td>
-              <td data-title="Structure">endosome</td>
+              <td data-title="Name">EGFR</td>
+              <td data-title="Structure">compartment</td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="speciesUID-Rab5_GTP">
+                  <div class="printUID" id="speciesUID-EGFR">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="speciesTA-Rab5_GTP">
+                  <div class="printTA" id="speciesTA-EGFR">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -487,20 +403,62 @@
             </tr>
             
             <tr>
-              <td data-title="Name">Rab7_GTP</td>
-              <td data-title="Structure">endosome</td>
+              <td data-title="Name">EGFR_deg</td>
+              <td data-title="Structure">compartment</td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="speciesUID-Rab7_GTP">
+                  <div class="printUID" id="speciesUID-EGFR_deg">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="speciesTA-Rab7_GTP">
+                  <div class="printTA" id="speciesTA-EGFR_deg">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">EGF</td>
+              <td data-title="Structure">compartment</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="speciesUID-EGF">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="speciesTA-EGF">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">proEGFR</td>
+              <td data-title="Structure">compartment</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="speciesUID-proEGFR">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="speciesTA-proEGFR">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -534,23 +492,27 @@
                 
 
             <tr>
-              <td data-title="Name">Rab5</td>
+              <td data-title="Name">EGFR</td>
 
               <td data-title="Description">
-                 BS  . 
+                 Y  
+                ~P 
+                ~U   .  State  
+                ~deg 
+                ~active   . 
               </td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="moleculesUID-Rab5">
+                  <div class="printUID" id="moleculesUID-EGFR">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="moleculesTA-Rab5">
+                  <div class="printTA" id="moleculesTA-EGFR">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -559,23 +521,23 @@
             
 
             <tr>
-              <td data-title="Name">Rab7</td>
+              <td data-title="Name">EGF</td>
 
               <td data-title="Description">
-                 BS  . 
+                 Site0  . 
               </td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="moleculesUID-Rab7">
+                  <div class="printUID" id="moleculesUID-EGF">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="moleculesTA-Rab7">
+                  <div class="printTA" id="moleculesTA-EGF">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -584,23 +546,25 @@
             
 
             <tr>
-              <td data-title="Name">GTP</td>
+              <td data-title="Name">SOS</td>
 
               <td data-title="Description">
-                 BS  . 
+                 Active  
+                ~yes 
+                ~no   . 
               </td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="moleculesUID-GTP">
+                  <div class="printUID" id="moleculesUID-SOS">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="moleculesTA-GTP">
+                  <div class="printTA" id="moleculesTA-SOS">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -609,23 +573,345 @@
             
 
             <tr>
-              <td data-title="Name">GDP</td>
+              <td data-title="Name">Ras</td>
 
               <td data-title="Description">
-                 BS  . 
+                 Active  
+                ~yes 
+                ~no   . 
               </td>
             </tr>
             <tr>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printUID" id="moleculesUID-GDP">
+                  <div class="printUID" id="moleculesUID-Ras">
                     <p class="heading">Universal ID's:</p>
                   </div>
                 </div>
               </td>
               <td class="printAnnotationWrap">
                 <div class="printAnnotation">
-                  <div class="printTA" id="moleculesTA-GDP">
+                  <div class="printTA" id="moleculesTA-Ras">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+
+            <tr>
+              <td data-title="Name">Raf</td>
+
+              <td data-title="Description">
+                 Active  
+                ~yes 
+                ~no   . 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-Raf">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-Raf">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+
+            <tr>
+              <td data-title="Name">MEK</td>
+
+              <td data-title="Description">
+                 Active  
+                ~yes 
+                ~no   . 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-MEK">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-MEK">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+
+            <tr>
+              <td data-title="Name">ERK</td>
+
+              <td data-title="Description">
+                 Active  
+                ~yes 
+                ~no   . 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-ERK">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-ERK">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+
+            <tr>
+              <td data-title="Name">P90Rsk</td>
+
+              <td data-title="Description">
+                 Active  
+                ~yes 
+                ~no   . 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-P90Rsk">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-P90Rsk">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+
+            <tr>
+              <td data-title="Name">PI3K</td>
+
+              <td data-title="Description">
+                 Active  
+                ~yes 
+                ~no   . 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-PI3K">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-PI3K">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+
+            <tr>
+              <td data-title="Name">Akt</td>
+
+              <td data-title="Description">
+                 Active  
+                ~yes 
+                ~no   . 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-Akt">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-Akt">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+
+            <tr>
+              <td data-title="Name">C3G</td>
+
+              <td data-title="Description">
+                 Active  
+                ~yes 
+                ~no   . 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-C3G">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-C3G">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+
+            <tr>
+              <td data-title="Name">Rap1</td>
+
+              <td data-title="Description">
+                 Active  
+                ~yes 
+                ~no   . 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-Rap1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-Rap1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+
+            <tr>
+              <td data-title="Name">B_Raf</td>
+
+              <td data-title="Description">
+                 Active  
+                ~yes 
+                ~no   . 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-B_Raf">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-B_Raf">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+
+            <tr>
+              <td data-title="Name">PP2A</td>
+
+              <td data-title="Description">
+                 Active  
+                ~yes 
+                ~no   . 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-PP2A">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-PP2A">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+
+            <tr>
+              <td data-title="Name">P_tase</td>
+
+              <td data-title="Description">
+                
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-P_tase">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-P_tase">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+
+            <tr>
+              <td data-title="Name">GAP</td>
+
+              <td data-title="Description">
+                
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-GAP">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-GAP">
                     <p class="heading">Text Annotations:</p>
                   </div>
                 </div>
@@ -658,91 +944,7 @@
             </tr>
           </thead>
           <tbody>
-                
-
-            <tr>
-              <td data-title="Name">O0_Rab5_tot</td>
-              <td data-title="Domain">Molecules</td>
-
-               
-              <td data-title="MolecularType">Rab5</td>
-                
-              <td data-title="SequenceType">Multimolecular</td>
-            </tr>
-            <tr>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printUID" id="observableUID-O0_Rab5_tot">
-                    <p class="heading">Universal ID's:</p>
-                  </div>
-                </div>
-              </td>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA" id="observableUID-O0_Rab5_tot">
-                    <p class="heading">Text Annotations:</p>
-                  </div>
-                </div>
-              </td>
-            </tr>
-
-            
-
-            <tr>
-              <td data-title="Name">O0_GTP_tot</td>
-              <td data-title="Domain">Molecules</td>
-
-               
-              <td data-title="MolecularType">GTP</td>
-                
-              <td data-title="SequenceType">Multimolecular</td>
-            </tr>
-            <tr>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printUID" id="observableUID-O0_GTP_tot">
-                    <p class="heading">Universal ID's:</p>
-                  </div>
-                </div>
-              </td>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA" id="observableUID-O0_GTP_tot">
-                    <p class="heading">Text Annotations:</p>
-                  </div>
-                </div>
-              </td>
-            </tr>
-
-            
-
-            <tr>
-              <td data-title="Name">O0_GDP_tot</td>
-              <td data-title="Domain">Molecules</td>
-
-               
-              <td data-title="MolecularType">GDP</td>
-                
-              <td data-title="SequenceType">Multimolecular</td>
-            </tr>
-            <tr>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printUID" id="observableUID-O0_GDP_tot">
-                    <p class="heading">Universal ID's:</p>
-                  </div>
-                </div>
-              </td>
-              <td class="printAnnotationWrap">
-                <div class="printAnnotation">
-                  <div class="printTA" id="observableUID-O0_GDP_tot">
-                    <p class="heading">Text Annotations:</p>
-                  </div>
-                </div>
-              </td>
-            </tr>
-
-                
+                  
           </tbody>
         </table>
       </div>
@@ -769,7 +971,11 @@
             <tr>
               <td data-title="Name">Deterministic</td>
               <td data-title="Math Type"></td>
-              <td data-title="Annotation"></td>
+              <td data-title="Annotation">cloned from &#x27;Deterministic&#x27; owned by user mblinov
+cloned from &#x27;Deterministic&#x27; owned by user savi06
+cloned from &#x27;Deterministic&#x27; owned by user mblinov
+cloned from &#x27;Deterministic&#x27; owned by user cab15130
+</td>
             </tr>
 
              
@@ -797,25 +1003,41 @@
           <tbody>
              
             <tr>
-              <td data-title="Species">Rab5_GDP</td>
+              <td data-title="Species">LR</td>
+              <td data-title="Initial Condition">
+                0.0
+              </td>
+              <td data-title="Diffusion Constant">0.0</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Species">EGFR</td>
+              <td data-title="Initial Condition">
+                80000.0
+              </td>
+              <td data-title="Diffusion Constant">0.0</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Species">EGFR_deg</td>
+              <td data-title="Initial Condition">
+                0.0
+              </td>
+              <td data-title="Diffusion Constant">0.0</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Species">EGF</td>
+              <td data-title="Initial Condition">
+                1.0002E7
+              </td>
+              <td data-title="Diffusion Constant">0.0</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Species">proEGFR</td>
               <td data-title="Initial Condition">
                 1.0
-              </td>
-              <td data-title="Diffusion Constant">0.0</td>
-            </tr>
-            
-            <tr>
-              <td data-title="Species">Rab5_GTP</td>
-              <td data-title="Initial Condition">
-                0.001
-              </td>
-              <td data-title="Diffusion Constant">0.0</td>
-            </tr>
-            
-            <tr>
-              <td data-title="Species">Rab7_GTP</td>
-              <td data-title="Initial Condition">
-                0.001
               </td>
               <td data-title="Diffusion Constant">0.0</td>
             </tr>
@@ -840,27 +1062,22 @@
           <tbody>
              
             <tr>
-              <td data-title="Name">Recruitment of Rab5_GDP</td>
+              <td data-title="Name">EGF_Binding_Unbinding</td>
               <td data-title="ReactionMapping">included</td>
             </tr>
             
             <tr>
-              <td data-title="Name">Activation of Rab5</td>
+              <td data-title="Name">EGFReceptor_Degradation</td>
               <td data-title="ReactionMapping">included</td>
             </tr>
             
             <tr>
-              <td data-title="Name">extraction of Rab5_GDP</td>
+              <td data-title="Name">EGFReceptor_Production</td>
               <td data-title="ReactionMapping">included</td>
             </tr>
             
             <tr>
-              <td data-title="Name">Hydrolysis of Rab5_GTP</td>
-              <td data-title="ReactionMapping">included</td>
-            </tr>
-            
-            <tr>
-              <td data-title="Name">Hydrolysis of Rab5_GTP_d</td>
+              <td data-title="Name">EGFReceptor_Degradation_Free</td>
               <td data-title="ReactionMapping">included</td>
             </tr>
              
@@ -884,9 +1101,9 @@
           </thead>
           <tbody>
             <tr>
-              <td data-title="Name">Simulation0</td>
+              <td data-title="Name">test</td>
                
-              <td data-title="End Time">1000.0</td>
+              <td data-title="End Time">60.0</td>
                
               <td data-title="Output Options">
                 every 

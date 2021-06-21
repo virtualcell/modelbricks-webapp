@@ -10,41 +10,78 @@
                     Physiology<i class="fa fa-angle-up dynamic"></i>
                 </a>
                 <ul class="subMenu active">
-                    <li><a href="#dashboard" id="targeted"><i class="fa fa-picture-o static"
-                                aria-hidden="true"></i>Reaction
-                            Diagram</a></li>
-                    <li><a href="#reactions"><i class="fa fa-flask static" aria-hidden="true"></i>Reactions</a>
+                    <li>
+                      <a href="#dashboard" id="targeted" class="sidebar-link">
+                        <i class="fa fa-picture-o static" aria-hidden="true"></i>
+                        Reaction Diagram
+                      </a>
                     </li>
-                    <li><a href="#structures"><i class="fa fa-codepen static" aria-hidden="true"></i>Structures</a>
+                    <li>
+                      <a href="#reactions" class="sidebar-link">
+                        <i class="fa fa-flask static" aria-hidden="true"></i>
+                        Reactions
+                      </a>
                     </li>
-                    <li><a href="#species"><i class="fa fa-link static" aria-hidden="true"></i>
-                            Species</a>
+                    <li>
+                      <a href="#structures" class="sidebar-link">
+                        <i class="fa fa-codepen static" aria-hidden="true"></i>
+                        Structures
+                      </a>
                     </li>
-                    <li><a href="#molecules"><i class="fa fa-empire static" aria-hidden="true"></i>Molecules</a>
+                    <li>
+                      <a href="#species" class="sidebar-link">
+                        <i class="fa fa-link static" aria-hidden="true"></i>
+                        Species
+                      </a>
                     </li>
-                    <li><a href="#observables"><i class="fa fa-eercast static" aria-hidden="true"></i>Observables</a>
+                    <li>
+                      <a href="#molecules" class="sidebar-link">
+                        <i class="fa fa-empire static" aria-hidden="true"></i>
+                        Molecules
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#observables" class="sidebar-link">
+                        <i class="fa fa-eercast static" aria-hidden="true"></i>
+                        Observables
+                      </a>
                     </li>
                 </ul>
             </li>
             <li class="drop">
-                <a href="#applications" class="dropTitle"><i class="fa fa-folder-o static" aria-hidden="true"></i>
-                    Applications <i class="fa fa-angle-down dynamic"></i>
+                <a href="#applications" class="dropTitle sidebar-link">
+                  <i class="fa fa-folder-o static" aria-hidden="true"></i>
+                  Applications
+                  <i class="fa fa-angle-down dynamic"></i>
                 </a>
                 <ul class="subMenu">
                     {{#each data.vcml.BioModel}}
                     {{#each this.SimulationSpec as |value key|}}
                     <li class="drop child">
-                        <a href="#specsSpecies{{key}}" class="dropTitle"><i class="fa fa-folder-o static"
-                                aria-hidden="true"></i>
-                            <span class="wordLimit">{{value.$.Name}}</span><i class="fa fa-angle-down dynamic"></i>
+                        <a href="#specsSpecies{{key}}" class="dropTitle sidebar-link">
+                          <i class="fa fa-folder-o static" aria-hidden="true"></i>
+                          <span class="wordLimit">{{value.$.Name}}</span>
+                          <i class="fa fa-angle-down dynamic"></i>
                         </a>
                         <ul class="subMenu">
-                            <li><a href="#specsSpecies{{key}}"><i class="fa fa-pencil-square-o static"
-                                        aria-hidden="true"></i>Specs - Species</a></li>
-                            <li><a href="#specsReaction{{key}}"><i class="fa fa-pencil-square-o static"
-                                        aria-hidden="true"></i>Specs - Reactions</a></li>
-                            <li><a href="#simulations{{key}}"><i class="fa fa-superpowers static"
-                                        aria-hidden="true"></i>Simulations</a></li>
+                            <li>
+                              <a href="#specsSpecies{{key}}" class="sidebar-link">
+                                <i class="fa fa-pencil-square-o static" aria-hidden="true"></i>
+                                Specs - Species
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#specsReaction{{key}}" class="sidebar-link">
+                                <i class="fa fa-pencil-square-o static" aria-hidden="true"></i>
+                                Specs - Reactions
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#simulations{{key}}" class="sidebar-link">
+                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
+                                Simulations
+                              </a>
+                            </li>
                         </ul>
                     </li>
                     {{/each}}
@@ -68,10 +105,15 @@
         <ul class="topbar clearfix">
             {{#each data.vcml.BioModel}}
             {{#each this.Version}}
-            <li><a id="modelName" href="#dashboard">{{trimString this.$.Name}} -
-                    {{this.$.KeyValue}}</a></li>
-            <li class="printable"><a href="/curatedList/printModel/{{this.$.Name}}"><i class="fa fa-print"
-                        aria-hidden="true"></i></a>
+            <li>
+              <a id="modelName" href="#dashboard">
+                {{~trimString this.$.Name}} - {{this.$.KeyValue~}}
+              </a>
+            </li>
+            <li class="printable">
+              <a id="print-link" href="/curatedList/printModel/{{this.$.KeyValue}}">
+                <i class="fa fa-print" aria-hidden="true"></i>
+              </a>
             </li>
 
             {{!-- var define for downloads section. used in main.js file. --}}
@@ -95,7 +137,7 @@
                 <div class="reactionDiagram" id="diagram">
                     {{#each data.vcml.BioModel}}
                     {{#each this.Version}}
-                    <img src="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/diagram"
+                    <img class="model-page-diagram" src="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/diagram"
                         alt="reactionDiagram" draggable="false" />
                     {{/each}}
                     {{/each}}
@@ -340,7 +382,7 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
+                    <a class='popup-close' href="#structures"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -363,7 +405,7 @@
                             <h2>{{value.$.Name}} Text Annotations</h2>
                         </div>
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
+                    <a class='popup-close' href="#structures"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -471,7 +513,7 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
+                    <a class='popup-close' href="#species"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -564,7 +606,7 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
+                    <a class='popup-close' href="#molecules"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                     {{#each this.annotations}}
                     <script>
                     /*
@@ -721,7 +763,7 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
+                    <a class='popup-close' href="#observables"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -776,7 +818,32 @@
                                         Reaction</a> <br>
                                     <a href="#simulations{{key}}" style="cursor:pointer; color:#3EB9FE">Simulations</a>
                                 </td>
-                                <td data-label="Type" class="Type" id="mathType"></td>
+                                <td data-label="Type" class="Type" id="mathType">
+                                  {{#if (eq "true" this.$.Stochastic)}}
+                                    {{#if (eq "true" this.$.RuleBased)}}
+                                    Stochastic agent-based (NFSim)
+                                    {{else}}
+                                    Stochastic (SSA)
+                                    {{/if}}
+                                  {{else}}
+                                    {{#if (eq "true" this.$.RuleBased)}}
+                                    Deterministic rule-based (BioNetGen)
+                                    {{else}}
+                                    Deterministic (ODE)
+                                    {{/if}}
+                                  {{/if}}
+                                  {{#each this.Geometry}}
+                                    {{#if (eq "0" this.$.Dimension)}}
+                                    Compartmental
+                                    {{/if}}
+                                    {{#if (eq "2" this.$.Dimension)}}
+                                    Spatial (2D)
+                                    {{/if}}
+                                    {{#if (eq "3" this.$.Dimension)}}
+                                    Spatial (3D)
+                                    {{/if}}
+                                  {{/each}}
+                                </td>
                             </tr>
 
                             {{/each}}
@@ -864,7 +931,11 @@
                                   {{this.InitialConcentration}}
                                 </td>
                                 <td data-label="Diffusion" class="Diffusion">
-                                  {{this.Diffusion}}
+                                  {{~this.Diffusion~}}
+                                  <span class="unit">
+                                    [{{../../../this.Model.[0].ModelUnitSystem.[0].$.AreaUnit~}}
+                                    /{{../../../this.Model.[0].ModelUnitSystem.[0].$.TimeUnit}}]
+                                  </span>
                                 </td>
                             </tr>
                             {{/each}}
@@ -965,16 +1036,24 @@
                         <tbody>
                             {{#each value.Simulation}}
                             <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                                <td data-label="Name" class="Name">
+                                  <a id={{this.$.Name}}
+                                    onClick="reply_click(this.id)"
+                                    style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
                                 {{#each this.SolverTaskDescription}}
                                 {{#each this.TimeBound}}
-                                <td data-label="endTime" class="endTime">{{ this.$.EndTime}}
+                                <td data-label="endTime" class="endTime">
+                                  {{ this.$.EndTime}}
                                 </td>
                                 {{/each}}
-                                {{#each this.OutputOptions}}
-                                <td data-label="Output" class="Output">every {{ this.$.OutputTimeStep}}</td>
-                                {{/each}}
+                                <td data-label="Output" class="Output">
+                                  {{#each ../../../../outputOptions}}
+                                  <p>{{this.key}} {{this.val}}</p>
+                                  {{/each}}
+                                </td>
                                 {{/each}}
                             </tr>
                             {{/each}}
@@ -1042,8 +1121,9 @@
                             <tr>
                                 <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
-                                <td data-label="Expression" class="Expression">{{this._}}<span
-                                        class="unit">[{{this.$.Unit}}]</span></td>
+                                <td data-label="Expression" class="Expression">
+                                  {{this._}}<span class="unit">[{{this.$.Unit}}]</span>
+                                </td>
                             </tr>
                             {{/each}}
                             {{/each}}
@@ -1154,8 +1234,79 @@
 <script src="/js/main.js"></script>
 
 <script>
-    alerting = (variable) => {
-        console.log("alert is on");
-        console.log(variable);
+    //draw graphics
+    //species
+    drawGraphics('content-table3-species', 2, 3, 'g');
+    //molecules
+    drawGraphics('content-table3-molecules', 1, 2, 'm');
+    //observables
+    drawGraphics('content-table3-observables', 3, 5, 'g');
+
+    //displaying electrical for only membrane compartments
+    var table = document.getElementById('TEST');
+    var cells = table.rows.item(1).cells;
+    if (cells.item(1).innerHTML != 'Membrane'){
+      cells.item(2).innerHTML = 'N/A';
+    }
+
+    // making the first popup visible
+    var firstPopup = document.querySelector(".popup").firstChild;
+    firstPopup.parentElement.classList.add("firstPopup");
+
+
+    // Open popup
+    var open = 1;
+    function reply_click(clicked_id) {
+        if (open == 1) {
+            $(".popup").css("opacity", 0);
+            $(".overlay").css("opacity", 0);
+            $(".popup").css("display", "none");
+            $(".overlay").css("display", "none");
+        }
+        $(`[class="popup box-${clicked_id}"]`).css("opacity", 1);
+        $(`[class="popup box-${clicked_id} firstPopup"]`).css("opacity", 1);
+        $(".overlay").css("opacity", 0.8);
+        $(`[class="popup box-${clicked_id}"]`).css("display", "block");
+        $(`[class="popup box-${clicked_id} firstPopup"]`).css("display", "block");
+        $(".overlay").css("display", "block");
+        open = 1;
     };
+    // close popup
+    $(".popup-close").click(function () {
+        open = 0;
+        $(".popup").css("opacity", 0);
+        $(".overlay").css("opacity", 0);
+        setTimeout(function () {
+            $(".popup").css("display", "none");
+            $(".overlay").css("display", "none");
+        }, 1000);
+    });
+    alerting = (variable) => {};
+
+    //go to scroll given element in printable veiw
+    const printLink = document.getElementById('print-link');
+
+    function goToPrintable(e) {
+      e.preventDefault();
+
+      let url = window.location.href;
+      let poundIndex = url.lastIndexOf('#');
+      let elementID = url.slice(poundIndex, url.length);
+      printLink.href += elementID;
+
+      window.location.href = printLink.href;
+    }
+
+    printLink.addEventListener("click", (e) => {goToPrintable(e);});
+
+    //ensure window is scrolled to top
+    //initial fix
+    setTimeout(() => {  window.scroll(0, 0); }, 100);
+    //fix for each link
+    const links = document.querySelectorAll('.sidebar-link');
+    for (let i = 0; i < links.length; i++) {
+      links[i].addEventListener("click", (e) => {
+        setTimeout(() => {  window.scroll(0, 0); }, 100);
+      });
+    }
 </script>

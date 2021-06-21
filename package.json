@@ -13,6 +13,7 @@
     "express-handlebars": "^4.0.4",
     "handlebars": "^4.7.6",
     "htmlparser2": "^4.1.0",
+    "jsdom": "^16.6.0",
     "node-fetch": "^2.6.0",
     "parse5": "^6.0.1",
     "path": "^0.12.7",

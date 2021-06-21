@@ -57,7 +57,7 @@ fetch("/json/annotations.json")
           let linkId = link.slice(indexToSlice, link.length);
           if (element != null) {
             element.innerHTML += `
-        <p>${qual} <a href="${link}">${linkId}</a>
+        <p class="p-UID">${qual} <a href="${link}">${linkId}</a>
         </p>
         `;
           }

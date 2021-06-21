@@ -1,90 +1,306 @@
-<!-- section 1 -->
-{{!-- <div class="section1">
-    <h2>Curated List Page</h2>
-</div> --}}
-
-<!-- section 2 -->
-{{!-- <div class="section2">
-    <a href="/curatedList/model">Nosbisch chemotaxis 2020</a>
-</div> --}}
-
-{{!-- section 3 --}}
-
-<h2 class="sectionHeading">Curated Models and Related ModelBricks</h2>
-
 {{!-- searching form  --}}
-<div class="searchForm subMenu">
-    <form action="/curatedList/search" method="GET" id="custom-form" class="custom-form">
-        <div class="custom-form__group">
-            <input type="text" name="bmName" id="bmName" placeholder="BioModel name" value="{{bmName}}">
-            <label class="group__label" for="name">Name</label>
-        </div>
-        <button type="submit" class="custom-form__submit">
-            Filter
-            <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
-                stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                <path d="M5 12h14M12 5l7 7-7 7" /></svg>
-        </button>
-    </form>
+
+<div id="test-flex">
+    {{!--buttons for toggling advanced search--}}
+    <button onclick="toggleSearch()" id="toggle-advanced" class="page-button">Advanced Search</button>
+    
+    <div class="searchForm subMenu" id="simple-search">
+        <form id="custom-form-simple" class="custom-form">
+            <div class="custom-form__group">
+                <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}">
+                <label class="group__label" for="name">Name</label>
+            </div>
+            <button type="submit" class="custom-form__submit">
+                search
+                <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </button>
+        </form>
+    </div>
+
+    {{!-- advanced searching form  --}}
+    <div class="searchForm subMenu" id="advanced-search">
+        <form id="custom-form-advanced" class="custom-form">
+            <div class="custom-form__group">
+                <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}">
+                <label class="group__label" for="name">Name</label>
+            </div>
+            <div class="custom-form__group">
+                <input type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}">
+                <label class="group__label" for="name">ID</label>
+            </div>
+            <div class="custom-form__group">
+                <input type="text" name="category" id="category" placeholder="Category" value="{{termMap.category}}">
+                <label class="group__label" for="name">Category</label>
+            </div>
+            {{!--    For now changing owner is disabled, default set to ModelBrick
+            <div class="custom-form__group">
+                <input type="text" name="owner" id="owner" placeholder="Owner" value="{{termMap.owner}}">
+                <label class="group__label" for="name">Owner</label>
+            </div>   Code fully functional if you wish to reenable    --}}
+            <div class="custom-form__group">
+                <input type="text" name="savedLow" id="savedLow" placeholder="savedLow" value="{{termMap.savedLow}}">
+                <label class="group__label" for="name">savedLow</label>
+            </div>
+            <div class="custom-form__group">
+                <input type="text" name="savedHigh" id="savedHigh" placeholder="savedHigh" value="{{termMap.savedHigh}}">
+                <label class="group__label" for="name">savedHigh</label>
+            </div>
+            <div class="custom-form__group">
+                <input type="text" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}">
+                <label class="group__label" for="name">Order</label>
+            </div>
+            <div class="custom-form__group">
+                <input type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}">
+                <label class="group__label" for="name">Models per Page</label>
+            </div>
+            <button type="submit" class="custom-form__submit">
+                search
+                <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </button>
+        </form>
+    </div>
+</div>
+
+{{!-- next page button --}}
+<div id="curated-list-button-holder">
+
+    {{#if (greater termMap.page 1)}}
+    <a id="prevLink" class=page-button>Previous Page</a>
+    {{/if}}
+
+    {{#if isNotEmpty}}
+    <a id="nextLink" class=page-button>Next {{modelsPerPage}} Models</a>
+    {{/if}}
+
 </div>
 
 {{!-- Main sorting table  --}}
-<div class="curatedListTable">
+{{#if isNotEmpty}}
+  <div class="curatedListTable">
 
 
-    <table id="content-table3" class="table-responsive-full sort-table">
-        <thead>
-            <tr>
-                <th class="title">BioModel ID
-                    <div class="sort-table-arrows">
-                        <a href="javascript:sort(true, 'title', 'content-table3');"><button class="button"
-                                title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                        <a href="javascript:sort(false, 'title', 'content-table3');"><button class="button"
-                                title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                    </div>
-                </th>
-                <th class="composer">BioModel name
-                    <div class="sort-table-arrows">
-                        <a href="javascript:sort(true, 'composer', 'content-table3');"><button class="button"
-                                title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                        <a href="javascript:sort(false, 'composer', 'content-table3');"><button class="button"
-                                title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                    </div>
-                </th>
-                <th class="lyrics">Owner
-                    <div class="sort-table-arrows">
-                        <a href="javascript:sort(true, 'lyrics', 'content-table3');"><button class="button"
-                                title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                        <a href="javascript:sort(false, 'lyrics', 'content-table3');"><button class="button"
-                                title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                    </div>
-                </th>
-                <th class="set">Date Saved
-                    <div class="sort-table-arrows">
-                        <a href="javascript:sort(true, 'set', 'content-table3');"><button class="button"
-                                title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                        <a href="javascript:sort(false, 'set', 'content-table3');"><button class="button"
-                                title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                    </div>
-                </th>
-                <th class="arranger">"Applications" - Simulations</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each json}}
-            <tr>
-                <td data-label="Title" class="title"><a
-                        href="/curatedList/model/{{this.bmKey}}#dashboard">{{this.bmKey}}</a></td>
-                <td data-label="Composer" class="composer">{{trimString this.name}}</td>
-                <td data-label="Lyrics" class="lyrics">{{this.ownerName}}</td>
-                <td data-label="Set" class="set">{{toDate this.savedDate}}</td>
-                <td data-label="Arranger">
-                  {{~#each this.simulations~}}
-                  "{{this.bioModelLink.simContextName}}" - {{this.name}}
-                  {{~/each~}}
-                </td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
+      <table id="content-table3" class="table-responsive-full sort-table">
+          <thead>
+              <tr>
+                  <th class="title">BioModel ID
+                      <div class="sort-table-arrows">
+                          <a href="javascript:sort(true, 'title', 'content-table3');"><button class="button"
+                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                          <a href="javascript:sort(false, 'title', 'content-table3');"><button class="button"
+                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                      </div>
+                  </th>
+                  <th class="composer">BioModel name
+                      <div class="sort-table-arrows">
+                          <a href="javascript:sort(true, 'composer', 'content-table3');"><button class="button"
+                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                          <a href="javascript:sort(false, 'composer', 'content-table3');"><button class="button"
+                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                      </div>
+                  </th>
+                  <th class="lyrics">Owner
+                      <div class="sort-table-arrows">
+                          <a href="javascript:sort(true, 'lyrics', 'content-table3');"><button class="button"
+                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                          <a href="javascript:sort(false, 'lyrics', 'content-table3');"><button class="button"
+                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                      </div>
+                  </th>
+                  <th class="set">Date Saved
+                      <div class="sort-table-arrows">
+                          <a href="javascript:sort(true, 'set', 'content-table3');"><button class="button"
+                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                          <a href="javascript:sort(false, 'set', 'content-table3');"><button class="button"
+                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                      </div>
+                  </th>
+                  <th class="arranger">"Applications" - Simulations</th>
+              </tr>
+          </thead>
+          <tbody>
+              {{#each json}}
+              <tr>
+                  <td data-label="Title" class="title"><a
+                          href="/curatedList/model/{{this.bmKey}}#dashboard">{{this.bmKey}}</a></td>
+                  <td data-label="Composer" class="composer">{{trimString this.name}}</td>
+                  <td data-label="Lyrics" class="lyrics">{{this.ownerName}}</td>
+                  <td data-label="Set" class="set">{{toDate this.savedDate}}</td>
+                  <td data-label="Arranger">
+                    {{~#each this.simulations~}}
+                    "{{this.bioModelLink.simContextName}}" - {{this.name}}
+                    {{~/each~}}
+                  </td>
+              </tr>
+              {{/each}}
+          </tbody>
+      </table>
+  </div>
+
+{{else}}
+{{#if (eq page 1)}}
+  <p id="list-empty">looks like there aren't any public models that match the given search terms.</p>
+{{else}}
+  <p id="list-empty">looks like there aren't any more public models that match the given search terms.</p>
+{{/if}}
+{{/if}}
+
+<div id="curated-list-button-holder">
+
+    {{#if (greater termMap.page 1)}}
+    <a id="prevLink" class=page-button>Previous Page</a>
+    {{/if}}
+
+    {{#if isNotEmpty}}
+    <a id="nextLink" class=page-button>Next {{modelsPerPage}} Models</a>
+    {{/if}}
+
 </div>
+
+{{!-- Script for Custom Form Submition Event --}}
+<script>
+    //toggle simple vs advanced search
+    //get elements
+    var simple = document.getElementById("simple-search");
+    var advanced = document.getElementById("advanced-search");
+    var toggle = document.getElementById("toggle-advanced");
+    var currentFormState = {{termMap.advanced}};
+
+    //convert key val pair (from itr below) to format for url
+    function convertPair(pair) {
+      let a = pair[0];
+      let b = pair[1];
+      //remove dangerous chars
+      if (typeof a == typeof '') {
+        a.replace('=', '');
+        a.replace('&', '');
+      }
+      if (typeof b == typeof '') {
+        b.replace('=', '');
+        b.replace('&', '');
+      }
+      return (pair[0] + '=' + pair[1]);
+    }
+
+    //to make links for next and prev buttons
+    function makeLink(kind, advanced) {
+      //get location
+      old = window.location.href;
+      //this is a bad implementation that requires attention whenever url changes
+      //fix later
+      old = old.replace('https://', '');
+      old = old.replace('http://', '');
+      old = old.replace('localhost:4002', '');
+      old = old.replace('modelbricks.org', '');
+      old = old.replace('model-bricks-testing.herokuapp.com', '');
+      old = old.replace('/curatedList/', '');
+
+      //make term map
+      var terms = old.split("&");
+      for (let i = 0; i < terms.length; i++) {
+        terms[i] = terms[i].split("=");
+      }
+      var termMap = Object.fromEntries(terms);
+
+      //fill entries
+      if (kind == 'next') {
+        termMap['page'] = parseInt(termMap['page']) + 1;
+      } else {
+        termMap['page'] = parseInt(termMap['page']) - 1;
+      }
+      termMap['advanced'] = advanced;
+
+      //assemble new link
+      n = '';
+      let keyValues = Object.entries(termMap);
+      for (pair of keyValues) {
+        n += convertPair(pair) + '&';
+      }
+      //remove tailing "&"
+      n = n.slice(0, n.length - 1);
+
+      return (n);
+    }
+
+    //set initial disp conditions
+    if (currentFormState) {
+      simple.style.display = "none";
+      advanced.style.display = "flex";
+      currentFormState = "true";
+    } else {
+      simple.style.display = "flex";
+      advanced.style.display = "none";
+      currentFormState = "false";
+    }
+
+    //initialize links
+    try {
+      document.getElementById("nextLink").href = '/curatedList/' + makeLink('next', currentFormState);
+    } catch{}
+    try {
+      document.getElementById("prevLink").href = '/curatedList/' + makeLink('prev', currentFormState);
+    } catch{}
+
+    //toggle funciton
+    function toggleSearch() {
+      if (currentFormState == "true") {
+        simple.style.display = "flex";
+        advanced.style.display = "none";
+        toggle.textContent = "Advanced Search";
+        currentFormState = "false";
+      } else {
+        simple.style.display = "none";
+        advanced.style.display = "flex";
+        toggle.textContent = "Simple Search";
+        currentFormState = "true";
+      }
+      //change links
+      try {
+        document.getElementById("nextLink").href = '/curatedList/' + makeLink('next', currentFormState);
+      } catch{}
+      try {
+        document.getElementById("prevLink").href = '/curatedList/' + makeLink('prev', currentFormState);
+      } catch{}
+    }
+
+    function whenPressed(e) {
+      e.preventDefault();
+      fd = new FormData(e.target);
+
+      //add atributes not specified in simple search
+      if (fd.get("bmId") == null) {
+        fd.append("bmId","");
+        fd.append("category","all");
+        fd.append("savedLow","");
+        fd.append("savedHigh","");
+        fd.append("orderBy","date_desc");
+      }
+      //add other atributes
+      fd.append("page","1");
+      fd.append("owner","ModelBrick");//move this inside if statment if different owner search is enabled
+      fd.append("advanced", currentFormState);
+
+      //construct url params for resutls page
+      const itr = fd.entries();
+      let url = '';
+      for (var pair of itr) {
+        url += convertPair(pair) + '&';
+      }
+      //remove tailing "&"
+      url = url.slice(0, url.length - 1);
+
+      //go to results page
+      window.location.assign('/curatedList/' + url);
+    }
+
+    //custom event listners for form submition
+    const simpleForm = document.getElementById("custom-form-simple");
+    const advancedForm = document.getElementById("custom-form-advanced");
+
+    //apply listerners
+    simpleForm.addEventListener("submit", (e) => {whenPressed(e);});
+    advancedForm.addEventListener("submit", (e) => {whenPressed(e);});
+</script>

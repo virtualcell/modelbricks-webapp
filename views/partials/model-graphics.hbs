@@ -81,11 +81,6 @@ class Site {
 
 
 //class for molecules
-//to do for graphics:
-//fix canvas dims for states
-//make each tags readable
-//seperate script from html to increase readability
-//can we parse vcmls using only one run?
 class Molecule {
   constructor(def) {
     //bionetgen definition
@@ -139,8 +134,7 @@ class Molecule {
   }
 
   //draw rounded rect
-  drawRoundRect(canvasID, x, y, radius, length, rgb) {
-    var canvas = document.getElementById(canvasID);
+  drawRoundRect(canvas, x, y, radius, length, rgb) {
     var ctx = canvas.getContext('2d');
     ctx.fillStyle = '#' + rgb;
     ctx.beginPath();
@@ -154,8 +148,7 @@ class Molecule {
   }
 
   //draw bionetgen sites with states labeled
-  drawSitesComplex(canvasID, x, y, radius) {
-    var canvas = document.getElementById(canvasID);
+  drawSitesComplex(canvas, x, y, radius) {
     var ctx = canvas.getContext('2d');
     const siteRadius = 8;
     var siteLength = 0;
@@ -182,7 +175,7 @@ class Molecule {
       }
       //drawing sites
       siteLength = 4.9 * siteNames[i].length;
-      this.drawRoundRect(canvasID, x + dx - radius / 2, y + dy - radius / 2, siteRadius, siteLength, siteNames[i].rgb());
+      this.drawRoundRect(canvas, x + dx - radius / 2, y + dy - radius / 2, siteRadius, siteLength, siteNames[i].rgb());
       //drawing site names
       ctx.fillStyle = '#000000';
       ctx.font = "12px Arial";
@@ -252,22 +245,21 @@ class Molecule {
   }
 
   //draw molecule with states and sites labled
-  drawComplex(canvasID, x, y) {
-    var canvas = document.getElementById(canvasID);
+  drawComplex(canvas, x, y) {
     var ctx = canvas.getContext('2d');
     const radius = 15;
     var length = 8 * this.name.length - radius / 2;
     if (length < 0) {length *= -1;}
     //notice drawSitesComplex() is called twice
     //this is a bad implementation but it doesn't effect runtime noticably
-    var dims = this.drawSitesComplex(canvasID, x, y, radius);
+    var dims = this.drawSitesComplex(canvas, x, y, radius);
     if (length < dims[0]) {
       length = dims[0] - x;
     }
     //drawing pill shape
-    this.drawRoundRect(canvasID, x, y, radius, length, this.color);
+    this.drawRoundRect(canvas, x, y, radius, length, this.color);
     //drawing sites
-    this.drawSitesComplex(canvasID, x, y, radius);
+    this.drawSitesComplex(canvas, x, y, radius);
     //drawing name
     ctx.fillStyle = '#000000';
     ctx.font = "15px Arial";
@@ -297,18 +289,17 @@ class Graphic {
   }
 
   //only works for species with two molecules or less, fix this
-  draw(canvasID, x, y) {
+  draw(canvas, x, y) {
     var length = 0;
     var height = 0;
     var names = new Set();
     var pairs = [];//list of pairs of xy coords for each bond
     //drawing the graphics on the canvas
-    var canvas = document.getElementById(canvasID);
     if (canvas.getContext) {
       var ctx = canvas.getContext('2d');
       //extracting bonds
       for (var i = 0; i < this.molecules.length; i++) {
-        var dims = this.molecules[i].drawComplex(canvasID, 2 + length, 2);
+        var dims = this.molecules[i].drawComplex(canvas, 2 + length, 2);
         length += dims[0];
         if (dims[1] > height) {
           height = dims[1];
@@ -366,141 +357,52 @@ class Graphic {
   }
 }
 
-//displaying graphics in species
-var speciesTable = document.getElementById('content-table3-species');
-var rowsLen = speciesTable.rows.length;
-var cellsLen = speciesTable.rows.item(1).cells.length;
+//drawing graphics in html
+function drawGraphics(tableID, BngColumn, CanvasColumn, drawType) {
+    //get table html elements
+    var speciesTable = document.getElementById(tableID);
+    const rowsLen = speciesTable.rows.length;
 
-for (y = 1; y < rowsLen; y++) {
-  var canvasHTML = speciesTable.rows.item(y).cells.item(3).innerHTML;
+    //loop over each canvas
+    for (y = 1; y < rowsLen; y++) {
+        //get canvas and bionetgen html elements
+        var canvasElm = speciesTable.rows.item(y).cells.item(CanvasColumn).children[0];
+        var canvasHTML = canvasElm.innerHTML;
+        const canvasID = canvasElm.id;
+        var bioNetGen = speciesTable.rows.item(y).cells.item(BngColumn).innerHTML;
 
-  var bioNetGen = speciesTable.rows.item(y).cells.item(2).innerHTML;
-  bioNetGen = bioNetGen.slice(0, bioNetGen.length - 1);
-  var start = 0;
+        //remove bng trailing syntax leftover from mustache templating
+        bioNetGen = bioNetGen.replace(/,\)/g, ')');
+        bioNetGen = bioNetGen.replace(/-\)/g, ')');
+        bioNetGen = bioNetGen.replace(/!\)/g, ')');
+        if (bioNetGen[bioNetGen.length - 1] == '.') {
+          bioNetGen = bioNetGen.slice(0, bioNetGen.length - 1);
+        }
+        speciesTable.rows.item(y).cells.item(BngColumn).innerHTML = bioNetGen;
 
-  while (canvasHTML[start] !== '""' && canvasHTML[start - 1] !== "=") {start++;}
-  var index = start + 1;
-  while (canvasHTML[index] !== '"') {index++;}
+        //get canvas dimensions based on draw type
+        if (drawType == 'g') {
+            var drawObj = new Graphic(bioNetGen);
+            dims = drawObj.draw(canvasElm, 0, 0);
 
-  HTMLiD = canvasHTML.slice(start + 1, index);
-  while (bioNetGen.includes('!-')) {
-    bioNetGen = bioNetGen.replace('!-', '');
-  }
-  while (bioNetGen.includes(',)')) {
-    bioNetGen = bioNetGen.replace(',)', ')');
-  }
-  speciesTable.rows.item(y).cells.item(2).innerHTML = bioNetGen;
-  var g = new Graphic(bioNetGen);
-  dims = g.draw(HTMLiD, 0, 0);
-  canvasHTML = canvasHTML.replace('width=""', 'width="' + dims[0] + '"');
-  canvasHTML = canvasHTML.replace('height=""', 'height="' + dims[1] + '"');
-  speciesTable.rows.item(y).cells.item(3).innerHTML = canvasHTML;
-  g.draw(HTMLiD, 0, 0);
-}
+            //resize canvas
+            canvasElm.width = dims[0];
+            canvasElm.height = dims[1];
 
-//displaying graphics in molecules
-var moleculesTable = document.getElementById('content-table3-molecules');
-var rowsLen = moleculesTable.rows.length;
-var cellsLen = moleculesTable.rows.item(1).cells.length;
+            //draw graphic
+            drawObj.draw(canvasElm, 0, 0);
+        } else if (drawType == 'm') {
+            var drawObj = new Molecule(bioNetGen);
+            dims = drawObj.drawComplex(canvasElm, 0, 0);
 
-for (y = 1; y < rowsLen; y++) {
-  var canvasHTML = moleculesTable.rows.item(y).cells.item(2).innerHTML;
-  var bioNetGen = moleculesTable.rows.item(y).cells.item(1).innerHTML;
-  var start = 0;
+            //resize canvas
+            canvasElm.width = dims[0] + 5;
+            canvasElm.height = dims[1] + 5;
 
-  while (canvasHTML[start] !== '""' && canvasHTML[start - 1] !== "=") {start++;}
-  var index = start + 1;
-  while (canvasHTML[index] !== '"') {index++;}
-
-  HTMLiD = canvasHTML.slice(start + 1, index);
-  while (bioNetGen.includes('!-')) {
-    bioNetGen = bioNetGen.replace('!-', '');
-  }
-  while (bioNetGen.includes(',)')) {
-    bioNetGen = bioNetGen.replace(',)', ')');
-  }
-
-  moleculesTable.rows.item(y).cells.item(1).innerHTML = bioNetGen;
-  var m = new Molecule(bioNetGen);
-  dims = m.drawComplex(HTMLiD, 0, 0);
-  dims[0] += 5;
-  dims[1] += 5;
-  canvasHTML = canvasHTML.replace('width=""', 'width="' + dims[0] + '"');
-  canvasHTML = canvasHTML.replace('height=""', 'height="' + dims[1] + '"');
-  moleculesTable.rows.item(y).cells.item(2).innerHTML = canvasHTML;
-  m.drawComplex(HTMLiD, 1, 1);
-}
-
-
-//displaying graphics in observables
-var observablesTable = document.getElementById('content-table3-observables');
-var rowsLen = observablesTable.rows.length;
-var cellsLen = observablesTable.rows.item(1).cells.length;
-
-for (y = 1; y < rowsLen; y++) {
-  var canvasHTML = observablesTable.rows.item(y).cells.item(5).innerHTML;
-  var bioNetGen = observablesTable.rows.item(y).cells.item(3).innerHTML;
-  bioNetGen = bioNetGen.slice(0, bioNetGen.length - 1);
-  var start = 0;
-
-  while (canvasHTML[start] !== '""' && canvasHTML[start - 1] !== "=") {start++;}
-  var index = start + 1;
-  while (canvasHTML[index] !== '"') {index++;}
-
-  HTMLiD = canvasHTML.slice(start + 1, index);
-  while (bioNetGen.includes('!-')) {
-    bioNetGen = bioNetGen.replace('!-', '');
-  }
-  while (bioNetGen.includes(',)')) {
-    bioNetGen = bioNetGen.replace(',)', ')');
-  }
-  observablesTable.rows.item(y).cells.item(3).innerHTML = bioNetGen;
-
-  var g = new Graphic(bioNetGen);
-  dims = g.draw(HTMLiD, 0, 0);
-  canvasHTML = canvasHTML.replace('width=""', 'width="' + dims[0] + '"');
-  canvasHTML = canvasHTML.replace('height=""', 'height="' + dims[1] + '"');
-  observablesTable.rows.item(y).cells.item(5).innerHTML = canvasHTML;
-  g.draw(HTMLiD, 0, 0);
-}
-
-
-//displaying electrical for only membrane compartments
-var table = document.getElementById('TEST');
-var cells = table.rows.item(1).cells;
-if (cells.item(1).innerHTML != 'Membrane'){
-  cells.item(2).innerHTML = 'N/A';
-}
-
-// making the first popup visible
-var firstPopup = document.querySelector(".popup").firstChild;
-firstPopup.parentElement.classList.add("firstPopup");
-
-
-// Open popup
-var open = 1;
-function reply_click(clicked_id) {
-    if (open == 1) {
-        $(".popup").css("opacity", 0);
-        $(".overlay").css("opacity", 0);
-        $(".popup").css("display", "none");
-        $(".overlay").css("display", "none");
+            //draw graphic
+            drawObj.drawComplex(canvasElm, 1, 1);
+        } else {
+            throw 'drawType ' + drawType + ' is not valid, use only m or g';
+        }
     }
-    $(`[class="popup box-${clicked_id}"]`).css("opacity", 1);
-    $(`[class="popup box-${clicked_id} firstPopup"]`).css("opacity", 1);
-    $(".overlay").css("opacity", 0.8);
-    $(`[class="popup box-${clicked_id}"]`).css("display", "block");
-    $(`[class="popup box-${clicked_id} firstPopup"]`).css("display", "block");
-    $(".overlay").css("display", "block");
-    open = 1;
-};
-// close popup
-$(".popup-close").click(function () {
-    open = 0;
-    $(".popup").css("opacity", 0);
-    $(".overlay").css("opacity", 0);
-    setTimeout(function () {
-        $(".popup").css("display", "none");
-        $(".overlay").css("display", "none");
-    }, 1000);
-});
+}

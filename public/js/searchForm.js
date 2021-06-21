@@ -1,4 +1,3 @@
-console.log("Hi from searchForm");
 // function mascara(i) {
 //   const v = i.value;
 
