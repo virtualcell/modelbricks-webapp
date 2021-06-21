@@ -3,7 +3,7 @@
 <div id="test-flex">
     {{!--buttons for toggling advanced search--}}
     <button onclick="toggleSearch()" id="toggle-advanced" class="page-button">Advanced Search</button>
-    
+
     <div class="searchForm subMenu" id="simple-search">
         <form id="custom-form-simple" class="custom-form">
             <div class="custom-form__group">
@@ -236,12 +236,18 @@
       currentFormState = "false";
     }
 
+    console.log(makeLink('next', currentFormState));
+
     //initialize links
     try {
-      document.getElementById("nextLink").href = '/curatedList/' + makeLink('next', currentFormState);
+      document.querySelectorAll("#nextLink").forEach((item, i) => {
+        item.href = '/curatedList/' + makeLink('next', currentFormState);
+      });
     } catch{}
     try {
-      document.getElementById("prevLink").href = '/curatedList/' + makeLink('prev', currentFormState);
+      document.querySelectorAll("#prevLink").forEach((item, i) => {
+        item.href = '/curatedList/' + makeLink('prev', currentFormState);
+      });
     } catch{}
 
     //toggle funciton
@@ -277,6 +283,7 @@
         fd.append("savedLow","");
         fd.append("savedHigh","");
         fd.append("orderBy","date_desc");
+        fd.append("maxModels","20");
       }
       //add other atributes
       fd.append("page","1");

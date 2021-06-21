@@ -99,6 +99,7 @@ app.get("/curatedList/:search", async (req, res) => {
     terms[i] = terms[i].split("=");
   }
   var termMap = Object.fromEntries(terms);
+  console.log(termMap);
 
   //some vars for startRow and maxRow terms
   const APIrow = termMap['page'] * termMap['maxModels'] - termMap['maxModels'] - 1;
