@@ -168,7 +168,7 @@
 {{!-- Structures table  --}}
 <div class="pmTable" id="structures">
     <div class="container">
-        <table class="responsive-table">
+        <table id="print-structures-table" class="responsive-table">
             <caption>Structures <span class="dashboardBtn"><a href="/curatedList/model/{{modelName}}#structures"><i
                             class="fa fa-undo" aria-hidden="true"></i>
                         See in Dashboard</a></span>
@@ -189,6 +189,8 @@
             </thead>
                 {{#each data.vcml.BioModel}}
                 {{#each this.Model}}
+                {{!-- some structures have features, others have membranes --}}
+                {{!-- so 2 loops are needed --}}
                 {{#each this.Feature}}
                 <tr>
                     <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
@@ -198,6 +200,39 @@
                       </div>
                       <div id="vert-line-right" class="vert-line">
                           {{this.$.PositiveFeature}}(+) &nbsp; {{this.$.NegativeFeature}}(-)
+                      </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="printAnnotationWrap">
+                        <div class="printAnnotation">
+
+                            {{!-- universal ID's  --}}
+                            <div class="printUID" id="structureUID-{{this.$.Name}}">
+                                <p class="heading">Universal ID's: </p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="printAnnotationWrap">
+                        <div class="printAnnotation">
+
+                            {{!-- annotation --}}
+                            <div class="printTA" id="structureTA-{{this.$.Name}}">
+                                <p class="heading"> Text Annotations: </p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+                {{#each this.Membrane}}
+                <tr>
+                    <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
+                    <td id="flex-td" class="print-descriptor" data-title="Electrical">
+                      <div id="vert-line-left" class="vert-line">
+                          Membrane
+                      </div>
+                      <div id="vert-line-right" class="vert-line">
+                          N/A
                       </div>
                     </td>
                 </tr>
@@ -240,7 +275,14 @@
             </caption>
             <thead>
                 <tr>
-                    <th scope="col">Name</th>
+                    <th id="flex-td" scope="col">
+                      <div id="vert-line-left" class="vert-line">
+                          Name
+                      </div>
+                      <div id="vert-line-right" class="vert-line">
+                          Initial Conditions
+                      </div>
+                    </th>
                     <th scope="col">Structure</th>
                     <th scope="col">BioNetGen Definition</th>
                 </tr>
@@ -251,7 +293,12 @@
                 {{#each this.Model}}
                 {{#each this.LocalizedCompound}}
                 <tr>
-                    <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
+                    <td id="flex-td" class="print-descriptor" data-title="Name">
+                      <div id="vert-line-left" class="vert-line">
+                          {{this.$.Name}}
+                      </div>
+                      <div id="vert-line-right" class="vert-line"></div>
+                    </td>
                     <td class="print-descriptor" data-title="Structure"> {{this.$.Structure}}</td>
                     <td id="printable-bionetgen" class="print-descriptor" data-title="BioNetGen">
                       {{~#each this.SpeciesPattern~}}
@@ -771,7 +818,6 @@
 <script>{{> model-graphics}}</script>
 
 <script>
-
   //remove trailing syntax
   function removeTrailingSyntax(element) {
     s = element.innerHTML;
@@ -838,6 +884,46 @@
     cvsElm = canvasElements[i];
     drawType = cvsElm.title;
     drawGraphicsPrintable(cvsElm, drawType);
+  }
+
+  //species initial conditions
+  {{#each data.vcml.BioModel}}
+  {{#each this.Model}}
+  {{#each this.ModelUnitSystem}}
+  let MembraneSubstanceUnit = "{{this.$.MembraneSubstanceUnit}}";
+  let VolumeSubstanceUnit = "{{this.$.VolumeSubstanceUnit}}";
+  {{/each}}
+  {{/each}}
+  {{/each}}
+  let speciesRows = document.getElementById("print-species-table").rows;
+  let structuresRows = document.getElementById("print-structures-table").rows;
+  let strucNameTypeMap = {};
+  //add structure to name-type map
+  for (let i = 1; i < structuresRows.length; i += 2) {
+    let row = structuresRows.item(i).cells;
+    let name = row.item(0).innerHTML.trim();
+    let type = row.item(1).childNodes[1].innerHTML.trim();
+    strucNameTypeMap[name] = type;
+  }
+  //set species initial conditions
+  for (let i = 1; i < speciesRows.length; i += 2) {
+    let row = speciesRows.item(i).cells;
+    let structure = row.item(1).innerHTML.trim();
+    let type = strucNameTypeMap[structure];
+    //add html
+    if (type.includes('Membrane')) {
+      let node = document.createElement('span');
+      node.className = "unit";
+      node.innerHTML = "[" + MembraneSubstanceUnit + "]";
+      row.item(0).childNodes[3].appendChild(node);
+    } else if (type.includes('Compartment')) {
+      let node = document.createElement('span');
+      node.className = "unit";
+      node.innerHTML = "[" + VolumeSubstanceUnit + "]";
+      row.item(0).childNodes[3].appendChild(node);
+    } else {
+      console.log(type, 'is an unrecognized type in structures');
+    }
   }
 
   //fix link scrolling

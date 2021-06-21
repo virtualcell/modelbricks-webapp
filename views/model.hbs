@@ -298,8 +298,7 @@
             <div id="structures" class="optionData">
                 <h2 class="header">Structures</h2>
                 <div class="modelTable">
-                    <!---should be id="content-table3" below, using test for js "getElementById()"--->
-                    <table id="TEST" class="table-responsive-full sort-table">
+                    <table id="content-table3-structures" class="table-responsive-full sort-table">
                         <thead>
                             <tr>
                                 <th class="Name">Name
@@ -440,6 +439,16 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
+                                <th class="Structure">Initial Condition
+                                    <div class="sort-table-arrows">
+                                        <a href="javascript:sort(true, 'Structure', 'content-table3-species');"><button
+                                                class="button" title="down arrow"><i
+                                                    class="fa fa-chevron-down"></i></button></a>
+                                        <a href="javascript:sort(false, 'Structure', 'content-table3-species');"><button
+                                                class="button" title="up arrow"><i
+                                                    class="fa fa-chevron-up"></i></button></a>
+                                    </div>
+                                </th>
                                 <th class="Structure">BioNetGen Definition
                                     <div class="sort-table-arrows">
                                         <a href="javascript:sort(true, 'Structure', 'content-table3-species');"><button
@@ -471,7 +480,8 @@
                                 <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
                                 <td data-label="Structure" class="Structure">{{this.$.Structure}}</td>
-                                <td data-label="Structure" class="Structure">
+                                <td data-label="initial-condition" class="initial-condition"></td>
+                                <td data-label="bionetgen" class="bionetgen">
                                   {{~#each this.SpeciesPattern~}}
                                   {{#each this.MolecularTypePattern~}}
                                   {{#each this.MolecularType~}}
@@ -486,7 +496,7 @@
                                   {{~/each~}}).
                                   {{~/each~}}
                                   {{/each}}</td>
-                                <td data-label="Structure" class="Structure">
+                                <td data-label="depiction" class="depiction">
                                   {{!-- dimensions of this canvas are variable --}}
                                   <canvas id="{{this.$.Name}}_species_canvas" class="molecule_canvas" width="" height=""></canvas>
                                 </td>
@@ -1236,17 +1246,57 @@
 <script>
     //draw graphics
     //species
-    drawGraphics('content-table3-species', 2, 3, 'g');
+    drawGraphics('content-table3-species', 3, 4, 'g');
     //molecules
     drawGraphics('content-table3-molecules', 1, 2, 'm');
     //observables
     drawGraphics('content-table3-observables', 3, 5, 'g');
 
     //displaying electrical for only membrane compartments
-    var table = document.getElementById('TEST');
+    var table = document.getElementById('content-table3-structures');
     var cells = table.rows.item(1).cells;
     if (cells.item(1).innerHTML != 'Membrane'){
       cells.item(2).innerHTML = 'N/A';
+    }
+
+    //species initial conditions
+    {{#each data.vcml.BioModel}}
+    {{#each this.Model}}
+    {{#each this.ModelUnitSystem}}
+    let MembraneSubstanceUnit = "{{this.$.MembraneSubstanceUnit}}";
+    let VolumeSubstanceUnit = "{{this.$.VolumeSubstanceUnit}}";
+    {{/each}}
+    {{/each}}
+    {{/each}}
+    let speciesRows = document.getElementById("content-table3-species").rows;
+    let structuresRows = document.getElementById("content-table3-structures").rows;
+    let strucNameTypeMap = {};
+    //add structure to name-type map
+    for (let i = 1; i < structuresRows.length; i++) {
+      let row = structuresRows.item(i).cells;
+      let name = row.item(0).childNodes[0].innerHTML;
+      let type = row.item(1).innerHTML;
+      strucNameTypeMap[name] = type;
+    }
+    //set species initial conditions
+    for (let i = 1; i < speciesRows.length; i++) {
+      let row = speciesRows.item(i).cells;
+      let structure = row.item(1).innerHTML;
+      let type = strucNameTypeMap[structure];
+      //add html
+      if (type == 'Membrane') {
+        let node = document.createElement('span');
+        node.className = "unit";
+        node.innerHTML = "[" + MembraneSubstanceUnit + "]";
+        row.item(2).appendChild(node);
+      } else if (type == 'Compartment') {
+        let node = document.createElement('span');
+        node.className = "unit";
+        node.innerHTML = "[" + VolumeSubstanceUnit + "]";
+        row.item(2).appendChild(node);
+      } else {
+        throw type + ' is an unrecognized type in structures';
+      }
     }
 
     // making the first popup visible
