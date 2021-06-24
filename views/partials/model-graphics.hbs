@@ -134,7 +134,7 @@ class Molecule {
   }
 
   //draw rounded rect
-  drawRoundRect(canvas, x, y, radius, length, rgb) {
+  drawRoundRect(canvas, x, y, radius, length, rgb, scale = 1) {
     var ctx = canvas.getContext('2d');
     ctx.fillStyle = '#' + rgb;
     ctx.beginPath();
@@ -148,7 +148,7 @@ class Molecule {
   }
 
   //draw bionetgen sites with states labeled
-  drawSitesComplex(canvas, x, y, radius) {
+  drawSitesComplex(canvas, x, y, radius, scale = 1) {
     var ctx = canvas.getContext('2d');
     const siteRadius = 8;
     var siteLength = 0;
@@ -245,7 +245,7 @@ class Molecule {
   }
 
   //draw molecule with states and sites labled
-  drawComplex(canvas, x, y) {
+  drawComplex(canvas, x, y, scale = 1) {
     var ctx = canvas.getContext('2d');
     const radius = 15;
     var length = 8 * this.name.length - radius / 2;
@@ -289,34 +289,34 @@ class Graphic {
   }
 
   //only works for species with two molecules or less, fix this
-  draw(canvas, x, y) {
-    var length = 0;
-    var height = 0;
-    var names = new Set();
-    var pairs = [];//list of pairs of xy coords for each bond
+  draw(canvas, initX, initY, scale = 1) {
+    let length = 0;
+    let height = 0;
+    let names = new Set();
+    let pairs = [];//list of pairs of xy coords for each bond
     //drawing the graphics on the canvas
     if (canvas.getContext) {
-      var ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d');
       //extracting bonds
-      for (var i = 0; i < this.molecules.length; i++) {
-        var dims = this.molecules[i].drawComplex(canvas, 2 + length, 2);
+      for (let i = 0; i < this.molecules.length; i++) {
+        let dims = this.molecules[i].drawComplex(canvas, scale * (2 + length + initX), scale * (2 + initY));
         length += dims[0];
         if (dims[1] > height) {
           height = dims[1];
         }
       }
-      for (var i = 0; i < this.molecules.length; i++) {
-        for (var y = 0; y < this.molecules[i].sites.length; y++) {
-          var m1 = this.molecules[i].sites[y];
+      for (let i = 0; i < this.molecules.length; i++) {
+        for (let y = 0; y < this.molecules[i].sites.length; y++) {
+          let m1 = this.molecules[i].sites[y];
           if (m1.bondName != null && !names.has(m1.bondName)) {
             names.add(m1.bondName);
-            var newPair = [m1.position];
+            let newPair = [m1.position];
             //check all sites in species for matching bond type
-            for (var u = 0; u < this.molecules.length; u++) {
-              for (var z = 0; z < this.molecules[u].sites.length; z++) {
-                // vv to ensure a molecule doesnt bond to itself vv
+            for (let u = 0; u < this.molecules.length; u++) {
+              for (let z = 0; z < this.molecules[u].sites.length; z++) {
+                //ensure a molecule doesnt bond to itself
                 if (z != y || u != i) {
-                  var m2 = this.molecules[u].sites[z];
+                  let m2 = this.molecules[u].sites[z];
                   if (m2.bondName == m1.bondName) {
                     newPair.push(m2.position);
                     newPair.push(m2.bondName);
@@ -332,7 +332,7 @@ class Graphic {
       ctx.fillStyle = '#000000';
       ctx.font = "10px Arial";
       var maxHeight = 0;
-      for (var i = 0; i < pairs.length; i++) {
+      for (let i = 0; i < pairs.length; i++) {
         if (pairs[i][0][1] > maxHeight) {
           maxHeight = pairs[i][0][1];
         }
@@ -340,12 +340,12 @@ class Graphic {
           maxHeight = pairs[i][1][1];
         }
         ctx.beginPath();
-        ctx.moveTo(pairs[i][0][0], pairs[i][0][1]);
+        ctx.moveTo(scale * pairs[i][0][0] + initX, scale * pairs[i][0][1] + initY);
         //functioning code for bond labels below, omitted for style
-        //ctx.fillText(pairs[i][2], pairs[i][0][0] - 7, pairs[i][0][1] + 8.5);
-        ctx.lineTo(pairs[i][0][0], pairs[i][0][1] + 5 * i + 5);
-        ctx.lineTo(pairs[i][1][0], pairs[i][0][1] + 5 * i + 5);
-        ctx.lineTo(pairs[i][1][0], pairs[i][1][1]);
+        //ctx.fillText(pairs[i][2], pairs[i][0][0] - 7 + initX, pairs[i][0][1] + 8.5 + initY);
+        ctx.lineTo(scale * pairs[i][0][0] + initX, scale * (pairs[i][0][1] + 5 * i + 5) + initY);
+        ctx.lineTo(scale * pairs[i][1][0] + initX, scale * (pairs[i][0][1] + 5 * i + 5) + initY);
+        ctx.lineTo(scale * pairs[i][1][0] + initX, scale * pairs[i][1][1] + initY);
         ctx.stroke();
       }
     } else {/*canvas-unsupported code here*/}

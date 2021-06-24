@@ -83,7 +83,7 @@
   <div class="curatedListTable">
 
 
-      <table id="content-table3" class="table-responsive-full sort-table">
+      <table id="content-table3" class="table-responsive-full sort-table curatedList">
           <thead>
               <tr>
                   <th class="title">BioModel ID
@@ -124,9 +124,14 @@
           <tbody>
               {{#each json}}
               <tr>
-                  <td data-label="Title" class="title"><a
-                          href="/curatedList/model/{{this.bmKey}}#dashboard">{{this.bmKey}}</a></td>
-                  <td data-label="Composer" class="composer">{{trimString this.name}}</td>
+                  <td data-label="Title" class="title">
+                    <a href="/curatedList/model/{{this.bmKey}}#dashboard">
+                      {{this.bmKey}}
+                    </a>
+                  </td>
+                  <td data-label="Composer" class="composer" style="cursor: pointer;" onclick="window.location='/curatedList/model/{{this.bmKey}}#dashboard';">
+                    {{trimString this.name}}
+                  </td>
                   <td data-label="Lyrics" class="lyrics">{{this.ownerName}}</td>
                   <td data-label="Set" class="set">{{toDate this.savedDate}}</td>
                   <td data-label="Arranger">

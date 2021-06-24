@@ -165,7 +165,7 @@
             <div id="reactions" class="optionData">
                 <h2 class="header">Reactions</h2>
                 <div class="modelTable">
-                    <table id="content-table3" class="table-responsive-full sort-table">
+                    <table id="content-table3-reactions" class="table-responsive-full sort-table">
                         <thead>
                             <tr>
                                 <th class="Reactions">Reactions
@@ -208,6 +208,16 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
+                                <th class="Kinetics">Depiction
+                                    <div class="sort-table-arrows">
+                                        <a href="javascript:sort(true, 'Kinetics', 'content-table3');"><button
+                                                class="button" title="down arrow"><i
+                                                    class="fa fa-chevron-down"></i></button></a>
+                                        <a href="javascript:sort(false, 'Kinetics', 'content-table3');"><button
+                                                class="button" title="up arrow"><i
+                                                    class="fa fa-chevron-up"></i></button></a>
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -216,13 +226,19 @@
                             {{#each this.SimpleReaction as |value key|}}
                             <tr>
                                 <td data-label="Reactions" class="Reactions">
-                                    {{#each value.Reactant}}
-                                    {{nullCheck this.$.LocalizedCompoundRef}}
-                                    {{/each}}
+                                    {{~#each value.Reactant}}
+                                    {{~nullCheck this.$.LocalizedCompoundRef}}
+                                    {{~#if (greater ../this.Reactant.length (add 1 @index))~}}
+                                    +
+                                    {{~/if}}
+                                    {{~/each~}}
                                     <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
-                                    {{#each value.Product}}
-                                    {{this.$.LocalizedCompoundRef}}
-                                    {{/each}}
+                                    {{~#each value.Product}}
+                                    {{~this.$.LocalizedCompoundRef}}
+                                    {{~#if (greater ../this.Product.length (add 1 @index))~}}
+                                    +
+                                    {{~/if}}
+                                    {{~/each~}}
                                 </td>
                                 <td data-label="Name" class="Name"><a id="{{value.$.Name}}" onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{value.$.Name}}</a></td>
@@ -232,6 +248,9 @@
                                         onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{this.$.KineticsType}}</a></td>
                                 {{/each}}</td>
+                                <td>
+                                  <canvas id="{{this.$.Name}}_species_canvas" class="molecule_canvas" width="" height=""></canvas>
+                                </td>
                             </tr>
 
                             {{/each}}
@@ -1260,6 +1279,17 @@
     }
 
     //species initial conditions
+    function removeItemAll(arr, value) {
+      let i = 0;
+      while (i < arr.length) {
+        if (arr[i] === value) {
+          arr.splice(i, 1);
+        } else {
+          ++i;
+        }
+      }
+      return arr;
+    }
     {{#each data.vcml.BioModel}}
     {{#each this.Model}}
     {{#each this.ModelUnitSystem}}
@@ -1271,6 +1301,7 @@
     let speciesRows = document.getElementById("content-table3-species").rows;
     let structuresRows = document.getElementById("content-table3-structures").rows;
     let strucNameTypeMap = {};
+    let nameBngMap = {};
     //add structure to name-type map
     for (let i = 1; i < structuresRows.length; i++) {
       let row = structuresRows.item(i).cells;
@@ -1281,8 +1312,11 @@
     //set species initial conditions
     for (let i = 1; i < speciesRows.length; i++) {
       let row = speciesRows.item(i).cells;
+      let name = row.item(0).childNodes[0].innerHTML;
       let structure = row.item(1).innerHTML;
       let type = strucNameTypeMap[structure];
+      let bng = row.item(3).innerHTML;
+      nameBngMap[name] = bng;
       //add html
       if (type == 'Membrane') {
         let node = document.createElement('span');
@@ -1302,6 +1336,100 @@
     // making the first popup visible
     var firstPopup = document.querySelector(".popup").firstChild;
     firstPopup.parentElement.classList.add("firstPopup");
+
+    //add reaction graphics
+    let reactionRows = document.getElementById("content-table3-reactions").rows;
+    let drawMap = {};
+    let scale = 1;
+    //iterate through rows
+    for (let i = 1; i < reactionRows.length; i++) {
+      let row = reactionRows.item(i).cells;
+      let reaction = row.item(0).innerHTML;
+      let canvas = row.item(4).childNodes[1];
+      let firstSpanIndex = reaction.indexOf('<span>');
+      let lastSpanIndex = reaction.indexOf('</span>');
+      let reactants = reaction.slice(0, firstSpanIndex).split('+');
+      let products = reaction.slice(lastSpanIndex + 7, reaction.length).split('+');
+      reactants = removeItemAll(reactants, '');
+      products = removeItemAll(products, '');
+      let totalLength = 0;
+      let totalHeight = 0;
+      //get drawing dimensions
+      //reactants
+      for (let u = 0; u < reactants.length; u++) {
+        //init obj
+        let bng = nameBngMap[reactants[u]];
+        let drawObj = new Graphic(bng);
+
+        //initial draw to get size
+        var prevX;
+        if (u == 0) {
+          prevX = 0;
+        } else {
+          prevX += dims[0];
+        }
+        var dims = drawObj.draw(canvas, 0, 0, scale);
+        drawMap[reactants[u]] = {obj: drawObj, x: prevX, dim: dims[0]};
+        totalLength += dims[0];
+        if (dims[1] > totalHeight) {
+          totalHeight = dims[1];
+        }
+      }
+      //products
+      for (let u = 0; u < products.length; u++) {
+        //init obj
+        let bng = nameBngMap[products[u]];
+        let drawObj = new Graphic(bng);
+
+        //initial draw to get size
+        prevX += dims[0];
+        drawMap[products[u]] = {obj: drawObj, x: prevX};
+        var dims = drawObj.draw(canvas, 0, 0, scale);
+        totalLength += dims[0];
+        if (dims[1] > totalHeight) {
+          totalHeight = dims[1];
+        }
+      }
+      //resize canvas
+      let arrowLen = 30;
+      canvas.width = totalLength + arrowLen;
+      canvas.height = totalHeight;
+      //draw reaction
+      //draw reaciton reactants
+      for (let u = 0; u < reactants.length; u++) {
+        //draw graphic
+        let elm = drawMap[reactants[u]];
+        elm.obj.draw(canvas, elm.x, 0, scale);
+      }
+      //draw arrow
+      let lastReac = drawMap[reactants[reactants.length - 1]];
+      let lastX;
+      if (lastReac) {
+        lastX = lastReac.x + lastReac.dim;
+      } else {
+        lastX = 0;
+      }
+      let ctx = canvas.getContext('2d');
+      ctx.beginPath();
+      ctx.moveTo(lastX, totalHeight / 2);
+      ctx.lineTo(lastX + arrowLen - 10, totalHeight / 2);
+      ctx.moveTo(lastX + arrowLen, totalHeight / 2);
+      ctx.lineTo(lastX + arrowLen / 2, totalHeight / 2 + 10);
+      ctx.moveTo(lastX + arrowLen, totalHeight / 2);
+      ctx.lineTo(lastX + arrowLen / 2, totalHeight / 2 - 10);
+      ctx.strokeStyle = "#000000";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.closePath();
+      ctx.lineWidth = 1;
+      //draw reaciton products
+      for (let u = 0; u < products.length; u++) {
+        //draw graphic
+        let elm = drawMap[products[u]];
+        elm.obj.draw(canvas, arrowLen + elm.x, 0, scale);
+      }
+    }
+
 
 
     // Open popup
