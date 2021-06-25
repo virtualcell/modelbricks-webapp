@@ -1399,7 +1399,7 @@
       for (let u = 0; u < reactants.length; u++) {
         //draw graphic
         let elm = drawMap[reactants[u]];
-        elm.obj.draw(canvas, elm.x, 0, scale);
+        elm.obj.draw(canvas, elm.x + 0.5, 0.5, scale);
       }
       //draw arrow
       let lastReac = drawMap[reactants[reactants.length - 1]];
@@ -1426,7 +1426,7 @@
       for (let u = 0; u < products.length; u++) {
         //draw graphic
         let elm = drawMap[products[u]];
-        elm.obj.draw(canvas, arrowLen + elm.x, 0, scale);
+        elm.obj.draw(canvas, arrowLen + elm.x + 0.5, 0.5, scale);
       }
     }
 

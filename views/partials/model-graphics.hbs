@@ -1,5 +1,7 @@
 //script for graphics
 
+//note all scale params in draw functions do not work, fix or delete
+
 //defining string rgb values by hashing them
 Object.defineProperty(String.prototype, 'rgb', {
   //hashing string
@@ -28,10 +30,25 @@ Object.defineProperty(String.prototype, 'rgb', {
     }
     //correcting colors too dark
     if (rgb.reduce((a, b) => a + b, 0) < 600) {
+      //remainder of 255 and highest rbg chanel
       const buff = 255 - Math.max(rgb[0], rgb[1], rgb[2]);
+      //add buff
       for (var i = 0; i < 3; i++) {
         rgb[i] = rgb[i] + buff;
       }
+      //find min chanel
+      let min = 0;
+      for (var i = 1; i < 3; i++) {
+        if (rgb[i] < rgb[min]) {
+          min = i;
+        }
+      }
+      //equalize far apart channels
+      let diff = Math.max(rgb[0], rgb[1], rgb[2]) - rgb[min];
+      if (diff > 100) {
+        rgb[min] += diff - 50;
+      }
+      //construct rbg string
       color = '';
       for (var i = 0; i < 3; i++) {
         color += rgb[i].toString(16);
@@ -148,7 +165,7 @@ class Molecule {
   }
 
   //draw bionetgen sites with states labeled
-  drawSitesComplex(canvas, x, y, radius, scale = 1) {
+  drawSitesComplex(canvas, x, y, radius, scale = 1, initX = 0) {
     var ctx = canvas.getContext('2d');
     const siteRadius = 8;
     var siteLength = 0;
@@ -190,7 +207,7 @@ class Molecule {
       //add bonds to stateless sites
       if (this.sites[i].bondName != null) {
         if (this.sites[i].states.length == 0) {
-          this.sites[i].position = [x + dx, y + dy + siteRadius];
+          this.sites[i].position = [x + dx - initX, y + dy + siteRadius];
         }
       }
       for (var u = 0; u < states.length; u++) {
@@ -204,7 +221,7 @@ class Molecule {
         if (longestState < stateLength) {longestState = stateLength;}
         //add bonds to sites with states
         if (this.sites[i].bondName != null) {
-          this.sites[i].position = [sx + stateLength / 2, sy + 13];
+          this.sites[i].position = [sx + stateLength / 2 - initX, sy + 13];
         }
         //draw states
         var colorIndex = u;
@@ -225,7 +242,7 @@ class Molecule {
       }
     }
     //return total [length, height] to compare to default dimensions
-    var dims = []
+    var dims = [];
     //use either end of site, state, or molecule for x component
     var possibleLengths = [x + dx - radius / 2 + siteLength, dx, sx + stateLength];
     for (var i = 0; i < 3; i++) {
@@ -245,21 +262,22 @@ class Molecule {
   }
 
   //draw molecule with states and sites labled
-  drawComplex(canvas, x, y, scale = 1) {
+  drawComplex(canvas, x, y, scale = 1, initX = 0) {
+    console.log(this.name, x, initX);
     var ctx = canvas.getContext('2d');
     const radius = 15;
     var length = 8 * this.name.length - radius / 2;
     if (length < 0) {length *= -1;}
     //notice drawSitesComplex() is called twice
     //this is a bad implementation but it doesn't effect runtime noticably
-    var dims = this.drawSitesComplex(canvas, x, y, radius);
+    var dims = this.drawSitesComplex(canvas, x, y, radius, 1, initX);
     if (length < dims[0]) {
       length = dims[0] - x;
     }
     //drawing pill shape
     this.drawRoundRect(canvas, x, y, radius, length, this.color);
     //drawing sites
-    this.drawSitesComplex(canvas, x, y, radius);
+    this.drawSitesComplex(canvas, x, y, radius, 1, initX);
     //drawing name
     ctx.fillStyle = '#000000';
     ctx.font = "15px Arial";
@@ -299,7 +317,9 @@ class Graphic {
       let ctx = canvas.getContext('2d');
       //extracting bonds
       for (let i = 0; i < this.molecules.length; i++) {
-        let dims = this.molecules[i].drawComplex(canvas, scale * (2 + length + initX), scale * (2 + initY));
+        let thisX = scale * (2 + length + initX);
+        let thisY = scale * (2 + initY);
+        let dims = this.molecules[i].drawComplex(canvas, thisX, thisY, scale, initX);
         length += dims[0];
         if (dims[1] > height) {
           height = dims[1];
@@ -383,24 +403,24 @@ function drawGraphics(tableID, BngColumn, CanvasColumn, drawType) {
         //get canvas dimensions based on draw type
         if (drawType == 'g') {
             var drawObj = new Graphic(bioNetGen);
-            dims = drawObj.draw(canvasElm, 0, 0);
+            dims = drawObj.draw(canvasElm, 0.5, 0.5);
 
             //resize canvas
             canvasElm.width = dims[0];
             canvasElm.height = dims[1];
 
             //draw graphic
-            drawObj.draw(canvasElm, 0, 0);
+            drawObj.draw(canvasElm, 0.5, 0.5);
         } else if (drawType == 'm') {
             var drawObj = new Molecule(bioNetGen);
-            dims = drawObj.drawComplex(canvasElm, 0, 0);
+            dims = drawObj.drawComplex(canvasElm, 0.5, 0.5);
 
             //resize canvas
             canvasElm.width = dims[0] + 5;
             canvasElm.height = dims[1] + 5;
 
             //draw graphic
-            drawObj.drawComplex(canvasElm, 1, 1);
+            drawObj.drawComplex(canvasElm, 0.5, 0.5);
         } else {
             throw 'drawType ' + drawType + ' is not valid, use only m or g';
         }
