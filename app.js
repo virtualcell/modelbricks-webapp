@@ -196,6 +196,14 @@ app.use(express.static(path.join(__dirname, "public")));
 // Routing of informative pages - routes/index.js
 app.use("/", indexRouter);
 
+//catch all route, make sure its defined last
+app.get("*", async (req, res) => {
+  let search = req.params;
+  res.render("catch-all", {
+    search
+  });
+});
+
 // Server Port
 app.listen(PORT, (err) => {
   if (err) {

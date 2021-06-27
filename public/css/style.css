@@ -3162,3 +3162,8 @@ in printable view*/
   margin-bottom: 0;
   margin-top: 0;
 }
+
+#catch-all {
+  width: max-content;
+  margin: 30vh auto;
+}
