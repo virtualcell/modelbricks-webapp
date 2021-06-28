@@ -151,7 +151,7 @@ class Molecule {
   }
 
   //draw rounded rect
-  drawRoundRect(canvas, x, y, radius, length, rgb, scale = 1) {
+  drawRoundRect(canvas, x, y, radius, length, rgb) {
     var ctx = canvas.getContext('2d');
     ctx.fillStyle = '#' + rgb;
     ctx.beginPath();
@@ -263,15 +263,16 @@ class Molecule {
 
   //draw molecule with states and sites labled
   drawComplex(canvas, x, y, scale = 1, initX = 0) {
-    console.log(this.name, x, initX);
     var ctx = canvas.getContext('2d');
     const radius = 15;
-    var length = 8 * this.name.length - radius / 2;
+    ctx.font = "15px Arial";
+    var length = ctx.measureText(this.name).width;
     if (length < 0) {length *= -1;}
     //notice drawSitesComplex() is called twice
     //this is a bad implementation but it doesn't effect runtime noticably
     var dims = this.drawSitesComplex(canvas, x, y, radius, 1, initX);
-    if (length < dims[0]) {
+    let numSites = Object.keys(this.sites).length;
+    if ((length < dims[0]) && numSites > 0) {
       length = dims[0] - x;
     }
     //drawing pill shape
@@ -290,9 +291,11 @@ class Molecule {
 
 //each bionetgen should have own Graphic instance
 class Graphic {
-  constructor(def) {
+  constructor(def, compartment = 'change') {
     //bionetgen definition
     this.def = def;
+    //compartment
+    this.comp = compartment;
     //list of instances of molecule classes
     this.molecules = [];
     //initializing this.molecules
@@ -306,6 +309,31 @@ class Graphic {
     }
   }
 
+  //unfinished
+  drawMembrane(canvas) {
+    //init context
+    let ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#000000';
+    ctx.font = "10px Arial";
+    //box dims
+    let textWidth = ctx.measureText(this.comp).width;
+    let height = 60;
+
+    //draw membrane at top right corner, filling canvas
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    //left line
+    ctx.lineTo(0, height);
+    //bottom line
+    ctx.lineTo(textWidth, height);
+    //right line
+    ctx.lineTo(textWidth, 0);
+    //top line
+    ctx.lineTo(0, 0);
+    ctx.stroke();
+    ctx.closePath();
+  }
+
   //only works for species with two molecules or less, fix this
   draw(canvas, initX, initY, scale = 1) {
     let length = 0;
@@ -315,6 +343,9 @@ class Graphic {
     //drawing the graphics on the canvas
     if (canvas.getContext) {
       let ctx = canvas.getContext('2d');
+      //WIP code
+      //draw compartment
+      ///this.drawMembrane(canvas);
       //extracting bonds
       for (let i = 0; i < this.molecules.length; i++) {
         let thisX = scale * (2 + length + initX);
