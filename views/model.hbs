@@ -1340,6 +1340,41 @@
     firstPopup.parentElement.classList.add("firstPopup");
 
     //add reaction graphics
+    //draw plus
+    function drawPlus(x, totalHeight, canvas) {
+      let plusLen = 30;
+      let ctx = canvas.getContext('2d');
+      ctx.beginPath();
+      ctx.moveTo(x, totalHeight / 2);
+      ctx.lineTo(x + plusLen, totalHeight / 2);
+      ctx.moveTo(x + plusLen / 2, (plusLen + totalHeight) / 2);
+      ctx.lineTo(x + plusLen / 2, (-plusLen + totalHeight) / 2);
+      ctx.strokeStyle = "#000000";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.closePath();
+      ctx.lineWidth = 1;
+    }
+
+    //draw arrow
+    function drawArrow(x, totalHeight, canvas) {
+      let arrowLen = 30;
+      let ctx = canvas.getContext('2d');
+      ctx.beginPath();
+      ctx.moveTo(x, totalHeight / 2);
+      ctx.lineTo(x + arrowLen - 10, totalHeight / 2);
+      ctx.moveTo(x + arrowLen, totalHeight / 2);
+      ctx.lineTo(x + arrowLen / 2, totalHeight / 2 + 10);
+      ctx.moveTo(x + arrowLen, totalHeight / 2);
+      ctx.lineTo(x + arrowLen / 2, totalHeight / 2 - 10);
+      ctx.strokeStyle = "#000000";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.closePath();
+      ctx.lineWidth = 1;
+    }
+
+    //get html elements
     let reactionRows = document.getElementById("content-table3-reactions").rows;
     let drawMap = {};
     let scale = 1;
@@ -1356,79 +1391,106 @@
       products = removeItemAll(products, '');
       let totalLength = 0;
       let totalHeight = 0;
-      //get drawing dimensions
+
+      //create list of draw functions
+      let drawList = [];
+
       //reactants
       for (let u = 0; u < reactants.length; u++) {
         //init obj
         let bng = nameBngMap[reactants[u]];
-        let drawObj = new Graphic(bng);
+        let drawObj = new Graphic(bng, 'compact');
+
+        //add draw function
+        drawList.push(
+          {
+            func: (canvas, totalLength, totalHeight) => {
+              drawObj.draw(canvas, totalLength, 0);
+            },
+            x: totalLength
+          }
+        );
 
         //initial draw to get size
-        var prevX;
-        if (u == 0) {
-          prevX = 0;
-        } else {
-          prevX += dims[0];
-        }
-        var dims = drawObj.draw(canvas, 0, 0, scale);
-        drawMap[reactants[u]] = {obj: drawObj, x: prevX, dim: dims[0]};
+        var dims = drawObj.draw(canvas, 0, 0);
         totalLength += dims[0];
+
+        //add plus if not last reactant
+        if (u < reactants.length - 1) {
+          drawList.push(
+            {
+              func: (canvas, totalLength, totalHeight) => {
+                drawPlus(totalLength, totalHeight, canvas);
+              },
+              x: totalLength
+            }
+          );
+          totalLength += 30;
+        }
+
+        //add height
         if (dims[1] > totalHeight) {
           totalHeight = dims[1];
         }
       }
+
+      drawList.push(
+        {
+          func: (canvas, totalLength, totalHeight) => {
+            drawArrow(totalLength, totalHeight, canvas);
+          },
+          x: totalLength
+        }
+      );
+      totalLength += 30;
+
       //products
       for (let u = 0; u < products.length; u++) {
         //init obj
         let bng = nameBngMap[products[u]];
-        let drawObj = new Graphic(bng);
+        let drawObj = new Graphic(bng, 'compact');
+
+        //add draw function
+        drawList.push(
+          {
+            func: (canvas, totalLength, totalHeight) => {
+              drawObj.draw(canvas, totalLength, 0);
+            },
+            x: totalLength
+          }
+        );
 
         //initial draw to get size
-        prevX += dims[0];
-        drawMap[products[u]] = {obj: drawObj, x: prevX};
         var dims = drawObj.draw(canvas, 0, 0, scale);
         totalLength += dims[0];
+
+        //add plus if not last reactant
+        if (u < products.length - 1) {
+          drawList.push(
+            {
+              func: (canvas, totalLength, totalHeight) => {
+                drawPlus(totalLength, totalHeight, canvas);
+              },
+              x: totalLength
+            }
+          );
+          totalLength += 30;
+        }
+
+        //add height
         if (dims[1] > totalHeight) {
           totalHeight = dims[1];
         }
       }
+
       //resize canvas
-      let arrowLen = 30;
-      canvas.width = totalLength + arrowLen;
+      canvas.width = totalLength;
       canvas.height = totalHeight;
-      //draw reaction
-      //draw reaciton reactants
-      for (let u = 0; u < reactants.length; u++) {
-        //draw graphic
-        let elm = drawMap[reactants[u]];
-        elm.obj.draw(canvas, elm.x + 0.5, 0.5, scale);
-      }
-      //draw arrow
-      let lastReac = drawMap[reactants[reactants.length - 1]];
-      let lastX;
-      if (lastReac) {
-        lastX = lastReac.x + lastReac.dim;
-      } else {
-        lastX = 0;
-      }
-      let ctx = canvas.getContext('2d');
-      ctx.beginPath();
-      ctx.moveTo(lastX, totalHeight / 2);
-      ctx.lineTo(lastX + arrowLen - 10, totalHeight / 2);
-      ctx.moveTo(lastX + arrowLen, totalHeight / 2);
-      ctx.lineTo(lastX + arrowLen / 2, totalHeight / 2 + 10);
-      ctx.moveTo(lastX + arrowLen, totalHeight / 2);
-      ctx.lineTo(lastX + arrowLen / 2, totalHeight / 2 - 10);
-      ctx.strokeStyle = "#000000";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.closePath();
-      ctx.lineWidth = 1;
-      //draw reaciton products
-      for (let u = 0; u < products.length; u++) {
-        //draw graphic
-        let elm = drawMap[products[u]];
-        elm.obj.draw(canvas, arrowLen + elm.x + 0.5, 0.5, scale);
+
+      //draw all elements
+      for (let u = 0; u < drawList.length; u++) {
+        let elm = drawList[u];
+        elm.func(canvas, elm.x, totalHeight);
       }
     }
 

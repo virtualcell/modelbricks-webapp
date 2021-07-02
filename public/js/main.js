@@ -1,7 +1,7 @@
 fetch("/json/annotations.json")
   .then((response) => response.json())
   .then((json) => {
-    console.log('json annos:', json.BioModel);
+    //console.log('json annos:', json.BioModel);
     return (json)})
   .then((json) => {
 

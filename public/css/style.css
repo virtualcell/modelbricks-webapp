@@ -2069,6 +2069,7 @@ li.card {
 #toggle-advanced.page-button {
   display: flex;
   margin-bottom: 15px;
+  flex-basis: auto;
 }
 
 /*make advanced button + search form inline*/
@@ -3130,11 +3131,13 @@ in printable view*/
 #simple-search {
   margin: 0 !important;
   margin-top: 15px;
+  flex-basis: auto;
 }
 
 #advanced-search {
   margin: 0 !important;
   margin-top: 15px;
+  flex-basis: auto;
 }
 
 #center-search {
