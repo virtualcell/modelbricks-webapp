@@ -333,9 +333,6 @@ class Molecule {
     //this is a bad implementation but it doesn't effect runtime noticably
     var dims = this.drawSitesComplex(canvas, x, y, radius, 1, initX);
     let numSites = Object.keys(this.sites).length;
-    if ((length < dims[0]) && numSites > 0) {
-      length = dims[0] - x;
-    }
     //drawing pill shape
     this.drawRoundRect(canvas, x, y, radius, length, this.color);
     //drawing sites

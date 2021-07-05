@@ -149,6 +149,24 @@ app.get("/curatedList/model/:name", (req, res) => {
   });
 });
 
+//page for offline testing
+app.get("/test/:name", (req, res) => {
+  var parser = new xml2js.Parser();
+  fs.readFile("./files/" + req.params.name + ".vcml", (err, data) => {
+    parser.parseString(data, (err, result) => {
+      data = result;
+      let annoObj = new aPrs.AnnParser(data);
+      let annoData = annoObj.getString();
+      let outputOptions = annoObj.getOutputOptions();
+      res.render("model", {
+        title: "ModelBricks - Model Page",
+        data,
+        outputOptions,
+      });
+    });
+  });
+});
+
 // dynamic printable pages, option available on dashboard page
 app.get("/curatedList/printModel/:name", (req, res) => {
   modelName = req.params.name;
