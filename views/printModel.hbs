@@ -64,7 +64,7 @@
 {{!-- reactions table  --}}
 <div class="pmTable" id="reactions">
     <div class="container">
-        <table class="responsive-table">
+        <table id="print-reactions-table" class="responsive-table">
             <caption>Reactions <span class="dashboardBtn"><a href="/curatedList/model/{{modelName}}#reactions"><i
                             class="fa fa-undo" aria-hidden="true"></i>
                         See in Dashboard</a></span>
@@ -83,6 +83,7 @@
                       </div>
                     </th>
                     <th scope="col">Kinetics</th>
+                    <th scope="col">Depiction</th>
                 </tr>
             </thead>
             <tbody>
@@ -91,12 +92,18 @@
                 {{#each this.SimpleReaction}}
                 <tr>
                     <td class="print-descriptor" data-title="Reaction">
-                      {{~#each this.Reactant~}}
-                      {{~this.$.LocalizedCompoundRef~}}
+                      {{~#each this.Reactant}}
+                      {{~nullCheck this.$.LocalizedCompoundRef}}
+                      {{~#if (greater ../this.Reactant.length (add 1 @index))~}}
+                      +
+                      {{~/if}}
                       {{~/each~}}
-                      <span style="color:#666666">--></span>
-                      {{~#each this.Product~}}
-                      {{~this.$.LocalizedCompoundRef~}}
+                      <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
+                      {{~#each this.Product}}
+                      {{~this.$.LocalizedCompoundRef}}
+                      {{~#if (greater ../this.Product.length (add 1 @index))~}}
+                      +
+                      {{~/if}}
                       {{~/each~}}
                     </td>
                     <td id="flex-td" class="print-descriptor" data-title="Name">
@@ -112,7 +119,21 @@
                         {{this.$.KineticsType}}
                         {{/each}}
                     </td>
-
+                    <td class="print-descriptor" data-title="Depiction">
+                      {{~#each this.Reactant}}
+                      {{~nullCheck this.$.LocalizedCompoundRef}}
+                      {{~#if (greater ../this.Reactant.length (add 1 @index))~}}
+                      +
+                      {{~/if}}
+                      {{~/each~}}
+                      <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
+                      {{~#each this.Product}}
+                      {{~this.$.LocalizedCompoundRef}}
+                      {{~#if (greater ../this.Product.length (add 1 @index))~}}
+                      +
+                      {{~/if}}
+                      {{~/each~}}
+                    </td>
                 </tr>
                 <tr>
                     <td class="printAnnotationWrap">
@@ -153,6 +174,10 @@
                                 {{/each}}
                             </div>
                         </div>
+                    </td>
+
+                    <td class="printAnnotationWrap">
+                        <canvas id="{{this.$.Name}}_species_canvas" width="" height=""></canvas>
                     </td>
 
                 </tr>
@@ -887,6 +912,18 @@
   }
 
   //species initial conditions
+  function removeItemAll(arr, value) {
+    let i = 0;
+    while (i < arr.length) {
+      if (arr[i] === value) {
+        arr.splice(i, 1);
+      } else {
+        ++i;
+      }
+    }
+    return arr;
+  }
+  let nameBngMap = {};
   {{#each data.vcml.BioModel}}
   {{#each this.Model}}
   {{#each this.ModelUnitSystem}}
@@ -910,6 +947,9 @@
     let row = speciesRows.item(i).cells;
     let structure = row.item(1).innerHTML.trim();
     let type = strucNameTypeMap[structure];
+    let name = row.item(0).childNodes[1].innerHTML.trim();
+    let bng = row.item(2).innerHTML.trim();
+    nameBngMap[name] = bng;
     //add html
     if (type.includes('Membrane')) {
       let node = document.createElement('span');
@@ -923,6 +963,165 @@
       row.item(0).childNodes[3].appendChild(node);
     } else {
       console.log(type, 'is an unrecognized type in structures');
+    }
+  }
+
+  //add reaction graphics
+  //draw plus
+  function drawPlus(x, totalHeight, canvas) {
+    let plusLen = 30;
+    let ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.moveTo(x, totalHeight / 2);
+    ctx.lineTo(x + plusLen, totalHeight / 2);
+    ctx.moveTo(x + plusLen / 2, (plusLen + totalHeight) / 2);
+    ctx.lineTo(x + plusLen / 2, (-plusLen + totalHeight) / 2);
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.closePath();
+    ctx.lineWidth = 1;
+  }
+
+  //draw arrow
+  function drawArrow(x, totalHeight, canvas) {
+    let arrowLen = 30;
+    let ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.moveTo(x, totalHeight / 2);
+    ctx.lineTo(x + arrowLen - 10, totalHeight / 2);
+    ctx.moveTo(x + arrowLen, totalHeight / 2);
+    ctx.lineTo(x + arrowLen / 2, totalHeight / 2 + 10);
+    ctx.moveTo(x + arrowLen, totalHeight / 2);
+    ctx.lineTo(x + arrowLen / 2, totalHeight / 2 - 10);
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.closePath();
+    ctx.lineWidth = 1;
+  }
+
+  //get html elements
+  let reactionRows = document.getElementById("print-reactions-table").rows;
+  let drawMap = {};
+  let scale = 1;
+  //iterate through rows
+  for (let i = 1; i < reactionRows.length; i++) {
+    let row = reactionRows.item(i).cells;
+    if (i % 2 == 1) {
+      var reaction = row.item(0).innerHTML;
+    } else {
+      let canvas = row.item(3).childNodes[1];
+      let firstSpanIndex = reaction.indexOf('<span>');
+      let lastSpanIndex = reaction.indexOf('</span>');
+      let reactants = reaction.slice(0, firstSpanIndex).split('+');
+      let products = reaction.slice(lastSpanIndex + 7, reaction.length).split('+');
+      console.log(reactants, products);
+      reactants = removeItemAll(reactants, '');
+      products = removeItemAll(products, '');
+      let totalLength = 0;
+      let totalHeight = 0;
+
+      //create list of draw functions
+      let drawList = [];
+
+      //reactants
+      for (let u = 0; u < reactants.length; u++) {
+        //init obj
+        let bng = nameBngMap[reactants[u]];
+        let drawObj = new Graphic(bng, 'compact');
+
+        //add draw function
+        drawList.push(
+          {
+            func: (canvas, totalLength, totalHeight) => {
+              drawObj.draw(canvas, totalLength, 0);
+            },
+            x: totalLength
+          }
+        );
+
+        //initial draw to get size
+        var dims = drawObj.draw(canvas, 0, 0);
+        totalLength += dims[0];
+
+        //add plus if not last reactant
+        if (u < reactants.length - 1) {
+          drawList.push(
+            {
+              func: (canvas, totalLength, totalHeight) => {
+                drawPlus(totalLength, totalHeight, canvas);
+              },
+              x: totalLength
+            }
+          );
+          totalLength += 30;
+        }
+
+        //add height
+        if (dims[1] > totalHeight) {
+          totalHeight = dims[1];
+        }
+      }
+
+      drawList.push(
+        {
+          func: (canvas, totalLength, totalHeight) => {
+            drawArrow(totalLength, totalHeight, canvas);
+          },
+          x: totalLength
+        }
+      );
+      totalLength += 30;
+
+      //products
+      for (let u = 0; u < products.length; u++) {
+        //init obj
+        let bng = nameBngMap[products[u]];
+        let drawObj = new Graphic(bng, 'compact');
+
+        //add draw function
+        drawList.push(
+          {
+            func: (canvas, totalLength, totalHeight) => {
+              drawObj.draw(canvas, totalLength, 0);
+            },
+            x: totalLength
+          }
+        );
+
+        //initial draw to get size
+        var dims = drawObj.draw(canvas, 0, 0, scale);
+        totalLength += dims[0];
+
+        //add plus if not last reactant
+        if (u < products.length - 1) {
+          drawList.push(
+            {
+              func: (canvas, totalLength, totalHeight) => {
+                drawPlus(totalLength, totalHeight, canvas);
+              },
+              x: totalLength
+            }
+          );
+          totalLength += 30;
+        }
+
+        //add height
+        if (dims[1] > totalHeight) {
+          totalHeight = dims[1];
+        }
+      }
+
+      //resize canvas
+      canvas.width = totalLength;
+      canvas.height = totalHeight;
+
+      //draw all elements
+      for (let u = 0; u < drawList.length; u++) {
+        let elm = drawList[u];
+        elm.func(canvas, elm.x, totalHeight);
+      }
     }
   }
 
