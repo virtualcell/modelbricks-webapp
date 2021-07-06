@@ -272,7 +272,7 @@ class Molecule {
         var sx = x + dx - siteRadius + 2;
         var sy = y + dy + u * 13 + siteRadius;
         //fix lengths
-        stateLength = this.sites[i].states[u].length * 9;
+        stateLength = ctx.measureText(this.sites[i].states[u]).width;
         if (this.sites[i].states[u].length <= 10) {
           stateLength += 3;
         }
