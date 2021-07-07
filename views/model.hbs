@@ -1434,19 +1434,19 @@
         let bng = nameBngMap[reactants[u]];
         let drawObj = new Graphic(bng, 'compact');
 
+        //initial draw to get size
+        var dims = drawObj.draw(canvas, totalLength, 0);
+        totalLength += dims[0];
+
         //add draw function
         drawList.push(
           {
             func: (canvas, totalLength, totalHeight) => {
-              drawObj.draw(canvas, totalLength, 0);
+              drawObj.doDrawList();
             },
             x: totalLength
           }
         );
-
-        //initial draw to get size
-        var dims = drawObj.draw(canvas, 0, 0);
-        totalLength += dims[0];
 
         //add plus if not last reactant
         if (u < reactants.length - 1) {
@@ -1483,19 +1483,19 @@
         let bng = nameBngMap[products[u]];
         let drawObj = new Graphic(bng, 'compact');
 
+        //initial draw to get size
+        var dims = drawObj.draw(canvas, totalLength, 0, scale);
+        totalLength += dims[0];
+
         //add draw function
         drawList.push(
           {
             func: (canvas, totalLength, totalHeight) => {
-              drawObj.draw(canvas, totalLength, 0);
+              drawObj.doDrawList();
             },
             x: totalLength
           }
         );
-
-        //initial draw to get size
-        var dims = drawObj.draw(canvas, 0, 0, scale);
-        totalLength += dims[0];
 
         //add plus if not last reactant
         if (u < products.length - 1) {

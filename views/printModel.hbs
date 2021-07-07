@@ -879,26 +879,26 @@
     if (drawType == 'g') {
 
         var drawObj = new Graphic(bioNetGen);
-        dims = drawObj.draw(canvasElm, 0, 0);
+        dims = drawObj.draw(canvasElm, totalLength, 0);
 
         //resize canvas
         canvasElm.width = dims[0];
         canvasElm.height = dims[1];
 
         //draw graphic
-        drawObj.draw(canvasElm, 0, 0);
+        drawObj.doDrawList();
 
     } else if (drawType == 'm') {
 
         var drawObj = new Molecule(bioNetGen);
-        dims = drawObj.drawComplex(canvasElm, 0, 0);
+        dims = drawObj.initDrawList(canvasElm, 0, 0);
 
         //resize canvas
         canvasElm.width = dims[0] + 5;
         canvasElm.height = dims[1] + 5;
 
         //draw graphic
-        drawObj.drawComplex(canvasElm, 1, 1);
+        drawObj.initDrawList(canvasElm, 1, 1);
 
     } else {
         throw 'drawType ' + drawType + ' is not valid, use only m or g';
@@ -1031,19 +1031,19 @@
         let bng = nameBngMap[reactants[u]];
         let drawObj = new Graphic(bng, 'compact');
 
+        //initial draw to get size
+        var dims = drawObj.draw(canvas, totalLength, 0);
+        totalLength += dims[0];
+
         //add draw function
         drawList.push(
           {
             func: (canvas, totalLength, totalHeight) => {
-              drawObj.draw(canvas, totalLength, 0);
+              drawObj.doDrawList();
             },
             x: totalLength
           }
         );
-
-        //initial draw to get size
-        var dims = drawObj.draw(canvas, 0, 0);
-        totalLength += dims[0];
 
         //add plus if not last reactant
         if (u < reactants.length - 1) {
@@ -1080,19 +1080,19 @@
         let bng = nameBngMap[products[u]];
         let drawObj = new Graphic(bng, 'compact');
 
+        //initial draw to get size
+        var dims = drawObj.draw(canvas, totalLength, 0, scale);
+        totalLength += dims[0];
+
         //add draw function
         drawList.push(
           {
             func: (canvas, totalLength, totalHeight) => {
-              drawObj.draw(canvas, totalLength, 0);
+              drawObj.doDrawList();
             },
             x: totalLength
           }
         );
-
-        //initial draw to get size
-        var dims = drawObj.draw(canvas, 0, 0, scale);
-        totalLength += dims[0];
 
         //add plus if not last reactant
         if (u < products.length - 1) {
