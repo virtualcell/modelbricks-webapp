@@ -108,9 +108,9 @@
             {{#each data.vcml.BioModel}}
             {{#each this.Version}}
             <li>
-              <a id="modelName" href="#dashboard">
-                {{~trimString this.$.Name}} - {{this.$.KeyValue~}}
-              </a>
+              <p id="modelName" href="#dashboard">
+                {{~trimString this.$.Name}}
+              </p>
             </li>
             <li class="printable">
               <a id="print-link" href="/curatedList/printModel/{{this.$.KeyValue}}">
@@ -227,7 +227,7 @@
                             {{#each this.Model}}
                             {{#each this.SimpleReaction as |value key|}}
                             <tr>
-                                <td data-label="Reactions" class="Reactions">
+                                <td data-label="Reactions" class="Reactions" id="{{value.$.Name}}" onClick="reply_click(this.id)" style="cursor: pointer">
                                     {{~#each value.Reactant}}
                                     {{~nullCheck this.$.LocalizedCompoundRef}}
                                     {{~#if (greater ../this.Reactant.length (add 1 @index))~}}
@@ -242,15 +242,18 @@
                                     {{~/if}}
                                     {{~/each~}}
                                 </td>
-                                <td data-label="Name" class="Name"><a id="{{value.$.Name}}" onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{value.$.Name}}</a></td>
-                                <td data-label="Structure" class="Structure">{{value.$.Structure}}</td>
+                                <td id="{{value.$.Name}}" onClick="reply_click(this.id)" style="cursor: pointer" data-label="Name" class="Name">
+                                  <a id="{{value.$.Name}}" onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{value.$.Name}}
+                                  </a>
+                                </td>
+                                <td id="{{value.$.Name}}" onClick="reply_click(this.id)" style="cursor: pointer" data-label="Structure" class="Structure">{{value.$.Structure}}</td>
                                 {{#each value.Kinetics}}
                                 <td data-label="Kinetics" class="Kinetics"><a id="{{key}}"
                                         onClick="reply_click(this.id)"
                                         style="cursor:pointer; color:#3EB9FE">{{this.$.KineticsType}}</a></td>
                                 {{/each}}</td>
-                                <td>
+                                <td id="{{value.$.Name}}" onClick="reply_click(this.id)" style="cursor: pointer">
                                   <canvas id="{{this.$.Name}}_species_canvas" class="molecule_canvas" width="" height=""></canvas>
                                 </td>
                             </tr>
@@ -300,7 +303,13 @@
                         {{#each this.Parameter}}
 
                         <div class="role">
-                            <p class="role-title">{{this.$.Role}}</p>
+                            <p class="role-title">
+                              {{#if (eq this.$.Role "user defined")}}
+                              local
+                              {{else}}
+                              {{this.$.Role}}
+                              {{/if}}
+                            </p>
                             <p class="role-variable">{{this.$.Name}}</p>
                             <p class="role-text">{{this._}} <span class="unit">[{{this.$.Unit}}]</span> </p>
                         </div>
@@ -358,9 +367,12 @@
                             {{#each data.vcml.BioModel}}
                             {{#each this.Model}}
                             {{#each this.Membrane}}
-                            <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                            <tr id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor: pointer;">
+                                <td data-label="Name" class="Name">
+                                  <a id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
                                 <td data-label="Type" class="Type">Membrane</td>
                                 <td data-label="Electrical" class="Electrical">
                                     {{this.$.PositiveFeature}}(+) &nbsp; {{this.$.NegativeFeature}}(-)
@@ -369,9 +381,12 @@
 
                             {{/each}}
                             {{#each this.Feature}}
-                            <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                            <tr id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer;">
+                                <td data-label="Name" class="Name">
+                                  <a id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
                                 <td data-label="Type" class="Type">Compartment</td>
                                 <td data-label="Electrical" class="Electrical">
                                     {{this.$.PositiveFeature}}(+) &nbsp; {{this.$.NegativeFeature}}(-)
@@ -460,16 +475,6 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
-                                <th class="Structure">Initial Condition
-                                    <div class="sort-table-arrows">
-                                        <a href="javascript:sort(true, 'Structure', 'content-table3-species');"><button
-                                                class="button" title="down arrow"><i
-                                                    class="fa fa-chevron-down"></i></button></a>
-                                        <a href="javascript:sort(false, 'Structure', 'content-table3-species');"><button
-                                                class="button" title="up arrow"><i
-                                                    class="fa fa-chevron-up"></i></button></a>
-                                    </div>
-                                </th>
                                 <th class="Structure">BioNetGen Definition
                                     <div class="sort-table-arrows">
                                         <a href="javascript:sort(true, 'Structure', 'content-table3-species');"><button
@@ -490,18 +495,19 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
-
                             </tr>
                         </thead>
                         <tbody>
                             {{#each data.vcml.BioModel}}
                             {{#each this.Model}}
                             {{#each this.LocalizedCompound}}
-                            <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                            <tr id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer;">
+                                <td data-label="Name" class="Name">
+                                  <a id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
                                 <td data-label="Structure" class="Structure">{{this.$.Structure}}</td>
-                                <td data-label="initial-condition" class="initial-condition"></td>
                                 <td data-label="bionetgen" class="bionetgen">
                                   {{~#each this.SpeciesPattern~}}
                                   {{#each this.MolecularTypePattern~}}
@@ -598,9 +604,12 @@
                             {{#each this.MolecularTypeList}}
                             {{#each this.MolecularType}}
 
-                            <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                            <tr id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer;">
+                                <td data-label="Name" class="Name">
+                                  <a id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
 
                                 <td data-label="Description" class="Description">
                                   {{~this.$.Name}}(
@@ -735,9 +744,12 @@
                             {{#each this.RbmObservableList}}
                             {{#each this.Observable}}
 
-                            <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                            <tr id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer;">
+                                <td data-label="Name" class="Name">
+                                  <a id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
                                 <td data-label="Structure" class="Structure">{{this.$.Structure}}</td>
                                 <td data-label="Domain" class="Domain">{{this.$.ObservableType}}</td>
                                 {{#each this.SpeciesPattern}}
@@ -840,8 +852,11 @@
                             {{#each data.vcml.BioModel}}
                             {{#each this.SimulationSpec as |value key|}}
                             <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                                <td id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer;" data-label="Name" class="Name">
+                                  <a id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
                                 <td data-label="properties" class="properties">
                                     <a href="#specsSpecies{{key}}" style="cursor:pointer; color:#3EB9FE">Specs -
                                         Species</a> <br>
@@ -849,7 +864,7 @@
                                         Reaction</a> <br>
                                     <a href="#simulations{{key}}" style="cursor:pointer; color:#3EB9FE">Simulations</a>
                                 </td>
-                                <td data-label="Type" class="Type" id="mathType">
+                                <td id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer;" data-label="Type" class="Type" id="mathType">
                                   {{#if (eq "true" this.$.Stochastic)}}
                                     {{#if (eq "true" this.$.RuleBased)}}
                                     Stochastic agent-based (NFSim)
@@ -1066,7 +1081,9 @@
                         </thead>
                         <tbody>
                             {{#each value.Simulation}}
-                            <tr>
+                            <tr id={{this.$.Name}}
+                              onClick="reply_click(this.id)"
+                              style="cursor:pointer;">
                                 <td data-label="Name" class="Name">
                                   <a id={{this.$.Name}}
                                     onClick="reply_click(this.id)"
@@ -1300,7 +1317,7 @@
 <script>
     //draw graphics
     //species
-    drawGraphics('content-table3-species', 3, 4, 'g');
+    drawGraphics('content-table3-species', 2, 3, 'g');
     //molecules
     drawGraphics('content-table3-molecules', 1, 2, 'm');
     //observables
@@ -1347,25 +1364,11 @@
     //set species initial conditions
     for (let i = 1; i < speciesRows.length; i++) {
       let row = speciesRows.item(i).cells;
-      let name = row.item(0).childNodes[0].innerHTML;
+      let name = row.item(0).childNodes[1].innerHTML.trim();
       let structure = row.item(1).innerHTML;
       let type = strucNameTypeMap[structure];
-      let bng = row.item(3).innerHTML;
+      let bng = row.item(2).innerHTML.trim();
       nameBngMap[name] = bng;
-      //add html
-      if (type == 'Membrane') {
-        let node = document.createElement('span');
-        node.className = "unit";
-        node.innerHTML = "[" + MembraneSubstanceUnit + "]";
-        row.item(2).appendChild(node);
-      } else if (type == 'Compartment') {
-        let node = document.createElement('span');
-        node.className = "unit";
-        node.innerHTML = "[" + VolumeSubstanceUnit + "]";
-        row.item(2).appendChild(node);
-      } else {
-        throw type + ' is an unrecognized type in structures';
-      }
     }
 
     // making the first popup visible
@@ -1467,6 +1470,7 @@
         }
       }
 
+      //add arrow between reactants, products
       drawList.push(
         {
           func: (canvas, totalLength, totalHeight) => {

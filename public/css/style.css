@@ -432,6 +432,16 @@ a {
   border-left: 1px solid #ebebeb;
 }
 
+.topbar p {
+  display: block;
+  line-height: 50px;
+  width: 50px;
+  text-align: center;
+  text-decoration: none;
+  color: #242424;
+  border-left: 1px solid #ebebeb;
+}
+
 .topbar li.printable {
   color: white;
   position: absolute;
@@ -445,7 +455,17 @@ a {
   background-color: #f7f7f7;
 }
 
+.topbar p:hover {
+  background-color: #f7f7f7;
+}
+
 .topbar li:first-child a {
+  border: none;
+  width: 100%;
+  font-size: 1.2em;
+}
+
+.topbar li:first-child p {
   border: none;
   width: 100%;
   font-size: 1.2em;
@@ -3169,4 +3189,8 @@ in printable view*/
 #catch-all {
   width: max-content;
   margin: 30vh auto;
+}
+
+.textAnnotationP {
+  white-space: pre-line
 }

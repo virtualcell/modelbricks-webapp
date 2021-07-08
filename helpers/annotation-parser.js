@@ -73,6 +73,17 @@ class AnnParser {
     return [span.textContent || span.innerText].toString().replace(/ +/g,' ');
   };
 
+  //after extractContent(), remove all leading \n
+  removeLeadingNewLines(s) {
+    let index = 0;
+    let slice = s.slice(index, index + 2);
+    while (slice == '\n ') {
+      index += 2;
+      slice = s.slice(index, index + 2);
+    }
+    return (s.slice(index, s.length));
+  }
+
   constructor(vcml) {
     this.vcmlObj = vcml;
     this.uriBinds = this.vcmlObj.vcml.BioModel[0].vcmetadata[0].uriBindingList[0].uriBinding;
@@ -169,6 +180,7 @@ class AnnParser {
       }
       try {
         let txtAnno = this.extractContent(this.txtAnnos[i].freetext[0]);
+        txtAnno = this.removeLeadingNewLines(txtAnno);
         this.annotations[vcid] = new VCMLElement(vcid, txtAnno);
       } catch{}
     }

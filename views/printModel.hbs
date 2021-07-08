@@ -300,14 +300,7 @@
             </caption>
             <thead>
                 <tr>
-                    <th id="flex-td" scope="col">
-                      <div id="vert-line-left" class="vert-line">
-                          Name
-                      </div>
-                      <div id="vert-line-right" class="vert-line">
-                          Initial Conditions
-                      </div>
-                    </th>
+                    <th scope="col">Name</th>
                     <th scope="col">Structure</th>
                     <th scope="col">BioNetGen Definition</th>
                 </tr>
@@ -318,11 +311,8 @@
                 {{#each this.Model}}
                 {{#each this.LocalizedCompound}}
                 <tr>
-                    <td id="flex-td" class="print-descriptor" data-title="Name">
-                      <div id="vert-line-left" class="vert-line">
-                          {{this.$.Name}}
-                      </div>
-                      <div id="vert-line-right" class="vert-line"></div>
+                    <td class="print-descriptor" data-title="Name">
+                      {{this.$.Name}}
                     </td>
                     <td class="print-descriptor" data-title="Structure"> {{this.$.Structure}}</td>
                     <td id="printable-bionetgen" class="print-descriptor" data-title="BioNetGen">
@@ -879,7 +869,7 @@
     if (drawType == 'g') {
 
         var drawObj = new Graphic(bioNetGen);
-        dims = drawObj.draw(canvasElm, totalLength, 0);
+        dims = drawObj.draw(canvasElm, 0, 0);
 
         //resize canvas
         canvasElm.width = dims[0];
@@ -947,23 +937,9 @@
     let row = speciesRows.item(i).cells;
     let structure = row.item(1).innerHTML.trim();
     let type = strucNameTypeMap[structure];
-    let name = row.item(0).childNodes[1].innerHTML.trim();
+    let name = row.item(0).innerHTML.trim();
     let bng = row.item(2).innerHTML.trim();
     nameBngMap[name] = bng;
-    //add html
-    if (type.includes('Membrane')) {
-      let node = document.createElement('span');
-      node.className = "unit";
-      node.innerHTML = "[" + MembraneSubstanceUnit + "]";
-      row.item(0).childNodes[3].appendChild(node);
-    } else if (type.includes('Compartment')) {
-      let node = document.createElement('span');
-      node.className = "unit";
-      node.innerHTML = "[" + VolumeSubstanceUnit + "]";
-      row.item(0).childNodes[3].appendChild(node);
-    } else {
-      console.log(type, 'is an unrecognized type in structures');
-    }
   }
 
   //add reaction graphics
@@ -1016,7 +992,6 @@
       let lastSpanIndex = reaction.indexOf('</span>');
       let reactants = reaction.slice(0, firstSpanIndex).split('+');
       let products = reaction.slice(lastSpanIndex + 7, reaction.length).split('+');
-      console.log(reactants, products);
       reactants = removeItemAll(reactants, '');
       products = removeItemAll(products, '');
       let totalLength = 0;
