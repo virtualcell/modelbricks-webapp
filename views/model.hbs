@@ -299,9 +299,8 @@
                         {{!-- Expressions --}}
                         <h2 id="reactionNameExp">Expressions for {{value.$.Name}}</h2>
 
-
+                        {{!-- User Defined Parameters --}}
                         {{#each this.Parameter}}
-
                         <div class="role">
                             <p class="role-title">
                               {{#if (eq this.$.Role "user defined")}}
@@ -314,6 +313,22 @@
                             <p class="role-text">{{this._}} <span class="unit">[{{this.$.Unit}}]</span> </p>
                         </div>
                         {{/each}}
+
+                        {{!-- Global Parameters --}}
+                        {{#each ../../this.ModelParameters.[0].Parameter}}
+                        <div class="role">
+                            <p class="role-title">
+                              {{#if (eq this.$.Role "user defined")}}
+                              local
+                              {{else}}
+                              {{this.$.Role}}
+                              {{/if}}
+                            </p>
+                            <p class="role-variable">{{this.$.Name}}</p>
+                            <p class="role-text">{{this._}} <span class="unit">[{{this.$.Unit}}]</span></p>
+                        </div>
+                        {{/each}}
+
                     </div>
                     <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
@@ -1132,7 +1147,7 @@
             {{/each}}
 
 
-            {{!-- Gloabal Parameters --}}
+            {{!-- Gloabal Parameters Table --}}
             <div id="global" class="optionData">
                 <h2 class="header">Global Parameters</h2>
                 <div class="modelTable">

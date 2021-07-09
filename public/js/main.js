@@ -14,6 +14,7 @@ fetch("/json/annotations.json")
       link = link.replace('obo.go:', 'go/');
       link = link.replace('sbo:', 'sbo/');
       link = link.replace('%3A', ':');
+      link = link.replace('%2F', '/');
       let prefixes = ['miriam:obo.go', 'miriam'];
       for (p in prefixes) {
         let pre = prefixes[p];

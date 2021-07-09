@@ -1766,10 +1766,17 @@ li.card {
   transition: color 0.2s, opacity 0.2s, -webkit-transform 0.2s;
   transition: color 0.2s, opacity 0.2s, transform 0.2s;
   transition: color 0.2s, opacity 0.2s, transform 0.2s, -webkit-transform 0.2s;
+  pointer-events: none;
+}
+
+.searchForm .custom-form__group select {
+  border-radius: 4px;
 }
 
 .searchForm .custom-form__group input:hover + .group__label,
-.searchForm .custom-form__group input:hover {
+.searchForm .custom-form__group input:hover,
+.searchForm .custom-form__group select:hover + .group__label,
+.searchForm .custom-form__group select:hover {
   color: var(--cor-secundaria);
   border-color: currentColor;
 }
@@ -1823,27 +1830,36 @@ li.card {
 .searchForm input:-webkit-autofill,
 .searchForm input:-webkit-autofill:hover,
 .searchForm input:-webkit-autofill:focus,
-.searchForm input:-webkit-autofill:active {
+.searchForm input:-webkit-autofill:active,
+.searchForm select:-webkit-autofill,
+.searchForm select:-webkit-autofill:hover,
+.searchForm select:-webkit-autofill:focus,
+.searchForm select:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
-.searchForm .custom-form__group input::-webkit-input-placeholder {
+.searchForm .custom-form__group input::-webkit-input-placeholder,
+.searchForm .custom-form__group select::-webkit-input-placeholder {
   color: currentColor;
 }
 
-.searchForm .custom-form__group input:-ms-input-placeholder {
+.searchForm .custom-form__group input:-ms-input-placeholder,
+.searchForm .custom-form__group select:-ms-input-placeholder {
   color: currentColor;
 }
 
+.searchForm .custom-form__group select::-ms-input-placeholder,
 .searchForm .custom-form__group input::-ms-input-placeholder {
   color: currentColor;
 }
 
-.searchForm .custom-form__group input::placeholder {
+.searchForm .custom-form__group input::placeholder,
+.searchForm .custom-form__group select::placeholder {
   color: currentColor;
 }
 
-.searchForm .custom-form__group input:focus {
+.searchForm .custom-form__group input:focus,
+.searchForm .custom-form__group select:focus {
   outline: none;
 }
 
@@ -1892,7 +1908,8 @@ li.card {
   margin-right: calc(10 / 16 * 1rem);
 }
 
-.searchForm .custom-form__group input {
+.searchForm .custom-form__group input,
+.searchForm .custom-form__group select {
   font-weight: 600;
   display: block;
   background-color: white;

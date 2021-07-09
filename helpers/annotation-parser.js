@@ -75,13 +75,26 @@ class AnnParser {
 
   //after extractContent(), remove all leading \n
   removeLeadingNewLines(s) {
-    let index = 0;
-    let slice = s.slice(index, index + 2);
-    while (slice == '\n ') {
-      index += 2;
-      slice = s.slice(index, index + 2);
+    try {
+      //strip whitespace from front
+      let indexFront = 0;
+      let slice = s.slice(indexFront, indexFront + 1);
+      while (slice == '\n' || slice == ' ') {
+        indexFront += 1;
+        slice = s.slice(indexFront, indexFront + 1);
+      }
+      //strip from back
+      let indexBack = s.length - 1;
+      slice = s.slice(indexBack - 1, indexBack);
+      while (slice == '\n' || slice == ' ') {
+        indexBack -= 1;
+        slice = s.slice(indexBack - 1, indexBack);
+      }
+      return (s.slice(indexFront, indexBack));
+    } catch (e){
+      console.log(e);
+      return (s);
     }
-    return (s.slice(index, s.length));
   }
 
   constructor(vcml) {

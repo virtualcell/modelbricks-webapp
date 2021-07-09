@@ -293,7 +293,7 @@ class Molecule {
         }
       }
       for (var u = 0; u < states.length; u++) {
-        var sx = dx - siteRadius + 2;
+        var sx = x + dx - siteRadius + 2;
         var sy = y + dy + u * 13 + siteRadius;
         //fix lengths
         stateLength = ctx.measureText(this.sites[i].states[u]).width;
@@ -322,7 +322,13 @@ class Molecule {
           //naming states
           ctx.fillStyle = '#000000';
           ctx.fillText(params[2], params[0] + 1.5, params[1] + 10.5);
-        }, params: [xParam, yParam, stateParam, this.stateColors[colorIndex], stateLength]});
+        }, params: [
+          xParam,
+          yParam,
+          stateParam,
+          this.stateColors[colorIndex],
+          stateLength
+        ]});
         if (sy + 13 > tallestState) {
           tallestState = sy + 13;
         }
@@ -334,7 +340,7 @@ class Molecule {
     var possibleLengths = [
       dx - radius / 2 + siteLength,
       dx,
-      sx + stateLength
+      sx + stateLength - x
     ];
     for (var i = 0; i < 3; i++) {
       if (isNaN(possibleLengths[i])) {

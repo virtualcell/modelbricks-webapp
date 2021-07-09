@@ -7,7 +7,7 @@
     <div class="searchForm subMenu" id="simple-search">
         <form id="custom-form-simple" class="custom-form">
             <div class="custom-form__group">
-                <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}">
+                <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
                 <label class="group__label" for="name">Name</label>
             </div>
             <button type="submit" class="custom-form__submit">
@@ -23,15 +23,22 @@
     <div class="searchForm subMenu" id="advanced-search">
         <form id="custom-form-advanced" class="custom-form">
             <div class="custom-form__group">
-                <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}">
+                <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
                 <label class="group__label" for="name">Name</label>
             </div>
             <div class="custom-form__group">
-                <input type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}">
+                <input type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}" autocomplete="off">
                 <label class="group__label" for="name">ID</label>
             </div>
             <div class="custom-form__group">
-                <input type="text" name="category" id="category" placeholder="Category" value="{{termMap.category}}">
+                <select name="category" id="category" placeholder="Category" value="{{termMap.category}}" autocomplete="off">
+                    <option value="all">all</option>
+                    <option value="public">public</option>
+                    <option value="shared">shared</option>
+                    <option value="mine">mine</option>
+                    <option value="tutorials">tutorials</option>
+                    <option value="educational">educational</option>
+                </select>
                 <label class="group__label" for="name">Category</label>
             </div>
             {{!--    For now changing owner is disabled, default set to ModelBrick
@@ -40,19 +47,24 @@
                 <label class="group__label" for="name">Owner</label>
             </div>   Code fully functional if you wish to reenable    --}}
             <div class="custom-form__group">
-                <input type="text" name="savedLow" id="savedLow" placeholder="savedLow" value="{{termMap.savedLow}}">
-                <label class="group__label" for="name">savedLow</label>
+                <input type="text" name="savedLow" id="savedLow" placeholder="Begin Time" value="{{termMap.savedLow}}" autocomplete="off">
+                <label class="group__label" for="name">Begin Time</label>
             </div>
             <div class="custom-form__group">
-                <input type="text" name="savedHigh" id="savedHigh" placeholder="savedHigh" value="{{termMap.savedHigh}}">
-                <label class="group__label" for="name">savedHigh</label>
+                <input type="text" name="savedHigh" id="savedHigh" placeholder="End Timestamp" value="{{termMap.savedHigh}}" autocomplete="off">
+                <label class="group__label" for="name">End Timestamp</label>
             </div>
             <div class="custom-form__group">
-                <input type="text" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}">
-                <label class="group__label" for="name">Order</label>
+                <select name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}" autocomplete="off">
+                    <option value="date_desc">Date (newest)</option>
+                    <option value="date_asc">Date (oldest)</option>
+                    <option value="name_asc">Name (A-Z)</option>
+                    <option value="name_desc">Name (Z-A)</option>
+                </select>
+                <label class="group__label" for="name">Order By</label>
             </div>
             <div class="custom-form__group">
-                <input type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}">
+                <input type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off">
                 <label class="group__label" for="name">Models per Page</label>
             </div>
             <button type="submit" class="custom-form__submit">

@@ -881,14 +881,14 @@
     } else if (drawType == 'm') {
 
         var drawObj = new Molecule(bioNetGen);
-        dims = drawObj.initDrawList(canvasElm, 0, 0);
+        dims = drawObj.initDrawList(canvasElm, 1, 1);
 
         //resize canvas
         canvasElm.width = dims[0] + 5;
         canvasElm.height = dims[1] + 5;
 
         //draw graphic
-        drawObj.initDrawList(canvasElm, 1, 1);
+        drawObj.doDrawList();
 
     } else {
         throw 'drawType ' + drawType + ' is not valid, use only m or g';
