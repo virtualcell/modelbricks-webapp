@@ -542,7 +542,9 @@
                                   {{/each}}</td>
                                 <td data-label="depiction" class="depiction">
                                   {{!-- dimensions of this canvas are variable --}}
-                                  <canvas id="{{this.$.Name}}_species_canvas" class="molecule_canvas" width="" height=""></canvas>
+                                  <canvas id="{{this.$.Name}}_species_canvas" class="molecule_canvas">
+                                    {{~this.$.Structure~}}
+                                  </canvas>
                                 </td>
                             </tr>
                             {{/each}}

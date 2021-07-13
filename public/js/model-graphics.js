@@ -102,6 +102,15 @@ class Site {
       this.color = color;
     }
   }
+
+  //if any site has a bond
+  hasBond() {
+    if (this.bondName == null || isNaN(this.bondName)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
 
 
@@ -116,13 +125,10 @@ window.Molecule = class Molecule {
     this.color = '';
     //name of molecule
     this.name = '';
-    //this.sites is an object, keys: site names, values: list of state names
-    //this.sites, list of Site() instances
+    //this.sites, list of Site() instances, initialized in this.process()
     this.process();
     //colors used to draw states
     this.stateColors = ['#FBC6D0', '#00FDFF', '#FA26A0', '#99F3BD'];
-    //object, keys: bond names, values: x,y pair of pt to draw bond
-    this.bonds = new Object();
     //list of {drawFunction, parameterList} objects
     this.drawList = [];
     //dimentions, calculated later
@@ -204,6 +210,16 @@ window.Molecule = class Molecule {
     } else {
       this.sites = siteList;
     }
+  }
+
+  hasBond() {
+    let answer = false;
+    this.sites.forEach((item) => {
+      if (item.hasBond()) {
+        answer = true;
+      }
+    });
+    return answer;
   }
 
   //evaluate all draw list functions
@@ -472,13 +488,14 @@ window.Graphic = class Graphic {
       let textWidth = ctx.measureText(this.comp).width;
 
       //change height, width
-      this.y += 17;
+      let membraneHeight = 12;
+      this.y += membraneHeight;
 
       //add to draw list
       this.drawList.push({func: (params) => {
         //draw membrane at top right corner, filling canvas
         ctx.fillStyle = '#eee';
-        ctx.fillRect(0, 0, params[0] + 9, this.y + 17);
+        ctx.fillRect(0, 0, params[0] + 9, this.y);
         ctx.fillStyle = '#000000';
         ctx.font = "11px Arial";
         ctx.beginPath();
@@ -575,8 +592,8 @@ window.Graphic = class Graphic {
       }, params: [x1, x2, y0, y1, y2, textParam, textParamX, textParamY]});
     }
     if (maxHeight + 10 > height + 5) {
-      this.x = length + 5;
-      this.y = maxHeight + 10;
+      this.x += length + 5;
+      this.y += maxHeight + 10;
       return ([length + 5, maxHeight + 10]);
     } else {
       this.x += length + 5;
@@ -596,7 +613,7 @@ window.drawGraphics = function drawGraphics(tableID, BngColumn, CanvasColumn, dr
     for (y = 1; y < rowsLen; y++) {
         //get canvas and bionetgen html elements
         var canvasElm = speciesTable.rows.item(y).cells.item(CanvasColumn).children[0];
-        var canvasHTML = canvasElm.innerHTML;
+        let compartment = canvasElm.innerHTML;
         const canvasID = canvasElm.id;
         var bioNetGen = speciesTable.rows.item(y).cells.item(BngColumn).innerHTML;
 
@@ -611,8 +628,9 @@ window.drawGraphics = function drawGraphics(tableID, BngColumn, CanvasColumn, dr
 
         //get canvas dimensions based on draw type
         if (drawType == 'g') {
-            var drawObj = new Graphic(bioNetGen);
-            dims = drawObj.draw(canvasElm, 0.5, 0.5);
+            var drawObj = new Graphic(bioNetGen, compartment);
+            drawObj.draw(canvasElm, 0, 0);
+            dims = [drawObj.x, drawObj.y];
 
             //resize canvas
             canvasElm.width = dims[0];
