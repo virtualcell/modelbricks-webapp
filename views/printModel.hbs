@@ -366,6 +366,7 @@
                             {{~/each~}}).
                             {{~/each~}}
                             {{/each}}">
+                            {{~this.$.Structure}}</canvas>
                     </td>
                 </tr>
                 {{/each}}
@@ -830,7 +831,7 @@
 <script src="/js/main.js"></script>
 
 {{!-- drawing graphics--}}
-<script>{{> model-graphics}}</script>
+<script src="/js/model-graphics.js"></script>
 
 <script>
   //remove trailing syntax
@@ -868,8 +869,9 @@
     bioNetGen = canvasElm.id;
     if (drawType == 'g') {
 
-        var drawObj = new Graphic(bioNetGen);
-        dims = drawObj.draw(canvasElm, 0, 0);
+        var drawObj = new Graphic(bioNetGen, canvasElm.innerHTML);
+        drawObj.draw(canvasElm, 0, 0);
+        let dims = [drawObj.x, drawObj.y];
 
         //resize canvas
         canvasElm.width = dims[0];

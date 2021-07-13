@@ -2486,6 +2486,7 @@ li.card {
 /*canvas for drawing depictions in model.hbs*/
 .molecule_canvas {
   margin: -9px;
+  pointer-events: none;
 }
 
 /*canvases in printable*/

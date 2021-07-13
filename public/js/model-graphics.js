@@ -106,7 +106,7 @@ class Site {
 
 
 //class for molecules
-class Molecule {
+window.Molecule = class Molecule {
   constructor(def, mode = 'normal') {
     //draw compact / normal
     this.mode = mode;
@@ -125,6 +125,9 @@ class Molecule {
     this.bonds = new Object();
     //list of {drawFunction, parameterList} objects
     this.drawList = [];
+    //dimentions, calculated later
+    this.x = 0;
+    this.y = 0;
   }
 
   //initialize this.color, sites, name from bionetgen def
@@ -400,26 +403,35 @@ class Molecule {
       );
     }, params: [x, y, radius, length, this.color, initX, this.name]});
     //return [length, height] of molecule for Graphic class
+    this.x = dims[0];
+    this.y = dims[1];
     return ([radius * 2 + length, dims[1]]);
   }
 }
 
 
 //each bionetgen should have own Graphic instance
-class Graphic {
+window.Graphic = class Graphic {
   constructor(def, mode = 'normal') {
     //draw normal / compact
     this.mode = mode;
     //bionetgen definition
     this.def = def;
-    //compartment
-    this.comp = 'placeholder';
+    //compartment name
+    if (mode && mode != 'normal' && mode != 'compact') {
+      this.comp = this.mode;
+      //abreviate compratment name
+      this.comp = this.comp.slice(0, 3) + '...';
+    }
     //list of instances of molecule classes
     this.molecules = [];
     //initializing this.molecules
     this.process();
     //list of {drawFunction, parameterList} objects
     this.drawList = [];
+    //dimesntions, calcutlated later
+    this.x = 0;
+    this.y = 0;
   }
 
   process() {
@@ -437,9 +449,7 @@ class Graphic {
 
   //evaluate all draw list functions
   doDrawList() {
-    for (let i = 0; i < this.molecules.length; i++) {
-      this.molecules[i].doDrawList();
-    }
+    //graphics draw functions
     let list = this.drawList;
     for (let i = 0; i < list.length; i++) {
       let elm = list[i];
@@ -447,31 +457,45 @@ class Graphic {
       let params = elm.params;
       func(params);
     }
+    //molecules draw functions
+    for (let i = 0; i < this.molecules.length; i++) {
+      this.molecules[i].doDrawList();
+    }
   }
 
-  //unfinished
+  //draw membrane, only for species
   drawMembrane(canvas) {
-    //init context
-    let ctx = canvas.getContext('2d');
-    //box dims
-    let textWidth = ctx.measureText(this.comp).width;
-    let height = 60;
+    if (this.comp) {
+      //init context
+      let ctx = canvas.getContext('2d');
+      //box dims
+      let textWidth = ctx.measureText(this.comp).width;
 
-    //draw membrane at top right corner, filling canvas
-    ctx.fillStyle = '#000000';
-    ctx.font = "10px Arial";
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    //left line
-    ctx.lineTo(0, height);
-    //bottom line
-    ctx.lineTo(textWidth, height);
-    //right line
-    ctx.lineTo(textWidth, 0);
-    //top line
-    ctx.lineTo(0, 0);
-    ctx.stroke();
-    ctx.closePath();
+      //change height, width
+      this.y += 17;
+
+      //add to draw list
+      this.drawList.push({func: (params) => {
+        //draw membrane at top right corner, filling canvas
+        ctx.fillStyle = '#eee';
+        ctx.fillRect(0, 0, params[0] + 9, this.y + 17);
+        ctx.fillStyle = '#000000';
+        ctx.font = "11px Arial";
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        //left line
+        ctx.lineTo(0, this.y);
+        //bottom line
+        ctx.lineTo(params[0] + 9, this.y);
+        //right line
+        ctx.lineTo(params[0] + 9, 0);
+        //top line
+        ctx.lineTo(0, 0);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.fillText(this.comp, 2, this.y - 5);
+      }, params: [textWidth]});
+    }
   }
 
   //only works for species with two molecules or less, fix this
@@ -481,85 +505,89 @@ class Graphic {
     let names = new Set();
     let pairs = [];//list of pairs of xy coords for each bond
     //drawing the graphics on the canvas
-    if (canvas.getContext) {
-      let ctx = canvas.getContext('2d');
-      //extracting bonds
-      for (let i = 0; i < this.molecules.length; i++) {
-        let thisX = scale * (2 + length + initX);
-        let thisY = scale * (2 + initY);
-        let dims = this.molecules[i].initDrawList(canvas, thisX, thisY, scale, initX);
-        length += dims[0];
-        if (dims[1] > height) {
-          height = dims[1];
-        }
+    let ctx = canvas.getContext('2d');
+    //draw membrane
+    this.drawMembrane(canvas);
+    //extracting bonds
+    for (let i = 0; i < this.molecules.length; i++) {
+      let thisX = scale * (2 + length + initX);
+      let thisY = scale * (2 + initY);
+      let dims = this.molecules[i].initDrawList(canvas, thisX, thisY, scale, initX);
+      length += dims[0];
+      if (dims[1] > height) {
+        height = dims[1];
       }
-      //each molecule
-      for (let i = 0; i < this.molecules.length; i++) {
-        //each site
-        for (let y = 0; y < this.molecules[i].sites.length; y++) {
-          let m1 = this.molecules[i].sites[y];
-          //if unique bond m1 exists
-          if (m1.bondName != null && !names.has(m1.bondName)) {
-            names.add(m1.bondName);
-            let newPair = [m1.position];
-            //check all sites in species for matching bond type
-            for (let u = 0; u < this.molecules.length; u++) {
-              for (let z = 0; z < this.molecules[u].sites.length; z++) {
-                //ensure a molecule doesnt bond to itself
-                if (z != y || u != i) {
-                  let m2 = this.molecules[u].sites[z];
-                  if (m2.bondName == m1.bondName) {
-                    newPair.push(m2.position);
-                    newPair.push(m2.bondName);
-                    pairs.push(newPair);
-                  }
+    }
+    //each molecule
+    for (let i = 0; i < this.molecules.length; i++) {
+      //each site
+      for (let y = 0; y < this.molecules[i].sites.length; y++) {
+        let m1 = this.molecules[i].sites[y];
+        //if unique bond m1 exists
+        if (m1.bondName != null && !names.has(m1.bondName)) {
+          names.add(m1.bondName);
+          let newPair = [m1.position];
+          //check all sites in species for matching bond type
+          for (let u = 0; u < this.molecules.length; u++) {
+            for (let z = 0; z < this.molecules[u].sites.length; z++) {
+              //ensure a molecule doesnt bond to itself
+              if (z != y || u != i) {
+                let m2 = this.molecules[u].sites[z];
+                if (m2.bondName == m1.bondName) {
+                  newPair.push(m2.position);
+                  newPair.push(m2.bondName);
+                  pairs.push(newPair);
                 }
               }
             }
           }
         }
       }
-      //drawing bonds
-      var maxHeight = 0;
-      for (let i = 0; i < pairs.length; i++) {
-        if (pairs[i][0][1] > maxHeight) {
-          maxHeight = pairs[i][0][1];
-        }
-        if (pairs[i][1][1] > maxHeight) {
-          maxHeight = pairs[i][1][1];
-        }
-        let x1 = pairs[i][0][0] + initX;
-        let x2 = pairs[i][1][0] + initX;
-        let y0 = scale * pairs[i][0][1] + initY;
-        let y1 = (pairs[i][0][1] + 5 * i + 5) + initY;
-        let y2 = pairs[i][1][1] + initY;
-        let textParam = pairs[i][2];
-        let textParamX = pairs[i][0][0] - 7 + initX;
-        let textParamY = pairs[i][0][1] + 8.5 + initY;
-        this.drawList.push({func: (params) => {
-          ctx.fillStyle = '#000000';
-          ctx.font = "10px Arial";
-          ctx.beginPath();
-          ctx.moveTo(params[0], params[2]);
-          //functioning code for bond labels below, omitted for style
-          //ctx.fillText(params[5], params[6], params[7]);
-          ctx.lineTo(params[0], params[3]);
-          ctx.lineTo(params[1], params[3]);
-          ctx.lineTo(params[1], params[4]);
-          ctx.stroke();
-        }, params: [x1, x2, y0, y1, y2, textParam, textParamX, textParamY]});
+    }
+    //drawing bonds
+    var maxHeight = 0;
+    for (let i = 0; i < pairs.length; i++) {
+      if (pairs[i][0][1] > maxHeight) {
+        maxHeight = pairs[i][0][1];
       }
-    } else {/*canvas-unsupported code here*/}
+      if (pairs[i][1][1] > maxHeight) {
+        maxHeight = pairs[i][1][1];
+      }
+      let x1 = pairs[i][0][0] + initX;
+      let x2 = pairs[i][1][0] + initX;
+      let y0 = scale * pairs[i][0][1] + initY;
+      let y1 = (pairs[i][0][1] + 5 * i + 5) + initY;
+      let y2 = pairs[i][1][1] + initY;
+      let textParam = pairs[i][2];
+      let textParamX = pairs[i][0][0] - 7 + initX;
+      let textParamY = pairs[i][0][1] + 8.5 + initY;
+      this.drawList.push({func: (params) => {
+        ctx.fillStyle = '#000000';
+        ctx.font = "10px Arial";
+        ctx.beginPath();
+        ctx.moveTo(params[0], params[2]);
+        //functioning code for bond labels below, omitted for style
+        //ctx.fillText(params[5], params[6], params[7]);
+        ctx.lineTo(params[0], params[3]);
+        ctx.lineTo(params[1], params[3]);
+        ctx.lineTo(params[1], params[4]);
+        ctx.stroke();
+      }, params: [x1, x2, y0, y1, y2, textParam, textParamX, textParamY]});
+    }
     if (maxHeight + 10 > height + 5) {
+      this.x = length + 5;
+      this.y = maxHeight + 10;
       return ([length + 5, maxHeight + 10]);
     } else {
+      this.x += length + 5;
+      this.y += height + 5;
       return ([length + 5, height + 5]);
     }
   }
 }
 
 //drawing graphics in html
-function drawGraphics(tableID, BngColumn, CanvasColumn, drawType) {
+window.drawGraphics = function drawGraphics(tableID, BngColumn, CanvasColumn, drawType) {
     //get table html elements
     var speciesTable = document.getElementById(tableID);
     const rowsLen = speciesTable.rows.length;
