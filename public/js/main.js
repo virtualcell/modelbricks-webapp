@@ -40,6 +40,7 @@ fetch("/json/annotations.json")
       nameMap["Species"] = "speciesUID-!";
       nameMap["RbmObservable"] = "observableUID-!";
       nameMap["ModelParameter"] = "parameterUID-!";
+      nameMap["SimulationContext"] = "applicationUID-!";
 
       let vcmlNames = Object.keys(nameMap);
 
@@ -181,7 +182,23 @@ fetch("/json/annotations.json")
         `;
         }
       }
+
+      // for Applications
+      if (name.includes("SimulationContext")) {
+        var indexToSlice = name.indexOf("(") + 1;
+        var length = name.indexOf(")");
+        var elementName = name.slice(indexToSlice, length);
+
+        let annotationDiv = document.getElementById(
+          `applicationTA-${elementName}`
+        );
+        if (annotationDiv != null) {
+          annotationDiv.innerHTML += `
+        <p class="textAnnotationP">${text}</p>
+        `;
+      }
     }
+  }
 
     // Math Type -------------------------->
 

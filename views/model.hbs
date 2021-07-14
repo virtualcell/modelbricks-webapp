@@ -301,7 +301,7 @@
                         {{!-- Expressions --}}
                         <h2 id="reactionNameExp">Expressions for {{value.$.Name}}</h2>
 
-                        {{!-- User Defined Parameters --}}
+                        {{!-- Local Parameters --}}
                         {{#each this.Parameter}}
                         <div class="role">
                             <p class="role-title">
@@ -314,21 +314,19 @@
                             <p class="role-variable">{{this.$.Name}}</p>
                             <p class="role-text">{{this._}} <span class="unit">[{{this.$.Unit}}]</span> </p>
                         </div>
-                        {{/each}}
 
                         {{!-- Global Parameters --}}
-                        {{#each ../../this.ModelParameters.[0].Parameter}}
+                        {{#each ../../../this.ModelParameters.[0].Parameter}}
+                        {{#if (includes ../this._ this.$.Name)}}
                         <div class="role">
                             <p class="role-title">
-                              {{#if (eq this.$.Role "user defined")}}
                               global
-                              {{else}}
-                              {{this.$.Role}}
-                              {{/if}}
                             </p>
                             <p class="role-variable">{{this.$.Name}}</p>
                             <p class="role-text">{{this._}} <span class="unit">[{{this.$.Unit}}]</span></p>
                         </div>
+                        {{/if}}
+                        {{/each}}
                         {{/each}}
 
                     </div>
@@ -920,17 +918,14 @@
                 {{#each data.vcml.BioModel}}
                 {{#each this.SimulationSpec as |value key|}}
                 <div class="popup box-{{value.$.Name}}">
-                    <div class='popup-text block'>
-                        <div class="role">
-                          {{!-- annotation --}}
-                          <h2>{{value.$.Name}} Text Annotations</h2>
-                          {{!-- universal ID's  --}}
+                    <div class='popup-text'>
+                      <div class="uid" id="applicationUID-{{value.$.Name}}">
                           <h2>{{value.$.Name}} Universal ID's</h2>
-                        </div>
-                        <div class="role">
-                          <p>Annotations will come here</p>
-                          <p>RFID | pubmed</p>
-                        </div>
+                      </div>
+                      {{!-- annotation --}}
+                      <div class="textAnnotation" id="applicationTA-{{value.$.Name}}">
+                          <h2>{{value.$.Name}} Text Annotations</h2>
+                      </div>
                     </div>
                     <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>

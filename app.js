@@ -65,7 +65,10 @@ const hbs = exphbs.create({
       return (a > b);
     },
     eq: function (a, b) {
-      return (a == b)
+      return (a == b);
+    },
+    includes: function (a, b) {
+      return (a.includes(b));
     }
   },
 });
