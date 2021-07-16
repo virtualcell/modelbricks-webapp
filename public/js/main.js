@@ -25,7 +25,8 @@ fetch("/json/annotations.json")
         if (link.includes(pre)) {
           var indexToSlice = link.indexOf(pre) + pre.length + 1;
           if (link.includes('chebi')) {
-            link = 'http://identifiers.org/' + link.slice(indexToSlice, link.length).replace('chebi:', '');
+            link = 'http://identifiers.org/' + link.slice(indexToSlice, link.length);
+            //link = 'http://identifiers.org/' + link.slice(indexToSlice, link.length).replace('chebi:', '');
           } else {
             link = 'http://identifiers.org/' + link.slice(indexToSlice, link.length);
           }
