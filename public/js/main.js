@@ -8,8 +8,10 @@ fetch("/json/annotations.json")
     // getting global publications and UID's
     for (i in json.BioModel.url) {
 
-      //define link, name, and qual
-      var link = json.BioModel.url[i]._;
+      //get name, link, qual, lit qual
+      let annotation = json.BioModel.url[i];
+      var link = annotation._;
+      var qual = annotation.qualifier;
       //fix formatting for links
       link = link.replace('obo.go:', 'go/');
       link = link.replace('sbo:', 'sbo/');
@@ -22,14 +24,16 @@ fetch("/json/annotations.json")
         let pre = prefixes[p];
         if (link.includes(pre)) {
           var indexToSlice = link.indexOf(pre) + pre.length + 1;
-          link = 'http://identifiers.org/' + link.slice(indexToSlice, link.length);
+          if (link.includes('chebi')) {
+            link = 'http://identifiers.org/' + link.slice(indexToSlice, link.length).replace('chebi:', '');
+          } else {
+            link = 'http://identifiers.org/' + link.slice(indexToSlice, link.length);
+          }
         }
       }
 
       var name = json.BioModel.url[i].$.name;
       name = name.replace('%3', ':');
-
-      var qual = json.BioModel.url[i].qualifier;
 
       //map vcml name to html element name
       let nameMap = new Object();

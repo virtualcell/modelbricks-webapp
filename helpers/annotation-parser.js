@@ -36,6 +36,7 @@ class ModelWrapper {
     this.text = text;
     this.url = urls;
     this.qualifier = '';
+    this.literalQualifier = '';
   }
 }
 
@@ -158,11 +159,19 @@ class AnnParser {
                   }
                   //key must be unique
                   let key = '$' + j.toString() + u.toString() + i.toString() + vcid;
+                  //create new object
                   urls[key] = new Url(vcid);
+                  //add URI
                   urls[key]._ = thisURI;
-                  urls[key].qualifier = '(' + RDFkeys[i].replace(':', ') ');
+                  //format qualifier
+                  let qual = RDFkeys[i]
+                  urls[key].qualifier = '(' + qual.replace(':', ') ');
                   urls[key].qualifier = urls[key].qualifier.replace('bqbiol', 'bio');
                   urls[key].qualifier = urls[key].qualifier.replace('bqmodel', 'model');
+                  //add literal qualifier
+                  let colonIndex = qual.indexOf(':') + 1;
+                  let literalQualifier = qual.slice(colonIndex, qual.length);
+                  urls[key].literalQualifier = literalQualifier;
                 }
               }
             }
