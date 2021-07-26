@@ -20,6 +20,45 @@ const hbs = exphbs.create({
 
   // create custom helper
   helpers: {
+    getPubmedID: function(name) {
+      try {
+        let firstNum = 0;
+        //while char is not number
+        while (isNaN(name.charAt(firstNum))) {
+          firstNum ++;
+        }
+        let lastNum = firstNum;
+        //while char is number
+        while (!isNaN(name.charAt(lastNum))) {
+          lastNum ++;
+        }
+        let pubmedID = name.slice(firstNum, lastNum);
+        return pubmedID;
+      } catch (e) {
+        console.log(e);
+        return false;
+      }
+    },
+    getPubmedLink: function(name) {
+      try {
+        let firstNum = 0;
+        //while char is not number
+        while (!isNaN(name.charAt(firstNum))) {
+          firstNum ++;
+        }
+        let lastNum = firstNum;
+        //while char is number
+        while (isNaN(name.charAt(lastNum))) {
+          lastNum ++;
+        }
+        let pubmedID = name.slice(firstNum, lastNum);
+        let link = "https://pubmed.ncbi.nlm.nih.gov/" + pubmedID + '/';
+        return link;
+      } catch (e) {
+        console.log(e);
+        return false;
+      }
+    },
     trimString: function (passedString) {
       if (passedString.includes("::")) {
         var indexToSlice = passedString.indexOf("::") + 2;

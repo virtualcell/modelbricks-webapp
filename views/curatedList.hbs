@@ -123,6 +123,7 @@
                       </div>
                   </th>
                   <th class="arranger">"Applications" - Simulations</th>
+                  <th class="arranger">Pubmed ID</th>
               </tr>
           </thead>
           <tbody>
@@ -139,6 +140,17 @@
                     {{~#each this.simulations~}}
                     "{{this.bioModelLink.simContextName}}" - {{this.name}}
                     {{~/each~}}
+                  </td>
+                  <td data-label="Lyrics">
+                    {{#if (getPubmedLink this.name)}}
+                    Pubmed
+                    <a href="{{getPubmedLink this.name}}">
+                      {{~getPubmedID this.name~}}
+                    </a>
+                    ModelBrick
+                    {{else}}
+                    <p>No Pubmed Link</p>
+                    {{/if}}
                   </td>
               </tr>
               {{/each}}
