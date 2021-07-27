@@ -26,16 +26,22 @@ const hbs = exphbs.create({
         //while char is not number
         while (isNaN(name.charAt(firstNum))) {
           firstNum ++;
+          if (firstNum > 10000) {
+            throw 'infinite loop in getPubmedID';
+          }
         }
         let lastNum = firstNum;
         //while char is number
         while (!isNaN(name.charAt(lastNum))) {
           lastNum ++;
+          if (lastNum > 10000) {
+            throw 'infinite loop in getPubmedID';
+          }
         }
         let pubmedID = name.slice(firstNum, lastNum);
         return pubmedID;
       } catch (e) {
-        console.log(e);
+        //console.log(e);
         return false;
       }
     },
@@ -43,19 +49,25 @@ const hbs = exphbs.create({
       try {
         let firstNum = 0;
         //while char is not number
-        while (!isNaN(name.charAt(firstNum))) {
+        while (isNaN(name.charAt(firstNum))) {
           firstNum ++;
+          if (firstNum > 10000) {
+            throw 'infinite loop in getPubmedLink';
+          }
         }
         let lastNum = firstNum;
         //while char is number
-        while (isNaN(name.charAt(lastNum))) {
+        while (!isNaN(name.charAt(lastNum))) {
           lastNum ++;
+          if (lastNum > 10000) {
+            throw 'infinite loop in getPubmedLink';
+          }
         }
         let pubmedID = name.slice(firstNum, lastNum);
         let link = "https://pubmed.ncbi.nlm.nih.gov/" + pubmedID + '/';
         return link;
       } catch (e) {
-        console.log(e);
+        //console.log(e);
         return false;
       }
     },
