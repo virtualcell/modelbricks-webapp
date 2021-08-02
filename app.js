@@ -20,6 +20,26 @@ const hbs = exphbs.create({
 
   // create custom helper
   helpers: {
+    getPubmedModelNum: function(name) {
+      try {
+        let lastIndex = name.indexOf("::") - 1;
+        if (!lastIndex || lastIndex < 0) {
+          throw 'No Pubmed Model Num';
+        }
+        let index = lastIndex
+        //while char is not number
+        while (!isNaN(name.charAt(index))) {
+          index --;
+        }
+        if (name.slice(index - 2, index + 1) != '_MB') {
+          throw 'No Pubmed Model Num';
+        }
+        return name.slice(index + 1, lastIndex + 1);
+      } catch (e) {
+        //console.log(e);
+        return "";
+      }
+    },
     getPubmedID: function(name) {
       try {
         let firstNum = 0;
@@ -92,10 +112,20 @@ const hbs = exphbs.create({
       }
     },
     toDate: function (timeStamp) {
-      var theDate = new Date(timeStamp);
-      dateString = theDate.toGMTString();
-      date = dateString.slice(5, 16);
-      return dateString;
+      let date = new Date(timeStamp);
+      let year = date.getYear().toString();
+      year = year.substring(1, 3);
+      let month = date.getMonth();
+      month += 1;
+      month = month.toString();
+      if(month.length === 1) {
+        month = "0" + month;
+      }
+      let day = date.getDate().toString();
+      if(day.length === 1) {
+        day = "0" + day;
+      }
+      return (month + "/" + day + "/" + year);
     },
     nullCheck: function (inputString) {
       var string = inputString;
