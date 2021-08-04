@@ -13,6 +13,7 @@ fetch("/json/annotations.json")
       var link = annotation._;
       var qual = annotation.qualifier;
       //fix formatting for links
+      link = link.replace('chebi:', 'chebi/');
       link = link.replace('obo.go:', 'go/');
       link = link.replace('sbo:', 'sbo/');
       link = link.replace(new RegExp('%3A', 'g'), ':');
