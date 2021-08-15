@@ -239,14 +239,19 @@ app.get("/test/:name", (req, res) => {
   fs.readFile("./files/" + req.params.name + ".vcml", (err, data) => {
     parser.parseString(data, (err, result) => {
       data = result;
-      let annoObj = new aPrs.AnnParser(data);
-      let annoData = annoObj.getString();
-      let outputOptions = annoObj.getOutputOptions();
-      res.render("model", {
-        title: "ModelBricks - Model Page",
-        data,
-        outputOptions,
-      });
+      if (!data) {
+        res.send('no filed named ' + req.params.name + ".vcml");
+      } else {
+        let annoObj = new aPrs.AnnParser(data);
+        let annoData = annoObj.getString();
+        let outputOptions = annoObj.getOutputOptions();
+        fs.writeFileSync("./public/json/" + "annotations" + ".json", annoData);
+        res.render("model", {
+          title: "ModelBricks - Model Page",
+          data,
+          outputOptions,
+        });
+      };
     });
   });
 });

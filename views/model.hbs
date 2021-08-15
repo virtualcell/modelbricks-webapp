@@ -82,6 +82,18 @@
                                 Simulations
                               </a>
                             </li>
+                            <li>
+                              <a href="#assignments{{key}}" class="sidebar-link">
+                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
+                                Assignment Rules
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#events{{key}}" class="sidebar-link">
+                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
+                                Events
+                              </a>
+                            </li>
                         </ul>
                     </li>
                     {{/each}}
@@ -1141,6 +1153,58 @@
 
                 {{/each}}
                 {{!-- popup --}}
+            </div>
+
+            {{!-- Assignment Rules Table --}}
+            <div id="assignments{{key}}" class="optionData">
+                <h2 class="header">Assignments</h2>
+                <div class="modelTable">
+                    <table id="content-table3" class="table-responsive-full sort-table">
+                        <thead>
+                            <tr>
+                                <th class="Format">Format
+                                </th>
+                                <th class="File">File
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="deterministicXml">
+                                <td data-label="Format" class="Format">VCML</td>
+                                <td data-label="File" class="File"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {{!-- Events Table --}}
+            <div id="events{{key}}" class="optionData">
+                <h2 class="header">Events</h2>
+                <div class="modelTable">
+                    <table id="content-table3" class="table-responsive-full sort-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Trigger Type</th>
+                                <th>Variable Assignment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each this.BioEvents}}
+                            {{#each this.BioEvent}}
+                            <tr>
+                                <td>{{this.$.Name}}</td>
+                                <td>{{this.$.TriggerType}}</td>
+                                {{#each EventAssignment}}
+                                <td>{{this.$.Variable}}</td>
+                                {{/each}}
+                            </tr>
+                            {{/each}}
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             {{/each}}
             {{/each}}
