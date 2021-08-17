@@ -126,7 +126,9 @@ window.Molecule = class Molecule {
     //name of molecule
     this.name = '';
     //this.sites, list of Site() instances, initialized in this.process()
-    this.process();
+    if (this.def) {
+      this.process();
+    }
     //colors used to draw states
     this.stateColors = ['#FBC6D0', '#00FDFF', '#FA26A0', '#99F3BD'];
     //list of {drawFunction, parameterList} objects
@@ -224,12 +226,14 @@ window.Molecule = class Molecule {
 
   //evaluate all draw list functions
   doDrawList() {
-    let list = this.drawList;
-    for (let i = 0; i < list.length; i++) {
-      let elm = list[i];
-      let func = elm.func;
-      let params = elm.params;
-      func(params);
+    if (this.def) {
+      let list = this.drawList;
+      for (let i = 0; i < list.length; i++) {
+        let elm = list[i];
+        let func = elm.func;
+        let params = elm.params;
+        func(params);
+      }
     }
   }
 
@@ -379,49 +383,51 @@ window.Molecule = class Molecule {
 
   //draw molecule with states and sites labled
   initDrawList(canvas, x, y, scale = 1, initX = 0) {
-    var ctx = canvas.getContext('2d');
-    const radius = 15;
-    var length = ctx.measureText(this.name).width;
-    if (length < 0) {length *= -1;}
-    var dims = this.drawSitesComplex(canvas, x, y, radius, 1, initX);
-    if (length < dims[0]) {
-      length = dims[0];
+    if (this.def) {
+      var ctx = canvas.getContext('2d');
+      const radius = 15;
+      var length = ctx.measureText(this.name).width;
+      if (length < 0) {length *= -1;}
+      var dims = this.drawSitesComplex(canvas, x, y, radius, 1, initX);
+      if (length < dims[0]) {
+        length = dims[0];
+      }
+      let numSites = Object.keys(this.sites).length;
+      //add main molecule to draw list
+      this.drawList.push({func: (params) => {
+        ctx.font = "15px Arial";
+        //drawing pill shape
+        this.drawRoundRect(
+          canvas,
+          params[0],
+          params[1],
+          params[2],
+          params[3],
+          params[4]
+        );
+        //drawing sites
+        this.drawSitesComplex(
+          canvas,
+          params[0],
+          params[1],
+          params[2],
+          1,
+          params[5]
+        );
+        //drawing name
+        ctx.fillStyle = '#000000';
+        ctx.font = "15px Arial";
+        ctx.fillText(
+          params[6],
+          params[0] + params[2] / 2,
+          params[1] + params[2] + 5
+        );
+      }, params: [x, y, radius, length, this.color, initX, this.name]});
+      //return [length, height] of molecule for Graphic class
+      this.x = dims[0];
+      this.y = dims[1];
+      return ([radius * 2 + length, dims[1]]);
     }
-    let numSites = Object.keys(this.sites).length;
-    //add main molecule to draw list
-    this.drawList.push({func: (params) => {
-      ctx.font = "15px Arial";
-      //drawing pill shape
-      this.drawRoundRect(
-        canvas,
-        params[0],
-        params[1],
-        params[2],
-        params[3],
-        params[4]
-      );
-      //drawing sites
-      this.drawSitesComplex(
-        canvas,
-        params[0],
-        params[1],
-        params[2],
-        1,
-        params[5]
-      );
-      //drawing name
-      ctx.fillStyle = '#000000';
-      ctx.font = "15px Arial";
-      ctx.fillText(
-        params[6],
-        params[0] + params[2] / 2,
-        params[1] + params[2] + 5
-      );
-    }, params: [x, y, radius, length, this.color, initX, this.name]});
-    //return [length, height] of molecule for Graphic class
-    this.x = dims[0];
-    this.y = dims[1];
-    return ([radius * 2 + length, dims[1]]);
   }
 }
 
@@ -517,88 +523,90 @@ window.Graphic = class Graphic {
 
   //only works for species with two molecules or less, fix this
   draw(canvas, initX, initY, scale = 1) {
-    let length = 0;
-    let height = 0;
-    let names = new Set();
-    let pairs = [];//list of pairs of xy coords for each bond
-    //drawing the graphics on the canvas
-    let ctx = canvas.getContext('2d');
-    //draw membrane
-    this.drawMembrane(canvas);
-    //extracting bonds
-    for (let i = 0; i < this.molecules.length; i++) {
-      let thisX = scale * (2 + length + initX);
-      let thisY = scale * (2 + initY);
-      let dims = this.molecules[i].initDrawList(canvas, thisX, thisY, scale, initX);
-      length += dims[0];
-      if (dims[1] > height) {
-        height = dims[1];
+    if (this.def) {
+      let length = 0;
+      let height = 0;
+      let names = new Set();
+      let pairs = [];//list of pairs of xy coords for each bond
+      //drawing the graphics on the canvas
+      let ctx = canvas.getContext('2d');
+      //draw membrane
+      this.drawMembrane(canvas);
+      //extracting bonds
+      for (let i = 0; i < this.molecules.length; i++) {
+        let thisX = scale * (2 + length + initX);
+        let thisY = scale * (2 + initY);
+        let dims = this.molecules[i].initDrawList(canvas, thisX, thisY, scale, initX);
+        length += dims[0];
+        if (dims[1] > height) {
+          height = dims[1];
+        }
       }
-    }
-    //each molecule
-    for (let i = 0; i < this.molecules.length; i++) {
-      //each site
-      for (let y = 0; y < this.molecules[i].sites.length; y++) {
-        let m1 = this.molecules[i].sites[y];
-        //if unique bond m1 exists
-        if (m1.bondName != null && !names.has(m1.bondName)) {
-          names.add(m1.bondName);
-          let newPair = [m1.position];
-          //check all sites in species for matching bond type
-          for (let u = 0; u < this.molecules.length; u++) {
-            for (let z = 0; z < this.molecules[u].sites.length; z++) {
-              //ensure a molecule doesnt bond to itself
-              if (z != y || u != i) {
-                let m2 = this.molecules[u].sites[z];
-                if (m2.bondName == m1.bondName) {
-                  newPair.push(m2.position);
-                  newPair.push(m2.bondName);
-                  pairs.push(newPair);
+      //each molecule
+      for (let i = 0; i < this.molecules.length; i++) {
+        //each site
+        for (let y = 0; y < this.molecules[i].sites.length; y++) {
+          let m1 = this.molecules[i].sites[y];
+          //if unique bond m1 exists
+          if (m1.bondName != null && !names.has(m1.bondName)) {
+            names.add(m1.bondName);
+            let newPair = [m1.position];
+            //check all sites in species for matching bond type
+            for (let u = 0; u < this.molecules.length; u++) {
+              for (let z = 0; z < this.molecules[u].sites.length; z++) {
+                //ensure a molecule doesnt bond to itself
+                if (z != y || u != i) {
+                  let m2 = this.molecules[u].sites[z];
+                  if (m2.bondName == m1.bondName) {
+                    newPair.push(m2.position);
+                    newPair.push(m2.bondName);
+                    pairs.push(newPair);
+                  }
                 }
               }
             }
           }
         }
       }
-    }
-    //drawing bonds
-    var maxHeight = 0;
-    for (let i = 0; i < pairs.length; i++) {
-      if (pairs[i][0][1] > maxHeight) {
-        maxHeight = pairs[i][0][1];
+      //drawing bonds
+      var maxHeight = 0;
+      for (let i = 0; i < pairs.length; i++) {
+        if (pairs[i][0][1] > maxHeight) {
+          maxHeight = pairs[i][0][1];
+        }
+        if (pairs[i][1][1] > maxHeight) {
+          maxHeight = pairs[i][1][1];
+        }
+        let x1 = pairs[i][0][0] + initX;
+        let x2 = pairs[i][1][0] + initX;
+        let y0 = scale * pairs[i][0][1] + initY;
+        let y1 = (pairs[i][0][1] + 5 * i + 5) + initY;
+        let y2 = pairs[i][1][1] + initY;
+        let textParam = pairs[i][2];
+        let textParamX = pairs[i][0][0] - 7 + initX;
+        let textParamY = pairs[i][0][1] + 8.5 + initY;
+        this.drawList.push({func: (params) => {
+          ctx.fillStyle = '#000000';
+          ctx.font = "10px Arial";
+          ctx.beginPath();
+          ctx.moveTo(params[0], params[2]);
+          //functioning code for bond labels below, omitted for style
+          //ctx.fillText(params[5], params[6], params[7]);
+          ctx.lineTo(params[0], params[3]);
+          ctx.lineTo(params[1], params[3]);
+          ctx.lineTo(params[1], params[4]);
+          ctx.stroke();
+        }, params: [x1, x2, y0, y1, y2, textParam, textParamX, textParamY]});
       }
-      if (pairs[i][1][1] > maxHeight) {
-        maxHeight = pairs[i][1][1];
+      if (maxHeight + 10 > height + 5) {
+        this.x += length + 5;
+        this.y += maxHeight + 10;
+        return ([length + 5, maxHeight + 10]);
+      } else {
+        this.x += length + 5;
+        this.y += height + 5;
+        return ([length + 5, height + 5]);
       }
-      let x1 = pairs[i][0][0] + initX;
-      let x2 = pairs[i][1][0] + initX;
-      let y0 = scale * pairs[i][0][1] + initY;
-      let y1 = (pairs[i][0][1] + 5 * i + 5) + initY;
-      let y2 = pairs[i][1][1] + initY;
-      let textParam = pairs[i][2];
-      let textParamX = pairs[i][0][0] - 7 + initX;
-      let textParamY = pairs[i][0][1] + 8.5 + initY;
-      this.drawList.push({func: (params) => {
-        ctx.fillStyle = '#000000';
-        ctx.font = "10px Arial";
-        ctx.beginPath();
-        ctx.moveTo(params[0], params[2]);
-        //functioning code for bond labels below, omitted for style
-        //ctx.fillText(params[5], params[6], params[7]);
-        ctx.lineTo(params[0], params[3]);
-        ctx.lineTo(params[1], params[3]);
-        ctx.lineTo(params[1], params[4]);
-        ctx.stroke();
-      }, params: [x1, x2, y0, y1, y2, textParam, textParamX, textParamY]});
-    }
-    if (maxHeight + 10 > height + 5) {
-      this.x += length + 5;
-      this.y += maxHeight + 10;
-      return ([length + 5, maxHeight + 10]);
-    } else {
-      this.x += length + 5;
-      this.y += height + 5;
-      return ([length + 5, height + 5]);
     }
   }
 }

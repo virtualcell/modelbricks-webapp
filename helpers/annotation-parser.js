@@ -100,7 +100,6 @@ class AnnParser {
 
   constructor(vcml) {
     this.vcmlObj = vcml;
-    console.log(this.vcmlObj.vcml.BioModel[0].SimulationSpec[1]);
     this.uriBinds = this.vcmlObj.vcml.BioModel[0].vcmetadata[0].uriBindingList[0].uriBinding;
     this.txtAnnos = this.vcmlObj.vcml.BioModel[0].vcmetadata[0].nonrdfAnnotationList[0].nonrdfAnnotation;
     //lczCpds short for LocalizedCompound

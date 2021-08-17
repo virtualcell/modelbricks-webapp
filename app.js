@@ -36,7 +36,6 @@ const hbs = exphbs.create({
         }
         return name.slice(index + 1, lastIndex + 1);
       } catch (e) {
-        //console.log(e);
         return "";
       }
     },
@@ -61,7 +60,6 @@ const hbs = exphbs.create({
         let pubmedID = name.slice(firstNum, lastNum);
         return pubmedID;
       } catch (e) {
-        //console.log(e);
         return false;
       }
     },
@@ -87,7 +85,6 @@ const hbs = exphbs.create({
         let link = "https://pubmed.ncbi.nlm.nih.gov/" + pubmedID + '/';
         return link;
       } catch (e) {
-        //console.log(e);
         return false;
       }
     },

@@ -1162,17 +1162,23 @@
                     <table id="content-table3" class="table-responsive-full sort-table">
                         <thead>
                             <tr>
-                                <th class="Format">Format
-                                </th>
-                                <th class="File">File
-                                </th>
+                                <th>Name</th>
+                                <th>Variable</th>
+                                <th>Type</th>
+                                <th>Assignment Function Expression</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr id="deterministicXml">
-                                <td data-label="Format" class="Format">VCML</td>
-                                <td data-label="File" class="File"></td>
+                            {{#each this.AssignmentRules}}
+                            {{#each this.AssignmentRule}}
+                            <tr>
+                                <td>{{this.$.Name}}</td>
+                                <td>{{this.$.AssignmentRuleVariable}}</td>
+                                <td>?</td>
+                                <td>{{this._}}</td>
                             </tr>
+                            {{/each}}
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>
@@ -1197,7 +1203,7 @@
                                 <td>{{this.$.Name}}</td>
                                 <td>{{this.$.TriggerType}}</td>
                                 {{#each EventAssignment}}
-                                <td>{{this.$.Variable}}</td>
+                                <td>{{this._}}</td>
                                 {{/each}}
                             </tr>
                             {{/each}}
