@@ -126,14 +126,30 @@ const hbs = exphbs.create({
     },
     convertTrigger: function (eventObj) {
       let params = eventObj.Parameter;
-      console.log(params);
-      let map = {
-        threshold: "at time",
-        TimeListItem: ""
-      };
-      /*let name = eventParam.$.Name;
-      return map[name];*/
-      return "temp";
+      let timeList = 'at times: [';
+      let observable = 'Error';
+
+      //loop through params
+      for (let i = 0; i < params.length; i++) {
+        let param = params[i];
+        let name = param.$.Name;
+        let val = param._
+        if (name == 'triggerTime') {
+          return('at time ' + val);
+        } else if (name == 'threshold') {
+          return('when ' + observable + ' is above/below ' + val);
+        } else if (name == 'observable') {
+          observable = val;
+        } else if (name == 'triggerFunction') {
+          return('on condition: ' + val);
+        } else if (param.$.Role == 'TimeListItem') {
+          timeList += val + ',';
+        }
+      }
+
+      //only reach here for time list
+      timeList = timeList.slice(0, timeList.length - 1) + ']';
+      return timeList;
     },
     nullCheck: function (inputString) {
       var string = inputString;
