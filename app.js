@@ -124,6 +124,17 @@ const hbs = exphbs.create({
       }
       return (month + "/" + day + "/" + year);
     },
+    convertTrigger: function (eventObj) {
+      let params = eventObj.Parameter;
+      console.log(params);
+      let map = {
+        threshold: "at time",
+        TimeListItem: ""
+      };
+      /*let name = eventParam.$.Name;
+      return map[name];*/
+      return "temp";
+    },
     nullCheck: function (inputString) {
       var string = inputString;
       if (string) {

@@ -49,7 +49,7 @@
                 </ul>
             </li>
             <li class="drop">
-                <a href="#applications" class="dropTitle sidebar-link">
+                <a href="#applications" class="dropTitle">
                   <i class="fa fa-folder-o static" aria-hidden="true"></i>
                   Applications
                   <i class="fa fa-angle-down dynamic"></i>
@@ -58,40 +58,46 @@
                     {{#each data.vcml.BioModel}}
                     {{#each this.SimulationSpec as |value key|}}
                     <li class="drop child">
-                        <a href="#specsSpecies{{key}}" class="dropTitle sidebar-link">
+                        <a href="#specsSpecies{{key}}" class="dropTitle">
                           <i class="fa fa-folder-o static" aria-hidden="true"></i>
                           <span class="wordLimit">{{value.$.Name}}</span>
                           <i class="fa fa-angle-down dynamic"></i>
                         </a>
                         <ul class="subMenu">
                             <li>
-                              <a href="#specsSpecies{{key}}" class="sidebar-link">
+                              <a href="#specsSpecies{{key}}" class="">
                                 <i class="fa fa-pencil-square-o static" aria-hidden="true"></i>
                                 Specs - Species
                               </a>
                             </li>
                             <li>
-                              <a href="#specsReaction{{key}}" class="sidebar-link">
+                              <a href="#specsReaction{{key}}" class="">
                                 <i class="fa fa-pencil-square-o static" aria-hidden="true"></i>
                                 Specs - Reactions
                               </a>
                             </li>
                             <li>
-                              <a href="#simulations{{key}}" class="sidebar-link">
+                              <a href="#simulations{{key}}" class="">
                                 <i class="fa fa-superpowers static" aria-hidden="true"></i>
                                 Simulations
                               </a>
                             </li>
                             <li>
-                              <a href="#assignments{{key}}" class="sidebar-link">
+                              <a href="#assignments{{key}}" class="">
                                 <i class="fa fa-superpowers static" aria-hidden="true"></i>
                                 Assignment Rules
                               </a>
                             </li>
                             <li>
-                              <a href="#events{{key}}" class="sidebar-link">
+                              <a href="#events{{key}}" class="">
                                 <i class="fa fa-superpowers static" aria-hidden="true"></i>
                                 Events
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#raterules{{key}}" class="">
+                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
+                                Rate Rules
                               </a>
                             </li>
                         </ul>
@@ -1199,10 +1205,44 @@
                             {{#each this.BioEvent}}
                             <tr>
                                 <td>{{this.$.Name}}</td>
-                                <td>{{this.$.TriggerType}}</td>
-                                {{#each EventAssignment}}
+                                <td>
+                                  {{convertTrigger this}}
+                                </td>
+                                <td>
+                                  {{~#each EventAssignment~}}
+                                  {{this.$.Variable}} --> {{this._~}}
+                                  {{#if (greater ../this.EventAssignment.length (add 1 @index))~}}
+                                  ,
+                                  {{/if~}}
+                                  {{/each~}}
+                                </td>
+                            </tr>
+                            {{/each}}
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {{!-- Rate Rules Table --}}
+            <div id="raterules{{key}}" class="optionData">
+                <h2 class="header">Events</h2>
+                <div class="modelTable">
+                    <table id="content-table3" class="table-responsive-full sort-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Variable</th>
+                                <th>Rate Expression</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each this.RateRules}}
+                            {{#each this.RateRule}}
+                            <tr>
+                                <td>{{this.$.Name}}</td>
+                                <td>{{this.$.RateRuleVariable}}</td>
                                 <td>{{this._}}</td>
-                                {{/each}}
                             </tr>
                             {{/each}}
                             {{/each}}
@@ -1667,7 +1707,7 @@
     const links = document.querySelectorAll('.sidebar-link');
     for (let i = 0; i < links.length; i++) {
       links[i].addEventListener("click", (e) => {
-        setTimeout(() => {  window.scroll(0, 0); }, 100);
+        setTimeout(() => {  window.scroll(0, 0); }, 0.01);
       });
     }
 </script>
