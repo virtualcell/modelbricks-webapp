@@ -1332,6 +1332,7 @@
             </div>
 
             {{!-- Downloads --}}
+            {{#each data.vcml.BioModel}}
             <div id="downloads" class="optionData">
                 <h2 class="header">Downloads</h2>
                 <div class="modelTable">
@@ -1348,79 +1349,113 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
-                                <th class="File">File
-                                </th>
+                                {{#each SimulationSpec}}
+                                <th class="File">{{this.$.Name}}</th>
+                                {{/each}}
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each data.vcml.BioModel}}
-                            {{#each this.Version}}
                             <!--vcml-->
                             <tr id="deterministicXml">
                                 <td data-label="Format" class="Format">VCML</td>
+                                {{#each SimulationSpec}}
                                 <td data-label="File" class="File">
                                   <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.vcml">
                                     VCML File
                                   </a>
                                 </td>
+                                {{/each}}
                             </tr>
                             <tr id="bngl">
                                 <td data-label="Format" class="Format">BNGL</td>
+                                {{#each SimulationSpec}}
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.bngl">
-                                    BNGL File
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~../this.Version.[0].$.KeyValue~}}
+                                    /biomodel.bngl?appname={{convertSpace this.$.Name}}"
+                                  >
+                                  BNGL File
                                   </a>
                                 </td>
+                                {{/each}}
                             </tr>
                             <tr id="m">
                                 <td data-label="Format" class="Format">MatLab</td>
+                                {{#each SimulationSpec}}
                                 <td data-label="File" class="File">
                                   <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.m">
-                                    MatLab File
+                                    Matlab File
                                   </a>
                                 </td>
+                                {{/each}}
                             </tr>
                             <tr id="sbml">
                                 <td data-label="Format" class="Format">SBML</td>
+                                {{#each SimulationSpec}}
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.sbml">
-                                    SBML File
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~../this.Version.[0].$.KeyValue~}}
+                                    /biomodel.sbml?appname={{convertSpace this.$.Name}}"
+                                  >
+                                  SBML File
                                   </a>
                                 </td>
+                                {{/each}}
                             </tr>
                             <tr id="xml">
                                 <td data-label="Format" class="Format">NFSim XML</td>
+                                {{#each SimulationSpec}}
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.xml">
-                                    NFSim File
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~../this.Version.[0].$.KeyValue~}}
+                                    /biomodel.nfsim?appname={{convertSpace this.$.Name}}"
+                                  >
+                                  NFSim File
                                   </a>
                                 </td>
+                                {{/each}}
                             </tr>
                             <tr id="SEDML">
                                 <td data-label="Format" class="Format">SEDML</td>
+                                {{#each SimulationSpec}}
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.sedml">
-                                    SEDML File
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~../this.Version.[0].$.KeyValue~}}
+                                    /biomodel.sedml?appname={{convertSpace this.$.Name}}"
+                                  >
+                                  SEDML File
                                   </a>
                                 </td>
+                                {{/each}}
                             </tr>
                             <tr id="Report">
                                 <td data-label="Format" class="Format">Report (PDF)</td>
+                                {{#each SimulationSpec}}
                                 <td data-label="File" class="File">
                                   <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.pdf">
                                     Report
                                   </a>
                                 </td>
+                                {{/each}}
                             </tr>
                             <tr id="OMEX">
                                 <td data-label="Format" class="Format">COMBINE archive</td>
+                                {{#each SimulationSpec}}
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.omex">
-                                    OMEX File
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~../this.Version.[0].$.KeyValue~}}
+                                    /biomodel.omex?appname={{convertSpace this.$.Name}}"
+                                  >
+                                  OMEX File
                                   </a>
                                 </td>
+                                {{/each}}
                             </tr>
-                            {{/each}}
                             {{/each}}
                         </tbody>
                     </table>
