@@ -1332,13 +1332,14 @@
             </div>
 
             {{!-- Downloads --}}
+            {{#each data.vcml.BioModel}}
             <div id="downloads" class="optionData">
                 <h2 class="header">Downloads</h2>
-                <div class="modelTable">
+                <div class="modelTable noBoundries">
                     <table id="content-table3" class="table-responsive-full sort-table">
                         <thead>
                             <tr>
-                                <th class="Format">Format
+                                <th>Model Format
                                     <div class="sort-table-arrows">
                                         <a href="javascript:sort(true, 'Format', 'content-table3');"><button
                                                 class="button" title="down arrow"><i
@@ -1348,79 +1349,117 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
-                                <th class="File">File
-                                </th>
+                                <th>Model Downloads</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each data.vcml.BioModel}}
-                            {{#each this.Version}}
-                            <!--vcml-->
-                            <tr id="deterministicXml">
-                                <td data-label="Format" class="Format">VCML</td>
+                            <tr>
+                                <td>Virtual Cell Markup Language</td>
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.vcml">
+                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.SimulationSpec.[0].[0].$.KeyValue}}/biomodel.vcml">
                                     VCML File
                                   </a>
                                 </td>
                             </tr>
-                            <tr id="bngl">
-                                <td data-label="Format" class="Format">BNGL</td>
+                            <tr>
+                                <td>PDF Report</td>
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.bngl">
-                                    BNGL File
+                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.SimulationSpec.[0].[0].$.KeyValue}}/biomodel.pdf">
+                                    Report
                                   </a>
                                 </td>
                             </tr>
-                            <tr id="m">
-                                <td data-label="Format" class="Format">MatLab</td>
+                            <tr>
+                                <td>COMBINE Archive</td>
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.m">
-                                    MatLab File
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~this.Version.[0].$.KeyValue~}}
+                                    /biomodel.omex?appname={{convertSpace this.SimulationSpec.[0].$.Name}}"
+                                  >
+                                  OMEX File
                                   </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SEDML</td>
+                                <td data-label="File" class="File">
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~this.Version.[0].$.KeyValue~}}
+                                    /biomodel.sedml?appname={{convertSpace this.SimulationSpec.[0].$.Name}}"
+                                  >
+                                  SEDML File
+                                  </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Matlab</td>
+                                <td data-label="File" class="File">
+                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.SimulationSpec.[0].[0].$.KeyValue}}/biomodel.m">
+                                    Matlab File
+                                  </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th class="Format">File Format
+                                    <div class="sort-table-arrows">
+                                        <a href="javascript:sort(true, 'Format', 'content-table3');"><button
+                                                class="button" title="down arrow"><i
+                                                    class="fa fa-chevron-down"></i></button></a>
+                                        <a href="javascript:sort(false, 'Format', 'content-table3');"><button
+                                                class="button" title="up arrow"><i
+                                                    class="fa fa-chevron-up"></i></button></a>
+                                    </div>
+                                </th>
+                                <th class="File">Application Downloads</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="bngl">
+                                <td data-label="Format" class="Format">BNGL</td>
+                                <td data-label="File" class="File">
+                                  {{#each SimulationSpec}}
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~../this.Version.[0].$.KeyValue~}}
+                                    /biomodel.bngl?appname={{convertSpace this.$.Name}}"
+                                  >
+                                  {{this.$.Name}}.bngl
+                                  </a>,
+                                  {{/each}}
                                 </td>
                             </tr>
                             <tr id="sbml">
                                 <td data-label="Format" class="Format">SBML</td>
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.sbml">
-                                    SBML File
-                                  </a>
+                                  {{#each SimulationSpec}}
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~../this.Version.[0].$.KeyValue~}}
+                                    /biomodel.sbml?appname={{convertSpace this.$.Name}}"
+                                  >
+                                  {{this.$.Name}}.sbml
+                                  </a>,
+                                  {{/each}}
                                 </td>
                             </tr>
                             <tr id="xml">
                                 <td data-label="Format" class="Format">NFSim XML</td>
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.xml">
-                                    NFSim File
-                                  </a>
+                                  {{#each SimulationSpec}}
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~../this.Version.[0].$.KeyValue~}}
+                                    /biomodel.xml?appname={{convertSpace this.$.Name}}"
+                                  >
+                                  {{this.$.Name}}.xml
+                                  </a>,
+                                  {{/each}}
                                 </td>
                             </tr>
-                            <tr id="SEDML">
-                                <td data-label="Format" class="Format">SEDML</td>
-                                <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.sedml">
-                                    SEDML File
-                                  </a>
-                                </td>
-                            </tr>
-                            <tr id="Report">
-                                <td data-label="Format" class="Format">Report (PDF)</td>
-                                <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.pdf">
-                                    Report
-                                  </a>
-                                </td>
-                            </tr>
-                            <tr id="OMEX">
-                                <td data-label="Format" class="Format">COMBINE archive</td>
-                                <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.omex">
-                                    OMEX File
-                                  </a>
-                                </td>
-                            </tr>
-                            {{/each}}
                             {{/each}}
                         </tbody>
                     </table>

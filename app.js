@@ -124,6 +124,10 @@ const hbs = exphbs.create({
       }
       return (month + "/" + day + "/" + year);
     },
+    convertSpace: function (s) {
+      //convert spaces to %20 for use in URLs
+      return s.replace(/\s/g, '%20');
+    },
     convertTrigger: function (eventObj) {
       let params = eventObj.Parameter;
       let timeList = 'at times: [';
