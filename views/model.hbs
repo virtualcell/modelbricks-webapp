@@ -1356,20 +1356,18 @@
                             <tr>
                                 <td>Virtual Cell Markup Language</td>
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.SimulationSpec.[0].[0].$.KeyValue}}/biomodel.vcml">
+                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.Version.[0].$.KeyValue}}/biomodel.vcml">
                                     VCML File
                                   </a>
                                 </td>
-                                {{/each}}
                             </tr>
                             <tr>
                                 <td>PDF Report</td>
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.SimulationSpec.[0].[0].$.KeyValue}}/biomodel.pdf">
+                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.Version.[0].$.KeyValue}}/biomodel.pdf">
                                     Report
                                   </a>
                                 </td>
-                                {{/each}}
                             </tr>
                             <tr>
                                 <td>COMBINE Archive</td>
@@ -1382,7 +1380,6 @@
                                   OMEX File
                                   </a>
                                 </td>
-                                {{/each}}
                             </tr>
                             <tr>
                                 <td>SEDML</td>
@@ -1395,16 +1392,14 @@
                                   SEDML File
                                   </a>
                                 </td>
-                                {{/each}}
                             </tr>
                             <tr>
                                 <td>Matlab</td>
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.SimulationSpec.[0].[0].$.KeyValue}}/biomodel.m">
+                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.Version.[0].$.KeyValue}}/biomodel.m">
                                     Matlab File
                                   </a>
                                 </td>
-                                {{/each}}
                             </tr>
                         </tbody>
                         <thead>
@@ -1436,7 +1431,6 @@
                                   </a>,
                                   {{/each}}
                                 </td>
-                                {{/each}}
                             </tr>
                             <tr id="sbml">
                                 <td data-label="Format" class="Format">SBML</td>
@@ -1451,7 +1445,6 @@
                                   </a>,
                                   {{/each}}
                                 </td>
-                                {{/each}}
                             </tr>
                             <tr id="xml">
                                 <td data-label="Format" class="Format">NFSim XML</td>
@@ -1468,12 +1461,10 @@
                                 </td>
                                 {{/each}}
                             </tr>
-                            {{/each}}
                         </tbody>
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
