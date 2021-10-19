@@ -217,6 +217,7 @@ class AnnParser {
     }
   }
 
+  //returns reformatted output options for easier use on client side
   getOutputOptions() {
     try {
       let outOps = this.vcmlObj.vcml.BioModel[0].SimulationSpec[0].Simulation[0].SolverTaskDescription[0].OutputOptions[0].$;
@@ -234,6 +235,7 @@ class AnnParser {
     }
   }
 
+  //returns json string of annotation object for use in main.js
   getString() {
     return (JSON.stringify(new BioModel(this.JSONwrapper)));
   }

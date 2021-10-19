@@ -640,7 +640,7 @@
             <caption>
               Specifications(Species) - {{value.$.Name}}
               <span class="dashboardBtn">
-                <a href="/curatedList/model/{{../../modelName}}#specsSpecies0">
+                <a href="/curatedList/model/{{../../modelName}}#specsSpecies{{@key}}">
                   <i class="fa fa-undo" aria-hidden="true"></i>
                   See in Dashboard
                 </a>
@@ -681,7 +681,7 @@
             <caption>
               Specifications(Reaction) - {{value.$.Name}}
               <span class="dashboardBtn">
-                <a href="/curatedList/model/{{../../modelName}}#specsReaction0">
+                <a href="/curatedList/model/{{../../modelName}}#specsReaction{{@key}}">
                   <i class="fa fa-undo" aria-hidden="true"></i>
                   See in Dashboard
                 </a>
@@ -715,7 +715,7 @@
             <caption>
               Simulations - {{value.$.Name}}
               <span class="dashboardBtn">
-                <a href="/curatedList/model/{{../../modelName}}#simulations0">
+                <a href="/curatedList/model/{{../../modelName}}#simulations{{@key}}">
                   <i class="fa fa-undo" aria-hidden="true"></i>
                   See in Dashboard
                 </a>
@@ -754,6 +754,121 @@
         </table>
     </div>
 </div>
+
+{{!-- Assignment Rules Table --}}
+<div class="pmTable optionData" id="raterules{{@key}}">
+    <div class="container">
+        <table class="responsive-table">
+            <caption>
+              Assignment Rules - {{value.$.Name}}
+              <span class="dashboardBtn">
+                <a href="/curatedList/model/{{../../modelName}}#assignments{{@key}}">
+                  <i class="fa fa-undo" aria-hidden="true"></i>
+                  See in Dashboard
+                </a>
+              </span>
+            </caption>
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Variable</th>
+                    <th scope="col">Assignment Function Expression</th>
+                </tr>
+            </thead>
+            <tbody>
+              {{#each this.AssignmentRules}}
+              {{#each this.AssignmentRule}}
+              <tr>
+                  <td>{{this.$.Name}}</td>
+                  <td>{{this.$.AssignmentRuleVariable}}</td>
+                  <td>{{this._}}</td>
+              </tr>
+              {{/each}}
+              {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{{!-- Events Table --}}
+<div class="pmTable optionData" id="events{{key}}">
+    <div class="container">
+        <table class="responsive-table">
+            <caption>
+              Events - {{value.$.Name}}
+              <span class="dashboardBtn">
+                <a href="/curatedList/model/{{../../modelName}}#events{{@key}}">
+                  <i class="fa fa-undo" aria-hidden="true"></i>
+                  See in Dashboard
+                </a>
+              </span>
+            </caption>
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Trigger Type</th>
+                    <th scope="col">Variable Assignment</th>
+                </tr>
+            </thead>
+            <tbody>
+              {{#each this.BioEvents}}
+              {{#each this.BioEvent}}
+              <tr>
+                  <td>{{this.$.Name}}</td>
+                  <td>
+                    {{convertTrigger this}}
+                  </td>
+                  <td>
+                    {{~#each EventAssignment~}}
+                    {{this.$.Variable}} --> {{this._~}}
+                    {{#if (greater ../this.EventAssignment.length (add 1 @index))~}}
+                    ,
+                    {{/if~}}
+                    {{/each~}}
+                  </td>
+              </tr>
+              {{/each}}
+              {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{{!-- Rate Rules Table --}}
+<div class="pmTable optionData" id="raterules{{@key}}">
+    <div class="container">
+        <table class="responsive-table">
+            <caption>
+              Rate Rules - {{value.$.Name}}
+              <span class="dashboardBtn">
+                <a href="/curatedList/model/{{../../modelName}}#raterules{{@key}}">
+                  <i class="fa fa-undo" aria-hidden="true"></i>
+                  See in Dashboard
+                </a>
+              </span>
+            </caption>
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Variable</th>
+                    <th scope="col">Rate Expression</th>
+                </tr>
+            </thead>
+            <tbody>
+              {{#each this.RateRules}}
+              {{#each this.RateRule}}
+              <tr>
+                  <td>{{this.$.Name}}</td>
+                  <td>{{this.$.RateRuleVariable}}</td>
+                  <td>{{this._}}</td>
+              </tr>
+              {{/each}}
+              {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 {{/each}}
 {{/each}}
 
