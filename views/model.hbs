@@ -1393,14 +1393,6 @@
                                   </a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>Matlab</td>
-                                <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.Version.[0].$.KeyValue}}/biomodel.m">
-                                    Matlab File
-                                  </a>
-                                </td>
-                            </tr>
                         </tbody>
                         <thead>
                             <tr>
@@ -1442,6 +1434,20 @@
                                     /biomodel.sbml?appname={{convertSpace this.$.Name}}"
                                   >
                                   {{this.$.Name}}.sbml
+                                  </a>,
+                                  {{/each}}
+                                </td>
+                            </tr>
+                            <tr id="matlab">
+                                <td data-label="Format" class="Format">Matlab</td>
+                                <td data-label="File" class="File">
+                                  {{#each SimulationSpec}}
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~../this.Version.[0].$.KeyValue~}}
+                                    /biomodel.m?appname={{convertSpace this.$.Name}}"
+                                  >
+                                  {{this.$.Name}}.m
                                   </a>,
                                   {{/each}}
                                 </td>
