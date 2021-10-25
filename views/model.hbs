@@ -77,12 +77,6 @@
                               </a>
                             </li>
                             <li>
-                              <a href="#simulations{{key}}" class="">
-                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
-                                Simulations
-                              </a>
-                            </li>
-                            <li>
                               <a href="#assignments{{key}}" class="">
                                 <i class="fa fa-superpowers static" aria-hidden="true"></i>
                                 Assignment Rules
@@ -98,6 +92,18 @@
                               <a href="#raterules{{key}}" class="">
                                 <i class="fa fa-superpowers static" aria-hidden="true"></i>
                                 Rate Rules
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#geometry{{key}}" class="">
+                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
+                                Geometry
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#simulations{{key}}" class="">
+                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
+                                Simulations
                               </a>
                             </li>
                         </ul>
@@ -1224,6 +1230,42 @@
                 </div>
             </div>
 
+            {{!-- Geometry Table --}}
+            <div id="geometry{{key}}" class="optionData">
+                <h2 class="header">Geometry</h2>
+                <div class="modelTable">
+                    <table id="content-table3" class="table-responsive-full sort-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Trigger Type</th>
+                                <th>Variable Assignment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each this.BioEvents}}
+                            {{#each this.BioEvent}}
+                            <tr>
+                                <td>{{this.$.Name}}</td>
+                                <td>
+                                  {{convertTrigger this}}
+                                </td>
+                                <td>
+                                  {{~#each EventAssignment~}}
+                                  {{this.$.Variable}} --> {{this._~}}
+                                  {{#if (greater ../this.EventAssignment.length (add 1 @index))~}}
+                                  ,
+                                  {{/if~}}
+                                  {{/each~}}
+                                </td>
+                            </tr>
+                            {{/each}}
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             {{!-- Rate Rules Table --}}
             <div id="raterules{{key}}" class="optionData">
                 <h2 class="header">Events</h2>
@@ -1420,8 +1462,11 @@
                                     /biomodel.bngl?appname={{convertSpace this.$.Name}}"
                                   >
                                   {{this.$.Name}}.bngl
-                                  </a>,
-                                  {{/each}}
+                                  </a>
+                                  {{~#if (greater ../this.SimulationSpec.length (add 1 @key))~}}
+                                  ,
+                                  {{~/if}}
+                                  {{~/each~}}
                                 </td>
                             </tr>
                             <tr id="sbml">
@@ -1434,7 +1479,10 @@
                                     /biomodel.sbml?appname={{convertSpace this.$.Name}}"
                                   >
                                   {{this.$.Name}}.sbml
-                                  </a>,
+                                  </a>
+                                  {{~#if (greater ../this.SimulationSpec.length (add 1 @key))~}}
+                                  ,
+                                  {{~/if}}
                                   {{/each}}
                                 </td>
                             </tr>
@@ -1448,7 +1496,10 @@
                                     /biomodel.m?appname={{convertSpace this.$.Name}}"
                                   >
                                   {{this.$.Name}}.m
-                                  </a>,
+                                  </a>
+                                  {{~#if (greater ../this.SimulationSpec.length (add 1 @key))~}}
+                                  ,
+                                  {{~/if}}
                                   {{/each}}
                                 </td>
                             </tr>
@@ -1462,7 +1513,10 @@
                                     /biomodel.xml?appname={{convertSpace this.$.Name}}"
                                   >
                                   {{this.$.Name}}.xml
-                                  </a>,
+                                  </a>
+                                  {{~#if (greater ../this.SimulationSpec.length (add 1 @key))~}}
+                                  ,
+                                  {{~/if}}
                                   {{/each}}
                                 </td>
                                 {{/each}}
