@@ -235,6 +235,21 @@ class AnnParser {
     }
   }
 
+  //returns formatted obj used for handlebars geometry page
+  getGeometry() {
+    let geo = this.vcmlObj.vcml.BioModel[0].SimulationSpec[0].Geometry[0];
+    let geoMap = {};
+    console.log(geo.SubVolume[0]);
+    let subVols = geo.SubVolume;
+    for (let i = 0; i < subVols; i++) {
+      //pass
+    }
+    /*try {
+    } catch {
+      return null;
+    }*/
+  }
+
   //returns json string of annotation object for use in main.js
   getString() {
     return (JSON.stringify(new BioModel(this.JSONwrapper)));

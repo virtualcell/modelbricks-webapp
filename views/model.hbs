@@ -1232,39 +1232,62 @@
 
             {{!-- Geometry Table --}}
             <div id="geometry{{key}}" class="optionData">
-                <h2 class="header">Geometry</h2>
+                {{#each this.Geometry}}
+                <h2 class="header">Geometry (Origin:
+                  {{#each this.Origin~}}
+                  {{this.$.X}},
+                  {{this.$.Y}},
+                  {{this.$.Z}}
+                  {{~/each}}; Extent:
+                  {{#each this.Extent~}}
+                  {{this.$.X}},
+                  {{this.$.Y}},
+                  {{this.$.Z}}
+                  {{~/each}}
+                  {{~#each this.ImageData~}}
+                  ; Image:
+                  {{this.$.X}},
+                  {{this.$.Y}},
+                  {{this.$.Z}}
+                  {{~/each}};)
+                </h2>
+
                 <div class="modelTable">
                     <table id="content-table3" class="table-responsive-full sort-table">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Trigger Type</th>
-                                <th>Variable Assignment</th>
+                                <th>Geometry</th>
+                                <th>Type</th>
+                                <th>Geometry Name</th>
+                                <th>Adjacent</th>
+                                <th>Size</th>
+                                <th>Mapped Compartment</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each this.BioEvents}}
-                            {{#each this.BioEvent}}
                             <tr>
-                                <td>{{this.$.Name}}</td>
+                                {{#each this.SubVolume}}
                                 <td>
-                                  {{convertTrigger this}}
+
                                 </td>
                                 <td>
-                                  {{~#each EventAssignment~}}
-                                  {{this.$.Variable}} --> {{this._~}}
-                                  {{#if (greater ../this.EventAssignment.length (add 1 @index))~}}
-                                  ,
-                                  {{/if~}}
-                                  {{/each~}}
                                 </td>
+                                <td>
+                                  {{this.$.Name}}
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                {{/each}}
                             </tr>
-                            {{/each}}
-                            {{/each}}
                         </tbody>
                     </table>
                 </div>
             </div>
+            {{/each}}
 
             {{!-- Rate Rules Table --}}
             <div id="raterules{{key}}" class="optionData">
