@@ -237,17 +237,56 @@ class AnnParser {
 
   //returns formatted obj used for handlebars geometry page
   getGeometry() {
-    let geo = this.vcmlObj.vcml.BioModel[0].SimulationSpec[0].Geometry[0];
-    let geoMap = {};
-    console.log(geo.SubVolume[0]);
-    let subVols = geo.SubVolume;
-    for (let i = 0; i < subVols; i++) {
-      //pass
+    let simSpec = this.vcmlObj.vcml.BioModel[0].SimulationSpec;
+    let subListList = [];
+    //do for each sim spec
+    for (let y = 0; y < simSpec.length; y++) {
+      let geo = simSpec[y].Geometry[0];
+      let subList = [];
+      let nameIndexMap = {};
+      let nameList = [];
+      //iterate through inital geometries in sub volumes
+      let subVols = geo.SubVolume;
+      for (let i = 0; i < subVols.length; i++) {
+        let elm = subVols[i];
+        let name = elm.$.Name;
+        let rowObj = {
+          name: name,
+          geometry: '',
+          type: 'image',
+          adjacent: '',
+          size: '',
+          compartment: ''
+        };
+        nameList.push(name);
+        nameIndexMap[name] = i;
+        subList.push(rowObj);
+      }
+      //iterate through other geometries in surface class
+      let surfaceClass = geo.SurfaceClass;
+      for (let i = 0; i < surfaceClass.length; i++) {
+        let elm = surfaceClass[i];
+        let name = elm.$.Name;
+        let rowObj = {
+          name: name,
+          geometry: '',
+          type: 'image',
+          adjacent: elm.$.SubVolume1Ref + '|' + elm.$.SubVolume2Ref,
+          size: '',
+          compartment: ''
+        };
+        subList.push(rowObj);
+        nameIndexMap[name] = i + geo.SubVolume.length - 1;
+        /*nameList.forEach((item) => {
+          if (name.includes(item)) {
+            //there will always be two adjacents but this solution only finds 1, fix this
+            subList[nameIndexMap[name]].adjacent = item;
+          }
+        });*/
+      }
+      subListList.push(subList);
     }
-    /*try {
-    } catch {
-      return null;
-    }*/
+    return subListList;
   }
 
   //returns json string of annotation object for use in main.js

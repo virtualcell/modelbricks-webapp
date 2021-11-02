@@ -1265,8 +1265,8 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {{#each this.SubVolume}}
                             <tr>
-                                {{#each this.SubVolume}}
                                 <td>
 
                                 </td>
@@ -1276,13 +1276,18 @@
                                   {{this.$.Name}}
                                 </td>
                                 <td>
+                                  {{#if (and (isNull this.$.SubVolume1Ref) (isNull this.$.SubVolume2Ref))}}
+                                  image
+                                  {{else}}
+                                  {{this.$.SubVolume1Ref}} | {{this.$.SubVolume2Ref}}
+                                  {{/if}}
                                 </td>
                                 <td>
                                 </td>
                                 <td>
                                 </td>
-                                {{/each}}
                             </tr>
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>

@@ -164,6 +164,12 @@ const hbs = exphbs.create({
         return string;
       }
     },
+    and: function (a, b) {
+      return (a && b);
+    },
+    isNull: function (s) {
+      return (s == null);
+    },
     add: function (a, b) {
       return (parseInt(a) + parseInt(b));
     },
@@ -250,7 +256,7 @@ app.get("/curatedList/model/:name", (req, res) => {
         let annoObj = new aPrs.AnnParser(data);
         let annoData = annoObj.getString();
         let outputOptions = annoObj.getOutputOptions();
-        annoObj.getGeometry();
+        //let geometryList = annoObj.getGeometry();
         fs.writeFileSync("./public/json/" + "annotations" + ".json", annoData);
         res.render("model", {
           title: "ModelBricks - Model Page",
