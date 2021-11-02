@@ -164,6 +164,9 @@ const hbs = exphbs.create({
         return string;
       }
     },
+    listIndex: function (list, index) {
+      return list[index];
+    },
     and: function (a, b) {
       return (a && b);
     },
@@ -256,12 +259,13 @@ app.get("/curatedList/model/:name", (req, res) => {
         let annoObj = new aPrs.AnnParser(data);
         let annoData = annoObj.getString();
         let outputOptions = annoObj.getOutputOptions();
-        //let geometryList = annoObj.getGeometry();
+        let geometryList = annoObj.getGeometry();
         fs.writeFileSync("./public/json/" + "annotations" + ".json", annoData);
         res.render("model", {
           title: "ModelBricks - Model Page",
           data,
           outputOptions,
+          geometryList,
         });
       });
     });
@@ -280,11 +284,13 @@ app.get("/test/:name", (req, res) => {
         let annoObj = new aPrs.AnnParser(data);
         let annoData = annoObj.getString();
         let outputOptions = annoObj.getOutputOptions();
+        let geometryList = annoObj.getGeometry();
         fs.writeFileSync("./public/json/" + "annotations" + ".json", annoData);
         res.render("model", {
           title: "ModelBricks - Model Page",
           data,
           outputOptions,
+          geometryList,
         });
       };
     });

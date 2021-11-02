@@ -263,26 +263,22 @@ class AnnParser {
         subList.push(rowObj);
       }
       //iterate through other geometries in surface class
-      let surfaceClass = geo.SurfaceClass;
-      for (let i = 0; i < surfaceClass.length; i++) {
-        let elm = surfaceClass[i];
-        let name = elm.$.Name;
-        let rowObj = {
-          name: name,
-          geometry: '',
-          type: 'image',
-          adjacent: elm.$.SubVolume1Ref + '|' + elm.$.SubVolume2Ref,
-          size: '',
-          compartment: ''
-        };
-        subList.push(rowObj);
-        nameIndexMap[name] = i + geo.SubVolume.length - 1;
-        /*nameList.forEach((item) => {
-          if (name.includes(item)) {
-            //there will always be two adjacents but this solution only finds 1, fix this
-            subList[nameIndexMap[name]].adjacent = item;
-          }
-        });*/
+      var surfaceClass = geo.SurfaceClass;
+      if (surfaceClass) {
+        for (let i = 0; i < surfaceClass.length; i++) {
+          let elm = surfaceClass[i];
+          let name = elm.$.Name;
+          let rowObj = {
+            name: name,
+            geometry: '',
+            type: 'image',
+            adjacent: elm.$.SubVolume1Ref + ' | ' + elm.$.SubVolume2Ref,
+            size: '',
+            compartment: ''
+          };
+          subList.push(rowObj);
+          nameIndexMap[name] = i + geo.SubVolume.length - 1;
+        }
       }
       subListList.push(subList);
     }

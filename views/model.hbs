@@ -1265,26 +1265,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each this.SubVolume}}
+                            {{#each (listIndex ../../../geometryList key)}}
                             <tr>
                                 <td>
-
+                                  {{this.geometry}}
                                 </td>
                                 <td>
+                                  {{this.type}}
                                 </td>
                                 <td>
-                                  {{this.$.Name}}
+                                  {{this.name}}
                                 </td>
                                 <td>
-                                  {{#if (and (isNull this.$.SubVolume1Ref) (isNull this.$.SubVolume2Ref))}}
-                                  image
-                                  {{else}}
-                                  {{this.$.SubVolume1Ref}} | {{this.$.SubVolume2Ref}}
-                                  {{/if}}
+                                  {{this.adjacent}}
                                 </td>
                                 <td>
+                                  {{this.size}}
                                 </td>
                                 <td>
+                                  {{this.compartment}}
                                 </td>
                             </tr>
                             {{/each}}
