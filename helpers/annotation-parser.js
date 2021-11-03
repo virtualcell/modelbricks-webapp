@@ -217,6 +217,26 @@ class AnnParser {
     }
   }
 
+  //used in getGeometry to see if ref matches origional name
+  compareGeoRefs(ogName, refName) {
+    let refComponents = refName.split('_');
+    let ogComponents = ogName.split('_');
+    for (let i = 0; i < refComponents.length; i++) {
+      let refComp = refComponents[i];
+      let match = false;
+      for (let y = 0; y < ogComponents.length; y++) {
+        let ogComp = ogComponents[y];
+        if (refComp.includes(ogComp)) {
+          match = true;
+        }
+      }
+      if (!match) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   //returns reformatted output options for easier use on client side
   getOutputOptions() {
     try {
@@ -253,17 +273,18 @@ class AnnParser {
         let rowObj = {
           name: name,
           geometry: '',
-          type: 'image',
+          type: elm.$.Type,
           adjacent: '',
           size: '',
-          compartment: ''
+          compartment: '',
+          unit: ''
         };
         nameList.push(name);
         nameIndexMap[name] = i;
         subList.push(rowObj);
       }
       //iterate through other geometries in surface class
-      var surfaceClass = geo.SurfaceClass;
+      let surfaceClass = geo.SurfaceClass;
       if (surfaceClass) {
         for (let i = 0; i < surfaceClass.length; i++) {
           let elm = surfaceClass[i];
@@ -271,13 +292,62 @@ class AnnParser {
           let rowObj = {
             name: name,
             geometry: '',
-            type: 'image',
+            type: elm.$.Type,
             adjacent: elm.$.SubVolume1Ref + ' | ' + elm.$.SubVolume2Ref,
             size: '',
-            compartment: ''
+            compartment: '',
+            unit: ''
           };
           subList.push(rowObj);
-          nameIndexMap[name] = i + geo.SubVolume.length - 1;
+          nameList.push(name);
+          nameIndexMap[name] = i + geo.SubVolume.length;
+        }
+      }
+      //map used to when 2+ refrences refer to 1 name
+      let nameRefMap = {};
+      //get extra info from volume regions and apply to existing rows
+      let surfaceDesc = geo.SurfaceDescription;
+      if (surfaceDesc) {
+        let volumeRegion = surfaceDesc[0].VolumeRegion;
+        for (let i = 0; i < volumeRegion.length; i++) {
+          let elm = volumeRegion[i];
+          let name = elm.$.Name;
+          let longestName = 0;
+          //get row volume region refers to
+          for (let u = 0; u < nameList.length; u++) {
+            let listedName = nameList[u];
+            if (name.includes(listedName)) {
+              var index = nameIndexMap[listedName];
+              nameRefMap[listedName] = name;
+            }
+          }
+          //add info to row obj
+          let rowObj = subList[index];
+          if (rowObj) {
+            rowObj.size = elm.$.Size;
+            rowObj.unit = '[' + elm.$.Unit + ']';
+            rowObj.geometry = 'Volume';
+          }
+        }
+        //get extra info from membrane regions and apply to existing rows
+        let membraneRegion = surfaceDesc[0].MembraneRegion;
+        for (let i = 0; i < membraneRegion.length; i++) {
+          let elm = membraneRegion[i];
+          let name = elm.$.Name;
+          //get row volume region refers to
+          for (let u = 0; u < nameList.length; u++) {
+            let listedName = nameList[u];
+            if (!nameRefMap[listedName] && this.compareGeoRefs(listedName, name)) {
+              var index = nameIndexMap[listedName];
+            }
+          }
+          //add info to row obj
+          let rowObj = subList[index];
+          if (rowObj) {
+            rowObj.size = elm.$.Size;
+            rowObj.unit = '[' + elm.$.Unit + ']';
+            rowObj.geometry = 'Surface';
+          }
         }
       }
       subListList.push(subList);
