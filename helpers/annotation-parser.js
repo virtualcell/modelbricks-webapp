@@ -350,6 +350,36 @@ class AnnParser {
           }
         }
       }
+      //get mapped compartments from feature mappings
+      let featureMappings = simSpec[y].GeometryContext[0].FeatureMapping;
+      if (featureMappings) {
+        for (let i = 0; i < featureMappings.length; i++) {
+          let index = null;
+          let elm = featureMappings[i].$;
+          let feature = elm.Feature;
+          let fClass = elm.GeometryClass;
+          index = nameIndexMap[fClass];
+          if (index != undefined) {
+            let rowObj = subList[index];
+            rowObj.compartment = feature;
+          }
+        }
+      }
+      //get mapped compartments from membrane mappings
+      let membraneMappings = simSpec[y].GeometryContext[0].MembraneMapping;
+      if (membraneMappings) {
+        for (let i = 0; i < membraneMappings.length; i++) {
+          let index = null;
+          let elm = membraneMappings[i].$;
+          let feature = elm.Membrane;
+          let fClass = elm.GeometryClass;
+          index = nameIndexMap[fClass];
+          if (index != undefined) {
+            let rowObj = subList[index];
+            rowObj.compartment = feature;
+          }
+        }
+      }
       subListList.push(subList);
     }
     return subListList;
