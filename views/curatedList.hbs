@@ -67,6 +67,38 @@
                 <input type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off">
                 <label class="group__label" for="name">Models per Page</label>
             </div>
+            <div class="custom-form__group">
+              <input type="checkbox" name="spatial" id="spatial">
+              <label class="group__label" for="name">spatial</label>
+            </div>
+            <div class="custom-form__group">
+              <input type="checkbox" name="stochastic">
+              <label class="group__label" for="name">stochastic</label>
+            </div>
+            <div class="custom-form__group">
+              <input type="checkbox" name="deterministic">
+              <label class="group__label" for="name">deterministic</label>
+            </div>
+            <div class="custom-form__group">
+              <input type="checkbox" name="image-based">
+              <label class="group__label" for="name">image-based</label>
+            </div>
+            <div class="custom-form__group">
+              <input type="checkbox" name="analytic-geometry">
+              <label class="group__label" for="name">analytic-geometry</label>
+            </div>
+            <div class="custom-form__group">
+              <input type="checkbox" name="assignment-rules">
+              <label class="group__label" for="name">assignment-rules</label>
+            </div>
+            <div class="custom-form__group">
+              <input type="checkbox" name="events">
+              <label class="group__label" for="name">events</label>
+            </div>
+            <div class="custom-form__group">
+              <input type="checkbox" name="reaction-rules">
+              <label class="group__label" for="name">reaction-rules</label>
+            </div>
             <button type="submit" class="custom-form__submit">
                 search
                 <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
@@ -246,6 +278,8 @@
         termMap['page'] = parseInt(termMap['page']) - 1;
       }
       termMap['advanced'] = advanced;
+      //termMap['spatial'] = spatial;
+      //repeat for all simulation search terms
 
       //assemble new link
       n = '';
@@ -269,8 +303,6 @@
       advanced.style.display = "none";
       currentFormState = "false";
     }
-
-    console.log(makeLink('next', currentFormState));
 
     //initialize links
     try {
@@ -320,6 +352,14 @@
         fd.append("maxModels","20");
       }
       //add other atributes
+      fd.append("spatial", "off");
+      fd.append("stochastic", "off");
+      fd.append("deterministic", "off");
+      fd.append("image-based", "off");
+      fd.append("analytic-geometry", "off");
+      fd.append("assignment-rules", "off");
+      fd.append("events", "off");
+      fd.append("reaction-rules", "off");
       fd.append("page","1");
       fd.append("owner","ModelBrick");//move this inside if statment if different owner search is enabled
       fd.append("advanced", currentFormState);

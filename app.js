@@ -247,6 +247,40 @@ app.get("/curatedList/:search", async (req, res) => {
   });
 });
 
+// Curated List offline copy for testing
+app.get("/testCuratedList/:search", async (req, res) => {
+  //TODO how to get max num of pages?
+  //search parameter mirror the format of API Urls except for page term
+  const search = req.params.search;
+  //format search string into object
+  var terms = search.split("&");
+  for (let i = 0; i < terms.length; i++) {
+    terms[i] = terms[i].split("=");
+  }
+  var termMap = Object.fromEntries(terms);
+
+  //some vars for startRow and maxRow terms
+  const APIrow = termMap['page'] * termMap['maxModels'] - termMap['maxModels'] - 1;
+
+  //const json = await fetch_response.json();
+  const json = [];
+
+  //if page is empty
+  let isNotEmpty = true;
+  let modelsPerPage = termMap['maxModels'];
+  if (json.length == 0) {
+    isNotEmpty = false;
+  }
+
+  res.render("curatedList", {
+    title: "ModelBricks - Curated List",
+    json,
+    termMap,
+    isNotEmpty,
+    modelsPerPage,
+  });
+});
+
 // main Dashboard for dynamic models selected from curated list page
 app.get("/curatedList/model/:name", (req, res) => {
   const api_url =
