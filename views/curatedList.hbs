@@ -68,35 +68,35 @@
                 <label class="group__label" for="name">Models per Page</label>
             </div>
             <div class="custom-form__group">
-              <input type="checkbox" name="spatial" id="spatial">
+              <input class="json-filter" type="checkbox" name="spatial" id="spatial" value="off">
               <label class="group__label" for="name">spatial</label>
             </div>
             <div class="custom-form__group">
-              <input type="checkbox" name="stochastic">
+              <input class="json-filter" type="checkbox" name="stochastic" value="off">
               <label class="group__label" for="name">stochastic</label>
             </div>
             <div class="custom-form__group">
-              <input type="checkbox" name="deterministic">
+              <input class="json-filter" type="checkbox" name="deterministic" value="off">
               <label class="group__label" for="name">deterministic</label>
             </div>
             <div class="custom-form__group">
-              <input type="checkbox" name="image-based">
+              <input class="json-filter" type="checkbox" name="image-based" value="off">
               <label class="group__label" for="name">image-based</label>
             </div>
             <div class="custom-form__group">
-              <input type="checkbox" name="analytic-geometry">
+              <input class="json-filter" type="checkbox" name="analytic-geometry" value="off">
               <label class="group__label" for="name">analytic-geometry</label>
             </div>
             <div class="custom-form__group">
-              <input type="checkbox" name="assignment-rules">
+              <input class="json-filter" type="checkbox" name="assignment-rules" value="off">
               <label class="group__label" for="name">assignment-rules</label>
             </div>
             <div class="custom-form__group">
-              <input type="checkbox" name="events">
+              <input class="json-filter" type="checkbox" name="events" value="off">
               <label class="group__label" for="name">events</label>
             </div>
             <div class="custom-form__group">
-              <input type="checkbox" name="reaction-rules">
+              <input class="json-filter" type="checkbox" name="reaction-rules" value="off">
               <label class="group__label" for="name">reaction-rules</label>
             </div>
             <button type="submit" class="custom-form__submit">
@@ -125,8 +125,6 @@
 {{!-- Main sorting table  --}}
 {{#if isNotEmpty}}
   <div class="curatedListTable">
-
-
       <table id="content-table3" class="table-responsive-full sort-table curatedList">
           <thead>
               <tr>
@@ -173,7 +171,7 @@
                   </th>
               </tr>
           </thead>
-          <tbody>
+          <tbody class="main-body">
               {{#each json}}
               <tr onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" style="cursor: pointer">
                   <td data-label="Composer" class="composer" style="cursor: pointer;" onclick="window.location='/curatedList/model/{{this.bmKey}}#dashboard';">
@@ -197,7 +195,7 @@
                   <td data-label="Set" class="set">{{toDate this.savedDate}}</td>
                   <td data-label="Applications" class="Applications">
                     {{~#each this.simulations~}}
-                    <p>"{{this.bioModelLink.simContextName}}" - {{this.name}}</p>
+                    <p><b>"{{this.bioModelLink.simContextName}}"</b> - {{this.name}}</p>
                     {{~/each~}}
                   </td>
               </tr>
@@ -234,6 +232,8 @@
     var advanced = document.getElementById("advanced-search");
     var toggle = document.getElementById("toggle-advanced");
     var currentFormState = {{termMap.advanced}};
+    //initialized in makeLink()
+    let filters = {};
 
     //convert key val pair (from itr below) to format for url
     function convertPair(pair) {
@@ -249,6 +249,14 @@
         b.replace('&', '');
       }
       return (pair[0] + '=' + pair[1]);
+    }
+
+    //simple on/off to true/false for use below
+    function isOn(s) {
+      if (s == 'on') {
+        return true;
+      }
+      return false;
     }
 
     //to make links for next and prev buttons
@@ -290,6 +298,19 @@
       //remove tailing "&"
       n = n.slice(0, n.length - 1);
 
+      //initilize map of filter phrases to usage boolean
+      let jsonFilterElms = document.querySelectorAll('.json-filter');
+      for (let i = 0; i < jsonFilterElms.length; i++) {
+        let elm = jsonFilterElms[i];
+        let phrase = elm.name;
+        let bool = isOn(elm.value);
+        let literalPhrase = phrase.replace('-', ' ');
+        filters[literalPhrase] = bool;
+        if (isOn(termMap[phrase])) {
+          filters[literalPhrase] = true;
+        }
+      }
+
       return (n);
     }
 
@@ -304,7 +325,7 @@
       currentFormState = "false";
     }
 
-    //initialize links
+    //initialize links next and prev
     try {
       document.querySelectorAll("#nextLink").forEach((item, i) => {
         item.href = '/curatedList/' + makeLink('next', currentFormState);
@@ -375,6 +396,39 @@
 
       //go to results page
       window.location.assign('/curatedList/' + url);
+    }
+
+    //create map of application html to its row obj
+    let appRowMap = {};
+    let modelTable = document.querySelector('tbody.main-body');
+    let modelRows = modelTable.children;
+    //loop thorugh rows to get application html
+    for (let i = 0; i < modelRows.length; i++) {
+      let row = modelRows[i];
+      let datas = row.children;
+      //app html is always in last td
+      let lastData = datas[datas.length - 1];
+      appRowMap[lastData.innerHTML.toLowerCase()] = row;
+    }
+
+    //filter model table by application keywords
+    function applicationFilter() {
+      let appRowMapKeyVals = Object.entries(appRowMap);
+      let filtersKeyVals = Object.entries(filters);
+      for (let i = 0; i < appRowMapKeyVals.length; i++) {
+        let pair = appRowMapKeyVals[i];
+        let html = pair[0];
+        let row = pair[1];
+        for (let u = 0; u < filtersKeyVals.length; u++) {
+          let filter = filtersKeyVals[u];
+          let phrase = filter[0];
+          let bool = filter[1];
+          //if filter is off and application has phrase
+          if (!bool && html.includes(phrase)) {
+            row.style.display = 'none';
+          }
+        }
+      }
     }
 
     //custom event listners for form submition

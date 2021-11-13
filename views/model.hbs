@@ -1233,7 +1233,7 @@
             {{!-- Geometry Table --}}
             <div id="geometry{{key}}" class="optionData">
                 {{#each this.Geometry}}
-                <h2 class="header">Geometry (Origin:
+                <h2 class="header">{{this.$.Name}} (Origin:
                   {{#each this.Origin~}}
                   {{this.$.X}},
                   {{this.$.Y}},
@@ -1256,10 +1256,10 @@
                     <table id="content-table3" class="table-responsive-full sort-table">
                         <thead>
                             <tr>
-                                <th>Geometry</th>
+                                <th>Dimension</th>
                                 <th>Type</th>
-                                <th>Geometry Name</th>
-                                <th>Adjacent</th>
+                                <th>Subdomain</th>
+                                <th>Adjacent Subvolumes</th>
                                 <th>Size</th>
                                 <th>Mapped Compartment</th>
                             </tr>
