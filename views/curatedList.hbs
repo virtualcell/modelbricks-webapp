@@ -99,6 +99,9 @@
               <input class="json-filter" type="checkbox" name="reaction-rules" value="off">
               <label class="group__label" for="name">reaction-rules</label>
             </div>
+            <button type="button" id="form-filter" style="margin: 30px; height: 50px;">
+                Filter
+            </button>
             <button type="submit" class="custom-form__submit">
                 search
                 <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
@@ -173,7 +176,7 @@
           </thead>
           <tbody class="main-body">
               {{#each json}}
-              <tr onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" style="cursor: pointer">
+              <tr id="row{{@index}}" onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" style="cursor: pointer">
                   <td data-label="Composer" class="composer" style="cursor: pointer;" onclick="window.location='/curatedList/model/{{this.bmKey}}#dashboard';">
                     <a href="/curatedList/model/{{this.bmKey}}#dashboard">
                       {{trimString this.name}}
@@ -232,6 +235,8 @@
     var advanced = document.getElementById("advanced-search");
     var toggle = document.getElementById("toggle-advanced");
     var currentFormState = {{termMap.advanced}};
+    let jsonFilterElms = document.querySelectorAll('.json-filter');
+    let anySelectedFilter = false;
     //initialized in makeLink()
     let filters = {};
 
@@ -257,6 +262,19 @@
         return true;
       }
       return false;
+    }
+
+    //change filter criteria in filters map
+    function changeFilter(htmlElm, invert=false) {
+      let phrase = htmlElm.name;
+      let bool = isOn(htmlElm.value);
+      //needed bec input events triggers before value is changed
+      if (invert) {
+        bool = !bool;
+      }
+      let literalPhrase = phrase.replace('-', ' ');
+      filters[literalPhrase] = bool;
+      return literalPhrase, phrase;
     }
 
     //to make links for next and prev buttons
@@ -299,13 +317,9 @@
       n = n.slice(0, n.length - 1);
 
       //initilize map of filter phrases to usage boolean
-      let jsonFilterElms = document.querySelectorAll('.json-filter');
       for (let i = 0; i < jsonFilterElms.length; i++) {
         let elm = jsonFilterElms[i];
-        let phrase = elm.name;
-        let bool = isOn(elm.value);
-        let literalPhrase = phrase.replace('-', ' ');
-        filters[literalPhrase] = bool;
+        let literalPhrase, phrase = changeFilter(elm);
         if (isOn(termMap[phrase])) {
           filters[literalPhrase] = true;
         }
@@ -359,6 +373,13 @@
       } catch{}
     }
 
+    //when a json filter is selected
+    function selectFilter(e) {
+      anySelectedFilter = true;
+      changeFilter(e.target, true);
+    }
+
+    //when search submit is pressed
     function whenPressed(e) {
       e.preventDefault();
       fd = new FormData(e.target);
@@ -408,24 +429,41 @@
       let datas = row.children;
       //app html is always in last td
       let lastData = datas[datas.length - 1];
-      appRowMap[lastData.innerHTML.toLowerCase()] = row;
+      appRowMap[row.id] = lastData.innerHTML.toLowerCase();
     }
 
     //filter model table by application keywords
     function applicationFilter() {
-      let appRowMapKeyVals = Object.entries(appRowMap);
-      let filtersKeyVals = Object.entries(filters);
-      for (let i = 0; i < appRowMapKeyVals.length; i++) {
-        let pair = appRowMapKeyVals[i];
-        let html = pair[0];
-        let row = pair[1];
-        for (let u = 0; u < filtersKeyVals.length; u++) {
-          let filter = filtersKeyVals[u];
-          let phrase = filter[0];
-          let bool = filter[1];
-          //if filter is off and application has phrase
-          if (!bool && html.includes(phrase)) {
+      if (anySelectedFilter) {
+        let rowDispMap = {};
+        let appRowMapKeyVals = Object.entries(appRowMap);
+        let filtersKeyVals = Object.entries(filters);
+        for (let i = 0; i < appRowMapKeyVals.length; i++) {
+          let pair = appRowMapKeyVals[i];
+          let html = pair[1];
+          let row = document.getElementById(pair[0]);
+          let id = row.id;
+          rowDispMap[id] = true;
+          for (let u = 0; u < filtersKeyVals.length; u++) {
+            let filter = filtersKeyVals[u];
+            let phrase = filter[0];
+            let dashPhrase = phrase.replaceAll(' ', '-');
+            let bool = filter[1];
+            //if filter is on and application has phrase
+            if (bool && (html.includes(phrase) || html.includes(dashPhrase))) {
+              rowDispMap[id] = false;
+            }
+          }
+        }
+        console.log(rowDispMap);
+        for (let i = 0; i < appRowMapKeyVals.length; i++) {
+          let pair = appRowMapKeyVals[i];
+          let row = document.getElementById(pair[0]);
+          let decision = rowDispMap[row.id];
+          if (decision) {
             row.style.display = 'none';
+          } else {
+            row.style.display = 'table-row';
           }
         }
       }
@@ -434,8 +472,18 @@
     //custom event listners for form submition
     const simpleForm = document.getElementById("custom-form-simple");
     const advancedForm = document.getElementById("custom-form-advanced");
+    const filterButton = document.getElementById('form-filter');
 
     //apply listerners
     simpleForm.addEventListener("submit", (e) => {whenPressed(e);});
     advancedForm.addEventListener("submit", (e) => {whenPressed(e);});
+    jsonFilterElms.forEach((item) => {
+      item.addEventListener('input', (e) => {selectFilter(e);});
+    });
+    filterButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('clicked');
+      applicationFilter();
+    });
+
 </script>
