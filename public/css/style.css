@@ -3166,6 +3166,7 @@ in printable view*/
 
 #flex-td {
   display: flex;
+  height: 100%;
 }
 
 /*make contents of search div inline*/

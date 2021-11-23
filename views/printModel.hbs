@@ -834,6 +834,69 @@
     </div>
 </div>
 
+{{!-- Geometry Table --}}
+<div id="geometry{{key}}" class="optionData pmTable">
+    <div class="container">
+      {{#each this.Geometry}}
+      <h2 class="header">{{this.$.Name}} (Origin:
+        {{#each this.Origin~}}
+        {{this.$.X}},
+        {{this.$.Y}},
+        {{this.$.Z}}
+        {{~/each}}; Extent:
+        {{#each this.Extent~}}
+        {{this.$.X}},
+        {{this.$.Y}},
+        {{this.$.Z}}
+        {{~/each}}
+        {{~#each this.ImageData~}}
+        ; Image:
+        {{this.$.X}},
+        {{this.$.Y}},
+        {{this.$.Z}}
+        {{~/each}};)
+      </h2>
+
+        <table class="responsive-table">
+            <thead>
+                <tr>
+                    <th>Dimension</th>
+                    <th>Type</th>
+                    <th>Subdomain</th>
+                    <th>Adjacent Subvolumes</th>
+                    <th>Size</th>
+                    <th>Mapped Compartment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each (listIndex ../../../geometryList key)}}
+                <tr>
+                    <td>
+                      {{this.geometry}}
+                    </td>
+                    <td>
+                      {{this.type}}
+                    </td>
+                    <td>
+                      {{this.name}}
+                    </td>
+                    <td>
+                      {{this.adjacent}}
+                    </td>
+                    <td>
+                      {{this.size}} <span class="unit">{{this.unit}}</span>
+                    </td>
+                    <td>
+                      {{this.compartment}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{/each}}
+
 {{!-- Rate Rules Table --}}
 <div class="pmTable optionData" id="raterules{{@key}}">
     <div class="container">
