@@ -1,0 +1,254 @@
+{{!-- searching form  --}}
+
+<div id="test-flex">
+
+    {{!-- advanced searching form  --}}
+    <div class="searchForm subMenu" id="advanced-search">
+        <form id="custom-form-advanced" class="custom-form">
+            <div class="custom-form__group">
+                <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
+                <label class="group__label" for="name">Name</label>
+            </div>
+            <div class="custom-form__group">
+                <input type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}" autocomplete="off">
+                <label class="group__label" for="name">ID</label>
+            </div>
+            <div class="custom-form__group">
+                <select name="category" id="category" placeholder="Category" value="{{termMap.category}}" autocomplete="off">
+                    <option value="all">all</option>
+                    <option value="public">public</option>
+                    <option value="shared">shared</option>
+                    <option value="mine">mine</option>
+                    <option value="tutorials">tutorials</option>
+                    <option value="educational">educational</option>
+                </select>
+                <label class="group__label" for="name">Category</label>
+            </div>
+            {{!--    For now changing owner is disabled, default set to ModelBrick
+            <div class="custom-form__group">
+                <input type="text" name="owner" id="owner" placeholder="Owner" value="{{termMap.owner}}">
+                <label class="group__label" for="name">Owner</label>
+            </div>   Code fully functional if you wish to reenable    --}}
+            <div class="custom-form__group">
+                <input type="text" name="savedLow" id="savedLow" placeholder="Begin Time" value="{{termMap.savedLow}}" autocomplete="off">
+                <label class="group__label" for="name">Begin Time</label>
+            </div>
+            <div class="custom-form__group">
+                <input type="text" name="savedHigh" id="savedHigh" placeholder="End Timestamp" value="{{termMap.savedHigh}}" autocomplete="off">
+                <label class="group__label" for="name">End Timestamp</label>
+            </div>
+            <div class="custom-form__group">
+                <select name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}" autocomplete="off">
+                    <option value="date_desc">Date (newest)</option>
+                    <option value="date_asc">Date (oldest)</option>
+                    <option value="name_asc">Name (A-Z)</option>
+                    <option value="name_desc">Name (Z-A)</option>
+                </select>
+                <label class="group__label" for="name">Order By</label>
+            </div>
+            <div class="custom-form__group">
+                <input type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off">
+                <label class="group__label" for="name">Models per Page</label>
+            </div>
+            <button type="submit" class="custom-form__submit">
+                search
+                <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </button>
+        </form>
+    </div>
+</div>
+
+{{!-- Script for Custom Form Submition Event --}}
+<script>
+    //toggle simple vs advanced search
+    //get elements
+    var advanced = document.getElementById("advanced-search");
+    let jsonFilterElms = document.querySelectorAll('.json-filter');
+    let anySelectedFilter = false;
+    //initialized in makeLink()
+    let filters = {};
+
+    //convert key val pair (from itr below) to format for url
+    function convertPair(pair) {
+      let a = pair[0];
+      let b = pair[1];
+      //remove dangerous chars
+      if (typeof a == typeof '') {
+        a.replace('=', '');
+        a.replace('&', '');
+      }
+      if (typeof b == typeof '') {
+        b.replace('=', '');
+        b.replace('&', '');
+      }
+      return (pair[0] + '=' + pair[1]);
+    }
+
+    //simple on/off to true/false for use below
+    function isOn(s) {
+      if (s == 'on') {
+        return true;
+      }
+      return false;
+    }
+
+    //change filter criteria in filters map
+    function changeFilter(htmlElm, invert=false) {
+      let phrase = htmlElm.name;
+      let bool = isOn(htmlElm.value);
+      //needed bec input events triggers before value is changed
+      if (invert) {
+        bool = !bool;
+      }
+      let literalPhrase = phrase.replace('-', ' ');
+      filters[literalPhrase] = bool;
+      return literalPhrase, phrase;
+    }
+
+    //to make links for next and prev buttons
+    function makeLink(kind, advanced) {
+      //get location
+      old = window.location.href;
+      //this is a bad implementation that requires attention whenever url changes
+      //fix later
+      old = old.replace('https://', '');
+      old = old.replace('http://', '');
+      old = old.replace('localhost:4002', '');
+      old = old.replace('modelbricks.org', '');
+      old = old.replace('model-bricks-testing.herokuapp.com', '');
+      old = old.replace('/curatedList/', '');
+
+      //make term map
+      var terms = old.split("&");
+      for (let i = 0; i < terms.length; i++) {
+        terms[i] = terms[i].split("=");
+      }
+      var termMap = Object.fromEntries(terms);
+
+      //fill entries
+      if (kind == 'next') {
+        termMap['page'] = parseInt(termMap['page']) + 1;
+      } else {
+        termMap['page'] = parseInt(termMap['page']) - 1;
+      }
+      termMap['advanced'] = advanced;
+      //termMap['spatial'] = spatial;
+      //repeat for all simulation search terms
+
+      //assemble new link
+      n = '';
+      let keyValues = Object.entries(termMap);
+      for (pair of keyValues) {
+        n += convertPair(pair) + '&';
+      }
+      //remove tailing "&"
+      n = n.slice(0, n.length - 1);
+
+      //initilize map of filter phrases to usage boolean
+      for (let i = 0; i < jsonFilterElms.length; i++) {
+        let elm = jsonFilterElms[i];
+        let literalPhrase, phrase = changeFilter(elm);
+        if (isOn(termMap[phrase])) {
+          filters[literalPhrase] = true;
+        }
+      }
+
+      return (n);
+    }
+
+    //set initial disp conditions
+    //advanced.style.display = "flex";
+
+
+    //initialize links next and prev
+    try {
+      document.querySelectorAll("#nextLink").forEach((item, i) => {
+        item.href = '/curatedList/' + makeLink('next', currentFormState);
+      });
+    } catch{}
+    try {
+      document.querySelectorAll("#prevLink").forEach((item, i) => {
+        item.href = '/curatedList/' + makeLink('prev', currentFormState);
+      });
+    } catch{}
+
+    //toggle funciton
+    function toggleSearch() {
+      if (currentFormState == "true") {
+        simple.style.display = "flex";
+        advanced.style.display = "none";
+        toggle.textContent = "Advanced Search";
+        currentFormState = "false";
+      } else {
+        simple.style.display = "none";
+        advanced.style.display = "flex";
+        toggle.textContent = "Simple Search";
+        currentFormState = "true";
+      }
+      //change links
+      try {
+        document.getElementById("nextLink").href = '/curatedList/' + makeLink('next', currentFormState);
+      } catch{}
+      try {
+        document.getElementById("prevLink").href = '/curatedList/' + makeLink('prev', currentFormState);
+      } catch{}
+    }
+
+    //when a json filter is selected
+    function selectFilter(e) {
+      anySelectedFilter = true;
+      changeFilter(e.target, true);
+    }
+
+    //when search submit is pressed
+    function whenPressed(e) {
+      e.preventDefault();
+      fd = new FormData(e.target);
+
+      //add atributes not specified in simple search
+      if (fd.get("bmId") == null) {
+        fd.append("bmId","");
+        fd.append("category","all");
+        fd.append("savedLow","");
+        fd.append("savedHigh","");
+        fd.append("orderBy","date_desc");
+        fd.append("maxModels","20");
+      }
+      //add other atributes
+      fd.append("spatial", "off");
+      fd.append("stochastic", "off");
+      fd.append("deterministic", "off");
+      fd.append("image-based", "off");
+      fd.append("analytic-geometry", "off");
+      fd.append("assignment-rules", "off");
+      fd.append("events", "off");
+      fd.append("reaction-rules", "off");
+      fd.append("page","1");
+      fd.append("owner","ModelBrick");//move this inside if statment if different owner search is enabled
+      fd.append("advanced", "false");
+
+      //construct url params for resutls page
+      const itr = fd.entries();
+      let url = '';
+      for (var pair of itr) {
+        url += convertPair(pair) + '&';
+      }
+      //remove tailing "&"
+      url = url.slice(0, url.length - 1);
+
+      //go to results page
+      window.location.assign('/curatedList/' + url);
+    }
+
+    //custom event listners for form submition
+    const advancedForm = document.getElementById("custom-form-advanced");
+
+    //apply listerners
+    advancedForm.addEventListener("submit", (e) => {whenPressed(e);});
+    jsonFilterElms.forEach((item) => {
+      item.addEventListener('input', (e) => {selectFilter(e);});
+    });
+
+</script>

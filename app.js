@@ -164,6 +164,28 @@ const hbs = exphbs.create({
         return string;
       }
     },
+    getSpeciesStructure: function (compList, name) {
+      for (let i = 0; i < compList.length; i++) {
+        let elm = compList[i].$;
+        let elmName = elm.Name;
+        if (name == elmName) {
+          return elm.Structure;
+        }
+      }
+    },
+    initUnits: function (conc, count, volUnit, lumpUnit) {
+      if (conc) {
+        let pair = volUnit.split('.');
+        return pair[0];
+      } else if (count){
+        return lumpUnit;
+      } else {
+        return 'unknown unit';
+      }
+    },
+    isListNotNull: function (list) {
+      return !!list.length;
+    },
     listIndex: function (list, index) {
       return list[index];
     },
@@ -247,8 +269,34 @@ app.get("/curatedList/:search", async (req, res) => {
   });
 });
 
+//advanced search page
+app.get("/advancedSearch/:search", async (req, res) => {
+  //search parameter mirror the format of API Urls except for page term
+  const search = req.params.search;
+  //format search string into object
+  var terms = search.split("&");
+  for (let i = 0; i < terms.length; i++) {
+    terms[i] = terms[i].split("=");
+  }
+  var termMap = Object.fromEntries(terms);
+
+  //some vars for startRow and maxRow terms
+  const APIrow = termMap['page'] * termMap['maxModels'] - termMap['maxModels'] - 1;
+  let modelsPerPage = termMap['maxModels'];
+
+  res.render("advancedSearch", {
+    title: "ModelBricks - Search",
+    termMap,
+    modelsPerPage,
+  });
+});
+
 // Curated List offline copy for testing
 app.get("/testCuratedList/:search", async (req, res) => {
+  //read list json file
+  var json = fs.readFileSync('offlineList.json');
+  json = JSON.parse(json);
+
   //TODO how to get max num of pages?
   //search parameter mirror the format of API Urls except for page term
   const search = req.params.search;
@@ -263,7 +311,6 @@ app.get("/testCuratedList/:search", async (req, res) => {
   const APIrow = termMap['page'] * termMap['maxModels'] - termMap['maxModels'] - 1;
 
   //const json = await fetch_response.json();
-  const json = [];
 
   //if page is empty
   let isNotEmpty = true;

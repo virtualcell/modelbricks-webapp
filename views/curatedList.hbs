@@ -1,8 +1,8 @@
 {{!-- searching form  --}}
 
 <div id="test-flex">
-    {{!--buttons for toggling advanced search--}}
-    <button onclick="toggleSearch()" id="toggle-advanced" class="page-button">Advanced Search</button>
+    {{!--buttons for toggling advanced search, replace with /advancedSearch route--}}
+    {{!--<button onclick="toggleSearch()" id="toggle-advanced" class="page-button">Advanced Search</button>--}}
 
     <div class="searchForm subMenu" id="simple-search">
         <form id="custom-form-simple" class="custom-form">
@@ -187,9 +187,6 @@
                     <a href="{{getPubmedLink this.name}}">
                       {{~getPubmedID this.name~}}
                     </a>
-                    {{#if (getPubmedModelNum this.name)}}
-                    ModelBrick {{getPubmedModelNum this.name~}}
-                    {{/if}}
                     {{else}}
                     <p>No Pubmed Link</p>
                     {{/if}}
@@ -198,7 +195,7 @@
                   <td data-label="Set" class="set">{{toDate this.savedDate}}</td>
                   <td data-label="Applications" class="Applications">
                     {{~#each this.simulations~}}
-                    <p><b>"{{this.bioModelLink.simContextName}}"</b> - {{this.name}}</p>
+                    <b>"{{this.bioModelLink.simContextName}}"</b> - {{this.name}},&nbsp;
                     {{~/each~}}
                   </td>
               </tr>
@@ -482,7 +479,6 @@
     });
     filterButton.addEventListener('click', (e) => {
       e.preventDefault();
-      console.log('clicked');
       applicationFilter();
     });
 

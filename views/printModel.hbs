@@ -582,14 +582,12 @@
             </thead>
             <tbody>
                 {{#each data.vcml.BioModel}}
+                {{#each this.SimulationSpec}}
                 <tr>
                     <td data-title="Name">
-                      {{#each this.SimulationSpec as |value key|}}
-                      {{value.$.Name}}
-                      {{/each}}
+                      {{this.$.Name}}
                     </td>
                     <td data-title="Math Type">
-                      {{#each this.SimulationSpec}}
                         {{#if (eq "true" this.$.Stochastic)}}
                           {{#if (eq "true" this.$.RuleBased)}}
                           Stochastic agent-based (NFSim)
@@ -614,14 +612,12 @@
                           Spatial (3D)
                           {{/if}}
                         {{/each}}
-                      {{/each}}
                     </td>
                     <td data-title="Annotation">
-                      {{#each this.SimulationSpec as |value key|}}
-                      {{value.Annotation}}
-                      {{/each}}
+                      {{this.Annotation}}
                     </td>
                 </tr>
+                {{/each}}
                 {{/each}}
             </tbody>
         </table>
@@ -631,7 +627,7 @@
 {{!-- for each application  --}}
 {{#each data.vcml.BioModel}}
 {{#each this.SimulationSpec as |value key|}}
-<h2 class="sectionTitle">{{key}} - {{value.$.Name}}</h2>
+<h2 class="sectionTitle">Application - {{value.$.Name}}</h2>
 
 {{!-- specifications table species --}}
 <div class="pmTable" id="specsSpecies{{@key}}">
@@ -756,6 +752,8 @@
 </div>
 
 {{!-- Assignment Rules Table --}}
+{{#each this.AssignmentRules}}
+{{#if (isListNotNull this.AssignmentRule)}}
 <div class="pmTable optionData" id="raterules{{@key}}">
     <div class="container">
         <table class="responsive-table">
@@ -776,7 +774,6 @@
                 </tr>
             </thead>
             <tbody>
-              {{#each this.AssignmentRules}}
               {{#each this.AssignmentRule}}
               <tr>
                   <td>{{this.$.Name}}</td>
@@ -784,13 +781,53 @@
                   <td>{{this._}}</td>
               </tr>
               {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{/if}}
+{{/each}}
+
+{{!-- Rate Rules Table --}}
+{{#each this.RateRules}}
+{{#if (isListNotNull this.RateRule)}}
+<div class="pmTable optionData" id="raterules{{@key}}">
+    <div class="container">
+        <table class="responsive-table">
+            <caption>
+              Rate Rules - {{value.$.Name}}
+              <span class="dashboardBtn">
+                <a href="/curatedList/model/{{../../modelName}}#raterules{{@key}}">
+                  <i class="fa fa-undo" aria-hidden="true"></i>
+                  See in Dashboard
+                </a>
+              </span>
+            </caption>
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Variable</th>
+                    <th scope="col">Rate Expression</th>
+                </tr>
+            </thead>
+            <tbody>
+              {{#each this.RateRule}}
+              <tr>
+                  <td>{{this.$.Name}}</td>
+                  <td>{{this.$.RateRuleVariable}}</td>
+                  <td>{{this._}}</td>
+              </tr>
               {{/each}}
             </tbody>
         </table>
     </div>
 </div>
+{{/if}}
+{{/each}}
 
 {{!-- Events Table --}}
+{{#each this.BioEvents}}
+{{#if (isListNotNull this.BioEvent)}}
 <div class="pmTable optionData" id="events{{key}}">
     <div class="container">
         <table class="responsive-table">
@@ -811,7 +848,6 @@
                 </tr>
             </thead>
             <tbody>
-              {{#each this.BioEvents}}
               {{#each this.BioEvent}}
               <tr>
                   <td>{{this.$.Name}}</td>
@@ -828,36 +864,45 @@
                   </td>
               </tr>
               {{/each}}
-              {{/each}}
             </tbody>
         </table>
     </div>
 </div>
+{{/if}}
+{{/each}}
 
 {{!-- Geometry Table --}}
 <div id="geometry{{key}}" class="optionData pmTable">
     <div class="container">
       {{#each this.Geometry}}
-      <h2 class="header">{{this.$.Name}} (Origin:
-        {{#each this.Origin~}}
-        {{this.$.X}},
-        {{this.$.Y}},
-        {{this.$.Z}}
-        {{~/each}}; Extent:
-        {{#each this.Extent~}}
-        {{this.$.X}},
-        {{this.$.Y}},
-        {{this.$.Z}}
-        {{~/each}}
-        {{~#each this.ImageData~}}
-        ; Image:
-        {{this.$.X}},
-        {{this.$.Y}},
-        {{this.$.Z}}
-        {{~/each}};)
-      </h2>
-
         <table class="responsive-table">
+            <caption>
+              Geometry {{this.$.Name}}
+              <span class="dashboardBtn">
+                <a href="/curatedList/model/{{../../../modelName}}#geometry{{key}}">
+                  <i class="fa fa-undo" aria-hidden="true"></i>
+                  See in Dashboard
+                </a>
+              </span>
+              <br>
+              (Origin:
+              {{#each this.Origin~}}
+              {{this.$.X}},
+              {{this.$.Y}},
+              {{this.$.Z}}
+              {{~/each}}; Extent:
+              {{#each this.Extent~}}
+              {{this.$.X}},
+              {{this.$.Y}},
+              {{this.$.Z}}
+              {{~/each}}
+              {{~#each this.ImageData~}}
+              ; Image:
+              {{this.$.X}},
+              {{this.$.Y}},
+              {{this.$.Z}}
+              {{~/each}}<span class="unit">[{{../../this.Model.[0].ModelUnitSystem.[0].$.LengthUnit}}]</span>)
+            </caption>
             <thead>
                 <tr>
                     <th>Dimension</th>
@@ -896,42 +941,6 @@
     </div>
 </div>
 {{/each}}
-
-{{!-- Rate Rules Table --}}
-<div class="pmTable optionData" id="raterules{{@key}}">
-    <div class="container">
-        <table class="responsive-table">
-            <caption>
-              Rate Rules - {{value.$.Name}}
-              <span class="dashboardBtn">
-                <a href="/curatedList/model/{{../../modelName}}#raterules{{@key}}">
-                  <i class="fa fa-undo" aria-hidden="true"></i>
-                  See in Dashboard
-                </a>
-              </span>
-            </caption>
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Variable</th>
-                    <th scope="col">Rate Expression</th>
-                </tr>
-            </thead>
-            <tbody>
-              {{#each this.RateRules}}
-              {{#each this.RateRule}}
-              <tr>
-                  <td>{{this.$.Name}}</td>
-                  <td>{{this.$.RateRuleVariable}}</td>
-                  <td>{{this._}}</td>
-              </tr>
-              {{/each}}
-              {{/each}}
-            </tbody>
-        </table>
-    </div>
-</div>
-
 {{/each}}
 {{/each}}
 

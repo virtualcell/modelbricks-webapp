@@ -54,7 +54,7 @@
                   Applications
                   <i class="fa fa-angle-down dynamic"></i>
                 </a>
-                <ul class="subMenu">
+                <ul class="subMenu active">
                     {{#each data.vcml.BioModel}}
                     {{#each this.SimulationSpec as |value key|}}
                     <li class="drop child">
@@ -83,15 +83,15 @@
                               </a>
                             </li>
                             <li>
-                              <a href="#events{{key}}" class="">
-                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
-                                Events
-                              </a>
-                            </li>
-                            <li>
                               <a href="#raterules{{key}}" class="">
                                 <i class="fa fa-superpowers static" aria-hidden="true"></i>
                                 Rate Rules
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#events{{key}}" class="">
+                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
+                                Events
                               </a>
                             </li>
                             <li>
@@ -309,7 +309,6 @@
 
 
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -354,7 +353,6 @@
                         {{/each}}
 
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -456,7 +454,6 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#structures"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -479,7 +476,6 @@
                             <h2>{{value.$.Name}} Text Annotations</h2>
                         </div>
                     </div>
-                    <a class='popup-close' href="#structures"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -591,7 +587,6 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#species"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -687,7 +682,6 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#molecules"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                     {{#each this.annotations}}
                     <script>
                     /*
@@ -847,7 +841,6 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#observables"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -874,7 +867,8 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
-                                <th class="properties">Properties
+                                <th class="properties">
+                                  Properties
                                 </th>
                                 <th class="Type">Math Type
                                     <div class="sort-table-arrows">
@@ -885,6 +879,9 @@
                                                 class="button" title="up arrow"><i
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
+                                </th>
+                                <th class="properties">
+                                  Annotation
                                 </th>
                             </tr>
                         </thead>
@@ -931,6 +928,9 @@
                                     {{/if}}
                                   {{/each}}
                                 </td>
+                                <td>
+                                  {{this.Annotation}}
+                                </td>
                             </tr>
 
                             {{/each}}
@@ -951,7 +951,6 @@
                           <h2>{{value.$.Name}} Text Annotations</h2>
                       </div>
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -1002,6 +1001,16 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
+                                <th class="Diffusion">Structure
+                                    <div class="sort-table-arrows">
+                                        <a href="javascript:sort(true, 'Diffusion', 'content-table3');"><button
+                                                class="button" title="down arrow"><i
+                                                    class="fa fa-chevron-down"></i></button></a>
+                                        <a href="javascript:sort(false, 'Diffusion', 'content-table3');"><button
+                                                class="button" title="up arrow"><i
+                                                    class="fa fa-chevron-up"></i></button></a>
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1012,7 +1021,10 @@
                                   {{this.$.LocalizedCompoundRef}}
                                 </td>
                                 <td data-label="Initial" class="Initial">
-                                  {{this.InitialConcentration}}
+                                  {{this.InitialConcentration}}{{this.InitialCount}}
+                                  <span class="unit">
+                                    [{{initUnits this.InitialConcentration this.InitialCount ../../../this.Model.[0].ModelUnitSystem.[0].$.VolumeSubstanceUnit ../../../this.Model.[0].ModelUnitSystem.[0].$.LumpedReactionSubstanceUnit}}]
+                                  </span>
                                 </td>
                                 <td data-label="Diffusion" class="Diffusion">
                                   {{~this.Diffusion~}}
@@ -1020,6 +1032,9 @@
                                     [{{../../../this.Model.[0].ModelUnitSystem.[0].$.AreaUnit~}}
                                     /{{../../../this.Model.[0].ModelUnitSystem.[0].$.TimeUnit}}]
                                   </span>
+                                </td>
+                                <td>
+                                  {{getSpeciesStructure ../../../Model.[0].LocalizedCompound this.$.LocalizedCompoundRef}}
                                 </td>
                             </tr>
                             {{/each}}
@@ -1160,7 +1175,6 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
 
                 {{/each}}
@@ -1233,7 +1247,8 @@
             {{!-- Geometry Table --}}
             <div id="geometry{{key}}" class="optionData">
                 {{#each this.Geometry}}
-                <h2 class="header">{{this.$.Name}} (Origin:
+                <h2 class="header">Geometry {{this.$.Name}}</h2>
+                <h2>(Origin:
                   {{#each this.Origin~}}
                   {{this.$.X}},
                   {{this.$.Y}},
@@ -1249,7 +1264,7 @@
                   {{this.$.X}},
                   {{this.$.Y}},
                   {{this.$.Z}}
-                  {{~/each}};)
+                  {{~/each}} <span class="unit">[{{../../this.Model.[0].ModelUnitSystem.[0].$.LengthUnit}}]</span>)
                 </h2>
 
                 <div class="modelTable">
@@ -1389,7 +1404,6 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
 
                 {{/each}}
@@ -1797,7 +1811,7 @@
         $(".overlay").css("display", "block");
         open = 1;
     };
-    // close popup
+    // close popup, no longer used
     $(".popup-close").click(function () {
         open = 0;
         $(".popup").css("opacity", 0);
