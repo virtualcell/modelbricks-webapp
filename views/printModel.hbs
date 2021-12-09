@@ -654,7 +654,12 @@
                 {{#each this.LocalizedCompoundSpec}}
                 <tr>
                     <td data-title="Species">{{this.$.LocalizedCompoundRef}}</td>
-                    <td data-title="Initial Condition">{{this.InitialConcentration}}</td>
+                    <td data-title="Initial Condition">
+                      {{this.InitialConcentration}}{{this.InitialCount}}
+                      <span class="unit">
+                        [{{initUnits this.InitialConcentration this.InitialCount ../../../this.Model.[0].ModelUnitSystem.[0].$.VolumeSubstanceUnit ../../../this.Model.[0].ModelUnitSystem.[0].$.LumpedReactionSubstanceUnit}}]
+                      </span>
+                    </td>
                     <td data-title="Diffusion Constant">
                       {{~this.Diffusion~}}
                       <span class="unit">

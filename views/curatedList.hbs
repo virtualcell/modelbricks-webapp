@@ -4,6 +4,49 @@
     {{!--buttons for toggling advanced search, replace with /advancedSearch route--}}
     {{!--<button onclick="toggleSearch()" id="toggle-advanced" class="page-button">Advanced Search</button>--}}
 
+    {{!-- testing new form for json filters --}}
+    <form id="json-filters">
+        <p id="json-filter-title">Filter by Application</p>
+        <div id="json-row1">
+            <div class="custom-form__group">
+              <input class="json-filter" type="checkbox" name="spatial" id="spatial" value="off">
+              <label class="group__label" for="name">spatial</label>
+            </div>
+            <div class="custom-form__group">
+              <input class="json-filter" type="checkbox" name="stochastic" value="off">
+              <label class="group__label" for="name">stochastic</label>
+            </div>
+            <div class="custom-form__group">
+              <input class="json-filter" type="checkbox" name="deterministic" value="off">
+              <label class="group__label" for="name">deterministic</label>
+            </div>
+            <div class="custom-form__group">
+              <input class="json-filter" type="checkbox" name="image-based" value="off">
+              <label class="group__label" for="name">image-based</label>
+            </div>
+        </div>
+        <div id="json-row2">
+            <div class="custom-form__group">
+              <input class="json-filter" type="checkbox" name="analytic-geometry" value="off">
+              <label class="group__label" for="name">analytic-geometry</label>
+            </div>
+            <div class="custom-form__group">
+              <input class="json-filter" type="checkbox" name="assignment-rules" value="off">
+              <label class="group__label" for="name">assignment-rules</label>
+            </div>
+            <div class="custom-form__group">
+              <input class="json-filter" type="checkbox" name="events" value="off">
+              <label class="group__label" for="name">events</label>
+            </div>
+            <div class="custom-form__group">
+              <input class="json-filter" type="checkbox" name="reaction-rules" value="off">
+              <label class="group__label" for="name">reaction-rules</label>
+            </div>
+        </div>
+        <button type="button" id="form-filter">
+            Filter
+        </button>
+    </form>
     <div class="searchForm subMenu" id="simple-search">
         <form id="custom-form-simple" class="custom-form">
             <div class="custom-form__group">
@@ -67,41 +110,6 @@
                 <input type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off">
                 <label class="group__label" for="name">Models per Page</label>
             </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="spatial" id="spatial" value="off">
-              <label class="group__label" for="name">spatial</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="stochastic" value="off">
-              <label class="group__label" for="name">stochastic</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="deterministic" value="off">
-              <label class="group__label" for="name">deterministic</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="image-based" value="off">
-              <label class="group__label" for="name">image-based</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="analytic-geometry" value="off">
-              <label class="group__label" for="name">analytic-geometry</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="assignment-rules" value="off">
-              <label class="group__label" for="name">assignment-rules</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="events" value="off">
-              <label class="group__label" for="name">events</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="reaction-rules" value="off">
-              <label class="group__label" for="name">reaction-rules</label>
-            </div>
-            <button type="button" id="form-filter" style="margin: 30px; height: 50px;">
-                Filter
-            </button>
             <button type="submit" class="custom-form__submit">
                 search
                 <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
@@ -327,8 +335,8 @@
 
     //set initial disp conditions
     if (currentFormState) {
-      simple.style.display = "none";
-      advanced.style.display = "flex";
+      simple.style.display = "flex";
+      advanced.style.display = "none";
       currentFormState = "true";
     } else {
       simple.style.display = "flex";
@@ -357,7 +365,7 @@
         currentFormState = "false";
       } else {
         simple.style.display = "none";
-        advanced.style.display = "flex";
+        advanced.style.display = "none";
         toggle.textContent = "Simple Search";
         currentFormState = "true";
       }
@@ -452,7 +460,6 @@
             }
           }
         }
-        console.log(rowDispMap);
         for (let i = 0; i < appRowMapKeyVals.length; i++) {
           let pair = appRowMapKeyVals[i];
           let row = document.getElementById(pair[0]);
