@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap");
 
 scroll-behavior: auto;
 
@@ -2125,6 +2126,12 @@ li.card {
   justify-content: center;
 }
 
+#search-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media only screen and (max-width: 767px) {
   .searchForm .datalist-ul {
     top: unset;
@@ -2874,7 +2881,6 @@ span.dashboardBtn a:hover {
 
 .sectionTitle {
   text-align: center;
-  padding: 40px;
   color: #333;
 }
 
@@ -3176,9 +3182,19 @@ in printable view*/
 }
 
 #simple-search {
-  width: max-content;
-  margin: 0 !important;
-  margin-top: 15px;
+  height: 98px;
+  border: 1px solid grey;
+  padding: 5px;
+  border-radius: 5px;
+  flex-basis: auto;
+  flex: none;
+  overflow: hidden;
+}
+
+#simple-search-left {
+  border: 1px solid grey;
+  padding: 5px;
+  border-radius: 5px;
   flex-basis: auto;
   flex: none;
   overflow: hidden;
@@ -3229,37 +3245,102 @@ in printable view*/
 }
 
 #json-filters {
-  margin-right: 20%;
-  margin-left: -20%;
+  background-color: white;
   border: 1px solid grey;
   padding: 5px;
   border-radius: 5px;
 }
 
-#json-row1 {
+.json-row {
   display: inline-block;
 }
 
-#json-row2 {
-  display: inline-block;
-}
-
-#form-filter {
-  display: block;
-  margin: auto;
+.minimal-button {
   background-color: #EEE;
   border: 1px solid grey;
   border-radius: 2px;
   padding: 2px;
 }
 
-#form-filter:hover {
+.minimal-button:hover {
   background-color: white;
   color: #3885b2;
   border-color: #3885b2;
 }
 
+#form-filter {
+  display: block;
+  margin: auto;
+}
+
 #json-filter-title {
   font-size: 25px;
   text-align: center;
+}
+
+#advanced-search-title {
+  display: block;
+  font-size: 25px;
+  text-align: center;
+}
+
+#bmName {
+  display: block;
+  margin: auto;
+}
+
+#curated-search-submit {
+  display: block;
+  margin: auto;
+  margin-top: 17px;
+}
+
+#curated-search-submit-left {
+  display: block;
+  margin: auto;
+}
+
+#curated-flex {
+  /*position: relative;*/
+  /*display: flex;
+  align-items: center;
+  justify-content: center;*/
+}
+
+.left-table {
+  width: 81%;
+  display: inline-block;
+  /*position: absolute;
+  right: 10px;*/
+}
+
+.left-inline {
+  display: inline-block;
+  background-color: red;
+}
+
+.minimal-input {
+  background-color: white;
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.inline-search {
+  display: inline-block;
+}
+
+#advanced-search-submit {
+  display: block;
+  margin: auto;
+}
+
+#advanced-box {
+  width: 325px;
+  margin: auto;
+  margin-top: 100px;
+  background-color: white;
+  border: 1px solid grey;
+  padding: 5px;
+  border-radius: 5px;
 }

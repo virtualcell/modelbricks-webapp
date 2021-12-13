@@ -30,7 +30,7 @@
       "ownerName": "ModelBrick",
       "ownerKey": "101222366",
       "mathKey": "218636368",
-      "solverName": "Cringe (Spatial Stochastic Simulator)",
+      "solverName": "Deterministic (Spatial Stochastic Simulator)",
       "scanCount": 1,
       "bioModelLink": {
         "bioModelKey": "218714153",
@@ -38,7 +38,7 @@
         "bioModelName": "Tutorial_MultiApp",
         "simContextKey": "218636437",
         "simContextBranchId": "218636438",
-        "simContextName": "Cringe"
+        "simContextName": "Deterministic"
       },
       "overrides": []
     }

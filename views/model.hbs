@@ -427,6 +427,7 @@
                                 <td data-label="Type" class="Type">Compartment</td>
                                 <td data-label="Electrical" class="Electrical">
                                     {{this.$.PositiveFeature}}(+) &nbsp; {{this.$.NegativeFeature}}(-)
+                                </td>
                             </tr>
                             {{/each}}
                             {{/each}}
@@ -1586,9 +1587,11 @@
 
     //displaying electrical for only membrane compartments
     var table = document.getElementById('content-table3-structures');
-    var cells = table.rows.item(1).cells;
-    if (cells.item(1).innerHTML != 'Membrane'){
-      cells.item(2).innerHTML = 'N/A';
+    for(let i = 0; i < table.rows.length; i++) {
+      var cells = table.rows.item(i).cells;
+      if (cells.item(1).innerHTML != 'Membrane'){
+        cells.item(2).innerHTML = 'N/A';
+      }
     }
 
     //species initial conditions
@@ -1700,7 +1703,9 @@
 
         //initial draw to get size
         var dims = drawObj.draw(canvas, totalLength, 0);
-        totalLength += dims[0];
+        if (dims) {
+          totalLength += dims[0];
+        }
 
         //add draw function
         drawList.push(
@@ -1726,7 +1731,7 @@
         }
 
         //add height
-        if (dims[1] > totalHeight) {
+        if (dims && dims[1] > totalHeight) {
           totalHeight = dims[1];
         }
       }
@@ -1750,7 +1755,9 @@
 
         //initial draw to get size
         var dims = drawObj.draw(canvas, totalLength, 0, scale);
-        totalLength += dims[0];
+        if (dims) {
+          totalLength += dims[0];
+        }
 
         //add draw function
         drawList.push(
@@ -1776,7 +1783,7 @@
         }
 
         //add height
-        if (dims[1] > totalHeight) {
+        if (dims && dims[1] > totalHeight) {
           totalHeight = dims[1];
         }
       }

@@ -319,7 +319,7 @@ app.get("/testCuratedList/:search", async (req, res) => {
     isNotEmpty = false;
   }
 
-  res.render("curatedList", {
+  res.render("curatedListLeft", {
     title: "ModelBricks - Curated List",
     json,
     termMap,

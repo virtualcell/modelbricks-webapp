@@ -14,8 +14,6 @@ if (subMenus.length) {
           icon.classList.value = "fa fa-angle-down";
         }
       }
-
-      console.log(f);
     });
   });
 }

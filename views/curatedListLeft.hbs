@@ -3,68 +3,19 @@
 <div id="test-flex">
     {{!--buttons for toggling advanced search, replace with /advancedSearch route--}}
     {{!--<button onclick="toggleSearch()" id="toggle-advanced" class="page-button">Advanced Search</button>--}}
-
-    <div id="simple-search">
+    <div id="simple-search-left">
         <form id="custom-form-simple">
             <p id="json-filter-title">Search</p>
-            <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
-            <button id="curated-search-submit" type="submit" class="minimal-button">
+            <input class="" type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
+            <button id="curated-search-submit-left" type="submit" class="minimal-button">
                 Search
             </button>
         </form>
     </div>
-    {{!-- json filters --}}
-    <form id="json-filters">
-        <p id="json-filter-title">Filter by Application</p>
-        <div id="json-row1" class="json-row">
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="spatial" id="spatial" value="off">
-              <label class="group__label" for="name">spatial</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="stochastic" value="off">
-              <label class="group__label" for="name">stochastic</label>
-            </div>
-        </div>
-        <div id="json-row2" class="json-row">
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="deterministic" value="off">
-              <label class="group__label" for="name">deterministic</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="image-based" value="off">
-              <label class="group__label" for="name">image-based</label>
-            </div>
-        </div>
-        <div id="json-row3" class="json-row">
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="analytic-geometry" value="off">
-              <label class="group__label" for="name">analytic-geometry</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="assignment-rules" value="off">
-              <label class="group__label" for="name">assignment-rules</label>
-            </div>
-        </div>
-        <div id="json-row4" class="json-row">
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="events" value="off">
-              <label class="group__label" for="name">events</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="reaction-rules" value="off">
-              <label class="group__label" for="name">reaction-rules</label>
-            </div>
-        </div>
-        <button type="button" class="minimal-button" id="form-filter">
-            Filter
-        </button>
-    </form>
 </div>
 
 {{!-- next page button --}}
-<div id="curated-list-button-holder">
-
+{{!--<div id="curated-list-button-holder">
     {{#if (greater termMap.page 1)}}
     <a id="prevLink" class=page-button>Previous Page</a>
     {{/if}}
@@ -72,86 +23,126 @@
     {{#if isNotEmpty}}
     <a id="nextLink" class=page-button>Next {{modelsPerPage}} Models</a>
     {{/if}}
-
-</div>
+</div>--}}
 
 {{!-- Main sorting table  --}}
 {{#if isNotEmpty}}
-  <div class="curatedListTable">
-      <table id="content-table3" class="table-responsive-full sort-table curatedList">
-          <thead>
-              <tr>
-                  <th class="composer">BioModel name
+  <div id="curated-flex">
+    {{!-- json filters --}}
+    <form id="json-filters" class="left-inline">
+        <p id="json-filter-title">Filter</p>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="spatial" id="spatial" value="off">
+          <label class="group__label" for="name">spatial</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="stochastic" value="off">
+          <label class="group__label" for="name">stochastic</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="deterministic" value="off">
+          <label class="group__label" for="name">deterministic</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="image-based" value="off">
+          <label class="group__label" for="name">image-based</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="analytic-geometry" value="off">
+          <label class="group__label" for="name">analytic-geometry</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="assignment-rules" value="off">
+          <label class="group__label" for="name">assignment-rules</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="events" value="off">
+          <label class="group__label" for="name">events</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="reaction-rules" value="off">
+          <label class="group__label" for="name">reaction-rules</label>
+        </div>
+        <button type="button" class="minimal-button" id="form-filter">
+            Filter
+        </button>
+    </form>
+    <div class="curatedListTable left-table">
+        <table id="content-table3" class="table-responsive-full sort-table curatedList">
+            <thead>
+                <tr>
+                    <th class="composer">BioModel name
+                        <div class="sort-table-arrows">
+                            <a href="javascript:sort(true, 'composer', 'content-table3');"><button class="button"
+                                    title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                            <a href="javascript:sort(false, 'composer', 'content-table3');"><button class="button"
+                                    title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                        </div>
+                    </th>
+                    <th class="pubmed">Pubmed ID
                       <div class="sort-table-arrows">
-                          <a href="javascript:sort(true, 'composer', 'content-table3');"><button class="button"
+                          <a href="javascript:sort(true, 'Pubmed', 'content-table3');"><button class="button"
                                   title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                          <a href="javascript:sort(false, 'composer', 'content-table3');"><button class="button"
+                          <a href="javascript:sort(false, 'Pubmed', 'content-table3');"><button class="button"
                                   title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
                       </div>
-                  </th>
-                  <th class="pubmed">Pubmed ID
-                    <div class="sort-table-arrows">
-                        <a href="javascript:sort(true, 'Pubmed', 'content-table3');"><button class="button"
-                                title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                        <a href="javascript:sort(false, 'Pubmed', 'content-table3');"><button class="button"
-                                title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                    </div>
-                  </th>
-                  {{!-- disabled to save space
-                  <th class="lyrics">Owner
+                    </th>
+                    {{!-- disabled to save space
+                    <th class="lyrics">Owner
+                        <div class="sort-table-arrows">
+                            <a href="javascript:sort(true, 'lyrics', 'content-table3');"><button class="button"
+                                    title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                            <a href="javascript:sort(false, 'lyrics', 'content-table3');"><button class="button"
+                                    title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                        </div>
+                    </th>--}}
+                    <th class="set">Date Saved
+                        <div class="sort-table-arrows">
+                            <a href="javascript:sort(true, 'set', 'content-table3');"><button class="button"
+                                    title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                            <a href="javascript:sort(false, 'set', 'content-table3');"><button class="button"
+                                    title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                        </div>
+                    </th>
+                    <th class="applications">"Applications" - Simulations
                       <div class="sort-table-arrows">
-                          <a href="javascript:sort(true, 'lyrics', 'content-table3');"><button class="button"
+                          <a href="javascript:sort(true, 'Applications', 'content-table3');"><button class="button"
                                   title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                          <a href="javascript:sort(false, 'lyrics', 'content-table3');"><button class="button"
+                          <a href="javascript:sort(false, 'Applications', 'content-table3');"><button class="button"
                                   title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
                       </div>
-                  </th>--}}
-                  <th class="set">Date Saved
-                      <div class="sort-table-arrows">
-                          <a href="javascript:sort(true, 'set', 'content-table3');"><button class="button"
-                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                          <a href="javascript:sort(false, 'set', 'content-table3');"><button class="button"
-                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                      </div>
-                  </th>
-                  <th class="applications">"Applications" - Simulations
-                    <div class="sort-table-arrows">
-                        <a href="javascript:sort(true, 'Applications', 'content-table3');"><button class="button"
-                                title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                        <a href="javascript:sort(false, 'Applications', 'content-table3');"><button class="button"
-                                title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                    </div>
-                  </th>
-              </tr>
-          </thead>
-          <tbody class="main-body">
-              {{#each json}}
-              <tr id="row{{@index}}" onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" style="cursor: pointer">
-                  <td data-label="Composer" class="composer" style="cursor: pointer;" onclick="window.location='/curatedList/model/{{this.bmKey}}#dashboard';">
-                    <a href="/curatedList/model/{{this.bmKey}}#dashboard">
-                      {{trimString this.name}}
-                    </a>
-                  </td>
-                  <td data-label="Pubmed" class="Pubmed">
-                    {{#if (getPubmedLink this.name)}}
-                    <a href="{{getPubmedLink this.name}}">
-                      {{~getPubmedID this.name~}}
-                    </a>
-                    {{else}}
-                    <p>No Pubmed Link</p>
-                    {{/if}}
-                  </td>
-                  {{!--<td data-label="Lyrics" class="lyrics">{{this.ownerName}}</td>--}}
-                  <td data-label="Set" class="set">{{toDate this.savedDate}}</td>
-                  <td data-label="Applications" class="Applications">
-                    {{~#each this.simulations~}}
-                    <b>"{{this.bioModelLink.simContextName}}"</b> - {{this.name}},&nbsp;
-                    {{~/each~}}
-                  </td>
-              </tr>
-              {{/each}}
-          </tbody>
-      </table>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="main-body">
+                {{#each json}}
+                <tr id="row{{@index}}" onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" style="cursor: pointer">
+                    <td data-label="Composer" class="composer" style="cursor: pointer;" onclick="window.location='/curatedList/model/{{this.bmKey}}#dashboard';">
+                      <a href="/curatedList/model/{{this.bmKey}}#dashboard">
+                        {{trimString this.name}}
+                      </a>
+                    </td>
+                    <td data-label="Pubmed" class="Pubmed">
+                      {{#if (getPubmedLink this.name)}}
+                      <a href="{{getPubmedLink this.name}}">
+                        {{~getPubmedID this.name~}}
+                      </a>
+                      {{else}}
+                      <p>No Pubmed Link</p>
+                      {{/if}}
+                    </td>
+                    {{!--<td data-label="Lyrics" class="lyrics">{{this.ownerName}}</td>--}}
+                    <td data-label="Set" class="set">{{toDate this.savedDate}}</td>
+                    <td data-label="Applications" class="Applications">
+                      {{~#each this.simulations~}}
+                      <b>"{{this.bioModelLink.simContextName}}"</b> - {{this.name}},&nbsp;
+                      {{~/each~}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
   </div>
 
 {{else}}
@@ -162,8 +153,7 @@
 {{/if}}
 {{/if}}
 
-<div id="curated-list-button-holder">
-
+{{!--<div id="curated-list-button-holder">
     {{#if (greater termMap.page 1)}}
     <a id="prevLink" class=page-button>Previous Page</a>
     {{/if}}
@@ -171,14 +161,18 @@
     {{#if isNotEmpty}}
     <a id="nextLink" class=page-button>Next {{modelsPerPage}} Models</a>
     {{/if}}
-
-</div>
+</div>--}}
 
 {{!-- Script for Custom Form Submition Event --}}
 <script>
+    //make curated table correct size
+    var jsonFilterDiv = document.getElementById('json-filters');
+    var table = document.querySelector(".curatedListTable.left-table");
+    let tableWidth = window.innerWidth - jsonFilterDiv.offsetWidth - 4;
+    table.style.width = tableWidth.toString() + "px";
     //toggle simple vs advanced search
     //get elements
-    var simple = document.getElementById("simple-search");
+    var simple = document.getElementById("simple-search-left");
     var toggle = document.getElementById("toggle-advanced");
     var currentFormState = {{termMap.advanced}};
     let jsonFilterElms = document.querySelectorAll('.json-filter');

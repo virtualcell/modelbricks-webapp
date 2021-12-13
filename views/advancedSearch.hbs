@@ -1,63 +1,60 @@
 {{!-- searching form  --}}
-
-<div id="test-flex">
-
-    {{!-- advanced searching form  --}}
-    <div class="searchForm subMenu" id="advanced-search">
-        <form id="custom-form-advanced" class="custom-form">
-            <div class="custom-form__group">
-                <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
-                <label class="group__label" for="name">Name</label>
-            </div>
-            <div class="custom-form__group">
-                <input type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}" autocomplete="off">
-                <label class="group__label" for="name">ID</label>
-            </div>
-            <div class="custom-form__group">
-                <select name="category" id="category" placeholder="Category" value="{{termMap.category}}" autocomplete="off">
-                    <option value="all">all</option>
-                    <option value="public">public</option>
-                    <option value="shared">shared</option>
-                    <option value="mine">mine</option>
-                    <option value="tutorials">tutorials</option>
-                    <option value="educational">educational</option>
-                </select>
-                <label class="group__label" for="name">Category</label>
-            </div>
-            {{!--    For now changing owner is disabled, default set to ModelBrick
-            <div class="custom-form__group">
-                <input type="text" name="owner" id="owner" placeholder="Owner" value="{{termMap.owner}}">
-                <label class="group__label" for="name">Owner</label>
-            </div>   Code fully functional if you wish to reenable    --}}
-            <div class="custom-form__group">
-                <input type="text" name="savedLow" id="savedLow" placeholder="Begin Time" value="{{termMap.savedLow}}" autocomplete="off">
-                <label class="group__label" for="name">Begin Time</label>
-            </div>
-            <div class="custom-form__group">
-                <input type="text" name="savedHigh" id="savedHigh" placeholder="End Timestamp" value="{{termMap.savedHigh}}" autocomplete="off">
-                <label class="group__label" for="name">End Timestamp</label>
-            </div>
-            <div class="custom-form__group">
-                <select name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}" autocomplete="off">
-                    <option value="date_desc">Date (newest)</option>
-                    <option value="date_asc">Date (oldest)</option>
-                    <option value="name_asc">Name (A-Z)</option>
-                    <option value="name_desc">Name (Z-A)</option>
-                </select>
-                <label class="group__label" for="name">Order By</label>
-            </div>
-            <div class="custom-form__group">
-                <input type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off">
-                <label class="group__label" for="name">Models per Page</label>
-            </div>
-            <button type="submit" class="custom-form__submit">
-                search
-                <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
-                    stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
-                    <path d="M5 12h14M12 5l7 7-7 7" /></svg>
-            </button>
-        </form>
-    </div>
+<div id="advanced-box">
+  <p id="advanced-search-title">Model Search</p>
+  <div id="search-flex">
+      {{!-- advanced searching form  --}}
+      <div class="" id="advanced-search">
+          <form id="custom-form-advanced" class="">
+              <div class="inline-search">
+                <div class="custom-form__group">
+                    <input class="minimal-input" type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
+                </div>
+                <div class="custom-form__group">
+                    <input class="minimal-input" type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}" autocomplete="off">
+                </div>
+                <div class="custom-form__group">
+                    <p>Category</p>
+                    <select class="minimal-input" name="category" id="category" placeholder="Category" value="{{termMap.category}}" autocomplete="off">
+                        <option value="all">all</option>
+                        <option value="public">public</option>
+                        <option value="shared">shared</option>
+                        <option value="mine">mine</option>
+                        <option value="tutorials">tutorials</option>
+                        <option value="educational">educational</option>
+                    </select>
+                </div>
+                <div class="custom-form__group">
+                    <p>Owner</p>
+                    <input class="minimal-input" type="text" name="owner" id="owner" placeholder="Owner" value="{{termMap.owner}}">
+                </div>
+              </div>
+              <div class="inline-search">
+                <div class="custom-form__group">
+                    <input class="minimal-input" type="text" name="savedLow" id="savedLow" placeholder="Begin Time" value="{{termMap.savedLow}}" autocomplete="off">
+                </div>
+                <div class="custom-form__group">
+                    <input class="minimal-input" type="text" name="savedHigh" id="savedHigh" placeholder="End Timestamp" value="{{termMap.savedHigh}}" autocomplete="off">
+                </div>
+                <div class="custom-form__group">
+                    <p>Order By</p>
+                    <select class="minimal-input" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}" autocomplete="off">
+                        <option value="date_desc">Date (newest)</option>
+                        <option value="date_asc">Date (oldest)</option>
+                        <option value="name_asc">Name (A-Z)</option>
+                        <option value="name_desc">Name (Z-A)</option>
+                    </select>
+                </div>
+                <div class="custom-form__group">
+                    <p>Models per Page</p>
+                    <input class="minimal-input" type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off">
+                </div>
+              </div>
+              <button id="advanced-search-submit" type="submit" class="minimal-button">
+                  Search
+              </button>
+          </form>
+      </div>
+  </div>
 </div>
 
 {{!-- Script for Custom Form Submition Event --}}
