@@ -226,7 +226,7 @@
                       </div>
                     </td>
                 </tr>
-                <tr>
+                <tr class="if-empty">
                     <td class="printAnnotationWrap">
                         <div class="printAnnotation">
 
@@ -325,7 +325,7 @@
                       {{~/each~}}
                       {{/each}}</td>
                 </tr>
-                <tr>
+                <tr class="if-empty">
                     <td class="printAnnotationWrap">
                         <div class="printAnnotation">
 
@@ -1015,6 +1015,23 @@
 <script src="/js/model-graphics.js"></script>
 
 <script>
+  //function to extract text from HTML string
+  //credit to https://stackoverflow.com/questions/28899298/extract-the-text-out-of-html-string-using-javascript
+  function extractContent(s, space=false) {
+    var span= document.createElement('span');
+    span.innerHTML= s;
+    if(space) {
+      var children= span.querySelectorAll('*');
+      for(var i = 0 ; i < children.length ; i++) {
+        if(children[i].textContent)
+          children[i].textContent+= ' ';
+        else
+          children[i].innerText+= ' ';
+      }
+    }
+    return [span.textContent || span.innerText].toString().replace(/ +/g,' ');
+  };
+
   //remove trailing syntax
   function removeTrailingSyntax(element) {
     s = element.innerHTML;
@@ -1191,7 +1208,9 @@
 
         //initial draw to get size
         var dims = drawObj.draw(canvas, totalLength, 0);
-        totalLength += dims[0];
+        if (dims) {
+          totalLength += dims[0];
+        }
 
         //add draw function
         drawList.push(
@@ -1217,7 +1236,7 @@
         }
 
         //add height
-        if (dims[1] > totalHeight) {
+        if (dims && dims[1] > totalHeight) {
           totalHeight = dims[1];
         }
       }
@@ -1240,7 +1259,9 @@
 
         //initial draw to get size
         var dims = drawObj.draw(canvas, totalLength, 0, scale);
-        totalLength += dims[0];
+        if (dims) {
+          totalLength += dims[0];
+        }
 
         //add draw function
         drawList.push(
@@ -1266,7 +1287,7 @@
         }
 
         //add height
-        if (dims[1] > totalHeight) {
+        if (dims && dims[1] > totalHeight) {
           totalHeight = dims[1];
         }
       }
@@ -1279,6 +1300,29 @@
       for (let u = 0; u < drawList.length; u++) {
         let elm = drawList[u];
         elm.func(canvas, elm.x, totalHeight);
+      }
+    }
+  }
+
+  //remove empty rows
+  //fix this
+  let empties = document.querySelectorAll('.if-empty');
+  for (let i = 0; i < empties.length; i++) {
+    let row = empties[i];
+    let children = row.children;
+    for (let u = 0; u < children.length; u++) {
+      let child = children[u];
+      let html = child.innerHTML;
+      if (html.includes("</canvas>") && html.includes('width="0"')) {
+        let fIndex = html.indexOf("<canvas");
+        let lIndex = html.indexOf("</canvas>");
+        html = html.slice(0, fIndex) + html.slice(lIndex + "</canvas>".length, html.length);
+      }
+      //if element is whitespace dont display
+      if (extractContent(html).trim().length == 0) {
+        //child.style.display = "none";
+      } else {
+        console.log(child);
       }
     }
   }

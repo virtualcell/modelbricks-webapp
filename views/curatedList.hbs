@@ -1,70 +1,5 @@
-{{!-- searching form  --}}
-
-<div id="test-flex">
-    {{!--buttons for toggling advanced search, replace with /advancedSearch route--}}
-    {{!--<button onclick="toggleSearch()" id="toggle-advanced" class="page-button">Advanced Search</button>--}}
-
-    <div id="simple-search">
-        <form id="custom-form-simple">
-            <p id="json-filter-title">Search</p>
-            <input type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
-            <button id="curated-search-submit" type="submit" class="minimal-button">
-                Search
-            </button>
-        </form>
-    </div>
-    {{!-- json filters --}}
-    <form id="json-filters">
-        <p id="json-filter-title">Filter by Application</p>
-        <div id="json-row1" class="json-row">
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="spatial" id="spatial" value="off">
-              <label class="group__label" for="name">spatial</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="stochastic" value="off">
-              <label class="group__label" for="name">stochastic</label>
-            </div>
-        </div>
-        <div id="json-row2" class="json-row">
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="deterministic" value="off">
-              <label class="group__label" for="name">deterministic</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="image-based" value="off">
-              <label class="group__label" for="name">image-based</label>
-            </div>
-        </div>
-        <div id="json-row3" class="json-row">
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="analytic-geometry" value="off">
-              <label class="group__label" for="name">analytic-geometry</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="assignment-rules" value="off">
-              <label class="group__label" for="name">assignment-rules</label>
-            </div>
-        </div>
-        <div id="json-row4" class="json-row">
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="events" value="off">
-              <label class="group__label" for="name">events</label>
-            </div>
-            <div class="custom-form__group">
-              <input class="json-filter" type="checkbox" name="reaction-rules" value="off">
-              <label class="group__label" for="name">reaction-rules</label>
-            </div>
-        </div>
-        <button type="button" class="minimal-button" id="form-filter">
-            Filter
-        </button>
-    </form>
-</div>
-
 {{!-- next page button --}}
-<div id="curated-list-button-holder">
-
+{{!--<div id="curated-list-button-holder">
     {{#if (greater termMap.page 1)}}
     <a id="prevLink" class=page-button>Previous Page</a>
     {{/if}}
@@ -72,86 +7,222 @@
     {{#if isNotEmpty}}
     <a id="nextLink" class=page-button>Next {{modelsPerPage}} Models</a>
     {{/if}}
-
-</div>
+</div>--}}
 
 {{!-- Main sorting table  --}}
 {{#if isNotEmpty}}
-  <div class="curatedListTable">
-      <table id="content-table3" class="table-responsive-full sort-table curatedList">
-          <thead>
-              <tr>
-                  <th class="composer">BioModel name
-                      <div class="sort-table-arrows">
-                          <a href="javascript:sort(true, 'composer', 'content-table3');"><button class="button"
+  <div id="curated-flex">
+    {{!-- simple search --}}
+    <div id="multi-search-div" class="left-inline">
+      <div id="simple-search-left">
+          <form id="custom-form-simple">
+              <p id="json-filter-title"><b>Search</b></p>
+              <input class="minimal-input" type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
+              <select class="minimal-input" name="abstract-category" id="category-select" placeholder="Category" autocomplete="off">
+                  <option disabled selected value>Category</option>
+                  <option value="smoldyn">Curated</option>
+                  <option value="fifv">Tutorials</option>
+                  <option value="css">Education</option>
+                  <option value="gibson">ModelBricks</option>
+                  <option value="rg">All Public</option>
+              </select>
+              <button id="curated-search-submit-left" type="submit" class="minimal-button">
+                  Search
+              </button>
+          </form>
+      </div>
+      {{!-- json filters --}}
+      <form id="json-filters">
+          <p id="json-filter-title"><b>Filter</b></p>
+          <div class="custom-form__group">
+            <input class="json-filter" type="checkbox" name="spatial" id="spatial" value="off">
+            <label class="group__label" for="name">Spatial</label>
+          </div>
+          <div class="custom-form__group">
+            <input class="json-filter" type="checkbox" name="stochastic" value="off">
+            <label class="group__label" for="name">Stochastic</label>
+          </div>
+          <div class="custom-form__group">
+            <input class="json-filter" type="checkbox" name="deterministic" value="off">
+            <label class="group__label" for="name">Deterministic</label>
+          </div>
+          <div class="custom-form__group">
+            <input class="json-filter" type="checkbox" name="image-based" value="off">
+            <label class="group__label" for="name">Image-Based</label>
+          </div>
+          <div class="custom-form__group">
+            <input class="json-filter" type="checkbox" name="analytic-geometry" value="off">
+            <label class="group__label" for="name">Analytic-Geometry</label>
+          </div>
+          <div class="custom-form__group">
+            <input class="json-filter" type="checkbox" name="assignment-rules" value="off">
+            <label class="group__label" for="name">Assignment-Rules</label>
+          </div>
+          <div class="custom-form__group">
+            <input class="json-filter" type="checkbox" name="events" value="off">
+            <label class="group__label" for="name">Events</label>
+          </div>
+          <div class="custom-form__group">
+            <input class="json-filter" type="checkbox" name="reaction-rules" value="off">
+            <label class="group__label" for="name">Reaction-Rules</label>
+          </div>
+          <div class="custom-form__group">
+            <input class="json-filter" type="checkbox" name="nfsim" value="off">
+            <label class="group__label" for="name">NFSim</label>
+          </div>
+          <div class="custom-form__group">
+            <input class="json-filter" type="checkbox" name="bionetgen" value="off">
+            <label class="group__label" for="name">BioNetGen</label>
+          </div>
+          <select class="minimal-input" name="solver" id="solver" placeholder="Solver Name" autocomplete="off">
+              <option disabled selected value>Filter by Solver</option>
+              <option value="smoldyn">Smoldyn</option>
+              <option value="fifv">Fully-Implicit Finite Volume</option>
+              <option value="css">Combined Stiff Solver</option>
+              <option value="gibson">Gibson</option>
+              <option value="rg">Regular Grid</option>
+          </select>
+          <input class="minimal-input" type="text" name="text-filter" id="text-filter" placeholder="Filter by Text" autocomplete="off">
+          <button type="button" class="minimal-button" id="form-filter">
+              Filter
+          </button>
+      </form>
+      {{!-- advanced search form  --}}
+      <div class="left-inline minimal-border" id="advanced-search">
+          <p id="json-filter-title"><b>Advanced</b></p>
+          <form id="custom-form-advanced" class="">
+              <div class="custom-form__group">
+                  <p>Model ID</p>
+                  <input class="minimal-input" type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}" autocomplete="off">
+              </div>
+              <div class="custom-form__group">
+                  <p>Category</p>
+                  <select class="minimal-input" name="category" id="category" placeholder="Category" value="{{termMap.category}}" autocomplete="off">
+                      <option value="all">all</option>
+                      <option value="public">public</option>
+                      <option value="shared">shared</option>
+                      <option value="mine">mine</option>
+                      <option value="tutorials">tutorials</option>
+                      <option value="educational">educational</option>
+                  </select>
+              </div>
+              <div class="custom-form__group">
+                  <p>Model Owner</p>
+                  <input class="minimal-input" type="text" name="owner" id="owner" placeholder="Owner" value="{{termMap.owner}}">
+              </div>
+              <div class="custom-form__group">
+                  <p>Modified After</p>
+                  <input class="minimal-input" type="text" name="savedLow" id="savedLow" placeholder="Begin Time" value="{{termMap.savedLow}}" autocomplete="off">
+              </div>
+              <div class="custom-form__group">
+                  <p>Modified Before</p>
+                  <input class="minimal-input" type="text" name="savedHigh" id="savedHigh" placeholder="End Timestamp" value="{{termMap.savedHigh}}" autocomplete="off">
+              </div>
+              <div class="custom-form__group">
+                  <p>Order By</p>
+                  <select class="minimal-input" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}" autocomplete="off">
+                      <option value="date_desc">Date (newest)</option>
+                      <option value="date_asc">Date (oldest)</option>
+                      <option value="name_asc">Name (A-Z)</option>
+                      <option value="name_desc">Name (Z-A)</option>
+                  </select>
+              </div>
+              <div class="custom-form__group">
+                  <p>Models per Page</p>
+                  <input class="minimal-input" type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off">
+              </div>
+              <button id="advanced-search-submit" type="submit" class="minimal-button">
+                  Search
+              </button>
+          </form>
+      </div>
+    </div>
+    <div class="curatedListTable left-table">
+        <table id="content-table3" class="table-responsive-full sort-table curatedList">
+            <thead>
+                <tr>
+                    <th class="composer">BioModel name
+                        <div class="sort-table-arrows">
+                            <a href="javascript:sort(true, 'composer', 'content-table3');"><button class="button"
+                                    title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                            <a href="javascript:sort(false, 'composer', 'content-table3');"><button class="button"
+                                    title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                        </div>
+                    </th>
+                    <th class="pubmed">Pubmed ID
+                      {{!--<div class="sort-table-arrows">
+                          <a href="javascript:sort(true, 'Pubmed', 'content-table3');"><button class="button"
                                   title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                          <a href="javascript:sort(false, 'composer', 'content-table3');"><button class="button"
+                          <a href="javascript:sort(false, 'Pubmed', 'content-table3');"><button class="button"
+                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                      </div>--}}
+                    </th>
+                    {{!-- disabled to save space
+                    <th class="lyrics">Owner
+                        <div class="sort-table-arrows">
+                            <a href="javascript:sort(true, 'lyrics', 'content-table3');"><button class="button"
+                                    title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                            <a href="javascript:sort(false, 'lyrics', 'content-table3');"><button class="button"
+                                    title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                        </div>
+                    </th>--}}
+                    <th class="set">Saved
+                        {{!--<div class="sort-table-arrows">
+                            <a href="javascript:sort(true, 'set', 'content-table3');"><button class="button"
+                                    title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                            <a href="javascript:sort(false, 'set', 'content-table3');"><button class="button"
+                                    title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                        </div>--}}
+                    </th>
+                    <th class="applications">"Applications" - Simulations
+                      <div class="sort-table-arrows">
+                          <a href="javascript:sort(true, 'Applications', 'content-table3');"><button class="button"
+                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                          <a href="javascript:sort(false, 'Applications', 'content-table3');"><button class="button"
                                   title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
                       </div>
-                  </th>
-                  <th class="pubmed">Pubmed ID
-                    <div class="sort-table-arrows">
-                        <a href="javascript:sort(true, 'Pubmed', 'content-table3');"><button class="button"
-                                title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                        <a href="javascript:sort(false, 'Pubmed', 'content-table3');"><button class="button"
-                                title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                    </div>
-                  </th>
-                  {{!-- disabled to save space
-                  <th class="lyrics">Owner
-                      <div class="sort-table-arrows">
-                          <a href="javascript:sort(true, 'lyrics', 'content-table3');"><button class="button"
-                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                          <a href="javascript:sort(false, 'lyrics', 'content-table3');"><button class="button"
-                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                      </div>
-                  </th>--}}
-                  <th class="set">Date Saved
-                      <div class="sort-table-arrows">
-                          <a href="javascript:sort(true, 'set', 'content-table3');"><button class="button"
-                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                          <a href="javascript:sort(false, 'set', 'content-table3');"><button class="button"
-                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                      </div>
-                  </th>
-                  <th class="applications">"Applications" - Simulations
-                    <div class="sort-table-arrows">
-                        <a href="javascript:sort(true, 'Applications', 'content-table3');"><button class="button"
-                                title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                        <a href="javascript:sort(false, 'Applications', 'content-table3');"><button class="button"
-                                title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                    </div>
-                  </th>
-              </tr>
-          </thead>
-          <tbody class="main-body">
-              {{#each json}}
-              <tr id="row{{@index}}" onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" style="cursor: pointer">
-                  <td data-label="Composer" class="composer" style="cursor: pointer;" onclick="window.location='/curatedList/model/{{this.bmKey}}#dashboard';">
-                    <a href="/curatedList/model/{{this.bmKey}}#dashboard">
-                      {{trimString this.name}}
-                    </a>
-                  </td>
-                  <td data-label="Pubmed" class="Pubmed">
-                    {{#if (getPubmedLink this.name)}}
-                    <a href="{{getPubmedLink this.name}}">
-                      {{~getPubmedID this.name~}}
-                    </a>
-                    {{else}}
-                    <p>No Pubmed Link</p>
-                    {{/if}}
-                  </td>
-                  {{!--<td data-label="Lyrics" class="lyrics">{{this.ownerName}}</td>--}}
-                  <td data-label="Set" class="set">{{toDate this.savedDate}}</td>
-                  <td data-label="Applications" class="Applications">
-                    {{~#each this.simulations~}}
-                    <b>"{{this.bioModelLink.simContextName}}"</b> - {{this.name}},&nbsp;
-                    {{~/each~}}
-                  </td>
-              </tr>
-              {{/each}}
-          </tbody>
-      </table>
+                    </th>
+                    <th style="display: none;">
+                      {{!-- Hidden column used to get info for filtering --}}
+                      Solver Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="main-body">
+                {{#each json}}
+                <tr id="row{{@index}}" onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" style="cursor: pointer">
+                    <td data-label="Composer" class="composer" style="cursor: pointer;" onclick="window.location='/curatedList/model/{{this.bmKey}}#dashboard';">
+                      <a href="/curatedList/model/{{this.bmKey}}#dashboard">
+                        {{trimString this.name}}
+                      </a>
+                    </td>
+                    <td data-label="Pubmed" class="Pubmed">
+                      {{#if (getPubmedLink this.name)}}
+                      <a href="{{getPubmedLink this.name}}">
+                        {{~getPubmedID this.name~}}
+                      </a>
+                      {{else}}
+                      <p>No Pubmed Link</p>
+                      {{/if}}
+                    </td>
+                    {{!--<td data-label="Lyrics" class="lyrics">{{this.ownerName}}</td>--}}
+                    <td data-label="Set" class="set">{{toDate this.savedDate}}</td>
+                    <td data-label="Applications" class="Applications">
+                      {{~#each this.simulations~}}
+                      <b>"{{this.bioModelLink.simContextName}}"</b> - {{this.name}},&nbsp;
+                      {{~/each~}}
+                    </td>
+                    <td style="display: none;">
+                      {{!-- Hidden column used to get info for filtering --}}
+                      {{#each this.simulations}}
+                      {{this.solverName}}
+                      {{/each}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
   </div>
 
 {{else}}
@@ -162,8 +233,7 @@
 {{/if}}
 {{/if}}
 
-<div id="curated-list-button-holder">
-
+{{!--<div id="curated-list-button-holder">
     {{#if (greater termMap.page 1)}}
     <a id="prevLink" class=page-button>Previous Page</a>
     {{/if}}
@@ -171,14 +241,19 @@
     {{#if isNotEmpty}}
     <a id="nextLink" class=page-button>Next {{modelsPerPage}} Models</a>
     {{/if}}
-
-</div>
+</div>--}}
 
 {{!-- Script for Custom Form Submition Event --}}
 <script>
+    //make curated table correct size
+    var jsonFilterDiv = document.getElementById('json-filters');
+    var table = document.querySelector(".curatedListTable.left-table");
+    let tableWidth = window.innerWidth - jsonFilterDiv.offsetWidth - 4;
+    table.style.width = tableWidth.toString() + "px";
     //toggle simple vs advanced search
     //get elements
-    var simple = document.getElementById("simple-search");
+    var simple = document.getElementById("simple-search-left");
+    var advanced = document.getElementById("advanced-search");
     var toggle = document.getElementById("toggle-advanced");
     var currentFormState = {{termMap.advanced}};
     let jsonFilterElms = document.querySelectorAll('.json-filter');
@@ -186,6 +261,7 @@
     let selectedFilters = new Set();
     //initialized in makeLink()
     let filters = {};
+    let textFilters = {};
 
     //convert key val pair (from itr below) to format for url
     function convertPair(pair) {
@@ -227,7 +303,6 @@
       if (selectedFilters.size == 0) {
         anySelectedFilter = false;
       }
-      //console.log(selectedFilters);
       return literalPhrase, phrase;
     }
 
@@ -334,6 +409,16 @@
       e.preventDefault();
       fd = new FormData(e.target);
 
+      //get other form's data
+      let otherForm = null;
+      if (e.target.id == "custom-form-advanced") {
+        otherForm = new FormData(document.getElementById('custom-form-simple'));
+      } else if (e.target.id == "custom-form-simple") {
+        otherForm = new FormData(document.getElementById('custom-form-advanced'));
+      } else {
+        console.log('Unrecognised search form id');
+      }
+
       //add atributes not specified in simple search
       if (fd.get("bmId") == null) {
         fd.append("bmId","");
@@ -358,8 +443,12 @@
 
       //construct url params for resutls page
       const itr = fd.entries();
+      const otherItr = otherForm.entries();
       let url = '';
       for (var pair of itr) {
+        url += convertPair(pair) + '&';
+      }
+      for (var pair of otherItr) {
         url += convertPair(pair) + '&';
       }
       //remove tailing "&"
@@ -378,22 +467,75 @@
       let row = modelRows[i];
       let datas = row.children;
       //app html is always in last td
+      let secondLastData = datas[datas.length - 2];
       let lastData = datas[datas.length - 1];
-      appRowMap[row.id] = lastData.innerHTML.toLowerCase();
+      appRowMap[row.id] = lastData.innerHTML.toLowerCase() + secondLastData.innerHTML.toLowerCase();
+    }
+
+    //add solver phrase to filters
+    function applySolverFilter(phrase) {
+      if (phrase == "fifv") {
+        //Fully-Implicit Finite Volume
+        textFilters["fully"] = true;
+        textFilters["implicit"] = true;
+        textFilters["finite"] = true;
+        textFilters["volume"] = true;
+      } else if (phrase == "css") {
+        //Combined Stiff Solver
+        textFilters["combined"] = true;
+        textFilters["stiff"] = true;
+        textFilters["solver"] = true;
+      } else if (phrase == "rg") {
+        //Regular Grid
+        textFilters["regular"] = true;
+        textFilters["grid"] = true;
+      } else if (phrase == "smoldyn") {
+        //Smoldyn
+        textFilters["smoldyn"] = true;
+      } else if (phrase == "gibson") {
+        //Gibson
+        textFilters["gibson"] = true;
+      }
     }
 
     //filter model table by application keywords
-    function applicationFilter() {
+    function applicationFilter(e) {
+      //get text filter to filters
+      let textFilter = document.getElementById("text-filter");
+      let textPhrase = textFilter.value.trim().toLowerCase();
+      //get text filter to filters
+      let solverFilter = document.getElementById("solver");
+      let solverPhrase = null;
+      for (let i = 0; i < solverFilter.options.length; i++) {
+        let option = solverFilter.options[i];
+        if (option.selected) {
+          solverPhrase = option.value;
+          break;
+        }
+      }
+      //get all other filters
       let appRowMapKeyVals = Object.entries(appRowMap);
-      if (anySelectedFilter) {
+      if (anySelectedFilter || textPhrase.length > 0 || solverPhrase.length > 0) {
+        //add text filters if they have been input, otherwise reset test filters
+        if (textPhrase) {
+          textFilters[textPhrase] = true;
+        } else if (solverPhrase) {
+          applySolverFilter(solverPhrase);
+        } else {
+          textFilters = {};
+        }
+        console.log(textFilters);
         let rowDispMap = {};
-        let filtersKeyVals = Object.entries(filters);
+        //ket val map of union of filters and textFilters
+        let filtersKeyVals = Object.entries(Object.assign({}, filters, textFilters));
+        //iterate through rows
         for (let i = 0; i < appRowMapKeyVals.length; i++) {
           let pair = appRowMapKeyVals[i];
           let html = pair[1];
           let row = document.getElementById(pair[0]);
           let id = row.id;
           rowDispMap[id] = true;
+          //for each filter, make rowDispMap
           for (let u = 0; u < filtersKeyVals.length; u++) {
             let filter = filtersKeyVals[u];
             let phrase = filter[0];
@@ -405,6 +547,7 @@
             }
           }
         }
+        //if row doesn't match filter, set display none
         for (let i = 0; i < appRowMapKeyVals.length; i++) {
           let pair = appRowMapKeyVals[i];
           let row = document.getElementById(pair[0]);
@@ -426,16 +569,18 @@
 
     //custom event listners for form submition
     const simpleForm = document.getElementById("custom-form-simple");
+    const advancedForm = document.getElementById("custom-form-advanced");
     const filterButton = document.getElementById('form-filter');
 
     //apply listerners
     simpleForm.addEventListener("submit", (e) => {whenPressed(e);});
+    advancedForm.addEventListener("submit", (e) => {whenPressed(e);});
     jsonFilterElms.forEach((item) => {
       item.addEventListener('input', (e) => {selectFilter(e);});
     });
     filterButton.addEventListener('click', (e) => {
       e.preventDefault();
-      applicationFilter();
+      applicationFilter(e);
     });
 
 </script>

@@ -60,8 +60,9 @@ a {
 
 .navbar {
   padding: 1.15rem 0rem 0rem;
-  -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.105);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.105);
+  border-bottom: 1px solid grey;
+  /*-webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.105);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.105);*/
   background-color: #fff;
   height: 70.39px;
   /*
@@ -1138,7 +1139,7 @@ li.card {
   color: #000;
   font-size: 0.83333em;
   line-height: 1.8;
-  padding: 15px 14px 13px 14px;
+  /*padding: 15px 14px 13px 14px;*/
   position: relative;
   text-align: left;
   text-transform: uppercase;
@@ -1156,7 +1157,7 @@ li.card {
 .curatedListTable table th,
 .curatedListTable table td {
   border: 1px solid #bfbfbf;
-  padding: 10px 14px;
+  /*padding: 10px 14px;*/
   position: relative;
   vertical-align: middle;
 }
@@ -1269,7 +1270,7 @@ li.card {
 }
 
 .curatedListTable .sort-table th.set {
-  width: 18% !important;
+  width: 5% !important;
 }
 
 .curatedListTable .sort-table th.arranger {
@@ -3274,7 +3275,6 @@ in printable view*/
 }
 
 #json-filter-title {
-  font-size: 25px;
   text-align: center;
 }
 
@@ -3316,7 +3316,6 @@ in printable view*/
 
 .left-inline {
   display: inline-block;
-  background-color: red;
 }
 
 .minimal-input {
@@ -3343,4 +3342,28 @@ in printable view*/
   border: 1px solid grey;
   padding: 5px;
   border-radius: 5px;
+}
+
+#multi-search-div {
+  vertical-align: top;
+}
+
+.minimal-border {
+  background-color: white;
+  border: 1px solid grey;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+#solver {
+  display: block;
+  width: 157px;
+  color: grey;
+}
+
+#category-select {
+  display: block;
+  color: grey;
+  width: 105px;
+  margin: auto;
 }
