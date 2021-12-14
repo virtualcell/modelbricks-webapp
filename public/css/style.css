@@ -1156,6 +1156,8 @@ li.card {
 
 .curatedListTable table th,
 .curatedListTable table td {
+  padding-left: 5px;
+  padding-right: 5px;
   border: 1px solid #bfbfbf;
   /*padding: 10px 14px;*/
   position: relative;
@@ -3319,6 +3321,15 @@ in printable view*/
 }
 
 .minimal-input {
+  display: block;
+  background-color: white;
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.minimal-input-inline {
+  width: 75px;
   background-color: white;
   border: 1px solid grey;
   border-radius: 5px;

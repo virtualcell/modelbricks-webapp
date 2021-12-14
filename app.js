@@ -192,6 +192,9 @@ const hbs = exphbs.create({
     and: function (a, b) {
       return (a && b);
     },
+    or: function (a, b) {
+      return (a || b);
+    },
     isNull: function (s) {
       return (s == null);
     },

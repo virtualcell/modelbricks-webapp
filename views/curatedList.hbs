@@ -1,14 +1,3 @@
-{{!-- next page button --}}
-{{!--<div id="curated-list-button-holder">
-    {{#if (greater termMap.page 1)}}
-    <a id="prevLink" class=page-button>Previous Page</a>
-    {{/if}}
-
-    {{#if isNotEmpty}}
-    <a id="nextLink" class=page-button>Next {{modelsPerPage}} Models</a>
-    {{/if}}
-</div>--}}
-
 {{!-- Main sorting table  --}}
 {{#if isNotEmpty}}
   <div id="curated-flex">
@@ -18,13 +7,12 @@
           <form id="custom-form-simple">
               <p id="json-filter-title"><b>Search</b></p>
               <input class="minimal-input" type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
-              <select class="minimal-input" name="abstract-category" id="category-select" placeholder="Category" autocomplete="off">
-                  <option disabled selected value>Category</option>
-                  <option value="smoldyn">Curated</option>
-                  <option value="fifv">Tutorials</option>
-                  <option value="css">Education</option>
-                  <option value="gibson">ModelBricks</option>
-                  <option value="rg">All Public</option>
+              <select class="minimal-input" name="category" id="category-select" placeholder="Category" autocomplete="off">
+                  <option {{#if (eq termMap.category "tutorial")}}selected {{/if}}value="tutorial">Tutorials</option>
+                  <option {{#if (eq termMap.category "education")}}selected {{/if}}value="education">Education</option>
+                  <option {{#if (or (eq termMap.owner "modelbrick") (eq termMap.category modelbricks))}}selected {{/if}}value="">ModelBricks</option>
+                  <option {{#if (eq termMap.category "all")}}selected {{/if}}value="all">All Public</option>
+                  <option {{#if (eq termMap.category "curated")}}selected {{/if}}value="curated">Curated</option>
               </select>
               <button id="curated-search-submit-left" type="submit" class="minimal-button">
                   Search
@@ -96,27 +84,13 @@
                   <input class="minimal-input" type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}" autocomplete="off">
               </div>
               <div class="custom-form__group">
-                  <p>Category</p>
-                  <select class="minimal-input" name="category" id="category" placeholder="Category" value="{{termMap.category}}" autocomplete="off">
-                      <option value="all">all</option>
-                      <option value="public">public</option>
-                      <option value="shared">shared</option>
-                      <option value="mine">mine</option>
-                      <option value="tutorials">tutorials</option>
-                      <option value="educational">educational</option>
-                  </select>
-              </div>
-              <div class="custom-form__group">
                   <p>Model Owner</p>
-                  <input class="minimal-input" type="text" name="owner" id="owner" placeholder="Owner" value="{{termMap.owner}}">
+                  <input class="minimal-input" type="text" name="owner" id="owner" placeholder="Owner" value="">
               </div>
               <div class="custom-form__group">
-                  <p>Modified After</p>
-                  <input class="minimal-input" type="text" name="savedLow" id="savedLow" placeholder="Begin Time" value="{{termMap.savedLow}}" autocomplete="off">
-              </div>
-              <div class="custom-form__group">
-                  <p>Modified Before</p>
-                  <input class="minimal-input" type="text" name="savedHigh" id="savedHigh" placeholder="End Timestamp" value="{{termMap.savedHigh}}" autocomplete="off">
+                  <p>Modified After / Before</p>
+                  <input class="minimal-input-inline" type="text" name="savedLow" id="savedLow" placeholder="Begin Time" value="{{termMap.savedLow}}" autocomplete="off">
+                  <input class="minimal-input-inline" type="text" name="savedHigh" id="savedHigh" placeholder="End Timestamp" value="{{termMap.savedHigh}}" autocomplete="off">
               </div>
               <div class="custom-form__group">
                   <p>Order By</p>
@@ -131,11 +105,21 @@
                   <p>Models per Page</p>
                   <input class="minimal-input" type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off">
               </div>
-              <button id="advanced-search-submit" type="submit" class="minimal-button">
+              {{!--<button id="advanced-search-submit" type="submit" class="minimal-button">
                   Search
-              </button>
+              </button>--}}
           </form>
       </div>
+      {{!-- next page button --}}
+      {{!--<div id="curated-list-button-holder">
+          {{#if (greater termMap.page 1)}}
+          <a id="prevLink" class=page-button>Previous Page</a>
+          {{/if}}
+
+          {{#if isNotEmpty}}
+          <a id="nextLink" class=page-button>Next {{modelsPerPage}} Models</a>
+          {{/if}}
+      </div>--}}
     </div>
     <div class="curatedListTable left-table">
         <table id="content-table3" class="table-responsive-full sort-table curatedList">
@@ -148,6 +132,9 @@
                             <a href="javascript:sort(false, 'composer', 'content-table3');"><button class="button"
                                     title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
                         </div>
+                    </th>
+                    <th>
+                      Owner
                     </th>
                     <th class="pubmed">Pubmed ID
                       {{!--<div class="sort-table-arrows">
@@ -182,7 +169,7 @@
                                   title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
                       </div>
                     </th>
-                    <th style="display: none;">
+                    <th>
                       {{!-- Hidden column used to get info for filtering --}}
                       Solver Name
                     </th>
@@ -195,6 +182,9 @@
                       <a href="/curatedList/model/{{this.bmKey}}#dashboard">
                         {{trimString this.name}}
                       </a>
+                    </td>
+                    <td>
+                      {{this.ownerName}}
                     </td>
                     <td data-label="Pubmed" class="Pubmed">
                       {{#if (getPubmedLink this.name)}}
@@ -209,13 +199,13 @@
                     <td data-label="Set" class="set">{{toDate this.savedDate}}</td>
                     <td data-label="Applications" class="Applications">
                       {{~#each this.simulations~}}
-                      <b>"{{this.bioModelLink.simContextName}}"</b> - {{this.name}},&nbsp;
+                      <b>"{{this.bioModelLink.simContextName}}"</b> - {{this.name}}<br>
                       {{~/each~}}
                     </td>
-                    <td style="display: none;">
+                    <td>
                       {{!-- Hidden column used to get info for filtering --}}
                       {{#each this.simulations}}
-                      {{this.solverName}}
+                      {{this.solverName}}<br>
                       {{/each}}
                     </td>
                 </tr>
@@ -419,27 +409,10 @@
         console.log('Unrecognised search form id');
       }
 
-      //add atributes not specified in simple search
-      if (fd.get("bmId") == null) {
-        fd.append("bmId","");
-        fd.append("category","all");
-        fd.append("savedLow","");
-        fd.append("savedHigh","");
-        fd.append("orderBy","date_desc");
-        fd.append("maxModels","20");
-      }
       //add other atributes
-      fd.append("spatial", "off");
-      fd.append("stochastic", "off");
-      fd.append("deterministic", "off");
-      fd.append("image-based", "off");
-      fd.append("analytic-geometry", "off");
-      fd.append("assignment-rules", "off");
-      fd.append("events", "off");
-      fd.append("reaction-rules", "off");
       fd.append("page","1");
-      fd.append("owner","ModelBrick");//move this inside if statment if different owner search is enabled
       fd.append("advanced", currentFormState);
+      //handle special modlebricks category case
 
       //construct url params for resutls page
       const itr = fd.entries();
@@ -524,7 +497,6 @@
         } else {
           textFilters = {};
         }
-        console.log(textFilters);
         let rowDispMap = {};
         //ket val map of union of filters and textFilters
         let filtersKeyVals = Object.entries(Object.assign({}, filters, textFilters));
