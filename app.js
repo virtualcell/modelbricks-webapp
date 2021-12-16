@@ -13,6 +13,11 @@ var indexRouter = require("./routes/index");
 
 app.use(express.json());
 
+//read publications file and store for use in curated list
+var pubRaw = fs.readFileSync('json-data/publications.json');
+const pubs = JSON.parse(pubRaw);
+delete pubRaw;
+
 // view engine setup
 const hbs = exphbs.create({
   extname: "hbs",
@@ -89,7 +94,7 @@ const hbs = exphbs.create({
       }
     },
     trimString: function (passedString) {
-      if (passedString.includes("::")) {
+      if (passedString && passedString.includes("::")) {
         var indexToSlice = passedString.indexOf("::") + 2;
         var length = passedString.length;
         var theString = passedString.slice(indexToSlice, length);
@@ -183,6 +188,17 @@ const hbs = exphbs.create({
         return 'unknown unit';
       }
     },
+    shortString: function (s, length) {
+      if (s) {
+        if (s.length > length - 3) {
+          return s.slice(0, length - 3) + '...';
+        } else {
+          return s.slice(0, length) + '...';
+        }
+      } else {
+        return "";
+      }
+    },
     isListNotNull: function (list) {
       return !!list.length;
     },
@@ -194,6 +210,9 @@ const hbs = exphbs.create({
     },
     or: function (a, b) {
       return (a || b);
+    },
+    not: function(a) {
+      return !a;
     },
     isNull: function (s) {
       return (s == null);
@@ -216,6 +235,28 @@ const hbs = exphbs.create({
   },
 });
 
+//function used in curated list to generate json model list
+async function getModelList(termMap) {
+  //handle special case for publucations
+  if (termMap['category'] == 'publications') {
+    //idk why pubs needs to be wrapped in async func, but it does
+    const func = async ()=> {return pubs;};
+    var json = await func();
+  } else {
+    //calculate row var API uses
+    const APIrow = termMap['page'] * termMap['maxModels'] - termMap['maxModels'] - 1;
+
+    //create link and fetch from API
+    const api_url =
+      "https://vcellapi-beta.cam.uchc.edu:8080/biomodel?bmName=" + termMap["bmName"] + "&bmId=" + termMap["bmId"] + "&category=" + termMap["category"] + "&owner=" + termMap["owner"] + "&savedLow=" + termMap["savedLow"] + "&savedHigh=" + termMap["savedHigh"] + "&startRow=" + APIrow + "&maxRows=" + termMap['maxModels'] + "&orderBy=" + termMap["orderBy"];
+
+    const fetch_response = await fetch(api_url);
+    json = await fetch_response.json();
+  }
+  return json;
+}
+
+//hbs + express param setup
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 
@@ -246,17 +287,10 @@ app.get("/curatedList/:search", async (req, res) => {
   }
   var termMap = Object.fromEntries(terms);
 
-  //some vars for startRow and maxRow terms
-  const APIrow = termMap['page'] * termMap['maxModels'] - termMap['maxModels'] - 1;
+  //get model list
+  const json = await getModelList(termMap);
 
-  //used for actual data
-  const api_url =
-    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel?bmName=" + termMap["bmName"] + "&bmId=" + termMap["bmId"] + "&category=" + termMap["category"] + "&owner=" + termMap["owner"] + "&savedLow=" + termMap["savedLow"] + "&savedHigh=" + termMap["savedHigh"] + "&startRow=" + APIrow + "&maxRows=" + termMap['maxModels'] + "&orderBy=" + termMap["orderBy"];
-
-  const fetch_response = await fetch(api_url);
-  const json = await fetch_response.json();
-
-  //if page is empty
+  //if there are no models in list
   let isNotEmpty = true;
   let modelsPerPage = termMap['maxModels'];
   if (json.length == 0) {
@@ -297,7 +331,7 @@ app.get("/advancedSearch/:search", async (req, res) => {
 // Curated List offline copy for testing
 app.get("/testCuratedList/:search", async (req, res) => {
   //read list json file
-  var json = fs.readFileSync('offlineList.json');
+  var json = fs.readFileSync('json-data/offlineList.json');
   json = JSON.parse(json);
 
   //TODO how to get max num of pages?

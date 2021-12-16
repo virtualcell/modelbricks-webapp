@@ -1,131 +1,132 @@
 {{!-- Main sorting table  --}}
-{{#if isNotEmpty}}
-  <div id="curated-flex">
-    {{!-- simple search --}}
-    <div id="multi-search-div" class="left-inline">
-      <div id="simple-search-left">
-          <form id="custom-form-simple">
-              <p id="json-filter-title"><b>Search</b></p>
-              <input class="minimal-input" type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
-              <select class="minimal-input" name="category" id="category-select" placeholder="Category" autocomplete="off">
-                  <option {{#if (eq termMap.category "tutorial")}}selected {{/if}}value="tutorial">Tutorials</option>
-                  <option {{#if (eq termMap.category "education")}}selected {{/if}}value="education">Education</option>
-                  <option {{#if (or (eq termMap.owner "modelbrick") (eq termMap.category modelbricks))}}selected {{/if}}value="">ModelBricks</option>
-                  <option {{#if (eq termMap.category "all")}}selected {{/if}}value="all">All Public</option>
-                  <option {{#if (eq termMap.category "curated")}}selected {{/if}}value="curated">Curated</option>
-              </select>
-              <button id="curated-search-submit-left" type="submit" class="minimal-button">
-                  Search
-              </button>
-          </form>
-      </div>
-      {{!-- json filters --}}
-      <form id="json-filters">
-          <p id="json-filter-title"><b>Filter</b></p>
-          <div class="custom-form__group">
-            <input class="json-filter" type="checkbox" name="spatial" id="spatial" value="off">
-            <label class="group__label" for="name">Spatial</label>
-          </div>
-          <div class="custom-form__group">
-            <input class="json-filter" type="checkbox" name="stochastic" value="off">
-            <label class="group__label" for="name">Stochastic</label>
-          </div>
-          <div class="custom-form__group">
-            <input class="json-filter" type="checkbox" name="deterministic" value="off">
-            <label class="group__label" for="name">Deterministic</label>
-          </div>
-          <div class="custom-form__group">
-            <input class="json-filter" type="checkbox" name="image-based" value="off">
-            <label class="group__label" for="name">Image-Based</label>
-          </div>
-          <div class="custom-form__group">
-            <input class="json-filter" type="checkbox" name="analytic-geometry" value="off">
-            <label class="group__label" for="name">Analytic-Geometry</label>
-          </div>
-          <div class="custom-form__group">
-            <input class="json-filter" type="checkbox" name="assignment-rules" value="off">
-            <label class="group__label" for="name">Assignment-Rules</label>
-          </div>
-          <div class="custom-form__group">
-            <input class="json-filter" type="checkbox" name="events" value="off">
-            <label class="group__label" for="name">Events</label>
-          </div>
-          <div class="custom-form__group">
-            <input class="json-filter" type="checkbox" name="reaction-rules" value="off">
-            <label class="group__label" for="name">Reaction-Rules</label>
-          </div>
-          <div class="custom-form__group">
-            <input class="json-filter" type="checkbox" name="nfsim" value="off">
-            <label class="group__label" for="name">NFSim</label>
-          </div>
-          <div class="custom-form__group">
-            <input class="json-filter" type="checkbox" name="bionetgen" value="off">
-            <label class="group__label" for="name">BioNetGen</label>
-          </div>
-          <select class="minimal-input" name="solver" id="solver" placeholder="Solver Name" autocomplete="off">
-              <option disabled selected value>Filter by Solver</option>
-              <option value="smoldyn">Smoldyn</option>
-              <option value="fifv">Fully-Implicit Finite Volume</option>
-              <option value="css">Combined Stiff Solver</option>
-              <option value="gibson">Gibson</option>
-              <option value="rg">Regular Grid</option>
-          </select>
-          <input class="minimal-input" type="text" name="text-filter" id="text-filter" placeholder="Filter by Text" autocomplete="off">
-          <button type="button" class="minimal-button" id="form-filter">
-              Filter
-          </button>
-      </form>
-      {{!-- advanced search form  --}}
-      <div class="left-inline minimal-border" id="advanced-search">
-          <p id="json-filter-title"><b>Advanced</b></p>
-          <form id="custom-form-advanced" class="">
-              <div class="custom-form__group">
-                  <p>Model ID</p>
-                  <input class="minimal-input" type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}" autocomplete="off">
-              </div>
-              <div class="custom-form__group">
-                  <p>Model Owner</p>
-                  <input class="minimal-input" type="text" name="owner" id="owner" placeholder="Owner" value="">
-              </div>
-              <div class="custom-form__group">
-                  <p>Modified After / Before</p>
-                  <input class="minimal-input-inline" type="text" name="savedLow" id="savedLow" placeholder="Begin Time" value="{{termMap.savedLow}}" autocomplete="off">
-                  <input class="minimal-input-inline" type="text" name="savedHigh" id="savedHigh" placeholder="End Timestamp" value="{{termMap.savedHigh}}" autocomplete="off">
-              </div>
-              <div class="custom-form__group">
-                  <p>Order By</p>
-                  <select class="minimal-input" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}" autocomplete="off">
-                      <option value="date_desc">Date (newest)</option>
-                      <option value="date_asc">Date (oldest)</option>
-                      <option value="name_asc">Name (A-Z)</option>
-                      <option value="name_desc">Name (Z-A)</option>
-                  </select>
-              </div>
-              <div class="custom-form__group">
-                  <p>Models per Page</p>
-                  <input class="minimal-input" type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off">
-              </div>
-              {{!--<button id="advanced-search-submit" type="submit" class="minimal-button">
-                  Search
-              </button>--}}
-          </form>
-      </div>
-      {{!-- next page button --}}
-      {{!--<div id="curated-list-button-holder">
-          {{#if (greater termMap.page 1)}}
-          <a id="prevLink" class=page-button>Previous Page</a>
-          {{/if}}
-
-          {{#if isNotEmpty}}
-          <a id="nextLink" class=page-button>Next {{modelsPerPage}} Models</a>
-          {{/if}}
-      </div>--}}
+<div id="curated-flex">
+  {{!-- simple search --}}
+  <div id="multi-search-div" class="left-inline">
+    <div id="simple-search-left">
+        <form id="custom-form-simple">
+            <p id="json-filter-title"><b>Search</b></p>
+            <input class="minimal-input" type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
+            <select class="minimal-input" name="category" id="category-select" placeholder="Category" autocomplete="off">
+                <option {{#if (eq termMap.category "tutorial")}}selected {{/if}}value="tutorial">Tutorials</option>
+                <option {{#if (eq termMap.category "education")}}selected {{/if}}value="education">Education</option>
+                <option {{#if (or (eq termMap.owner "ModelBrick") (eq termMap.category modelbricks))}}selected {{/if}}value="modelbrick">ModelBricks</option>
+                <option {{#if (and (eq termMap.category "all") (not termMap.owner "ModelBrick"))}}selected {{/if}}value="all">All Public</option>
+                <option {{#if (eq termMap.category "curated")}}selected {{/if}}value="curated">Curated</option>
+                <option {{#if (eq termMap.category "publications")}}selected {{/if}}value="publications">Publications</option>
+            </select>
+            <button id="curated-search-submit-left" type="submit" class="minimal-button">
+                Search
+            </button>
+        </form>
     </div>
+    {{!-- json filters --}}
+    <form id="json-filters">
+        <p id="json-filter-title"><b>Filter</b></p>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="spatial" id="spatial" value="off">
+          <label class="group__label" for="name">Spatial</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="stochastic" value="off">
+          <label class="group__label" for="name">Stochastic</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="deterministic" value="off">
+          <label class="group__label" for="name">Deterministic</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="image-based" value="off">
+          <label class="group__label" for="name">Image-Based</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="analytic-geometry" value="off">
+          <label class="group__label" for="name">Analytic-Geometry</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="assignment-rules" value="off">
+          <label class="group__label" for="name">Assignment-Rules</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="events" value="off">
+          <label class="group__label" for="name">Events</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="reaction-rules" value="off">
+          <label class="group__label" for="name">Reaction-Rules</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="nfsim" value="off">
+          <label class="group__label" for="name">NFSim</label>
+        </div>
+        <div class="custom-form__group">
+          <input class="json-filter" type="checkbox" name="bionetgen" value="off">
+          <label class="group__label" for="name">BioNetGen</label>
+        </div>
+        <select class="minimal-input" name="solver" id="solver" placeholder="Solver Name" autocomplete="off">
+            <option disabled selected value>Filter by Solver</option>
+            <option value="smoldyn">Smoldyn</option>
+            <option value="fifv">Fully-Implicit Finite Volume</option>
+            <option value="css">Combined Stiff Solver</option>
+            <option value="gibson">Gibson</option>
+            <option value="rg">Regular Grid</option>
+        </select>
+        <input class="minimal-input" type="text" name="text-filter" id="text-filter" placeholder="Filter by Text" autocomplete="off">
+        <button type="button" class="minimal-button" id="form-filter">
+            Filter
+        </button>
+    </form>
+    {{!-- advanced search form  --}}
+    <div class="left-inline minimal-border" id="advanced-search">
+        <p id="json-filter-title"><b>Advanced</b></p>
+        <form id="custom-form-advanced" class="">
+            <div class="custom-form__group">
+                <p>Model ID</p>
+                <input class="minimal-input" type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}" autocomplete="off">
+            </div>
+            <div class="custom-form__group">
+                <p>Model Owner</p>
+                <input class="minimal-input" type="text" name="owner" id="owner" placeholder="Owner" value="">
+            </div>
+            <div class="custom-form__group">
+                <p>Modified After / Before</p>
+                <input class="minimal-input-inline" type="text" name="savedLow" id="savedLow" placeholder="Begin Time" value="{{termMap.savedLow}}" autocomplete="off">
+                <input class="minimal-input-inline" type="text" name="savedHigh" id="savedHigh" placeholder="End Timestamp" value="{{termMap.savedHigh}}" autocomplete="off">
+            </div>
+            <div class="custom-form__group">
+                <p>Order By</p>
+                <select class="minimal-input" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}" autocomplete="off">
+                    <option value="date_desc">Date (newest)</option>
+                    <option value="date_asc">Date (oldest)</option>
+                    <option value="name_asc">Name (A-Z)</option>
+                    <option value="name_desc">Name (Z-A)</option>
+                </select>
+            </div>
+            <div class="custom-form__group">
+                <p>Models per Page</p>
+                <input class="minimal-input" type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off">
+            </div>
+            {{!--<button id="advanced-search-submit" type="submit" class="minimal-button">
+                Search
+            </button>--}}
+        </form>
+    </div>
+    {{!-- next/prev page button --}}
+    <div id="curated-list-button-holder">
+        {{#if (greater termMap.page 1)}}
+        <a id="prevLink" class="page-button">Previous Page</a>
+        {{/if}}
+
+        {{#if isNotEmpty}}
+        <a id="nextLink" class="page-button">Next {{modelsPerPage}} Models</a>
+        {{/if}}
+    </div>
+  </div>
+{{#if isNotEmpty}}
     <div class="curatedListTable left-table">
         <table id="content-table3" class="table-responsive-full sort-table curatedList">
             <thead>
                 <tr>
-                    <th class="composer">BioModel name
+                    <th class="curated-list-bm-name">BioModel name
                         <div class="sort-table-arrows">
                             <a href="javascript:sort(true, 'composer', 'content-table3');"><button class="button"
                                     title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
@@ -161,7 +162,7 @@
                                     title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
                         </div>--}}
                     </th>
-                    <th class="applications">"Applications" - Simulations
+                    <th class="applications">"Applications" - Sims
                       <div class="sort-table-arrows">
                           <a href="javascript:sort(true, 'Applications', 'content-table3');"><button class="button"
                                   title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
@@ -169,24 +170,23 @@
                                   title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
                       </div>
                     </th>
-                    <th>
-                      {{!-- Hidden column used to get info for filtering --}}
+                    <th class="solvers">
                       Solver Name
                     </th>
                 </tr>
             </thead>
             <tbody class="main-body">
                 {{#each json}}
-                <tr id="row{{@index}}" onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" style="cursor: pointer">
-                    <td data-label="Composer" class="composer" style="cursor: pointer;" onclick="window.location='/curatedList/model/{{this.bmKey}}#dashboard';">
+                <tr id="row{{@index}}" style="cursor: pointer">
+                    <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" data-label="Composer" class="composer" style="cursor: pointer;" onclick="window.location='/curatedList/model/{{this.bmKey}}#dashboard';">
                       <a href="/curatedList/model/{{this.bmKey}}#dashboard">
                         {{trimString this.name}}
                       </a>
                     </td>
-                    <td>
+                    <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'">
                       {{this.ownerName}}
                     </td>
-                    <td data-label="Pubmed" class="Pubmed">
+                    <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" data-label="Pubmed" class="Pubmed">
                       {{#if (getPubmedLink this.name)}}
                       <a href="{{getPubmedLink this.name}}">
                         {{~getPubmedID this.name~}}
@@ -196,50 +196,64 @@
                       {{/if}}
                     </td>
                     {{!--<td data-label="Lyrics" class="lyrics">{{this.ownerName}}</td>--}}
-                    <td data-label="Set" class="set">{{toDate this.savedDate}}</td>
-                    <td data-label="Applications" class="Applications">
-                      {{~#each this.simulations~}}
-                      <b>"{{this.bioModelLink.simContextName}}"</b> - {{this.name}}<br>
-                      {{~/each~}}
+                    <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" data-label="Set" class="set">{{toDate this.savedDate}}</td>
+                    <td name="app.{{@key}}" data-label="Applications" class="Applications pulldown">
+                      <div name="app.{{@key}}" id="appAbv{{@key}}" class="abreviated-text">
+                          {{shortString this.simulations.[0].bioModelLink.simContextName 35}}
+                      </div>
+                      <div name="app.{{@key}}" id="appFul{{@key}}" class="full-text">
+                          {{~#each this.simulations~}}
+                          <b name="app.{{@../key}}">
+                            "{{this.bioModelLink.simContextName}}"
+                          </b> - {{this.name}}
+                          <br name="app.{{@../key}}">
+                          {{~/each~}}
+                      </div>
                     </td>
-                    <td>
-                      {{!-- Hidden column used to get info for filtering --}}
-                      {{#each this.simulations}}
-                      {{this.solverName}}<br>
-                      {{/each}}
+                    <td name="solv.{{@key}}" data-label="Solvers" class="Solvers pulldown">
+                      <div name="solv.{{@key}}" id="solvAbv{{@key}}" class="abreviated-text">
+                          {{shortString this.simulations.[0].solverName 35}}
+                      </div>
+                      <div name="solv.{{@key}}" id="solvFul{{@key}}" class="full-text">
+                        {{#each this.simulations}}
+                        {{this.solverName}}
+                        <br name="solv.{{@../key}}">
+                        {{/each}}
+                      </div>
                     </td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
+        {{!-- next/prev page button --}}
+        <div id="curated-list-button-holder">
+            {{#if (greater termMap.page 1)}}
+            <a id="prevLink" class="page-button">Previous Page</a>
+            {{/if}}
+
+            {{#if isNotEmpty}}
+            <a id="nextLink" class="page-button">Next {{modelsPerPage}} Models</a>
+            {{/if}}
+        </div>
     </div>
+    {{else}}
+    {{#if (eq page 1)}}
+      <p id="list-empty">looks like there aren't any public models that match the given search terms.</p>
+    {{else}}
+      <p id="list-empty">looks like there aren't any more public models that match the given search terms.</p>
+    {{/if}}
+    {{/if}}
   </div>
-
-{{else}}
-{{#if (eq page 1)}}
-  <p id="list-empty">looks like there aren't any public models that match the given search terms.</p>
-{{else}}
-  <p id="list-empty">looks like there aren't any more public models that match the given search terms.</p>
-{{/if}}
-{{/if}}
-
-{{!--<div id="curated-list-button-holder">
-    {{#if (greater termMap.page 1)}}
-    <a id="prevLink" class=page-button>Previous Page</a>
-    {{/if}}
-
-    {{#if isNotEmpty}}
-    <a id="nextLink" class=page-button>Next {{modelsPerPage}} Models</a>
-    {{/if}}
-</div>--}}
 
 {{!-- Script for Custom Form Submition Event --}}
 <script>
     //make curated table correct size
     var jsonFilterDiv = document.getElementById('json-filters');
     var table = document.querySelector(".curatedListTable.left-table");
-    let tableWidth = window.innerWidth - jsonFilterDiv.offsetWidth - 4;
-    table.style.width = tableWidth.toString() + "px";
+    if (table) {
+      let tableWidth = window.innerWidth - jsonFilterDiv.offsetWidth - 4;
+      table.style.width = tableWidth.toString() + "px";
+    }
     //toggle simple vs advanced search
     //get elements
     var simple = document.getElementById("simple-search-left");
@@ -412,7 +426,11 @@
       //add other atributes
       fd.append("page","1");
       fd.append("advanced", currentFormState);
-      //handle special modlebricks category case
+      //handle special modlebricks + publicantions category cases
+      if (fd.get('category') == 'modelbrick' || otherForm.get('category') == 'modelbrick') {
+        fd.set('category', 'all');
+        otherForm.set('owner', 'ModelBrick');
+      }
 
       //construct url params for resutls page
       const itr = fd.entries();
@@ -539,16 +557,40 @@
       }
     }
 
+    //toggle pulldown menus in curated list table
+    function togglePulldown(e) {
+      //get elements from toggle code stored in html "name" atribute
+      let toggleCode = e.target.getAttribute("name");
+      console.log(toggleCode);
+      toggleCode = toggleCode.split('.');
+      let abvCode = toggleCode[0] + 'Abv' + toggleCode[1];
+      let fullCode = toggleCode[0] + 'Ful' + toggleCode[1];
+      let abv = document.getElementById(abvCode);
+      let full = document.getElementById(fullCode);
+      //toggle display of abv and full
+      if (abv.style.display == 'none') {
+        abv.style.display = 'block';
+        full.style.display = 'none';
+      } else {
+        abv.style.display = 'none';
+        full.style.display = 'block';
+      }
+    }
+
     //custom event listners for form submition
     const simpleForm = document.getElementById("custom-form-simple");
     const advancedForm = document.getElementById("custom-form-advanced");
     const filterButton = document.getElementById('form-filter');
+    const pulldowns = document.querySelectorAll(".pulldown");
 
     //apply listerners
     simpleForm.addEventListener("submit", (e) => {whenPressed(e);});
     advancedForm.addEventListener("submit", (e) => {whenPressed(e);});
     jsonFilterElms.forEach((item) => {
       item.addEventListener('input', (e) => {selectFilter(e);});
+    });
+    pulldowns.forEach((item) => {
+      item.addEventListener('click', (e) => {togglePulldown(e);});
     });
     filterButton.addEventListener('click', (e) => {
       e.preventDefault();

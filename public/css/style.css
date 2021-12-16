@@ -1259,15 +1259,11 @@ li.card {
   padding: 4px 8px;
 }
 
-.curatedListTable .sort-table th.title {
-  width: 17% !important;
+.curatedListTable .sort-table th.curated-list-bm-name {
+  width: 5% !important;
 }
 
-.curatedListTable .sort-table th.composer {
-  width: 25% !important;
-}
-
-.curatedListTable .sort-table th.lyrics {
+.curatedListTable .sort-table th.pubmed {
   width: 15% !important;
 }
 
@@ -1275,9 +1271,14 @@ li.card {
   width: 5% !important;
 }
 
-.curatedListTable .sort-table th.arranger {
+.curatedListTable .sort-table th.applications {
   width: 25% !important;
 }
+
+.curatedListTable .sort-table th.solvers {
+  width: 25% !important;
+}
+
 
 .curatedListTable .sort-table .title {
   font-weight: bold;
@@ -1330,7 +1331,7 @@ li.card {
   .curatedListTable .sort-table th.lyrics,
   .curatedListTable .sort-table th.set,
   .curatedListTable .sort-table th.info {
-    width: 100px !important;
+    /*width: 100px !important;*/
   }
   .curatedListTable .sort-table td.title:before {
     display: none;
@@ -1616,7 +1617,7 @@ li.card {
   .modelTable .sort-table th.lyrics,
   .modelTable .sort-table th.set,
   .modelTable .sort-table th.info {
-    width: 100px !important;
+    /*width: 100px !important;*/
   }
   .modelTable .sort-table td.title:before {
     display: none;
@@ -2080,14 +2081,12 @@ li.card {
 
 /*page button similar to search form buttons*/
 .page-button {
-  width: max-content;
-  display: inline-block;
+  display: block;
+  width: 111px;
   padding: 10px;
-  margin-right: 15px;
-  margin-left: -10px;
   background-color: white;
+  margin: auto;
   color: #3683A3;
-  border-style: solid;
   border: 1px solid #3683A3;
   border-radius: 3px;
   font-size: 12px;
@@ -2099,10 +2098,8 @@ li.card {
 }
 
 #curated-list-button-holder {
-  width: inherit;/*166px;*/
+  width: inherit;
   display: block;
-  position:relative;
-  float:right;
 }
 
 .page-button #nextLink {
@@ -3143,6 +3140,9 @@ span.unit {
 }
 
 #list-empty {
+  position: absolute;
+  top: 50%;
+  left: 30%;
   text-align: center;
   margin: 50px auto;
 }
@@ -3377,4 +3377,12 @@ in printable view*/
   color: grey;
   width: 105px;
   margin: auto;
+}
+
+.abreviated-text {
+  display: block;
+}
+
+.full-text {
+  display: none;
 }
