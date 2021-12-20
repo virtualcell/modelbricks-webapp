@@ -162,16 +162,13 @@
                                     title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
                         </div>--}}
                     </th>
-                    <th class="applications">"Applications" - Sims
+                    <th class="applications/solvers">"Applications" - Sims / Solver Name
                       <div class="sort-table-arrows">
                           <a href="javascript:sort(true, 'Applications', 'content-table3');"><button class="button"
                                   title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
                           <a href="javascript:sort(false, 'Applications', 'content-table3');"><button class="button"
                                   title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
                       </div>
-                    </th>
-                    <th class="solvers">
-                      Solver Name
                     </th>
                 </tr>
             </thead>
@@ -195,24 +192,60 @@
                       <p>No Pubmed Link</p>
                       {{/if}}
                     </td>
-                    {{!--<td data-label="Lyrics" class="lyrics">{{this.ownerName}}</td>--}}
                     <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" data-label="Set" class="set">{{toDate this.savedDate}}</td>
-                    <td name="app.{{@key}}" data-label="Applications" class="Applications pulldown">
-                      <div name="app.{{@key}}" id="appAbv{{@key}}" class="abreviated-text">
-                          {{shortString this.simulations.[0].bioModelLink.simContextName 35}}
-                      </div>
-                      <div name="app.{{@key}}" id="appFul{{@key}}" class="full-text">
-                          {{~#each this.simulations~}}
-                          <b name="app.{{@../key}}">
-                            "{{this.bioModelLink.simContextName}}"
-                          </b> - {{this.name}}
-                          <br name="app.{{@../key}}">
-                          {{~/each~}}
-                      </div>
+                    {{!-- We need some wacky nested table stuff for the applications, solvers column --}}
+                    <td class="no-margin">
+                      <table id="short{{@key}}" class="pulldown abreviated-text">
+                        <tbody>
+                          <tr>
+                            <td class="right-border">
+                              <div name="short.{{@key}}">
+                                  {{#if (greater this.simulations.length 0)}}
+                                  {{shortString this.simulations.[0].bioModelLink.simContextName 35}}
+                                  <i name="short.{{@key}}" class="fa fa-chevron-down"></i>
+                                  {{/if}}
+                              </div>
+                            </td>
+                            <td class="left-border">
+                              <div name="short.{{@key}}">
+                                  {{#if (greater this.simulations.length 0)}}
+                                  {{shortString this.simulations.[0].solverName 35}}
+                                  <i name="short.{{@key}}" class="fa fa-chevron-down"></i>
+                                  {{/if}}
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table id="full{{@key}}" class="pulldown full-text">
+                        <tbody>
+                          {{#each this.simulations}}
+                          <tr>
+                            <td class="right-border">
+                              <div name="full.{{@../key}}">
+                                  <b name="full.{{@../key}}">
+                                    "{{this.bioModelLink.simContextName}}"
+                                  </b> - {{this.name}}
+                                  {{!--<br name="app.{{@../key}}">--}}
+                              </div>
+                            </td>
+                            <td class="left-border">
+                              <div name="full.{{@../key}}">
+                                {{this.solverName}}
+                                {{!--<br name="solv.{{@../key}}">--}}
+                              </div>
+                            </td>
+                          </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
                     </td>
-                    <td name="solv.{{@key}}" data-label="Solvers" class="Solvers pulldown">
+                    {{!--<td name="solv.{{@key}}" data-label="Solvers" class="Solvers pulldown">
                       <div name="solv.{{@key}}" id="solvAbv{{@key}}" class="abreviated-text">
+                          {{#if (greater this.simulations.length 0)}}
                           {{shortString this.simulations.[0].solverName 35}}
+                          <i name="solv.{{@key}}" class="fa fa-chevron-down"></i>
+                          {{/if}}
                       </div>
                       <div name="solv.{{@key}}" id="solvFul{{@key}}" class="full-text">
                         {{#each this.simulations}}
@@ -220,7 +253,7 @@
                         <br name="solv.{{@../key}}">
                         {{/each}}
                       </div>
-                    </td>
+                    </td>--}}
                 </tr>
                 {{/each}}
             </tbody>
@@ -563,8 +596,8 @@
       let toggleCode = e.target.getAttribute("name");
       console.log(toggleCode);
       toggleCode = toggleCode.split('.');
-      let abvCode = toggleCode[0] + 'Abv' + toggleCode[1];
-      let fullCode = toggleCode[0] + 'Ful' + toggleCode[1];
+      let abvCode = 'short' + toggleCode[1];
+      let fullCode = 'full' + toggleCode[1];
       let abv = document.getElementById(abvCode);
       let full = document.getElementById(fullCode);
       //toggle display of abv and full

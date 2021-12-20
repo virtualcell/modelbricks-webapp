@@ -13,10 +13,15 @@ var indexRouter = require("./routes/index");
 
 app.use(express.json());
 
-//read publications file and store for use in curated list
+//read publications and curated file and store for use in curated list
+//publications
 var pubRaw = fs.readFileSync('json-data/publications.json');
 const pubs = JSON.parse(pubRaw);
 delete pubRaw;
+//curated
+var curatedRaw = fs.readFileSync('json-data/publications.json');
+const curated = JSON.parse(curatedRaw);
+delete curatedRaw;
 
 // view engine setup
 const hbs = exphbs.create({
@@ -25,6 +30,7 @@ const hbs = exphbs.create({
 
   // create custom helper
   helpers: {
+    //the pubmed solutiuon implemented assumes any 8 digit num in model name is a pubmed num
     getPubmedModelNum: function(name) {
       try {
         let lastIndex = name.indexOf("::") - 1;
@@ -87,6 +93,9 @@ const hbs = exphbs.create({
           }
         }
         let pubmedID = name.slice(firstNum, lastNum);
+        if (pubmedID.length != 8) {
+          throw 'non pubmed number in model name';
+        }
         let link = "https://pubmed.ncbi.nlm.nih.gov/" + pubmedID + '/';
         return link;
       } catch (e) {
@@ -206,7 +215,12 @@ const hbs = exphbs.create({
       return list[index];
     },
     and: function (a, b) {
-      return (a && b);
+      let result = a && b;
+      if (!result) {
+        return false;
+      } else {
+        return true;
+      }
     },
     or: function (a, b) {
       return (a || b);
@@ -241,6 +255,10 @@ async function getModelList(termMap) {
   if (termMap['category'] == 'publications') {
     //idk why pubs needs to be wrapped in async func, but it does
     const func = async ()=> {return pubs;};
+    var json = await func();
+  } else if (termMap['category'] == 'curated') {
+    //same as pubs above
+    const func = async ()=> {return curated;};
     var json = await func();
   } else {
     //calculate row var API uses
@@ -296,7 +314,6 @@ app.get("/curatedList/:search", async (req, res) => {
   if (json.length == 0) {
     isNotEmpty = false;
   }
-
   res.render("curatedList", {
     title: "ModelBricks - Curated List",
     json,

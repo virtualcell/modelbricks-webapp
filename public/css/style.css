@@ -3386,3 +3386,27 @@ in printable view*/
 .full-text {
   display: none;
 }
+
+.pulldown {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+td.no-margin {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.right-border {
+  border-top: none !important;
+  border-bottom: none !important;
+  border-left: none !important;
+}
+
+.left-border {
+  border-top: none !important;
+  border-bottom: none !important;
+  border-right: none !important;
+}

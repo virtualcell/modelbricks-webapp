@@ -9,19 +9,26 @@ const pubs = JSON.parse(pubRaw);
 
 //get all models
 const modelRaw = fs.readFileSync('../json-data/all-models-2021.json');
-const models = JSON.parse(pubRaw);
+const models = JSON.parse(modelRaw);
 
+
+console.log("models:", models.length);
+console.log("pubs:", pubs.length);
 
 //get matches
 var matches = [];
-for (let m = 0; m < models.length; m++) {
-  let model = models[m];
-  for (let p = 0; p < pubs.length; p++) {
-    if (pubs[p].pubKey == model.pubKey) {
-      matches.push(model);
+for (let p = 0; p < pubs.length; p++) {
+  let pub = pubs[p];
+  let bmKeys = pub.biomodelReferences;
+  for (let m = 0; m < models.length; m++) {
+    let model = models[m];
+    for (let b = 0; b < bmKeys.length; b++) {
+      if (bmKeys[b].bmKey == model.bmKey) {
+        matches.push(model);
+      }
     }
   }
 }
 
-console.log(JSON.stringify(matches));
+console.log('Saved', matches.length, 'published biomodels.');
 fs.writeFileSync('../json-data/publications.json', JSON.stringify(matches));
