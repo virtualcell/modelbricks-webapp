@@ -1,6 +1,8 @@
 const fs = require("fs");
 
-//script for maching publications from publication API to models from normal search API
+//makes two files:
+//1. list of all published biomodels
+//2. map of published bmkeys to all publicatation meta data (doi, pubmedID)
 //since publications change rarley, only needs to be used occationally
 
 //get publications
@@ -15,8 +17,10 @@ const models = JSON.parse(modelRaw);
 console.log("models:", models.length);
 console.log("pubs:", pubs.length);
 
-//get matches
+//get matches and map
 var matches = [];
+var map = {};
+
 for (let p = 0; p < pubs.length; p++) {
   let pub = pubs[p];
   let bmKeys = pub.biomodelReferences;
@@ -24,11 +28,26 @@ for (let p = 0; p < pubs.length; p++) {
     let model = models[m];
     for (let b = 0; b < bmKeys.length; b++) {
       if (bmKeys[b].bmKey == model.bmKey) {
+        model['pubmedid'] = pub['pubmedid'];
         matches.push(model);
+        //get meta data for map
+        let data = {
+          "name": model.name,
+          "bmkey": model.bmKey,
+          "title": pub.title,
+          "year": pub.year,
+          "authors": pub.authors,
+          "citation": pub.citation,
+          "date": pub.date,
+          "doi": pub.doi,
+          "pubmedid": pub.pubmedid,
+        };
+        map[model.name] = data;
       }
     }
   }
 }
 
-console.log('Saved', matches.length, 'published biomodels.');
+fs.writeFileSync('../json-data/pub-map.json', JSON.stringify(map));
 fs.writeFileSync('../json-data/publications.json', JSON.stringify(matches));
+console.log('Saved', matches.length, 'published biomodels.');

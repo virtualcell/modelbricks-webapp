@@ -10,10 +10,11 @@
                 <option {{#if (eq termMap.category "tutorial")}}selected {{/if}}value="tutorial">Tutorials</option>
                 <option {{#if (eq termMap.category "education")}}selected {{/if}}value="education">Education</option>
                 <option {{#if (or (eq termMap.owner "ModelBrick") (eq termMap.category modelbricks))}}selected {{/if}}value="modelbrick">ModelBricks</option>
-                <option {{#if (and (eq termMap.category "all") (not termMap.owner "ModelBrick"))}}selected {{/if}}value="all">All Public</option>
+                <option {{#if (and (eq termMap.category "all") (not (eq termMap.owner "ModelBrick")))}}selected {{/if}}value="all">All Public</option>
                 <option {{#if (eq termMap.category "curated")}}selected {{/if}}value="curated">Curated</option>
                 <option {{#if (eq termMap.category "publications")}}selected {{/if}}value="publications">Publications</option>
             </select>
+            <input class="minimal-input" type="text" name="owner" id="owner" placeholder="Owner" value="">
             <button id="curated-search-submit-left" type="submit" class="minimal-button">
                 Search
             </button>
@@ -22,46 +23,19 @@
     {{!-- json filters --}}
     <form id="json-filters">
         <p id="json-filter-title"><b>Filter</b></p>
-        <div class="custom-form__group">
-          <input class="json-filter" type="checkbox" name="spatial" id="spatial" value="off">
-          <label class="group__label" for="name">Spatial</label>
-        </div>
-        <div class="custom-form__group">
-          <input class="json-filter" type="checkbox" name="stochastic" value="off">
-          <label class="group__label" for="name">Stochastic</label>
-        </div>
-        <div class="custom-form__group">
-          <input class="json-filter" type="checkbox" name="deterministic" value="off">
-          <label class="group__label" for="name">Deterministic</label>
-        </div>
-        <div class="custom-form__group">
-          <input class="json-filter" type="checkbox" name="image-based" value="off">
-          <label class="group__label" for="name">Image-Based</label>
-        </div>
-        <div class="custom-form__group">
-          <input class="json-filter" type="checkbox" name="analytic-geometry" value="off">
-          <label class="group__label" for="name">Analytic-Geometry</label>
-        </div>
-        <div class="custom-form__group">
-          <input class="json-filter" type="checkbox" name="assignment-rules" value="off">
-          <label class="group__label" for="name">Assignment-Rules</label>
-        </div>
-        <div class="custom-form__group">
-          <input class="json-filter" type="checkbox" name="events" value="off">
-          <label class="group__label" for="name">Events</label>
-        </div>
-        <div class="custom-form__group">
-          <input class="json-filter" type="checkbox" name="reaction-rules" value="off">
-          <label class="group__label" for="name">Reaction-Rules</label>
-        </div>
-        <div class="custom-form__group">
-          <input class="json-filter" type="checkbox" name="nfsim" value="off">
-          <label class="group__label" for="name">NFSim</label>
-        </div>
-        <div class="custom-form__group">
-          <input class="json-filter" type="checkbox" name="bionetgen" value="off">
-          <label class="group__label" for="name">BioNetGen</label>
-        </div>
+        <select class="minimal-input" name="filter" id="filter-select" placeholder="Filter by Feature" autocomplete="off">
+            <option class="grey-text" selected value="none">Filter by Feature</option>
+            <option value="spatial">Spatial</option>
+            <option value="stochastic">Stochastic</option>
+            <option value="deterministic">Deterministic</option>
+            <option value="image-based">Image Based</option>
+            <option value="analytic-geometry">Analytic Geometry</option>
+            <option value="assignment-rules">Assignment Rules</option>
+            <option value="events">Events</option>
+            <option value="reaction-rules">Reaction Rules</option>
+            <option value="nfsim">NFSim</option>
+            <option value="bionetgen">BioNetGen</option>
+        </select>
         <select class="minimal-input" name="solver" id="solver" placeholder="Solver Name" autocomplete="off">
             <option disabled selected value>Filter by Solver</option>
             <option value="smoldyn">Smoldyn</option>
@@ -82,10 +56,6 @@
             <div class="custom-form__group">
                 <p>Model ID</p>
                 <input class="minimal-input" type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}" autocomplete="off">
-            </div>
-            <div class="custom-form__group">
-                <p>Model Owner</p>
-                <input class="minimal-input" type="text" name="owner" id="owner" placeholder="Owner" value="">
             </div>
             <div class="custom-form__group">
                 <p>Modified After / Before</p>
@@ -177,40 +147,39 @@
                 <tr id="row{{@index}}" style="cursor: pointer">
                     <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" data-label="Composer" class="composer" style="cursor: pointer;" onclick="window.location='/curatedList/model/{{this.bmKey}}#dashboard';">
                       <a href="/curatedList/model/{{this.bmKey}}#dashboard">
-                        {{trimString this.name}}
+                        {{shortString (trimString this.name) 45 false}}
                       </a>
                     </td>
                     <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'">
                       {{this.ownerName}}
                     </td>
                     <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" data-label="Pubmed" class="Pubmed">
-                      {{#if (getPubmedLink this.name)}}
-                      <a href="{{getPubmedLink this.name}}">
-                        {{~getPubmedID this.name~}}
+                      {{#if (getPubmedLink (getPubmedID this.name this.pubmedid))}}
+                      <a href="{{getPubmedLink (getPubmedID this.name this.pubmedid)}}">
+                        {{~getPubmedID this.name this.pubmedid~}}
                       </a>
                       {{else}}
-                      <p>No Pubmed Link</p>
+                      <p>None</p>
                       {{/if}}
                     </td>
                     <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" data-label="Set" class="set">{{toDate this.savedDate}}</td>
                     {{!-- We need some wacky nested table stuff for the applications, solvers column --}}
-                    <td class="no-margin">
+                    <td class="app-sim-td no-margin" id="app-sim-td{{@key}}">
                       <table id="short{{@key}}" class="pulldown abreviated-text">
-                        <tbody>
-                          <tr>
-                            <td class="right-border">
+                        <tbody name="short.{{@key}}">
+                          <tr name="short.{{@key}}">
+                            <td name="short.{{@key}}" class="right-border">
                               <div name="short.{{@key}}">
                                   {{#if (greater this.simulations.length 0)}}
-                                  {{shortString this.simulations.[0].bioModelLink.simContextName 35}}
+                                  {{shortString this.simulations.[0].bioModelLink.simContextName 20}}
                                   <i name="short.{{@key}}" class="fa fa-chevron-down"></i>
                                   {{/if}}
                               </div>
                             </td>
-                            <td class="left-border">
+                            <td name="short.{{@key}}" class="left-border">
                               <div name="short.{{@key}}">
                                   {{#if (greater this.simulations.length 0)}}
-                                  {{shortString this.simulations.[0].solverName 35}}
-                                  <i name="short.{{@key}}" class="fa fa-chevron-down"></i>
+                                  {{shortString this.simulations.[0].solverName 30}}
                                   {{/if}}
                               </div>
                             </td>
@@ -218,10 +187,10 @@
                         </tbody>
                       </table>
                       <table id="full{{@key}}" class="pulldown full-text">
-                        <tbody>
+                        <tbody name="full.{{@key}}">
                           {{#each this.simulations}}
-                          <tr>
-                            <td class="right-border">
+                          <tr name="full.{{@../key}}">
+                            <td name="full.{{@../key}}" class="right-border">
                               <div name="full.{{@../key}}">
                                   <b name="full.{{@../key}}">
                                     "{{this.bioModelLink.simContextName}}"
@@ -229,7 +198,7 @@
                                   {{!--<br name="app.{{@../key}}">--}}
                               </div>
                             </td>
-                            <td class="left-border">
+                            <td name="full.{{@../key}}" class="left-border">
                               <div name="full.{{@../key}}">
                                 {{this.solverName}}
                                 {{!--<br name="solv.{{@../key}}">--}}
@@ -283,17 +252,19 @@
     //make curated table correct size
     var jsonFilterDiv = document.getElementById('json-filters');
     var table = document.querySelector(".curatedListTable.left-table");
-    if (table) {
-      let tableWidth = window.innerWidth - jsonFilterDiv.offsetWidth - 4;
-      table.style.width = tableWidth.toString() + "px";
+    function resizeTable() {
+      if (table) {
+        let tableWidth = window.innerWidth - jsonFilterDiv.offsetWidth - 4;
+        table.style.width = tableWidth.toString() + "px";
+      }
     }
+    resizeTable();
+    window.onresize = resizeTable;
     //toggle simple vs advanced search
     //get elements
     var simple = document.getElementById("simple-search-left");
     var advanced = document.getElementById("advanced-search");
     var toggle = document.getElementById("toggle-advanced");
-    var currentFormState = {{termMap.advanced}};
-    let jsonFilterElms = document.querySelectorAll('.json-filter');
     let anySelectedFilter = false;
     let selectedFilters = new Set();
     //initialized in makeLink()
@@ -326,8 +297,9 @@
 
     //change filter criteria in filters map
     function changeFilter(htmlElm, invert=false) {
-      let phrase = htmlElm.name;
-      let bool = htmlElm.checked;
+      filters = {};
+      let phrase = htmlElm.value;
+      let bool = true;//htmlElm.checked;
       let literalPhrase = phrase.replace('-', ' ');
       //remove / add to selectedFilters
       if (bool) {
@@ -338,6 +310,10 @@
       filters[literalPhrase] = bool;
       //if set is empty make anySelectedFilter false
       if (selectedFilters.size == 0) {
+        anySelectedFilter = false;
+      }
+      if (phrase == "none") {
+        filters = {};
         anySelectedFilter = false;
       }
       return literalPhrase, phrase;
@@ -369,9 +345,6 @@
       } else {
         termMap['page'] = parseInt(termMap['page']) - 1;
       }
-      termMap['advanced'] = advanced;
-      //termMap['spatial'] = spatial;
-      //repeat for all simulation search terms
 
       //assemble new link
       n = '';
@@ -383,49 +356,31 @@
       n = n.slice(0, n.length - 1);
 
       //initilize map of filter phrases to usage boolean
-      for (let i = 0; i < jsonFilterElms.length; i++) {
+      /*for (let i = 0; i < jsonFilterElms.length; i++) {
         let elm = jsonFilterElms[i];
         let literalPhrase, phrase = changeFilter(elm);
         if (isOn(termMap[phrase])) {
           filters[literalPhrase] = true;
         }
-      }
+      }*/
 
       return (n);
-    }
-
-    //set initial disp conditions
-    if (currentFormState) {
-      simple.style.display = "flex";
-      currentFormState = "true";
-    } else {
-      simple.style.display = "flex";
-      currentFormState = "false";
     }
 
     //initialize links next and prev
     try {
       document.querySelectorAll("#nextLink").forEach((item, i) => {
-        item.href = '/curatedList/' + makeLink('next', currentFormState);
+        item.href = '/curatedList/' + makeLink('next', true);
       });
-    } catch{}
+    } catch(e){console.log(e);}
     try {
       document.querySelectorAll("#prevLink").forEach((item, i) => {
-        item.href = '/curatedList/' + makeLink('prev', currentFormState);
+        item.href = '/curatedList/' + makeLink('prev', true);
       });
     } catch{}
 
     //toggle funciton
     function toggleSearch() {
-      if (currentFormState == "true") {
-        simple.style.display = "flex";
-        toggle.textContent = "Advanced Search";
-        currentFormState = "false";
-      } else {
-        simple.style.display = "none";
-        toggle.textContent = "Simple Search";
-        currentFormState = "true";
-      }
       //change links
       try {
         document.getElementById("nextLink").href = '/curatedList/' + makeLink('next', currentFormState);
@@ -458,7 +413,6 @@
 
       //add other atributes
       fd.append("page","1");
-      fd.append("advanced", currentFormState);
       //handle special modlebricks + publicantions category cases
       if (fd.get('category') == 'modelbrick' || otherForm.get('category') == 'modelbrick') {
         fd.set('category', 'all');
@@ -485,7 +439,12 @@
     //create map of application html to its row obj
     let appRowMap = {};
     let modelTable = document.querySelector('tbody.main-body');
-    let modelRows = modelTable.children;
+    let modelRows = null;
+    if (!!modelTable) {
+      modelRows = modelTable.children;
+    } else {
+      modelRows = [];
+    }
     //loop thorugh rows to get application html
     for (let i = 0; i < modelRows.length; i++) {
       let row = modelRows[i];
@@ -551,6 +510,7 @@
         let rowDispMap = {};
         //ket val map of union of filters and textFilters
         let filtersKeyVals = Object.entries(Object.assign({}, filters, textFilters));
+        console.log(filters);
         //iterate through rows
         for (let i = 0; i < appRowMapKeyVals.length; i++) {
           let pair = appRowMapKeyVals[i];
@@ -594,7 +554,6 @@
     function togglePulldown(e) {
       //get elements from toggle code stored in html "name" atribute
       let toggleCode = e.target.getAttribute("name");
-      console.log(toggleCode);
       toggleCode = toggleCode.split('.');
       let abvCode = 'short' + toggleCode[1];
       let fullCode = 'full' + toggleCode[1];
@@ -610,24 +569,47 @@
       }
     }
 
+    //open any app/sim cells that are only one line when expanded
+    function openExpandable(td) {
+      //find number of lines of expanded cell
+      let id = td.id
+      let fullTable = document.querySelector("#" + id + " > table.full-text");
+      let shortTable = document.querySelector("#" + id + " > table.abreviated-text");
+      let tbody = fullTable.children[0];
+      let rows = tbody.children;
+      if (rows.length == 1) {
+        fullTable.style.display = 'block';
+        shortTable.style.display = 'none';
+      }
+    }
+
     //custom event listners for form submition
+    const appSimCells = document.querySelectorAll(".app-sim-td");
     const simpleForm = document.getElementById("custom-form-simple");
     const advancedForm = document.getElementById("custom-form-advanced");
     const filterButton = document.getElementById('form-filter');
     const pulldowns = document.querySelectorAll(".pulldown");
+    const filterSelect = document.getElementById("filter-select");
 
     //apply listerners
     simpleForm.addEventListener("submit", (e) => {whenPressed(e);});
     advancedForm.addEventListener("submit", (e) => {whenPressed(e);});
-    jsonFilterElms.forEach((item) => {
-      item.addEventListener('input', (e) => {selectFilter(e);});
+    filterSelect.addEventListener("change", (e) => {
+      selectFilter(e);
     });
+    /*jsonFilterElms.forEach((item) => {
+      item.addEventListener('input', (e) => {selectFilter(e);});
+    });*/
     pulldowns.forEach((item) => {
       item.addEventListener('click', (e) => {togglePulldown(e);});
+    });
+    appSimCells.forEach((item) => {
+      openExpandable(item);
     });
     filterButton.addEventListener('click', (e) => {
       e.preventDefault();
       applicationFilter(e);
     });
+
 
 </script>

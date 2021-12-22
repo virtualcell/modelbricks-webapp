@@ -22,6 +22,10 @@ delete pubRaw;
 var curatedRaw = fs.readFileSync('json-data/publications.json');
 const curated = JSON.parse(curatedRaw);
 delete curatedRaw;
+//map
+var mapRaw = fs.readFileSync('json-data/pub-map.json');
+const pubMap = JSON.parse(mapRaw);
+delete mapRaw;
 
 // view engine setup
 const hbs = exphbs.create({
@@ -50,51 +54,38 @@ const hbs = exphbs.create({
         return "";
       }
     },
-    getPubmedID: function(name) {
+    getPubmedID: function(name, alternateID) {
       try {
-        let firstNum = 0;
-        //while char is not number
-        while (isNaN(name.charAt(firstNum))) {
-          firstNum ++;
-          if (firstNum > 10000) {
-            throw 'infinite loop in getPubmedID';
+        if (alternateID) {
+          return alternateID;
+        } else {
+          let firstNum = 0;
+          //while char is not number
+          while (isNaN(name.charAt(firstNum))) {
+            firstNum ++;
+            if (firstNum > 10000) {
+              throw 'infinite loop in getPubmedID';
+            }
           }
-        }
-        let lastNum = firstNum;
-        //while char is number
-        while (!isNaN(name.charAt(lastNum))) {
-          lastNum ++;
-          if (lastNum > 10000) {
-            throw 'infinite loop in getPubmedID';
+          let lastNum = firstNum;
+          //while char is number
+          while (!isNaN(name.charAt(lastNum))) {
+            lastNum ++;
+            if (lastNum > 10000) {
+              throw 'infinite loop in getPubmedID';
+            }
           }
+          let pubmedID = name.slice(firstNum, lastNum);
+          return pubmedID;
         }
-        let pubmedID = name.slice(firstNum, lastNum);
-        return pubmedID;
       } catch (e) {
         return false;
       }
     },
-    getPubmedLink: function(name) {
+    getPubmedLink: function(pubmedID) {
       try {
-        let firstNum = 0;
-        //while char is not number
-        while (isNaN(name.charAt(firstNum))) {
-          firstNum ++;
-          if (firstNum > 10000) {
-            throw 'infinite loop in getPubmedLink';
-          }
-        }
-        let lastNum = firstNum;
-        //while char is number
-        while (!isNaN(name.charAt(lastNum))) {
-          lastNum ++;
-          if (lastNum > 10000) {
-            throw 'infinite loop in getPubmedLink';
-          }
-        }
-        let pubmedID = name.slice(firstNum, lastNum);
-        if (pubmedID.length != 8) {
-          throw 'non pubmed number in model name';
+        if (!pubmedID || pubmedID.length != 8) {
+          throw 'undefined pubmed id';
         }
         let link = "https://pubmed.ncbi.nlm.nih.gov/" + pubmedID + '/';
         return link;
@@ -197,15 +188,27 @@ const hbs = exphbs.create({
         return 'unknown unit';
       }
     },
-    shortString: function (s, length) {
-      if (s) {
-        if (s.length > length - 3) {
-          return s.slice(0, length - 3) + '...';
+    shortString: function (s, length, dots=false) {
+      if (dots) {
+        if (s) {
+          if (s.length > length - 3) {
+            return s.slice(0, length - 3) + '...';
+          } else {
+            return s.slice(0, length) + '...';
+          }
         } else {
-          return s.slice(0, length) + '...';
+          return "";
         }
       } else {
-        return "";
+        if (s) {
+          if (s.length > length - 3) {
+            return s.slice(0, length - 3) + '...';
+          } else {
+            return s.slice(0, length);
+          }
+        } else {
+          return "";
+        }
       }
     },
     isListNotNull: function (list) {
@@ -253,12 +256,22 @@ const hbs = exphbs.create({
 async function getModelList(termMap) {
   //handle special case for publucations
   if (termMap['category'] == 'publications') {
+    //get index range
+    let page = termMap['page'];
+    let modelsPerPage = termMap['maxModels'];
+    let indexStart = (page - 1) * modelsPerPage;
+    let indexEnd = page * modelsPerPage;
     //idk why pubs needs to be wrapped in async func, but it does
-    const func = async ()=> {return pubs;};
+    const func = async ()=> {return pubs.slice(indexStart, indexEnd);};
     var json = await func();
   } else if (termMap['category'] == 'curated') {
+    //get index range
+    let page = termMap['page'];
+    let modelsPerPage = termMap['maxModels'];
+    let indexStart = (page - 1) * modelsPerPage;
+    let indexEnd = page * modelsPerPage;
     //same as pubs above
-    const func = async ()=> {return curated;};
+    const func = async ()=> {return curated.slice(indexStart, indexEnd);};
     var json = await func();
   } else {
     //calculate row var API uses
@@ -391,6 +404,11 @@ app.get("/curatedList/model/:name", (req, res) => {
     return response.text().then(function(text) {
       parser.parseString(text, (err, result) => {
         data = result;
+        /*if (pubMap.hasOwnProperty(data.vcml.BioModel[0].Model[0].Version[0].$.KeyValue)) {
+          console.log(true);
+        } else {
+          console.log(false);
+        }*/
         let annoObj = new aPrs.AnnParser(data);
         let annoData = annoObj.getString();
         let outputOptions = annoObj.getOutputOptions();

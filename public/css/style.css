@@ -1264,7 +1264,7 @@ li.card {
 }
 
 .curatedListTable .sort-table th.pubmed {
-  width: 15% !important;
+  width: 5% !important;
 }
 
 .curatedListTable .sort-table th.set {
@@ -3375,7 +3375,7 @@ in printable view*/
 #category-select {
   display: block;
   color: grey;
-  width: 105px;
+  width: 157px;
   margin: auto;
 }
 
@@ -3399,7 +3399,12 @@ td.no-margin {
   padding: 0 !important;
 }
 
+.grey-text {
+  color: grey !important;
+}
+
 .right-border {
+  width: 250px;
   border-top: none !important;
   border-bottom: none !important;
   border-left: none !important;
