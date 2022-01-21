@@ -621,43 +621,45 @@ window.drawGraphics = function drawGraphics(tableID, BngColumn, CanvasColumn, dr
     for (y = 1; y < rowsLen; y++) {
         //get canvas and bionetgen html elements
         var canvasElm = speciesTable.rows.item(y).cells.item(CanvasColumn).children[0];
-        let compartment = canvasElm.innerHTML;
-        const canvasID = canvasElm.id;
-        var bioNetGen = speciesTable.rows.item(y).cells.item(BngColumn).innerHTML;
+        if (canvasElm) {
+            let compartment = canvasElm.innerHTML;
+            const canvasID = canvasElm.id;
+            var bioNetGen = speciesTable.rows.item(y).cells.item(BngColumn).innerHTML;
 
-        //remove bng trailing syntax leftover from mustache templating
-        bioNetGen = bioNetGen.replace(/,\)/g, ')');
-        bioNetGen = bioNetGen.replace(/-\)/g, ')');
-        bioNetGen = bioNetGen.replace(/!\)/g, ')');
-        if (bioNetGen[bioNetGen.length - 1] == '.') {
-          bioNetGen = bioNetGen.slice(0, bioNetGen.length - 1);
-        }
-        speciesTable.rows.item(y).cells.item(BngColumn).innerHTML = bioNetGen;
+            //remove bng trailing syntax leftover from mustache templating
+            bioNetGen = bioNetGen.replace(/,\)/g, ')');
+            bioNetGen = bioNetGen.replace(/-\)/g, ')');
+            bioNetGen = bioNetGen.replace(/!\)/g, ')');
+            if (bioNetGen[bioNetGen.length - 1] == '.') {
+              bioNetGen = bioNetGen.slice(0, bioNetGen.length - 1);
+            }
+            speciesTable.rows.item(y).cells.item(BngColumn).innerHTML = bioNetGen;
 
-        //get canvas dimensions based on draw type
-        if (drawType == 'g') {
-            var drawObj = new Graphic(bioNetGen, compartment);
-            drawObj.draw(canvasElm, 0, 0);
-            dims = [drawObj.x, drawObj.y];
+            //get canvas dimensions based on draw type
+            if (drawType == 'g') {
+                var drawObj = new Graphic(bioNetGen, compartment);
+                drawObj.draw(canvasElm, 0, 0);
+                dims = [drawObj.x, drawObj.y];
 
-            //resize canvas
-            canvasElm.width = dims[0];
-            canvasElm.height = dims[1];
+                //resize canvas
+                canvasElm.width = dims[0];
+                canvasElm.height = dims[1];
 
-            //draw graphic
-            drawObj.doDrawList();
-        } else if (drawType == 'm') {
-            var drawObj = new Molecule(bioNetGen);
-            dims = drawObj.initDrawList(canvasElm, 0.5, 0.5);
+                //draw graphic
+                drawObj.doDrawList();
+            } else if (drawType == 'm') {
+                var drawObj = new Molecule(bioNetGen);
+                dims = drawObj.initDrawList(canvasElm, 0.5, 0.5);
 
-            //resize canvas
-            canvasElm.width = dims[0] + 5;
-            canvasElm.height = dims[1] + 5;
+                //resize canvas
+                canvasElm.width = dims[0] + 5;
+                canvasElm.height = dims[1] + 5;
 
-            //draw graphic
-            drawObj.doDrawList();
-        } else {
-            throw 'drawType ' + drawType + ' is not valid, use only m or g';
+                //draw graphic
+                drawObj.doDrawList();
+            } else {
+                throw 'drawType ' + drawType + ' is not valid, use only m or g';
+            }
         }
     }
 }

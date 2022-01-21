@@ -11,6 +11,9 @@ const PORT = process.env.PORT || 4002;
 
 var indexRouter = require("./routes/index");
 
+//todo:
+//fix column arrow search in biomodel name
+
 app.use(express.json());
 
 //read publications and curated file and store for use in curated list
@@ -327,12 +330,16 @@ app.get("/curatedList/:search", async (req, res) => {
   if (json.length == 0) {
     isNotEmpty = false;
   }
+  //make json string for use in filters
+  let jsonString = (JSON.stringify(json));
+  //render
   res.render("curatedList", {
     title: "ModelBricks - Curated List",
     json,
     termMap,
     isNotEmpty,
     modelsPerPage,
+    jsonString,
   });
 });
 

@@ -98,22 +98,28 @@
                 <tr>
                     <th class="curated-list-bm-name">BioModel name
                         <div class="sort-table-arrows">
-                            <a href="javascript:sort(true, 'composer', 'content-table3');"><button class="button"
+                            <a href="javascript:sort(true, 'curated-list-bm-name', 'content-table3', true);"><button class="button"
                                     title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                            <a href="javascript:sort(false, 'composer', 'content-table3');"><button class="button"
+                            <a href="javascript:sort(false, 'curated-list-bm-name', 'content-table3', true);"><button class="button"
                                     title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
                         </div>
                     </th>
-                    <th>
+                    <th class="owner">
                       Owner
+                      <div class="sort-table-arrows">
+                          <a href="javascript:sort(true, 'owner', 'content-table3', true);"><button class="button"
+                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
+                          <a href="javascript:sort(false, 'owner', 'content-table3', true);"><button class="button"
+                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
+                      </div>
                     </th>
                     <th class="pubmed">Pubmed ID
-                      {{!--<div class="sort-table-arrows">
-                          <a href="javascript:sort(true, 'Pubmed', 'content-table3');"><button class="button"
+                      <div class="sort-table-arrows">
+                          <a href="javascript:sort(true, 'pubmed', 'content-table3', true);"><button class="button"
                                   title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                          <a href="javascript:sort(false, 'Pubmed', 'content-table3');"><button class="button"
+                          <a href="javascript:sort(false, 'pubmed', 'content-table3', true);"><button class="button"
                                   title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                      </div>--}}
+                      </div>
                     </th>
                     {{!-- disabled to save space
                     <th class="lyrics">Owner
@@ -124,36 +130,30 @@
                                     title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
                         </div>
                     </th>--}}
-                    <th class="set">Saved
-                        {{!--<div class="sort-table-arrows">
-                            <a href="javascript:sort(true, 'set', 'content-table3');"><button class="button"
+                    <th class="date">Saved
+                        <div class="sort-table-arrows">
+                            <a href="javascript:sort(true, 'date', 'content-table3', true);"><button class="button"
                                     title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                            <a href="javascript:sort(false, 'set', 'content-table3');"><button class="button"
+                            <a href="javascript:sort(false, 'date', 'content-table3', true);"><button class="button"
                                     title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                        </div>--}}
+                        </div>
                     </th>
                     <th class="applications/solvers">"Applications" - Sims / Solver Name
-                      <div class="sort-table-arrows">
-                          <a href="javascript:sort(true, 'Applications', 'content-table3');"><button class="button"
-                                  title="down arrow"><i class="fa fa-chevron-down"></i></button></a>
-                          <a href="javascript:sort(false, 'Applications', 'content-table3');"><button class="button"
-                                  title="up arrow"><i class="fa fa-chevron-up"></i></button></a>
-                      </div>
                     </th>
                 </tr>
             </thead>
             <tbody class="main-body">
                 {{#each json}}
-                <tr id="row{{@index}}" style="cursor: pointer">
-                    <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" data-label="Composer" class="composer" style="cursor: pointer;" onclick="window.location='/curatedList/model/{{this.bmKey}}#dashboard';">
+                <tr id="row{{@index}}" class="sortable-row" style="cursor: pointer">
+                    <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" data-label="curated-list-bm-name" class="curated-list-bm-name" style="cursor: pointer;" onclick="window.location='/curatedList/model/{{this.bmKey}}#dashboard';">
                       <a href="/curatedList/model/{{this.bmKey}}#dashboard">
                         {{shortString (trimString this.name) 45 false}}
                       </a>
                     </td>
-                    <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'">
+                    <td class="owner" onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'">
                       {{this.ownerName}}
                     </td>
-                    <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" data-label="Pubmed" class="Pubmed">
+                    <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" data-label="pubmed" class="pubmed">
                       {{#if (getPubmedLink (getPubmedID this.name this.pubmedid))}}
                       <a href="{{getPubmedLink (getPubmedID this.name this.pubmedid)}}">
                         {{~getPubmedID this.name this.pubmedid~}}
@@ -162,7 +162,7 @@
                       <p>None</p>
                       {{/if}}
                     </td>
-                    <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" data-label="Set" class="set">{{toDate this.savedDate}}</td>
+                    <td onclick="window.location = '/curatedList/model/{{this.bmKey}}#dashboard'" data-label="date" class="date">{{toDate this.savedDate}}</td>
                     {{!-- We need some wacky nested table stuff for the applications, solvers column --}}
                     <td class="app-sim-td no-margin" id="app-sim-td{{@key}}">
                       <table id="short{{@key}}" class="pulldown abreviated-text">
@@ -295,17 +295,30 @@
       return false;
     }
 
-    //change filter criteria in filters map
+    //class to organize all filters
+    class FilterContainer {
+      constructor () {
+        this.solverName = null;
+        this.feature = null;
+        this.text = null;
+      }
+    }
+    let filterContainer = new FilterContainer();
+
+    //change feature filter criteria in filters map
     function changeFilter(htmlElm, invert=false) {
       filters = {};
+      selectedFilters.clear();
       let phrase = htmlElm.value;
       let bool = true;//htmlElm.checked;
       let literalPhrase = phrase.replace('-', ' ');
       //remove / add to selectedFilters
       if (bool) {
         selectedFilters.add(literalPhrase);
+        //filterContainer.feature.add(literalPhrase);
       } else {
         selectedFilters.delete(literalPhrase);
+        //filterContainer.feature.delete(literalPhrase);
       }
       filters[literalPhrase] = bool;
       //if set is empty make anySelectedFilter false
@@ -390,7 +403,7 @@
       } catch{}
     }
 
-    //when a json filter is selected
+    //when a feature filter is selected
     function selectFilter(e) {
       anySelectedFilter = true;
       changeFilter(e.target, true);
@@ -438,54 +451,54 @@
 
     //create map of application html to its row obj
     let appRowMap = {};
-    let modelTable = document.querySelector('tbody.main-body');
-    let modelRows = null;
-    if (!!modelTable) {
-      modelRows = modelTable.children;
-    } else {
-      modelRows = [];
-    }
-    //loop thorugh rows to get application html
-    for (let i = 0; i < modelRows.length; i++) {
-      let row = modelRows[i];
-      let datas = row.children;
-      //app html is always in last td
-      let secondLastData = datas[datas.length - 2];
-      let lastData = datas[datas.length - 1];
-      appRowMap[row.id] = lastData.innerHTML.toLowerCase() + secondLastData.innerHTML.toLowerCase();
+    //get the json string and decode the html entities in the string
+    var txt = document.createElement("textarea");
+    txt.innerHTML = "{{jsonString}}";
+    let jsonString = txt.value.replaceAll("&apos;", "'").replaceAll("\n", "");
+    //put data into row map
+    let jsonList = JSON.parse(jsonString);
+    for (let i = 0; i < jsonList.length; i++) {
+      appRowMap["row" + i] = JSON.stringify(jsonList[i]);
     }
 
     //add solver phrase to filters
     function applySolverFilter(phrase) {
       if (phrase == "fifv") {
         //Fully-Implicit Finite Volume
-        textFilters["fully"] = true;
-        textFilters["implicit"] = true;
-        textFilters["finite"] = true;
-        textFilters["volume"] = true;
+        return "Fully-Implicit Finite Volume";
       } else if (phrase == "css") {
         //Combined Stiff Solver
-        textFilters["combined"] = true;
-        textFilters["stiff"] = true;
-        textFilters["solver"] = true;
+        return "Combined Stiff Solver";
       } else if (phrase == "rg") {
         //Regular Grid
-        textFilters["regular"] = true;
-        textFilters["grid"] = true;
+        return "Regular Grid";
       } else if (phrase == "smoldyn") {
         //Smoldyn
-        textFilters["smoldyn"] = true;
+        return "Smoldyn";
       } else if (phrase == "gibson") {
         //Gibson
-        textFilters["gibson"] = true;
+        return "Gibson";
       }
+    }
+
+    //string.includes function but for array, used in applicationFilter
+    function includesEach(string, array) {
+      for (let i = 0; i < array.length; i++) {
+        if (!string.includes(array[i])) {
+          return false;
+        }
+      }
+      return true;
     }
 
     //filter model table by application keywords
     function applicationFilter(e) {
+      //reset vars
+      let finalFilters = [];
+      textFilters = {};
       //get text filter to filters
       let textFilter = document.getElementById("text-filter");
-      let textPhrase = textFilter.value.trim().toLowerCase();
+      let textPhrase = textFilter.value.trim();
       //get text filter to filters
       let solverFilter = document.getElementById("solver");
       let solverPhrase = null;
@@ -502,15 +515,23 @@
         //add text filters if they have been input, otherwise reset test filters
         if (textPhrase) {
           textFilters[textPhrase] = true;
-        } else if (solverPhrase) {
-          applySolverFilter(solverPhrase);
-        } else {
+          finalFilters.push(textPhrase);
+        }
+        if (solverPhrase) {
+          let output = applySolverFilter(solverPhrase);
+          textFilters[output] = true;
+          finalFilters.push(output);
+        }
+        let filterKeys = Object.keys(filters);
+        if (filterKeys.length != 0) {
+          finalFilters.push(filterKeys[0]);
+        }
+        if (!solverPhrase && !textPhrase) {
           textFilters = {};
         }
         let rowDispMap = {};
         //ket val map of union of filters and textFilters
         let filtersKeyVals = Object.entries(Object.assign({}, filters, textFilters));
-        console.log(filters);
         //iterate through rows
         for (let i = 0; i < appRowMapKeyVals.length; i++) {
           let pair = appRowMapKeyVals[i];
@@ -518,18 +539,12 @@
           let row = document.getElementById(pair[0]);
           let id = row.id;
           rowDispMap[id] = true;
-          //for each filter, make rowDispMap
-          for (let u = 0; u < filtersKeyVals.length; u++) {
-            let filter = filtersKeyVals[u];
-            let phrase = filter[0];
-            let dashPhrase = phrase.replaceAll(' ', '-');
-            let bool = filter[1];
-            //if filter is on and application has phrase
-            if (bool && (html.includes(phrase) || html.includes(dashPhrase))) {
-              rowDispMap[id] = false;
-            }
+          //if html does not have all filter phrases mark to remove later
+          if (includesEach(html, finalFilters)) {
+            rowDispMap[id] = false;
           }
         }
+        console.log(finalFilters, rowDispMap);
         //if row doesn't match filter, set display none
         for (let i = 0; i < appRowMapKeyVals.length; i++) {
           let pair = appRowMapKeyVals[i];
@@ -589,11 +604,13 @@
     const advancedForm = document.getElementById("custom-form-advanced");
     const filterButton = document.getElementById('form-filter');
     const pulldowns = document.querySelectorAll(".pulldown");
+    //used for feature filter
     const filterSelect = document.getElementById("filter-select");
 
     //apply listerners
     simpleForm.addEventListener("submit", (e) => {whenPressed(e);});
     advancedForm.addEventListener("submit", (e) => {whenPressed(e);});
+    //used for feature filter
     filterSelect.addEventListener("change", (e) => {
       selectFilter(e);
     });
