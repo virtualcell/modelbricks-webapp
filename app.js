@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const exphbs = require("express-handlebars");
 const handlebars = require("handlebars");
+const axios = require("axios");
 const path = require("path");
 const xml2js = require("xml2js");
 const fetch = require("node-fetch");
@@ -22,9 +23,13 @@ var pubRaw = fs.readFileSync('json-data/publications.json');
 const pubs = JSON.parse(pubRaw);
 delete pubRaw;
 //curated
-var curatedRaw = fs.readFileSync('json-data/publications.json');
+var curatedRaw = fs.readFileSync('json-data/curated.json');
 const curated = JSON.parse(curatedRaw);
 delete curatedRaw;
+//education
+var educationRaw = fs.readFileSync('json-data/education.json');
+const education = JSON.parse(educationRaw);
+delete educationRaw;
 //map
 var mapRaw = fs.readFileSync('json-data/pub-map.json');
 const pubMap = JSON.parse(mapRaw);
@@ -276,6 +281,15 @@ async function getModelList(termMap) {
     //same as pubs above
     const func = async ()=> {return curated.slice(indexStart, indexEnd);};
     var json = await func();
+  } else if (termMap['category'] == 'education') {
+    //get index range
+    let page = termMap['page'];
+    let modelsPerPage = termMap['maxModels'];
+    let indexStart = (page - 1) * modelsPerPage;
+    let indexEnd = page * modelsPerPage;
+    //same as pubs above
+    const func = async ()=> {return education.slice(indexStart, indexEnd);};
+    var json = await func();
   } else {
     //calculate row var API uses
     const APIrow = termMap['page'] * termMap['maxModels'] - termMap['maxModels'] - 1;
@@ -283,7 +297,6 @@ async function getModelList(termMap) {
     //create link and fetch from API
     const api_url =
       "https://vcellapi-beta.cam.uchc.edu:8080/biomodel?bmName=" + termMap["bmName"] + "&bmId=" + termMap["bmId"] + "&category=" + termMap["category"] + "&owner=" + termMap["owner"] + "&savedLow=" + termMap["savedLow"] + "&savedHigh=" + termMap["savedHigh"] + "&startRow=" + APIrow + "&maxRows=" + termMap['maxModels'] + "&orderBy=" + termMap["orderBy"];
-
     const fetch_response = await fetch(api_url);
     json = await fetch_response.json();
   }

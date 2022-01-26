@@ -5,7 +5,9 @@
     <div id="simple-search-left">
         <form id="custom-form-simple">
             <p id="json-filter-title"><b>Search</b></p>
+            {{#if (not (or (or (eq termMap.category "publications") (eq termMap.category "curated")) (eq termMap.category "education")))}}
             <input class="minimal-input" type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
+            {{/if}}
             <select class="minimal-input" name="category" id="category-select" placeholder="Category" autocomplete="off">
                 <option {{#if (eq termMap.category "tutorial")}}selected {{/if}}value="tutorial">Tutorials</option>
                 <option {{#if (eq termMap.category "education")}}selected {{/if}}value="education">Education</option>
@@ -14,7 +16,31 @@
                 <option {{#if (eq termMap.category "curated")}}selected {{/if}}value="curated">Curated</option>
                 <option {{#if (eq termMap.category "publications")}}selected {{/if}}value="publications">Publications</option>
             </select>
+            {{#if (not (or (or (eq termMap.category "publications") (eq termMap.category "curated")) (eq termMap.category "education")))}}
             <input class="minimal-input" type="text" name="owner" id="owner" placeholder="Owner" value="">
+            <div class="custom-form__group">
+                <p>Model ID</p>
+                <input class="minimal-input" type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}" autocomplete="off">
+            </div>
+            <div class="custom-form__group">
+                <p>Modified After / Before</p>
+                <input class="minimal-input-inline" type="text" name="savedLow" id="savedLow" placeholder="Begin Time" value="{{termMap.savedLow}}" autocomplete="off">
+                <input class="minimal-input-inline" type="text" name="savedHigh" id="savedHigh" placeholder="End Timestamp" value="{{termMap.savedHigh}}" autocomplete="off">
+            </div>
+            <div class="custom-form__group">
+                <p>Order By</p>
+                <select class="minimal-input" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}" autocomplete="off">
+                    <option value="date_desc">Date (newest)</option>
+                    <option value="date_asc">Date (oldest)</option>
+                    <option value="name_asc">Name (A-Z)</option>
+                    <option value="name_desc">Name (Z-A)</option>
+                </select>
+            </div>
+            {{/if}}
+            <div class="custom-form__group">
+                <p>Models per Page</p>
+                <input class="minimal-input" type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off">
+            </div>
             <button id="curated-search-submit-left" type="submit" class="minimal-button">
                 Search
             </button>
@@ -49,37 +75,12 @@
             Filter
         </button>
     </form>
-    {{!-- advanced search form  --}}
-    <div class="left-inline minimal-border" id="advanced-search">
-        <p id="json-filter-title"><b>Advanced</b></p>
-        <form id="custom-form-advanced" class="">
-            <div class="custom-form__group">
-                <p>Model ID</p>
-                <input class="minimal-input" type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}" autocomplete="off">
-            </div>
-            <div class="custom-form__group">
-                <p>Modified After / Before</p>
-                <input class="minimal-input-inline" type="text" name="savedLow" id="savedLow" placeholder="Begin Time" value="{{termMap.savedLow}}" autocomplete="off">
-                <input class="minimal-input-inline" type="text" name="savedHigh" id="savedHigh" placeholder="End Timestamp" value="{{termMap.savedHigh}}" autocomplete="off">
-            </div>
-            <div class="custom-form__group">
-                <p>Order By</p>
-                <select class="minimal-input" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}" autocomplete="off">
-                    <option value="date_desc">Date (newest)</option>
-                    <option value="date_asc">Date (oldest)</option>
-                    <option value="name_asc">Name (A-Z)</option>
-                    <option value="name_desc">Name (Z-A)</option>
-                </select>
-            </div>
-            <div class="custom-form__group">
-                <p>Models per Page</p>
-                <input class="minimal-input" type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off">
-            </div>
-            {{!--<button id="advanced-search-submit" type="submit" class="minimal-button">
-                Search
-            </button>--}}
-        </form>
-    </div>
+    {{!-- legacy form  --}}
+    <form id="custom-form-advanced">
+        {{!--<button id="advanced-search-submit" type="submit" class="minimal-button">
+            Search
+        </button>--}}
+    </form>
     {{!-- next/prev page button --}}
     <div id="curated-list-button-holder">
         {{#if (greater termMap.page 1)}}
@@ -449,6 +450,43 @@
       window.location.assign('/curatedList/' + url);
     }
 
+    //removes nested quotes in json and replaces with html quote entity
+    function parseJsonString(s) {
+      try {
+        return JSON.parse(s);
+      } catch (e) {
+        const m = e.message;
+        const spaceIndex = m.lastIndexOf(" ");
+        //index of char immideitley after open quote
+        const jsonIndex = parseInt(m.slice(spaceIndex, m.length));
+        //clean trash
+        delete m;
+        delete spaceIndex;
+        delete jsonIndex;
+        //retry with removed quote
+        return parseJsonString(
+          s.slice(0, jsonIndex - 1) +
+          "&quot;" + s.slice(jsonIndex)
+        );
+      }
+    }
+
+    //simple json parser that only seperates into array elms
+    function jsonToSimpleArray(s) {
+      let elms = [];
+      let index = 0;
+      let startElm = 0;
+      let target = '{"bmKey":';
+      while (index < s.length) {
+        if (s.slice(index, index + 9) == target) {
+          elms.push(s.slice(startElm + 1, index - 1).toLowerCase());
+          startElm = index;
+        }
+        index++
+      }
+      return elms;
+    }
+
     //create map of application html to its row obj
     let appRowMap = {};
     //get the json string and decode the html entities in the string
@@ -456,9 +494,9 @@
     txt.innerHTML = "{{jsonString}}";
     let jsonString = txt.value.replaceAll("&apos;", "'").replaceAll("\n", "");
     //put data into row map
-    let jsonList = JSON.parse(jsonString);
+    let jsonList = jsonToSimpleArray(jsonString);
     for (let i = 0; i < jsonList.length; i++) {
-      appRowMap["row" + i] = JSON.stringify(jsonList[i]);
+      appRowMap["row" + i] = JSON.stringify(jsonList[i]).toLowerCase();
     }
 
     //add solver phrase to filters
@@ -498,7 +536,7 @@
       textFilters = {};
       //get text filter to filters
       let textFilter = document.getElementById("text-filter");
-      let textPhrase = textFilter.value.trim();
+      let textPhrase = textFilter.value.trim().toLowerCase();
       //get text filter to filters
       let solverFilter = document.getElementById("solver");
       let solverPhrase = null;
@@ -544,7 +582,6 @@
             rowDispMap[id] = false;
           }
         }
-        console.log(finalFilters, rowDispMap);
         //if row doesn't match filter, set display none
         for (let i = 0; i < appRowMapKeyVals.length; i++) {
           let pair = appRowMapKeyVals[i];
