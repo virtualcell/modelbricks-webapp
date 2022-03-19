@@ -345,6 +345,11 @@ app.get("/curatedList/:search", async (req, res) => {
   }
   //make json string for use in filters
   let jsonString = (JSON.stringify(json));
+
+  //replace / escape char in date param
+  termMap["savedLow"] = termMap["savedLow"].replace(/%2F/g, "/");
+  termMap["savedHigh"] = termMap["savedHigh"].replace(/%2F/g, "/");
+
   //render
   res.render("curatedList", {
     title: "ModelBricks - Curated List",

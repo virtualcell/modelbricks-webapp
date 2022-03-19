@@ -9,40 +9,43 @@
             <input class="minimal-input" type="text" name="bmName" id="bmName" placeholder="Model Name" value="{{termMap.bmName}}" autocomplete="off">
             {{/if}}
             <select class="minimal-input" name="category" id="category-select" placeholder="Category" autocomplete="off">
-                <option {{#if (eq termMap.category "tutorial")}}selected {{/if}}value="tutorial">Tutorials</option>
-                <option {{#if (eq termMap.category "education")}}selected {{/if}}value="education">Education</option>
-                <option {{#if (or (eq termMap.owner "ModelBrick") (eq termMap.category modelbricks))}}selected {{/if}}value="modelbrick">ModelBricks</option>
-                <option {{#if (and (eq termMap.category "all") (not (eq termMap.owner "ModelBrick")))}}selected {{/if}}value="all">All Public</option>
-                <option {{#if (eq termMap.category "curated")}}selected {{/if}}value="curated">Curated</option>
-                <option {{#if (eq termMap.category "publications")}}selected {{/if}}value="publications">Publications</option>
+                <option {{#if (eq termMap.category "tutorial")}}selected {{/if}}value="tutorial" id="category-tutorial">Type: Tutorials</option>
+                <option {{#if (eq termMap.category "education")}}selected {{/if}}value="education" id="category-education">Type: Education</option>
+                <option {{#if (or (eq termMap.owner "ModelBrick") (eq termMap.category modelbricks))}}selected {{/if}}value="modelbrick" id="category-modelbrick">Type: ModelBricks</option>
+                <option {{#if (and (eq termMap.category "all") (not (eq termMap.owner "ModelBrick")))}}selected {{/if}}value="all" id="category-all">Type: All Public</option>
+                <option {{#if (eq termMap.category "curated")}}selected {{/if}}value="curated" id="category-curated">Type: Curated</option>
+                <option {{#if (eq termMap.category "publications")}}selected {{/if}}value="publications" id="category-publications">Type: Publications</option>
             </select>
             {{#if (not (or (or (eq termMap.category "publications") (eq termMap.category "curated")) (eq termMap.category "education")))}}
-            <input class="minimal-input" type="text" name="owner" id="owner" placeholder="Owner" value="">
+            <input class="minimal-input" type="text" name="owner" id="owner" placeholder="Model Owner" value="{{termMap.owner}}">
+            {{!-- functional, removed for ease of use
             <div class="custom-form__group">
                 <p>Model ID</p>
                 <input class="minimal-input" type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}" autocomplete="off">
-            </div>
+            </div>--}}
             <div class="custom-form__group">
                 <p>Modified After / Before</p>
-                <input class="minimal-input-inline" type="text" name="savedLow" id="savedLow" placeholder="Begin Time" value="{{termMap.savedLow}}" autocomplete="off">
-                <input class="minimal-input-inline" type="text" name="savedHigh" id="savedHigh" placeholder="End Timestamp" value="{{termMap.savedHigh}}" autocomplete="off">
+                <input class="minimal-input-inline small-text" type="text" name="savedLow" id="savedLow" placeholder="yyyy/mm/dd" value="{{termMap.savedLow}}" autocomplete="off">
+                <input class="minimal-input-inline small-text" type="text" name="savedHigh" id="savedHigh" placeholder="yyyy/mm/dd" value="{{termMap.savedHigh}}" autocomplete="off">
             </div>
-            <div class="custom-form__group">
-                <p>Order By</p>
+            {{!--<div class="custom-form__group">
                 <select class="minimal-input" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}" autocomplete="off">
-                    <option value="date_desc">Date (newest)</option>
-                    <option value="date_asc">Date (oldest)</option>
-                    <option value="name_asc">Name (A-Z)</option>
-                    <option value="name_desc">Name (Z-A)</option>
+                    <option value="date_desc" id="date-desc">Order by Date</option>
+                    <option value="date_asc" id="date-asc">Order by Date (oldest)</option>
+                    <option value="name_asc" id="date-name-asc">Order by Name</option>
+                    <option value="name_desc" id="date-name-desc">Order by Name (Z-A)</option>
                 </select>
-            </div>
+            </div>--}}
             {{/if}}
             <div class="custom-form__group">
-                <p>Models per Page</p>
-                <input class="minimal-input" type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off">
+                <p class="inline">Models per Page</p>
+                <input class="minimal-input inline small-input" type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off" maxlength="3">
             </div>
             <button id="curated-search-submit-left" type="submit" class="minimal-button">
                 Search
+            </button>
+            <button type="button" class="minimal-button clear-button" id="search-clear">
+                Reset
             </button>
         </form>
     </div>
@@ -50,7 +53,7 @@
     <form id="json-filters">
         <p id="json-filter-title"><b>Filter</b></p>
         <select class="minimal-input" name="filter" id="filter-select" placeholder="Filter by Feature" autocomplete="off">
-            <option class="grey-text" selected value="none">Filter by Feature</option>
+            <option id="default-feature-filter" selected value="none">Filter by Feature</option>
             <option value="spatial">Spatial</option>
             <option value="stochastic">Stochastic</option>
             <option value="deterministic">Deterministic</option>
@@ -63,16 +66,19 @@
             <option value="bionetgen">BioNetGen</option>
         </select>
         <select class="minimal-input" name="solver" id="solver" placeholder="Solver Name" autocomplete="off">
-            <option disabled selected value>Filter by Solver</option>
+            <option id="default-solver-filter" selected value>Filter by Solver</option>
             <option value="smoldyn">Smoldyn</option>
             <option value="fifv">Fully-Implicit Finite Volume</option>
             <option value="css">Combined Stiff Solver</option>
             <option value="gibson">Gibson</option>
             <option value="rg">Regular Grid</option>
         </select>
-        <input class="minimal-input" type="text" name="text-filter" id="text-filter" placeholder="Filter by Text" autocomplete="off">
+        <input class="minimal-input" type="text" name="text-filter" id="text-filter" placeholder="Filter by Any Word" autocomplete="off">
         <button type="button" class="minimal-button" id="form-filter">
             Filter
+        </button>
+        <button type="button" class="minimal-button clear-button" id="filter-clear">
+            Clear
         </button>
     </form>
     {{!-- legacy form  --}}
@@ -427,11 +433,40 @@
 
       //add other atributes
       fd.append("page","1");
+      if (fd.get('category') == null) {
+        fd.append("category","");
+      }
+      if (fd.get('bmName') == null) {
+        fd.append("bmName","");
+      }
+      if (fd.get('bmId') == null) {
+        fd.append("bmId","");
+      }
+      if (fd.get('owner') == null) {
+        fd.append("owner","");
+      }
+      if (fd.get('savedLow') == null) {
+        fd.append("savedLow","");
+      }
+      if (fd.get('savedHigh') == null) {
+        fd.append("savedHigh","");
+      }
+      if (fd.get('orderBy') == null) {
+        fd.append("orderBy","");
+      }
+      if (fd.get('advanced') == null) {
+        fd.append("advanced","false");
+      }
       //handle special modlebricks + publicantions category cases
       if (fd.get('category') == 'modelbrick' || otherForm.get('category') == 'modelbrick') {
         fd.set('category', 'all');
         otherForm.set('owner', 'ModelBrick');
+      } else if(fd.get('category') == 'all' && fd.get('owner') == 'ModelBrick') {
+        fd.set('owner', '');
       }
+      //handle date special character
+      fd.set("savedLow", fd.get("savedLow").replace(/\//g, "%2F"));
+        fd.set("savedHigh", fd.get("savedHigh").replace(/\//g, "%2F"));
 
       //construct url params for resutls page
       const itr = fd.entries();
@@ -540,13 +575,7 @@
       //get text filter to filters
       let solverFilter = document.getElementById("solver");
       let solverPhrase = null;
-      for (let i = 0; i < solverFilter.options.length; i++) {
-        let option = solverFilter.options[i];
-        if (option.selected) {
-          solverPhrase = option.value;
-          break;
-        }
-      }
+      solverPhrase = solverFilter.options[solverFilter.selectedIndex].value
       //get all other filters
       let appRowMapKeyVals = Object.entries(appRowMap);
       if (anySelectedFilter || textPhrase.length > 0 || solverPhrase.length > 0) {
@@ -556,7 +585,7 @@
           finalFilters.push(textPhrase);
         }
         if (solverPhrase) {
-          let output = applySolverFilter(solverPhrase);
+          let output = applySolverFilter(solverPhrase).toLowerCase();
           textFilters[output] = true;
           finalFilters.push(output);
         }
@@ -602,6 +631,75 @@
       }
     }
 
+    //rest filter values
+    function clearSearch(e) {
+      //reset model name
+      document.getElementById("bmName").value = "{{termMap.bmName}}";
+      //reset category
+      let categorySelect = document.getElementById("category-select");
+      categorySelect.options[categorySelect.selectedIndex].selected = false;
+      {{#if (eq termMap.category "tutorial")}}
+      document.getElementById("category-{{termMap.category}}").selected = true;
+      {{/if}}
+      {{#if (eq termMap.category "education")}}
+      document.getElementById("category-{{termMap.category}}").selected = true;
+      {{/if}}
+      {{#if (or (eq termMap.owner "ModelBrick") (eq termMap.category modelbricks))}}
+      document.getElementById("category-modelbrick").selected = true;
+      {{/if}}
+      {{#if (and (eq termMap.category "all") (not (eq termMap.owner "ModelBrick")))}}
+      document.getElementById("category-all").selected = true;
+      {{/if}}
+      {{#if (eq termMap.category "curated")}}
+      document.getElementById("category-{{termMap.category}}").selected = true;
+      {{/if}}
+      {{#if (eq termMap.category "publications")}}
+      document.getElementById("category-{{termMap.category}}").selected = true;
+      {{/if}}
+      //reset owner
+      document.getElementById("owner").value = "{{termMap.owner}}";
+      //reset saved low
+      document.getElementById("savedLow").value = "{{termMap.savedLow}}";
+      //reset saved high
+      document.getElementById("savedHigh").value = "{{termMap.savedHigh}}";
+      //reset order
+      let orderOptions = document.getElementById("orderBy");
+      orderOptions.options[orderOptions.selectedIndex].selected = false;
+      {{#if (eq termMap.orderBy "date_desc")}}
+      document.getElementById("date-desc").selected = true;
+      {{/if}}
+      {{#if (eq termMap.orderBy "date_asc")}}
+      document.getElementById("date-asc").selected = true;
+      {{/if}}
+      {{#if (eq termMap.orderBy "name_desc")}}
+      document.getElementById("date-name-desc").selected = true;
+      {{/if}}
+      {{#if (eq termMap.orderBy "name_asc")}}
+      document.getElementById("date-name-asc").selected = true;
+      {{/if}}
+      //reset models per page
+      document.getElementById("maxModels").value = "{{termMap.maxModels}}";
+    }
+
+    //rest filter values
+    function clearFilter(e) {
+      filters = {};
+      textFilters = {};
+      //reset text filter html
+      let textFilter = document.getElementById("text-filter");
+      textFilter.value = "";
+      //reset solver filter html
+      let solverFilter = document.getElementById("solver");
+      solverFilter.options[solverFilter.selectedIndex].selected = false;
+      document.getElementById("default-solver-filter").selected = true;
+      //reset feature filter html
+      let featureFilter = document.getElementById("filter-select");
+      featureFilter.options[featureFilter.selectedIndex].selected = false;
+      document.getElementById("default-feature-filter").selected = true;
+      //refilter
+      applicationFilter(e);
+    }
+
     //toggle pulldown menus in curated list table
     function togglePulldown(e) {
       //get elements from toggle code stored in html "name" atribute
@@ -640,6 +738,8 @@
     const simpleForm = document.getElementById("custom-form-simple");
     const advancedForm = document.getElementById("custom-form-advanced");
     const filterButton = document.getElementById('form-filter');
+    const filterClearButton = document.getElementById('filter-clear');
+    const searchClearButton = document.getElementById('search-clear');
     const pulldowns = document.querySelectorAll(".pulldown");
     //used for feature filter
     const filterSelect = document.getElementById("filter-select");
@@ -663,6 +763,14 @@
     filterButton.addEventListener('click', (e) => {
       e.preventDefault();
       applicationFilter(e);
+    });
+    searchClearButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      clearSearch(e);
+    });
+    filterClearButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      clearFilter(e);
     });
 
 

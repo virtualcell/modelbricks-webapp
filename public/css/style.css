@@ -3276,6 +3276,12 @@ in printable view*/
   margin: auto;
 }
 
+.clear-button {
+  display: block;
+  margin: auto;
+  margin-top: 5px;
+}
+
 #json-filter-title {
   text-align: center;
 }
@@ -3288,7 +3294,6 @@ in printable view*/
 
 #bmName {
   display: block;
-  margin: auto;
 }
 
 #curated-search-submit {
@@ -3329,7 +3334,7 @@ in printable view*/
 }
 
 .minimal-input-inline {
-  width: 75px;
+  width: 74px;
   background-color: white;
   border: 1px solid grey;
   border-radius: 5px;
@@ -3368,15 +3373,17 @@ in printable view*/
 
 #solver {
   display: block;
-  width: 157px;
-  color: grey;
+  width: 151px;
+}
+
+#filter-select {
+  width: 151px;
 }
 
 #category-select {
   display: block;
   color: grey;
-  width: 157px;
-  margin: auto;
+  width: 151px;
 }
 
 .abreviated-text {
@@ -3414,4 +3421,16 @@ td.no-margin {
   border-top: none !important;
   border-bottom: none !important;
   border-right: none !important;
+}
+
+.small-text {
+  font-size: 11px;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.small-input {
+  width: 39px !important;
 }
