@@ -1,8 +1,8 @@
 {{!-- Main sorting table  --}}
-<div id="curated-flex">
+<div id="curated-flex" class="curated-flex-color">
   {{!-- simple search --}}
   <div id="multi-search-div" class="left-inline">
-    <div id="simple-search-left">
+    <div id="simple-search-left" class="search-form-color">
         <form id="custom-form-simple">
             <p id="json-filter-title"><b>Search</b></p>
             {{#if (not (or (or (eq termMap.category "publications") (eq termMap.category "curated")) (eq termMap.category "education")))}}
@@ -16,17 +16,44 @@
                 <option {{#if (eq termMap.category "curated")}}selected {{/if}}value="curated" id="category-curated">Type: Curated</option>
                 <option {{#if (eq termMap.category "publications")}}selected {{/if}}value="publications" id="category-publications">Type: Publications</option>
             </select>
-            {{#if (not (or (or (eq termMap.category "publications") (eq termMap.category "curated")) (eq termMap.category "education")))}}
+            {{#if
+              (not
+                (or
+                  (or
+                    (or
+                      (or
+                        (eq termMap.category "publications") (eq termMap.category "curated"))
+                      (eq termMap.category "education"))
+                    (or (eq termMap.owner "ModelBrick") (eq termMap.category modelbricks)))
+                  (eq termMap.category "tutorial")))
+            }}
             <input class="minimal-input" type="text" name="owner" id="owner" placeholder="Model Owner" value="{{termMap.owner}}">
             {{!-- functional, removed for ease of use
             <div class="custom-form__group">
                 <p>Model ID</p>
                 <input class="minimal-input" type="text" name="bmId" id="bmId" placeholder="Model ID" value="{{termMap.bmId}}" autocomplete="off">
             </div>--}}
+            {{/if}}
             <div class="custom-form__group">
                 <p>Modified After / Before</p>
-                <input class="minimal-input-inline small-text" type="text" name="savedLow" id="savedLow" placeholder="yyyy/mm/dd" value="{{termMap.savedLow}}" autocomplete="off">
-                <input class="minimal-input-inline small-text" type="text" name="savedHigh" id="savedHigh" placeholder="yyyy/mm/dd" value="{{termMap.savedHigh}}" autocomplete="off">
+                <input
+                  class="minimal-input-inline small-text"
+                  type="text"
+                  name="savedLow"
+                  id="savedLow"
+                  placeholder="yyyy/mm/dd"
+                  value="{{termMap.savedLow}}"
+                  autocomplete="off"
+                >
+                <input
+                  class="minimal-input-inline small-text"
+                  type="text"
+                  name="savedHigh"
+                  id="savedHigh"
+                  placeholder="yyyy/mm/dd"
+                  value="{{termMap.savedHigh}}"
+                  autocomplete="off"
+                >
             </div>
             {{!--<div class="custom-form__group">
                 <select class="minimal-input" name="orderBy" id="orderBy" placeholder="orderBy" value="{{termMap.orderBy}}" autocomplete="off">
@@ -36,7 +63,6 @@
                     <option value="name_desc" id="date-name-desc">Order by Name (Z-A)</option>
                 </select>
             </div>--}}
-            {{/if}}
             <div class="custom-form__group">
                 <p class="inline">Models per Page</p>
                 <input class="minimal-input inline small-input" type="text" name="maxModels" id="maxModels" placeholder="Models per Page" value="{{termMap.maxModels}}" autocomplete="off" maxlength="3">
@@ -45,12 +71,12 @@
                 Search
             </button>
             <button type="button" class="minimal-button clear-button" id="search-clear">
-                Reset
+                Clear
             </button>
         </form>
     </div>
     {{!-- json filters --}}
-    <form id="json-filters">
+    <form id="json-filters" class="filters-color">
         <p id="json-filter-title"><b>Filter</b></p>
         <select class="minimal-input" name="filter" id="filter-select" placeholder="Filter by Feature" autocomplete="off">
             <option id="default-feature-filter" selected value="none">Filter by Feature</option>
@@ -633,8 +659,6 @@
 
     //rest filter values
     function clearSearch(e) {
-      //reset model name
-      document.getElementById("bmName").value = "{{termMap.bmName}}";
       //reset category
       let categorySelect = document.getElementById("category-select");
       categorySelect.options[categorySelect.selectedIndex].selected = false;
@@ -656,15 +680,30 @@
       {{#if (eq termMap.category "publications")}}
       document.getElementById("category-{{termMap.category}}").selected = true;
       {{/if}}
+      //reset model name
+      if (document.getElementById("bmName")) {
+        document.getElementById("bmName").value = "";
+      }
       //reset owner
-      document.getElementById("owner").value = "{{termMap.owner}}";
+      {{#if (not
+        (or
+          (or
+            (or
+              (or
+                (eq termMap.category "publications") (eq termMap.category "curated"))
+              (eq termMap.category "education"))
+            (or (eq termMap.owner "ModelBrick") (eq termMap.category modelbricks)))
+          (eq termMap.category "tutorial")))
+      }}
+      document.getElementById("owner").value = "";
+      {{/if}}
       //reset saved low
-      document.getElementById("savedLow").value = "{{termMap.savedLow}}";
+      document.getElementById("savedLow").value = "";
       //reset saved high
-      document.getElementById("savedHigh").value = "{{termMap.savedHigh}}";
+      document.getElementById("savedHigh").value = "";
       //reset order
-      let orderOptions = document.getElementById("orderBy");
-      orderOptions.options[orderOptions.selectedIndex].selected = false;
+      //let orderOptions = document.getElementById("orderBy");
+      //orderOptions.options[orderOptions.selectedIndex].selected = false;
       {{#if (eq termMap.orderBy "date_desc")}}
       document.getElementById("date-desc").selected = true;
       {{/if}}
@@ -732,6 +771,47 @@
         shortTable.style.display = 'none';
       }
     }
+
+    //converts date str to obj
+    function strToDate(dateStr, orderList={0:0, 1:1, 2:2}) {
+      //order list is map of date object parame indexes to dateStr param indexes
+      paramList = dateStr.split("/");
+      if (paramList[orderList[0]].length < 4) {
+        paramList[orderList[0]] = "20" + paramList[orderList[0]];
+      }
+      return(new Date(
+        paramList[orderList[0]],
+        paramList[orderList[1]],
+        paramList[orderList[2]]
+      ));
+    }
+
+    //filters out dates outside range
+    function filterDates(columnClassName, tableId, lowDate, highDate) {
+      lowDate = strToDate(lowDate);
+      highDate = strToDate(highDate);
+      //var tbody = document.getElementById(tableId).getElementsByTagName("tbody")[0];
+      var rows = document.querySelectorAll(".sortable-row");
+      let n = rows.length;
+      for (i = 0; i < n; i++) {
+        let row = rows[i];
+        let dateStr = row.getElementsByClassName(columnClassName)[0].innerHTML;
+        let date = strToDate(dateStr, {0:2, 1:0, 2:1});
+        if (date < lowDate || date > highDate) {
+          row.style.display = "none";
+        }
+      }
+    }
+    {{#if
+      (or
+        (or
+          (or
+            (eq termMap.category "publications") (eq termMap.category "curated"))
+          (eq termMap.category "education"))
+        (eq termMap.category "tutorial"))
+    }}
+    filterDates('date', 'content-table3', "{{termMap.savedLow}}", "{{termMap.savedHigh}}");
+    {{/if}}
 
     //custom event listners for form submition
     const appSimCells = document.querySelectorAll(".app-sim-td");

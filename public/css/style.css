@@ -3248,7 +3248,6 @@ in printable view*/
 }
 
 #json-filters {
-  background-color: white;
   border: 1px solid grey;
   padding: 5px;
   border-radius: 5px;
@@ -3433,4 +3432,16 @@ td.no-margin {
 
 .small-input {
   width: 39px !important;
+}
+
+.search-form-color {
+  background-color: pink;
+}
+
+.filters-color {
+  background-color: yellow;
+}
+
+.curated-flex-color {
+  background-color: white;
 }
