@@ -2,7 +2,7 @@
 <div class="admin-panel clearfix">
     <div class="slidebar">
         <div class="logo">
-            <a href=""></a>
+            <a href="/"></a>
         </div>
         <ul>
             <li class="drop">
@@ -49,35 +49,59 @@
                 </ul>
             </li>
             <li class="drop">
-                <a href="#applications" class="dropTitle sidebar-link">
+                <a href="#applications" class="dropTitle">
                   <i class="fa fa-folder-o static" aria-hidden="true"></i>
                   Applications
                   <i class="fa fa-angle-down dynamic"></i>
                 </a>
-                <ul class="subMenu">
+                <ul class="subMenu active">
                     {{#each data.vcml.BioModel}}
                     {{#each this.SimulationSpec as |value key|}}
                     <li class="drop child">
-                        <a href="#specsSpecies{{key}}" class="dropTitle sidebar-link">
+                        <a href="#specsSpecies{{key}}" class="dropTitle">
                           <i class="fa fa-folder-o static" aria-hidden="true"></i>
                           <span class="wordLimit">{{value.$.Name}}</span>
                           <i class="fa fa-angle-down dynamic"></i>
                         </a>
                         <ul class="subMenu">
                             <li>
-                              <a href="#specsSpecies{{key}}" class="sidebar-link">
+                              <a href="#specsSpecies{{key}}" class="">
                                 <i class="fa fa-pencil-square-o static" aria-hidden="true"></i>
                                 Specs - Species
                               </a>
                             </li>
                             <li>
-                              <a href="#specsReaction{{key}}" class="sidebar-link">
+                              <a href="#specsReaction{{key}}" class="">
                                 <i class="fa fa-pencil-square-o static" aria-hidden="true"></i>
                                 Specs - Reactions
                               </a>
                             </li>
                             <li>
-                              <a href="#simulations{{key}}" class="sidebar-link">
+                              <a href="#assignments{{key}}" class="">
+                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
+                                Assignment Rules
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#raterules{{key}}" class="">
+                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
+                                Rate Rules
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#events{{key}}" class="">
+                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
+                                Events
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#geometry{{key}}" class="">
+                                <i class="fa fa-superpowers static" aria-hidden="true"></i>
+                                Geometry
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#simulations{{key}}" class="">
                                 <i class="fa fa-superpowers static" aria-hidden="true"></i>
                                 Simulations
                               </a>
@@ -89,12 +113,14 @@
                 </ul>
             </li>
             <li class="drop">
-                <a href="#global" class="dropTitle"><i class="fa fa-globe static" aria-hidden="true"></i>
+                <a href="#global" class="dropTitle sidebar-link">
+                  <i class="fa fa-globe static" aria-hidden="true"></i>
                     Global Parameters
                 </a>
             </li>
             <li class="drop">
-                <a href="#downloads" class="dropTitle"><i class="fa fa-globe static" aria-hidden="true"></i>
+                <a href="#downloads" class="dropTitle sidebar-link">
+                  <i class="fa fa-globe static" aria-hidden="true"></i>
                     Downloads
                 </a>
             </li>
@@ -106,9 +132,9 @@
             {{#each data.vcml.BioModel}}
             {{#each this.Version}}
             <li>
-              <a id="modelName" href="#dashboard">
-                {{~trimString this.$.Name}} - {{this.$.KeyValue~}}
-              </a>
+              <p id="modelName" href="#dashboard">
+                {{~trimString this.$.Name}}
+              </p>
             </li>
             <li class="printable">
               <a id="print-link" href="/curatedList/printModel/{{this.$.KeyValue}}">
@@ -165,7 +191,7 @@
             <div id="reactions" class="optionData">
                 <h2 class="header">Reactions</h2>
                 <div class="modelTable">
-                    <table id="content-table3" class="table-responsive-full sort-table">
+                    <table id="content-table3-reactions" class="table-responsive-full sort-table">
                         <thead>
                             <tr>
                                 <th class="Reactions">Reactions
@@ -208,6 +234,16 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
+                                <th class="Kinetics">Depiction
+                                    <div class="sort-table-arrows">
+                                        <a href="javascript:sort(true, 'Kinetics', 'content-table3');"><button
+                                                class="button" title="down arrow"><i
+                                                    class="fa fa-chevron-down"></i></button></a>
+                                        <a href="javascript:sort(false, 'Kinetics', 'content-table3');"><button
+                                                class="button" title="up arrow"><i
+                                                    class="fa fa-chevron-up"></i></button></a>
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -215,23 +251,37 @@
                             {{#each this.Model}}
                             {{#each this.SimpleReaction as |value key|}}
                             <tr>
-                                <td data-label="Reactions" class="Reactions">
-                                    {{#each value.Reactant}}
-                                    {{nullCheck this.$.LocalizedCompoundRef}}
-                                    {{/each}}
+                                <td data-label="Reactions" class="Reactions" id="{{value.$.Name}}" onClick="reply_click(this.id)" style="cursor: pointer">
+                                    {{~#each value.Reactant}}
+                                    {{~nullCheck this.$.LocalizedCompoundRef}}
+                                    {{~#if (greater ../this.Reactant.length (add 1 @index))~}}
+                                    +
+                                    {{~/if}}
+                                    {{~/each~}}
                                     <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
-                                    {{#each value.Product}}
-                                    {{this.$.LocalizedCompoundRef}}
-                                    {{/each}}
+                                    {{~#each value.Product}}
+                                    {{~this.$.LocalizedCompoundRef}}
+                                    {{~#if (greater ../this.Product.length (add 1 @index))~}}
+                                    +
+                                    {{~/if}}
+                                    {{~/each~}}
                                 </td>
-                                <td data-label="Name" class="Name"><a id="{{value.$.Name}}" onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{value.$.Name}}</a></td>
-                                <td data-label="Structure" class="Structure">{{value.$.Structure}}</td>
+                                <td id="{{value.$.Name}}" onClick="reply_click(this.id)" style="cursor: pointer" data-label="Name" class="Name">
+                                  <a id="{{value.$.Name}}" onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{value.$.Name}}
+                                  </a>
+                                </td>
+                                <td id="{{value.$.Name}}" onClick="reply_click(this.id)" style="cursor: pointer" data-label="Structure" class="Structure">{{value.$.Structure}}</td>
                                 {{#each value.Kinetics}}
-                                <td data-label="Kinetics" class="Kinetics"><a id="{{key}}"
-                                        onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.KineticsType}}</a></td>
-                                {{/each}}</td>
+                                <td data-label="Kinetics" class="Kinetics" id="{{key}}" onClick="reply_click(this.id)" style="cursor:pointer;">
+                                  <a id="{{key}}" onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.KineticsType}}
+                                  </a>
+                                </td>
+                                {{/each}}
+                                <td id="{{value.$.Name}}" onClick="reply_click(this.id)" style="cursor: pointer">
+                                  <canvas id="{{this.$.Name}}_species_canvas" class="molecule_canvas" width="" height=""></canvas>
+                                </td>
                             </tr>
 
                             {{/each}}
@@ -259,7 +309,6 @@
 
 
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -275,17 +324,35 @@
                         {{!-- Expressions --}}
                         <h2 id="reactionNameExp">Expressions for {{value.$.Name}}</h2>
 
-
+                        {{!-- Local Parameters --}}
                         {{#each this.Parameter}}
-
                         <div class="role">
-                            <p class="role-title">{{this.$.Role}}</p>
+                            <p class="role-title">
+                              {{#if (eq this.$.Role "user defined")}}
+                              local
+                              {{else}}
+                              {{this.$.Role}}
+                              {{/if}}
+                            </p>
                             <p class="role-variable">{{this.$.Name}}</p>
                             <p class="role-text">{{this._}} <span class="unit">[{{this.$.Unit}}]</span> </p>
                         </div>
+
+                        {{!-- Global Parameters --}}
+                        {{#each ../../../this.ModelParameters.[0].Parameter}}
+                        {{#if (includes ../this._ this.$.Name)}}
+                        <div class="role">
+                            <p class="role-title">
+                              global
+                            </p>
+                            <p class="role-variable">{{this.$.Name}}</p>
+                            <p class="role-text">{{this._}} <span class="unit">[{{this.$.Unit}}]</span></p>
+                        </div>
+                        {{/if}}
                         {{/each}}
+                        {{/each}}
+
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -298,8 +365,7 @@
             <div id="structures" class="optionData">
                 <h2 class="header">Structures</h2>
                 <div class="modelTable">
-                    <!---should be id="content-table3" below, using test for js "getElementById()"--->
-                    <table id="TEST" class="table-responsive-full sort-table">
+                    <table id="content-table3-structures" class="table-responsive-full sort-table">
                         <thead>
                             <tr>
                                 <th class="Name">Name
@@ -338,9 +404,12 @@
                             {{#each data.vcml.BioModel}}
                             {{#each this.Model}}
                             {{#each this.Membrane}}
-                            <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                            <tr id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor: pointer;">
+                                <td data-label="Name" class="Name">
+                                  <a id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
                                 <td data-label="Type" class="Type">Membrane</td>
                                 <td data-label="Electrical" class="Electrical">
                                     {{this.$.PositiveFeature}}(+) &nbsp; {{this.$.NegativeFeature}}(-)
@@ -349,12 +418,16 @@
 
                             {{/each}}
                             {{#each this.Feature}}
-                            <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                            <tr id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer;">
+                                <td data-label="Name" class="Name">
+                                  <a id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
                                 <td data-label="Type" class="Type">Compartment</td>
                                 <td data-label="Electrical" class="Electrical">
                                     {{this.$.PositiveFeature}}(+) &nbsp; {{this.$.NegativeFeature}}(-)
+                                </td>
                             </tr>
                             {{/each}}
                             {{/each}}
@@ -382,7 +455,6 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#structures"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -405,7 +477,6 @@
                             <h2>{{value.$.Name}} Text Annotations</h2>
                         </div>
                     </div>
-                    <a class='popup-close' href="#structures"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -460,18 +531,20 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
-
                             </tr>
                         </thead>
                         <tbody>
                             {{#each data.vcml.BioModel}}
                             {{#each this.Model}}
                             {{#each this.LocalizedCompound}}
-                            <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                            <tr id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer;">
+                                <td data-label="Name" class="Name">
+                                  <a id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
                                 <td data-label="Structure" class="Structure">{{this.$.Structure}}</td>
-                                <td data-label="Structure" class="Structure">
+                                <td data-label="bionetgen" class="bionetgen">
                                   {{~#each this.SpeciesPattern~}}
                                   {{#each this.MolecularTypePattern~}}
                                   {{#each this.MolecularType~}}
@@ -486,9 +559,11 @@
                                   {{~/each~}}).
                                   {{~/each~}}
                                   {{/each}}</td>
-                                <td data-label="Structure" class="Structure">
+                                <td data-label="depiction" class="depiction">
                                   {{!-- dimensions of this canvas are variable --}}
-                                  <canvas id="{{this.$.Name}}_species_canvas" class="molecule_canvas" width="" height=""></canvas>
+                                  <canvas id="{{this.$.Name}}_species_canvas" class="molecule_canvas">
+                                    {{~this.$.Structure~}}
+                                  </canvas>
                                 </td>
                             </tr>
                             {{/each}}
@@ -513,7 +588,6 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#species"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -567,9 +641,12 @@
                             {{#each this.MolecularTypeList}}
                             {{#each this.MolecularType}}
 
-                            <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                            <tr id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer;">
+                                <td data-label="Name" class="Name">
+                                  <a id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
 
                                 <td data-label="Description" class="Description">
                                   {{~this.$.Name}}(
@@ -606,7 +683,6 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#molecules"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                     {{#each this.annotations}}
                     <script>
                     /*
@@ -704,9 +780,12 @@
                             {{#each this.RbmObservableList}}
                             {{#each this.Observable}}
 
-                            <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                            <tr id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer;">
+                                <td data-label="Name" class="Name">
+                                  <a id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
                                 <td data-label="Structure" class="Structure">{{this.$.Structure}}</td>
                                 <td data-label="Domain" class="Domain">{{this.$.ObservableType}}</td>
                                 {{#each this.SpeciesPattern}}
@@ -763,7 +842,6 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#observables"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -790,7 +868,8 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
-                                <th class="properties">Properties
+                                <th class="properties">
+                                  Properties
                                 </th>
                                 <th class="Type">Math Type
                                     <div class="sort-table-arrows">
@@ -802,6 +881,9 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
+                                <th class="properties">
+                                  Annotation
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -809,8 +891,11 @@
                             {{#each data.vcml.BioModel}}
                             {{#each this.SimulationSpec as |value key|}}
                             <tr>
-                                <td data-label="Name" class="Name"><a id={{this.$.Name}} onClick="reply_click(this.id)"
-                                        style="cursor:pointer; color:#3EB9FE">{{this.$.Name}}</a></td>
+                                <td id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer;" data-label="Name" class="Name">
+                                  <a id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer; color:#3EB9FE">
+                                    {{this.$.Name}}
+                                  </a>
+                                </td>
                                 <td data-label="properties" class="properties">
                                     <a href="#specsSpecies{{key}}" style="cursor:pointer; color:#3EB9FE">Specs -
                                         Species</a> <br>
@@ -818,7 +903,7 @@
                                         Reaction</a> <br>
                                     <a href="#simulations{{key}}" style="cursor:pointer; color:#3EB9FE">Simulations</a>
                                 </td>
-                                <td data-label="Type" class="Type" id="mathType">
+                                <td id={{this.$.Name}} onClick="reply_click(this.id)" style="cursor:pointer;" data-label="Type" class="Type" id="mathType">
                                   {{#if (eq "true" this.$.Stochastic)}}
                                     {{#if (eq "true" this.$.RuleBased)}}
                                     Stochastic agent-based (NFSim)
@@ -844,6 +929,9 @@
                                     {{/if}}
                                   {{/each}}
                                 </td>
+                                <td>
+                                  {{this.Annotation}}
+                                </td>
                             </tr>
 
                             {{/each}}
@@ -855,19 +943,15 @@
                 {{#each data.vcml.BioModel}}
                 {{#each this.SimulationSpec as |value key|}}
                 <div class="popup box-{{value.$.Name}}">
-                    <div class='popup-text block'>
-                        <div class="role">
-                          {{!-- annotation --}}
-                          <h2>{{value.$.Name}} Text Annotations</h2>
-                          {{!-- universal ID's  --}}
+                    <div class='popup-text'>
+                      <div class="uid" id="applicationUID-{{value.$.Name}}">
                           <h2>{{value.$.Name}} Universal ID's</h2>
-                        </div>
-                        <div class="role">
-                          <p>Annotations will come here</p>
-                          <p>RFID | pubmed</p>
-                        </div>
+                      </div>
+                      {{!-- annotation --}}
+                      <div class="textAnnotation" id="applicationTA-{{value.$.Name}}">
+                          <h2>{{value.$.Name}} Text Annotations</h2>
+                      </div>
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
                 {{/each}}
                 {{/each}}
@@ -918,6 +1002,16 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
+                                <th class="Diffusion">Structure
+                                    <div class="sort-table-arrows">
+                                        <a href="javascript:sort(true, 'Diffusion', 'content-table3');"><button
+                                                class="button" title="down arrow"><i
+                                                    class="fa fa-chevron-down"></i></button></a>
+                                        <a href="javascript:sort(false, 'Diffusion', 'content-table3');"><button
+                                                class="button" title="up arrow"><i
+                                                    class="fa fa-chevron-up"></i></button></a>
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -928,7 +1022,10 @@
                                   {{this.$.LocalizedCompoundRef}}
                                 </td>
                                 <td data-label="Initial" class="Initial">
-                                  {{this.InitialConcentration}}
+                                  {{this.InitialConcentration}}{{this.InitialCount}}
+                                  <span class="unit">
+                                    [{{initUnits this.InitialConcentration this.InitialCount ../../../this.Model.[0].ModelUnitSystem.[0].$.VolumeSubstanceUnit ../../../this.Model.[0].ModelUnitSystem.[0].$.LumpedReactionSubstanceUnit}}]
+                                  </span>
                                 </td>
                                 <td data-label="Diffusion" class="Diffusion">
                                   {{~this.Diffusion~}}
@@ -936,6 +1033,9 @@
                                     [{{../../../this.Model.[0].ModelUnitSystem.[0].$.AreaUnit~}}
                                     /{{../../../this.Model.[0].ModelUnitSystem.[0].$.TimeUnit}}]
                                   </span>
+                                </td>
+                                <td>
+                                  {{getSpeciesStructure ../../../Model.[0].LocalizedCompound this.$.LocalizedCompoundRef}}
                                 </td>
                             </tr>
                             {{/each}}
@@ -1035,7 +1135,9 @@
                         </thead>
                         <tbody>
                             {{#each value.Simulation}}
-                            <tr>
+                            <tr id={{this.$.Name}}
+                              onClick="reply_click(this.id)"
+                              style="cursor:pointer;">
                                 <td data-label="Name" class="Name">
                                   <a id={{this.$.Name}}
                                     onClick="reply_click(this.id)"
@@ -1074,17 +1176,170 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
 
                 {{/each}}
                 {{!-- popup --}}
             </div>
+
+            {{!-- Assignment Rules Table --}}
+            <div id="assignments{{key}}" class="optionData">
+                <h2 class="header">Assignments</h2>
+                <div class="modelTable">
+                    <table id="content-table3" class="table-responsive-full sort-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Variable</th>
+                                <th>Assignment Function Expression</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each this.AssignmentRules}}
+                            {{#each this.AssignmentRule}}
+                            <tr>
+                                <td>{{this.$.Name}}</td>
+                                <td>{{this.$.AssignmentRuleVariable}}</td>
+                                <td>{{this._}}</td>
+                            </tr>
+                            {{/each}}
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {{!-- Events Table --}}
+            <div id="events{{key}}" class="optionData">
+                <h2 class="header">Events</h2>
+                <div class="modelTable">
+                    <table id="content-table3" class="table-responsive-full sort-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Trigger Type</th>
+                                <th>Variable Assignment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each this.BioEvents}}
+                            {{#each this.BioEvent}}
+                            <tr>
+                                <td>{{this.$.Name}}</td>
+                                <td>
+                                  {{convertTrigger this}}
+                                </td>
+                                <td>
+                                  {{~#each EventAssignment~}}
+                                  {{this.$.Variable}} --> {{this._~}}
+                                  {{#if (greater ../this.EventAssignment.length (add 1 @index))~}}
+                                  ,
+                                  {{/if~}}
+                                  {{/each~}}
+                                </td>
+                            </tr>
+                            {{/each}}
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {{!-- Geometry Table --}}
+            <div id="geometry{{key}}" class="optionData">
+                {{#each this.Geometry}}
+                <h2 class="header">Geometry {{this.$.Name}}</h2>
+                <h2>(Origin:
+                  {{#each this.Origin~}}
+                  {{this.$.X}},
+                  {{this.$.Y}},
+                  {{this.$.Z}}
+                  {{~/each}}; Extent:
+                  {{#each this.Extent~}}
+                  {{this.$.X}},
+                  {{this.$.Y}},
+                  {{this.$.Z}}
+                  {{~/each}}
+                  {{~#each this.ImageData~}}
+                  ; Image:
+                  {{this.$.X}},
+                  {{this.$.Y}},
+                  {{this.$.Z}}
+                  {{~/each}} <span class="unit">[{{../../this.Model.[0].ModelUnitSystem.[0].$.LengthUnit}}]</span>)
+                </h2>
+
+                <div class="modelTable">
+                    <table id="content-table3" class="table-responsive-full sort-table">
+                        <thead>
+                            <tr>
+                                <th>Dimension</th>
+                                <th>Type</th>
+                                <th>Subdomain</th>
+                                <th>Adjacent Subvolumes</th>
+                                <th>Size</th>
+                                <th>Mapped Compartment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each (listIndex ../../../geometryList key)}}
+                            <tr>
+                                <td>
+                                  {{this.geometry}}
+                                </td>
+                                <td>
+                                  {{this.type}}
+                                </td>
+                                <td>
+                                  {{this.name}}
+                                </td>
+                                <td>
+                                  {{this.adjacent}}
+                                </td>
+                                <td>
+                                  {{this.size}} <span class="unit">{{this.unit}}</span>
+                                </td>
+                                <td>
+                                  {{this.compartment}}
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {{/each}}
+
+            {{!-- Rate Rules Table --}}
+            <div id="raterules{{key}}" class="optionData">
+                <h2 class="header">Events</h2>
+                <div class="modelTable">
+                    <table id="content-table3" class="table-responsive-full sort-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Variable</th>
+                                <th>Rate Expression</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each this.RateRules}}
+                            {{#each this.RateRule}}
+                            <tr>
+                                <td>{{this.$.Name}}</td>
+                                <td>{{this.$.RateRuleVariable}}</td>
+                                <td>{{this._}}</td>
+                            </tr>
+                            {{/each}}
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             {{/each}}
             {{/each}}
 
 
-            {{!-- Gloabal Parameters --}}
+            {{!-- Gloabal Parameters Table --}}
             <div id="global" class="optionData">
                 <h2 class="header">Global Parameters</h2>
                 <div class="modelTable">
@@ -1150,7 +1405,6 @@
                         </div>
 
                     </div>
-                    <a class='popup-close' href="#reactions"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                 </div>
 
                 {{/each}}
@@ -1162,13 +1416,14 @@
             </div>
 
             {{!-- Downloads --}}
+            {{#each data.vcml.BioModel}}
             <div id="downloads" class="optionData">
                 <h2 class="header">Downloads</h2>
-                <div class="modelTable">
+                <div class="modelTable noBoundries">
                     <table id="content-table3" class="table-responsive-full sort-table">
                         <thead>
                             <tr>
-                                <th class="Format">Format
+                                <th>Model Format
                                     <div class="sort-table-arrows">
                                         <a href="javascript:sort(true, 'Format', 'content-table3');"><button
                                                 class="button" title="down arrow"><i
@@ -1178,58 +1433,146 @@
                                                     class="fa fa-chevron-up"></i></button></a>
                                     </div>
                                 </th>
-                                <th class="File">File
-                                </th>
+                                <th>Model Downloads</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each data.vcml.BioModel}}
-                            {{#each this.Version}}
-                            <!--vcml-->
-                            <tr id="deterministicXml">
-                                <td data-label="Format" class="Format">VCML</td>
-                                <td data-label="File" class="File"><a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/biomodel.vcml">
-                                  VCML File
-                                </a>
+                            <tr>
+                                <td>Virtual Cell Markup Language</td>
+                                <td data-label="File" class="File">
+                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.Version.[0].$.KeyValue}}/biomodel.vcml">
+                                    VCML File
+                                  </a>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>PDF Report</td>
+                                <td data-label="File" class="File">
+                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.Version.[0].$.KeyValue}}/biomodel.pdf">
+                                    Report
+                                  </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>COMBINE Archive</td>
+                                <td data-label="File" class="File">
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~this.Version.[0].$.KeyValue~}}
+                                    /biomodel.omex?appname={{convertSpace this.SimulationSpec.[0].$.Name}}"
+                                  >
+                                  OMEX File
+                                  </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SEDML</td>
+                                <td data-label="File" class="File">
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~this.Version.[0].$.KeyValue~}}
+                                    /biomodel.sedml?appname={{convertSpace this.SimulationSpec.[0].$.Name}}"
+                                  >
+                                  SEDML File
+                                  </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th class="Format">File Format
+                                    <div class="sort-table-arrows">
+                                        <a href="javascript:sort(true, 'Format', 'content-table3');"><button
+                                                class="button" title="down arrow"><i
+                                                    class="fa fa-chevron-down"></i></button></a>
+                                        <a href="javascript:sort(false, 'Format', 'content-table3');"><button
+                                                class="button" title="up arrow"><i
+                                                    class="fa fa-chevron-up"></i></button></a>
+                                    </div>
+                                </th>
+                                <th class="File">Application Downloads</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             <tr id="bngl">
                                 <td data-label="Format" class="Format">BNGL</td>
-                                <td data-label="File" class="File"><span id="bnglFile" class="unit"></span>
-                                </td>
-                            </tr>
-                            <tr id="m">
-                                <td data-label="Format" class="Format">MatLab</td>
-                                <td data-label="File" class="File"><span id="sbmlFile" class="unit"></span>
+                                <td data-label="File" class="File">
+                                  {{#each SimulationSpec}}
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~../this.Version.[0].$.KeyValue~}}
+                                    /biomodel.bngl?appname={{convertSpace this.$.Name}}"
+                                  >
+                                  {{this.$.Name}}.bngl
+                                  </a>
+                                  {{~#if (greater ../this.SimulationSpec.length (add 1 @key))~}}
+                                  ,
+                                  {{~/if}}
+                                  {{~/each~}}
                                 </td>
                             </tr>
                             <tr id="sbml">
                                 <td data-label="Format" class="Format">SBML</td>
-                                <td data-label="File" class="File"><span id="metlabFile" class="unit"></span></td>
+                                <td data-label="File" class="File">
+                                  {{#each SimulationSpec}}
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~../this.Version.[0].$.KeyValue~}}
+                                    /biomodel.sbml?appname={{convertSpace this.$.Name}}"
+                                  >
+                                  {{this.$.Name}}.sbml
+                                  </a>
+                                  {{~#if (greater ../this.SimulationSpec.length (add 1 @key))~}}
+                                  ,
+                                  {{~/if}}
+                                  {{/each}}
+                                </td>
+                            </tr>
+                            <tr id="matlab">
+                                <td data-label="Format" class="Format">Matlab</td>
+                                <td data-label="File" class="File">
+                                  {{#each SimulationSpec}}
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~../this.Version.[0].$.KeyValue~}}
+                                    /biomodel.m?appname={{convertSpace this.$.Name}}"
+                                  >
+                                  {{this.$.Name}}.m
+                                  </a>
+                                  {{~#if (greater ../this.SimulationSpec.length (add 1 @key))~}}
+                                  ,
+                                  {{~/if}}
+                                  {{/each}}
+                                </td>
                             </tr>
                             <tr id="xml">
-                                <td data-label="Format" class="Format">Formatted XML</td>
-                                <td data-label="File" class="File"><span id="fxmlFile" class="unit"></span>
+                                <td data-label="Format" class="Format">NFSim XML</td>
+                                <td data-label="File" class="File">
+                                  {{#each SimulationSpec}}
+                                  <a href=
+                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    {{~../this.Version.[0].$.KeyValue~}}
+                                    /biomodel.xml?appname={{convertSpace this.$.Name}}"
+                                  >
+                                  {{this.$.Name}}.xml
+                                  </a>
+                                  {{~#if (greater ../this.SimulationSpec.length (add 1 @key))~}}
+                                  ,
+                                  {{~/if}}
+                                  {{/each}}
                                 </td>
+                                {{/each}}
                             </tr>
-                            <tr id="SEDML">
-                                <td data-label="Format" class="Format">SEDML</td>
-                                <td data-label="File" class="File"><span id="sedmlFile" class="unit"></span>
-                                </td>
-                            </tr>
-                            {{/each}}
-                            {{/each}}
                         </tbody>
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
 
-<script>{{> model-graphics}}</script>
+<script src="/js/model-graphics.js"></script>
 
 <script src="/js/main.js"></script>
 
@@ -1243,15 +1586,219 @@
     drawGraphics('content-table3-observables', 3, 5, 'g');
 
     //displaying electrical for only membrane compartments
-    var table = document.getElementById('TEST');
-    var cells = table.rows.item(1).cells;
-    if (cells.item(1).innerHTML != 'Membrane'){
-      cells.item(2).innerHTML = 'N/A';
+    var table = document.getElementById('content-table3-structures');
+    for(let i = 0; i < table.rows.length; i++) {
+      var cells = table.rows.item(i).cells;
+      if (cells.item(1).innerHTML != 'Membrane'){
+        cells.item(2).innerHTML = 'N/A';
+      }
+    }
+
+    //species initial conditions
+    function removeItemAll(arr, value) {
+      let i = 0;
+      while (i < arr.length) {
+        if (arr[i] === value) {
+          arr.splice(i, 1);
+        } else {
+          ++i;
+        }
+      }
+      return arr;
+    }
+    {{#each data.vcml.BioModel}}
+    {{#each this.Model}}
+    {{#each this.ModelUnitSystem}}
+    let MembraneSubstanceUnit = "{{this.$.MembraneSubstanceUnit}}";
+    let VolumeSubstanceUnit = "{{this.$.VolumeSubstanceUnit}}";
+    {{/each}}
+    {{/each}}
+    {{/each}}
+    let speciesRows = document.getElementById("content-table3-species").rows;
+    let structuresRows = document.getElementById("content-table3-structures").rows;
+    let strucNameTypeMap = {};
+    let nameBngMap = {};
+    //add structure to name-type map
+    for (let i = 1; i < structuresRows.length; i++) {
+      let row = structuresRows.item(i).cells;
+      let name = row.item(0).childNodes[0].innerHTML;
+      let type = row.item(1).innerHTML;
+      strucNameTypeMap[name] = type;
+    }
+    //set species initial conditions
+    for (let i = 1; i < speciesRows.length; i++) {
+      let row = speciesRows.item(i).cells;
+      let name = row.item(0).childNodes[1].innerHTML.trim();
+      let structure = row.item(1).innerHTML;
+      let type = strucNameTypeMap[structure];
+      let bng = row.item(2).innerHTML.trim();
+      nameBngMap[name] = bng;
     }
 
     // making the first popup visible
     var firstPopup = document.querySelector(".popup").firstChild;
     firstPopup.parentElement.classList.add("firstPopup");
+
+    //add reaction graphics
+    //draw plus
+    function drawPlus(x, totalHeight, canvas) {
+      let plusLen = 30;
+      let ctx = canvas.getContext('2d');
+      ctx.beginPath();
+      ctx.moveTo(x, totalHeight / 2);
+      ctx.lineTo(x + plusLen, totalHeight / 2);
+      ctx.moveTo(x + plusLen / 2, (plusLen + totalHeight) / 2);
+      ctx.lineTo(x + plusLen / 2, (-plusLen + totalHeight) / 2);
+      ctx.strokeStyle = "#000000";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.closePath();
+      ctx.lineWidth = 1;
+    }
+
+    //draw arrow
+    function drawArrow(x, totalHeight, canvas) {
+      let arrowLen = 30;
+      let ctx = canvas.getContext('2d');
+      ctx.beginPath();
+      ctx.moveTo(x, totalHeight / 2);
+      ctx.lineTo(x + arrowLen - 10, totalHeight / 2);
+      ctx.moveTo(x + arrowLen, totalHeight / 2);
+      ctx.lineTo(x + arrowLen / 2, totalHeight / 2 + 10);
+      ctx.moveTo(x + arrowLen, totalHeight / 2);
+      ctx.lineTo(x + arrowLen / 2, totalHeight / 2 - 10);
+      ctx.strokeStyle = "#000000";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.closePath();
+      ctx.lineWidth = 1;
+    }
+
+    //get html elements
+    let reactionRows = document.getElementById("content-table3-reactions").rows;
+    let drawMap = {};
+    let scale = 1;
+    //iterate through rows
+    for (let i = 1; i < reactionRows.length; i++) {
+      let row = reactionRows.item(i).cells;
+      let reaction = row.item(0).innerHTML;
+      let canvas = row.item(4).childNodes[1];
+      let firstSpanIndex = reaction.indexOf('<span>');
+      let lastSpanIndex = reaction.indexOf('</span>');
+      let reactants = reaction.slice(0, firstSpanIndex).split('+');
+      let products = reaction.slice(lastSpanIndex + 7, reaction.length).split('+');
+      reactants = removeItemAll(reactants, '');
+      products = removeItemAll(products, '');
+      let totalLength = 0;
+      let totalHeight = 0;
+
+      //create list of draw functions
+      let drawList = [];
+
+      //reactants
+      for (let u = 0; u < reactants.length; u++) {
+        //init obj
+        let bng = nameBngMap[reactants[u]];
+        let drawObj = new Graphic(bng, 'compact');
+
+        //initial draw to get size
+        var dims = drawObj.draw(canvas, totalLength, 0);
+        if (dims) {
+          totalLength += dims[0];
+        }
+
+        //add draw function
+        drawList.push(
+          {
+            func: (canvas, totalLength, totalHeight) => {
+              drawObj.doDrawList();
+            },
+            x: totalLength
+          }
+        );
+
+        //add plus if not last reactant
+        if (u < reactants.length - 1) {
+          drawList.push(
+            {
+              func: (canvas, totalLength, totalHeight) => {
+                drawPlus(totalLength, totalHeight, canvas);
+              },
+              x: totalLength
+            }
+          );
+          totalLength += 30;
+        }
+
+        //add height
+        if (dims && dims[1] > totalHeight) {
+          totalHeight = dims[1];
+        }
+      }
+
+      //add arrow between reactants, products
+      drawList.push(
+        {
+          func: (canvas, totalLength, totalHeight) => {
+            drawArrow(totalLength, totalHeight, canvas);
+          },
+          x: totalLength
+        }
+      );
+      totalLength += 30;
+
+      //products
+      for (let u = 0; u < products.length; u++) {
+        //init obj
+        let bng = nameBngMap[products[u]];
+        let drawObj = new Graphic(bng, 'compact');
+
+        //initial draw to get size
+        var dims = drawObj.draw(canvas, totalLength, 0, scale);
+        if (dims) {
+          totalLength += dims[0];
+        }
+
+        //add draw function
+        drawList.push(
+          {
+            func: (canvas, totalLength, totalHeight) => {
+              drawObj.doDrawList();
+            },
+            x: totalLength
+          }
+        );
+
+        //add plus if not last reactant
+        if (u < products.length - 1) {
+          drawList.push(
+            {
+              func: (canvas, totalLength, totalHeight) => {
+                drawPlus(totalLength, totalHeight, canvas);
+              },
+              x: totalLength
+            }
+          );
+          totalLength += 30;
+        }
+
+        //add height
+        if (dims && dims[1] > totalHeight) {
+          totalHeight = dims[1];
+        }
+      }
+
+      //resize canvas
+      canvas.width = totalLength;
+      canvas.height = totalHeight;
+
+      //draw all elements
+      for (let u = 0; u < drawList.length; u++) {
+        let elm = drawList[u];
+        elm.func(canvas, elm.x, totalHeight);
+      }
+    }
+
 
 
     // Open popup
@@ -1271,7 +1818,7 @@
         $(".overlay").css("display", "block");
         open = 1;
     };
-    // close popup
+    // close popup, no longer used
     $(".popup-close").click(function () {
         open = 0;
         $(".popup").css("opacity", 0);
@@ -1301,12 +1848,12 @@
 
     //ensure window is scrolled to top
     //initial fix
-    setTimeout(() => {  window.scroll(0, 0); }, 100);
+    setTimeout(() => {  window.scroll(0, 0); }, 0);
     //fix for each link
     const links = document.querySelectorAll('.sidebar-link');
     for (let i = 0; i < links.length; i++) {
       links[i].addEventListener("click", (e) => {
-        setTimeout(() => {  window.scroll(0, 0); }, 100);
+        setTimeout(() => {  window.scroll(0, 0); }, 0.01);
       });
     }
 </script>

@@ -9,6 +9,7 @@
   "author": "Saksham Raghuvanshi",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.25.0",
     "express": "^4.17.1",
     "express-handlebars": "^4.0.4",
     "handlebars": "^4.7.6",
@@ -19,7 +20,6 @@
     "path": "^0.12.7",
     "xml2js": "^0.4.23"
   },
-  "devDependencies": {},
   "engines": {
     "node": "12.16.0"
   }

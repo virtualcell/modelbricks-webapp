@@ -36,6 +36,7 @@ class ModelWrapper {
     this.text = text;
     this.url = urls;
     this.qualifier = '';
+    this.literalQualifier = '';
   }
 }
 
@@ -73,6 +74,30 @@ class AnnParser {
     return [span.textContent || span.innerText].toString().replace(/ +/g,' ');
   };
 
+  //after extractContent(), remove all leading \n
+  removeLeadingNewLines(s) {
+    try {
+      //strip whitespace from front
+      let indexFront = 0;
+      let slice = s.slice(indexFront, indexFront + 1);
+      while (slice == '\n' || slice == ' ') {
+        indexFront += 1;
+        slice = s.slice(indexFront, indexFront + 1);
+      }
+      //strip from back
+      let indexBack = s.length - 1;
+      slice = s.slice(indexBack - 1, indexBack);
+      while (slice == '\n' || slice == ' ') {
+        indexBack -= 1;
+        slice = s.slice(indexBack - 1, indexBack);
+      }
+      return (s.slice(indexFront, indexBack));
+    } catch (e){
+      console.log(e);
+      return (s);
+    }
+  }
+
   constructor(vcml) {
     this.vcmlObj = vcml;
     this.uriBinds = this.vcmlObj.vcml.BioModel[0].vcmetadata[0].uriBindingList[0].uriBinding;
@@ -81,103 +106,138 @@ class AnnParser {
     this.lczCpds = this.vcmlObj.vcml.BioModel[0].Model[0].LocalizedCompound;
     this.annotations = new Object();
 
-    //create compound ref to true name mapping for use later
-    let compoundRefMap = new Object();
-    for (let i = 0; i < this.lczCpds.length; i++) {
-      compoundRefMap[this.lczCpds[i].$.CompoundRef] = this.lczCpds[i].$.Name;
-    }
+    //wrap in try catch for models without annotations
+    try {
+      //create compound ref to true name mapping for use later
+      let compoundRefMap = new Object();
+      for (let i = 0; i < this.lczCpds.length; i++) {
+        compoundRefMap[this.lczCpds[i].$.CompoundRef] = this.lczCpds[i].$.Name;
+      }
 
-    //---uri bindings---
-    //retrieve uri bindings
-    let urls = new Object;
-    for (let i = 0; i < this.uriBinds.length; i++) {
-      let thisBind = this.uriBinds[i].$;
-      urls[thisBind.uri] = new Url(thisBind.vcid);
-    }
-    let bindings = this.vcmlObj.vcml.BioModel[0].vcmetadata[0]['rdf:RDF'][0]['rdf:Description'];
+      //---uri bindings---
+      //retrieve uri bindings
+      let urls = new Object;
+      for (let i = 0; i < this.uriBinds.length; i++) {
+        let thisBind = this.uriBinds[i].$;
+        urls[thisBind.uri] = new Url(thisBind.vcid);
+      }
+      let bindings = this.vcmlObj.vcml.BioModel[0].vcmetadata[0]['rdf:RDF'][0]['rdf:Description'];
 
-    //compare binding in "uriBinding" to that in "rdf" and find matches
-    for (let i = 0; i < bindings.length; i ++) {
-      let binding = bindings[i]['$']['rdf:about'];
-      let thisRDF = bindings[i];
-      //get all the keys, which are <rdf:qualifier> elements in vcml
-      let RDFkeys = Object.keys(thisRDF);
+      //compare binding in "uriBinding" to that in "rdf" and find matches
+      for (let i = 0; i < bindings.length; i ++) {
+        let binding = bindings[i]['$']['rdf:about'];
+        let thisRDF = bindings[i];
+        //get all the keys, which are <rdf:qualifier> elements in vcml
+        let RDFkeys = Object.keys(thisRDF);
 
-      for (let i = 0; i < RDFkeys.length; i++) {
+        for (let i = 0; i < RDFkeys.length; i++) {
 
-        if (binding in urls) {
-          let URLObj = urls[binding];
-          let vcid = URLObj.vcid;
+          if (binding in urls) {
+            let URLObj = urls[binding];
+            let vcid = URLObj.vcid;
 
-          //make sure we get keys we want
-          if (RDFkeys[i].includes('bqbiol') || RDFkeys[i].includes('bqmodel') || RDFkeys[i].includes('CopasiMT')) {
+            //make sure we get keys we want
+            if (RDFkeys[i].includes('bqbiol') || RDFkeys[i].includes('bqmodel') || RDFkeys[i].includes('CopasiMT')) {
 
-            //each key mapping can have >1 rdf:bag
-            let keyMap = thisRDF[RDFkeys[i]];
-            for (let j = 0; j < keyMap.length; j++) {
+              //each key mapping can have >1 rdf:bag
+              let keyMap = thisRDF[RDFkeys[i]];
+              for (let j = 0; j < keyMap.length; j++) {
 
-              //each rdf:Bag obj can have >1 key
-              let rdfBag = keyMap[j]['rdf:Bag'][0];
-              let bagKeys = Object.keys(rdfBag);
-              for (let u = 0; u < bagKeys.length; u++) {
-                if (bagKeys[u].includes('rdf:')) {
-                  let thisURI = rdfBag[bagKeys[u]][0]['rdf:Description'][0]['$']['rdf:about'];
+                //each rdf:Bag obj can have >1 key
+                let rdfBag = keyMap[j]['rdf:Bag'][0];
+                let bagKeys = Object.keys(rdfBag);
+                for (let u = 0; u < bagKeys.length; u++) {
+                  if (bagKeys[u].includes('rdf:')) {
+                    let thisURI = rdfBag[bagKeys[u]][0]['rdf:Description'][0]['$']['rdf:about'];
 
-                  //push all the next keys as new url objects onto urls
-                  //remove unneeded characters from vcid
-                  let pIndex = vcid.indexOf('(');
-                  let vcidType = vcid.slice(0, pIndex);
-                  let strippedVcid = vcid.slice(pIndex + 1, vcid.length - 1);
-                  //see if vcid is actually compound ref
-                  if (compoundRefMap[strippedVcid] != undefined) {
-                    vcid = vcidType + '(' + compoundRefMap[strippedVcid] + ')';
+                    //push all the next keys as new url objects onto urls
+                    //remove unneeded characters from vcid
+                    let pIndex = vcid.indexOf('(');
+                    let vcidType = vcid.slice(0, pIndex);
+                    let strippedVcid = vcid.slice(pIndex + 1, vcid.length - 1);
+                    //see if vcid is actually compound ref
+                    if (compoundRefMap[strippedVcid] != undefined) {
+                      vcid = vcidType + '(' + compoundRefMap[strippedVcid] + ')';
+                    }
+                    //key must be unique
+                    let key = '$' + j.toString() + u.toString() + i.toString() + vcid;
+                    //create new object
+                    urls[key] = new Url(vcid);
+                    //add URI
+                    urls[key]._ = thisURI;
+                    //format qualifier
+                    let qual = RDFkeys[i]
+                    urls[key].qualifier = '(' + qual.replace(':', ') ');
+                    urls[key].qualifier = urls[key].qualifier.replace('bqbiol', 'bio');
+                    urls[key].qualifier = urls[key].qualifier.replace('bqmodel', 'model');
+                    //add literal qualifier
+                    let colonIndex = qual.indexOf(':') + 1;
+                    let literalQualifier = qual.slice(colonIndex, qual.length);
+                    urls[key].literalQualifier = literalQualifier;
                   }
-                  //key must be unique
-                  let key = '$' + j.toString() + u.toString() + i.toString() + vcid;
-                  urls[key] = new Url(vcid);
-                  urls[key]._ = thisURI;
-                  urls[key].qualifier = '(' + RDFkeys[i].replace(':', ') ');
-                  urls[key].qualifier = urls[key].qualifier.replace('bqbiol', 'bio');
-                  urls[key].qualifier = urls[key].qualifier.replace('bqmodel', 'model');
                 }
               }
             }
           }
         }
       }
-    }
 
-    //clean empty url instaces from object
-    let urlKeys = Object.keys(urls);
-    for (let i = 0; i < urlKeys.length; i++) {
-      if (urls[urlKeys[i]]._ == '') {
-        delete urls[urlKeys[i]];
+      //clean empty url instaces from object
+      let urlKeys = Object.keys(urls);
+      for (let i = 0; i < urlKeys.length; i++) {
+        if (urls[urlKeys[i]]._ == '') {
+          delete urls[urlKeys[i]];
+        }
       }
-    }
 
-    //---text annos---
-    //get vcids
-    for (let i = 0; i < this.txtAnnos.length; i++) {
-      let vcid = this.txtAnnos[i].$.vcid;
-      //remove unneeded characters from vcid
-      let pIndex = vcid.indexOf('(');
-      let vcidType = vcid.slice(0, pIndex);
-      let strippedVcid = vcid.slice(pIndex + 1, vcid.length - 1);
-      //see if vcid is actually compound ref
-      if (compoundRefMap[strippedVcid] != undefined) {
-        vcid = vcidType + '(' + compoundRefMap[strippedVcid] + ')';
+      //---text annos---
+      //get vcids
+      for (let i = 0; i < this.txtAnnos.length; i++) {
+        let vcid = this.txtAnnos[i].$.vcid;
+        //remove unneeded characters from vcid
+        let pIndex = vcid.indexOf('(');
+        let vcidType = vcid.slice(0, pIndex);
+        let strippedVcid = vcid.slice(pIndex + 1, vcid.length - 1);
+        //see if vcid is actually compound ref
+        if (compoundRefMap[strippedVcid] != undefined) {
+          vcid = vcidType + '(' + compoundRefMap[strippedVcid] + ')';
+        }
+        try {
+          let txtAnno = this.extractContent(this.txtAnnos[i].freetext[0]);
+          txtAnno = this.removeLeadingNewLines(txtAnno);
+          this.annotations[vcid] = new VCMLElement(vcid, txtAnno);
+        } catch{}
       }
-      try {
-        let txtAnno = this.extractContent(this.txtAnnos[i].freetext[0]);
-        this.annotations[vcid] = new VCMLElement(vcid, txtAnno);
-      } catch{}
-    }
 
-    //organize data into JSON file that will be used by main.js
-    let values = Object.values(this.annotations);
-    this.JSONwrapper = new ModelWrapper('PLACEHOLDER', values, urls);
+      //organize data into JSON file that will be used by main.js
+      let values = Object.values(this.annotations);
+      this.JSONwrapper = new ModelWrapper('PLACEHOLDER', values, urls);
+    } catch {
+      this.JSONwrapper = "";
+    }
   }
 
+  //used in getGeometry to see if ref matches origional name
+  compareGeoRefs(ogName, refName) {
+    let refComponents = refName.split('_');
+    let ogComponents = ogName.split('_');
+    for (let i = 0; i < refComponents.length; i++) {
+      let refComp = refComponents[i];
+      let match = false;
+      for (let y = 0; y < ogComponents.length; y++) {
+        let ogComp = ogComponents[y];
+        if (refComp.includes(ogComp)) {
+          match = true;
+        }
+      }
+      if (!match) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  //returns reformatted output options for easier use on client side
   getOutputOptions() {
     try {
       let outOps = this.vcmlObj.vcml.BioModel[0].SimulationSpec[0].Simulation[0].SolverTaskDescription[0].OutputOptions[0].$;
@@ -195,17 +255,137 @@ class AnnParser {
     }
   }
 
-  getInitialConditions() {
-    let species = this.vcmlObj.vcml.BioModel[0].Model[0].LocalizedCompound;
-    let features = this.vcmlObj.vcml.BioModel[0].SimulationSpec[0].GeometryContext[0].FeatureMapping
-    let speciesMap = [];
-    for (let i = 0; i < species.length; i++) {
-      let s = species[i].$;
-      speciesMap.push({name: s.Name, structure: s.Structure, unit: null});
+  //returns formatted obj used for handlebars geometry page
+  getGeometry() {
+    let simSpec = this.vcmlObj.vcml.BioModel[0].SimulationSpec;
+    let subListList = [];
+    //do for each sim spec
+    for (let y = 0; y < simSpec.length; y++) {
+      let geo = simSpec[y].Geometry[0];
+      let subList = [];
+      let nameIndexMap = {};
+      let nameList = [];
+      //iterate through inital geometries in sub volumes
+      let subVols = geo.SubVolume;
+      for (let i = 0; i < subVols.length; i++) {
+        let elm = subVols[i];
+        let name = elm.$.Name;
+        let rowObj = {
+          name: name,
+          geometry: '',
+          type: elm.$.Type,
+          adjacent: '',
+          size: '',
+          compartment: '',
+          unit: ''
+        };
+        nameList.push(name);
+        nameIndexMap[name] = i;
+        subList.push(rowObj);
+      }
+      //iterate through other geometries in surface class
+      let surfaceClass = geo.SurfaceClass;
+      if (surfaceClass) {
+        for (let i = 0; i < surfaceClass.length; i++) {
+          let elm = surfaceClass[i];
+          let name = elm.$.Name;
+          let rowObj = {
+            name: name,
+            geometry: '',
+            type: elm.$.Type,
+            adjacent: elm.$.SubVolume1Ref + ' | ' + elm.$.SubVolume2Ref,
+            size: '',
+            compartment: '',
+            unit: ''
+          };
+          subList.push(rowObj);
+          nameList.push(name);
+          nameIndexMap[name] = i + geo.SubVolume.length;
+        }
+      }
+      //map used to when 2+ refrences refer to 1 name
+      let nameRefMap = {};
+      //get extra info from volume regions and apply to existing rows
+      let surfaceDesc = geo.SurfaceDescription;
+      if (surfaceDesc) {
+        let volumeRegion = surfaceDesc[0].VolumeRegion;
+        for (let i = 0; i < volumeRegion.length; i++) {
+          let elm = volumeRegion[i];
+          let name = elm.$.Name;
+          let longestName = 0;
+          //get row volume region refers to
+          for (let u = 0; u < nameList.length; u++) {
+            let listedName = nameList[u];
+            if (name.includes(listedName)) {
+              var index = nameIndexMap[listedName];
+              nameRefMap[listedName] = name;
+            }
+          }
+          //add info to row obj
+          let rowObj = subList[index];
+          if (rowObj) {
+            rowObj.size = elm.$.Size;
+            rowObj.unit = '[' + elm.$.Unit + ']';
+            rowObj.geometry = 'Volume';
+          }
+        }
+        //get extra info from membrane regions and apply to existing rows
+        let membraneRegion = surfaceDesc[0].MembraneRegion;
+        for (let i = 0; i < membraneRegion.length; i++) {
+          let elm = membraneRegion[i];
+          let name = elm.$.Name;
+          //get row volume region refers to
+          for (let u = 0; u < nameList.length; u++) {
+            let listedName = nameList[u];
+            if (!nameRefMap[listedName] && this.compareGeoRefs(listedName, name)) {
+              var index = nameIndexMap[listedName];
+            }
+          }
+          //add info to row obj
+          let rowObj = subList[index];
+          if (rowObj) {
+            rowObj.size = elm.$.Size;
+            rowObj.unit = '[' + elm.$.Unit + ']';
+            rowObj.geometry = 'Surface';
+          }
+        }
+      }
+      //get mapped compartments from feature mappings
+      let featureMappings = simSpec[y].GeometryContext[0].FeatureMapping;
+      if (featureMappings) {
+        for (let i = 0; i < featureMappings.length; i++) {
+          let index = null;
+          let elm = featureMappings[i].$;
+          let feature = elm.Feature;
+          let fClass = elm.GeometryClass;
+          index = nameIndexMap[fClass];
+          if (index != undefined) {
+            let rowObj = subList[index];
+            rowObj.compartment = feature;
+          }
+        }
+      }
+      //get mapped compartments from membrane mappings
+      let membraneMappings = simSpec[y].GeometryContext[0].MembraneMapping;
+      if (membraneMappings) {
+        for (let i = 0; i < membraneMappings.length; i++) {
+          let index = null;
+          let elm = membraneMappings[i].$;
+          let feature = elm.Membrane;
+          let fClass = elm.GeometryClass;
+          index = nameIndexMap[fClass];
+          if (index != undefined) {
+            let rowObj = subList[index];
+            rowObj.compartment = feature;
+          }
+        }
+      }
+      subListList.push(subList);
     }
-    console.log(features);
+    return subListList;
   }
 
+  //returns json string of annotation object for use in main.js
   getString() {
     return (JSON.stringify(new BioModel(this.JSONwrapper)));
   }

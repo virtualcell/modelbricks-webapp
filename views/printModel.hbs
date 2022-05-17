@@ -64,7 +64,7 @@
 {{!-- reactions table  --}}
 <div class="pmTable" id="reactions">
     <div class="container">
-        <table class="responsive-table">
+        <table id="print-reactions-table" class="responsive-table">
             <caption>Reactions <span class="dashboardBtn"><a href="/curatedList/model/{{modelName}}#reactions"><i
                             class="fa fa-undo" aria-hidden="true"></i>
                         See in Dashboard</a></span>
@@ -83,6 +83,7 @@
                       </div>
                     </th>
                     <th scope="col">Kinetics</th>
+                    <th scope="col">Depiction</th>
                 </tr>
             </thead>
             <tbody>
@@ -91,12 +92,18 @@
                 {{#each this.SimpleReaction}}
                 <tr>
                     <td class="print-descriptor" data-title="Reaction">
-                      {{~#each this.Reactant~}}
-                      {{~this.$.LocalizedCompoundRef~}}
+                      {{~#each this.Reactant}}
+                      {{~nullCheck this.$.LocalizedCompoundRef}}
+                      {{~#if (greater ../this.Reactant.length (add 1 @index))~}}
+                      +
+                      {{~/if}}
                       {{~/each~}}
-                      <span style="color:#666666">--></span>
-                      {{~#each this.Product~}}
-                      {{~this.$.LocalizedCompoundRef~}}
+                      <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
+                      {{~#each this.Product}}
+                      {{~this.$.LocalizedCompoundRef}}
+                      {{~#if (greater ../this.Product.length (add 1 @index))~}}
+                      +
+                      {{~/if}}
                       {{~/each~}}
                     </td>
                     <td id="flex-td" class="print-descriptor" data-title="Name">
@@ -112,7 +119,21 @@
                         {{this.$.KineticsType}}
                         {{/each}}
                     </td>
-
+                    <td class="print-descriptor" data-title="Depiction">
+                      {{~#each this.Reactant}}
+                      {{~nullCheck this.$.LocalizedCompoundRef}}
+                      {{~#if (greater ../this.Reactant.length (add 1 @index))~}}
+                      +
+                      {{~/if}}
+                      {{~/each~}}
+                      <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
+                      {{~#each this.Product}}
+                      {{~this.$.LocalizedCompoundRef}}
+                      {{~#if (greater ../this.Product.length (add 1 @index))~}}
+                      +
+                      {{~/if}}
+                      {{~/each~}}
+                    </td>
                 </tr>
                 <tr>
                     <td class="printAnnotationWrap">
@@ -121,7 +142,6 @@
 
                             {{!-- universal ID's  --}}
                             <div class="printUID" id="reactionUID-{{this.$.Name}}">
-                                <p class="heading">Universal ID's: </p>
                             </div>
                         </div>
                     </td>
@@ -132,7 +152,6 @@
 
                             {{!-- annotation --}}
                             <div class="printTA" id="reactionTA-{{this.$.Name}}">
-                                <p class="heading"> Text Annotations: </p>
                             </div>
                         </div>
                     </td>
@@ -155,6 +174,10 @@
                         </div>
                     </td>
 
+                    <td class="printAnnotationWrap">
+                        <canvas id="{{this.$.Name}}_species_canvas" width="" height=""></canvas>
+                    </td>
+
                 </tr>
                 {{/each}}
                 {{/each}}
@@ -168,7 +191,7 @@
 {{!-- Structures table  --}}
 <div class="pmTable" id="structures">
     <div class="container">
-        <table class="responsive-table">
+        <table id="print-structures-table" class="responsive-table">
             <caption>Structures <span class="dashboardBtn"><a href="/curatedList/model/{{modelName}}#structures"><i
                             class="fa fa-undo" aria-hidden="true"></i>
                         See in Dashboard</a></span>
@@ -189,6 +212,8 @@
             </thead>
                 {{#each data.vcml.BioModel}}
                 {{#each this.Model}}
+                {{!-- some structures have features, others have membranes --}}
+                {{!-- so 2 loops are needed --}}
                 {{#each this.Feature}}
                 <tr>
                     <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
@@ -201,13 +226,12 @@
                       </div>
                     </td>
                 </tr>
-                <tr>
+                <tr class="if-empty">
                     <td class="printAnnotationWrap">
                         <div class="printAnnotation">
 
                             {{!-- universal ID's  --}}
                             <div class="printUID" id="structureUID-{{this.$.Name}}">
-                                <p class="heading">Universal ID's: </p>
                             </div>
                         </div>
                     </td>
@@ -216,7 +240,37 @@
 
                             {{!-- annotation --}}
                             <div class="printTA" id="structureTA-{{this.$.Name}}">
-                                <p class="heading"> Text Annotations: </p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+                {{#each this.Membrane}}
+                <tr>
+                    <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
+                    <td id="flex-td" class="print-descriptor" data-title="Electrical">
+                      <div id="vert-line-left" class="vert-line">
+                          Membrane
+                      </div>
+                      <div id="vert-line-right" class="vert-line">
+                          N/A
+                      </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="printAnnotationWrap">
+                        <div class="printAnnotation">
+
+                            {{!-- universal ID's  --}}
+                            <div class="printUID" id="structureUID-{{this.$.Name}}">
+                            </div>
+                        </div>
+                    </td>
+                    <td class="printAnnotationWrap">
+                        <div class="printAnnotation">
+
+                            {{!-- annotation --}}
+                            <div class="printTA" id="structureTA-{{this.$.Name}}">
                             </div>
                         </div>
                     </td>
@@ -251,7 +305,9 @@
                 {{#each this.Model}}
                 {{#each this.LocalizedCompound}}
                 <tr>
-                    <td class="print-descriptor" data-title="Name">{{this.$.Name}}</td>
+                    <td class="print-descriptor" data-title="Name">
+                      {{this.$.Name}}
+                    </td>
                     <td class="print-descriptor" data-title="Structure"> {{this.$.Structure}}</td>
                     <td id="printable-bionetgen" class="print-descriptor" data-title="BioNetGen">
                       {{~#each this.SpeciesPattern~}}
@@ -269,13 +325,12 @@
                       {{~/each~}}
                       {{/each}}</td>
                 </tr>
-                <tr>
+                <tr class="if-empty">
                     <td class="printAnnotationWrap">
                         <div class="printAnnotation">
 
                             {{!-- universal ID's  --}}
                             <div class="printUID" id="speciesUID-{{this.$.Name}}">
-                                <p class="heading">Universal ID's: </p>
                             </div>
 
                         </div>
@@ -284,7 +339,6 @@
                         <div class="printAnnotation">
                             {{!-- annotation --}}
                             <div class="printTA" id="speciesTA-{{this.$.Name}}">
-                                <p class="heading"> Text Annotations: </p>
                             </div>
                         </div>
                     </td>
@@ -304,6 +358,7 @@
                             {{~/each~}}).
                             {{~/each~}}
                             {{/each}}">
+                            {{~this.$.Structure}}</canvas>
                     </td>
                 </tr>
                 {{/each}}
@@ -359,7 +414,6 @@
 
                             {{!-- universal ID's  --}}
                             <div class="printUID" id="moleculesUID-{{this.$.Name}}">
-                                <p class="heading">Universal ID's: </p>
                             </div>
                         </div>
                     </td>
@@ -459,7 +513,6 @@
 
                             {{!-- universal ID's  --}}
                             <div class="printUID" id="observableUID-{{this.$.Name}}">
-                                <p class="heading">Universal ID's: </p>
                             </div>
                         </div>
                     </td>
@@ -468,7 +521,6 @@
                         <div class="printAnnotation">
                             {{!-- annotation --}}
                             <div class="printTA" id="observableUID-{{this.$.Name}}">
-                                <p class="heading"> Text Annotations: </p>
                             </div>
                         </div>
                     </td>
@@ -507,7 +559,7 @@
 
 <hr>
 
-<h2 class="sectionTitle">Applications</h2>
+<h2 class="sectionTitle"><b>Applications</b></h2>
 {{!-- Applications table  --}}
 <div class="pmTable" id="applications">
     <div class="container">
@@ -530,14 +582,12 @@
             </thead>
             <tbody>
                 {{#each data.vcml.BioModel}}
+                {{#each this.SimulationSpec}}
                 <tr>
                     <td data-title="Name">
-                      {{#each this.SimulationSpec as |value key|}}
-                      {{value.$.Name}}
-                      {{/each}}
+                      {{this.$.Name}}
                     </td>
                     <td data-title="Math Type">
-                      {{#each this.SimulationSpec}}
                         {{#if (eq "true" this.$.Stochastic)}}
                           {{#if (eq "true" this.$.RuleBased)}}
                           Stochastic agent-based (NFSim)
@@ -562,14 +612,12 @@
                           Spatial (3D)
                           {{/if}}
                         {{/each}}
-                      {{/each}}
                     </td>
                     <td data-title="Annotation">
-                      {{#each this.SimulationSpec as |value key|}}
-                      {{value.Annotation}}
-                      {{/each}}
+                      {{this.Annotation}}
                     </td>
                 </tr>
+                {{/each}}
                 {{/each}}
             </tbody>
         </table>
@@ -579,7 +627,7 @@
 {{!-- for each application  --}}
 {{#each data.vcml.BioModel}}
 {{#each this.SimulationSpec as |value key|}}
-<h2 class="sectionTitle">{{key}} - {{value.$.Name}}</h2>
+<h2 class="sectionTitle">Application - {{value.$.Name}}</h2>
 
 {{!-- specifications table species --}}
 <div class="pmTable" id="specsSpecies{{@key}}">
@@ -588,7 +636,7 @@
             <caption>
               Specifications(Species) - {{value.$.Name}}
               <span class="dashboardBtn">
-                <a href="/curatedList/model/{{../../modelName}}#specsSpecies0">
+                <a href="/curatedList/model/{{../../modelName}}#specsSpecies{{@key}}">
                   <i class="fa fa-undo" aria-hidden="true"></i>
                   See in Dashboard
                 </a>
@@ -606,7 +654,12 @@
                 {{#each this.LocalizedCompoundSpec}}
                 <tr>
                     <td data-title="Species">{{this.$.LocalizedCompoundRef}}</td>
-                    <td data-title="Initial Condition">{{this.InitialConcentration}}</td>
+                    <td data-title="Initial Condition">
+                      {{this.InitialConcentration}}{{this.InitialCount}}
+                      <span class="unit">
+                        [{{initUnits this.InitialConcentration this.InitialCount ../../../this.Model.[0].ModelUnitSystem.[0].$.VolumeSubstanceUnit ../../../this.Model.[0].ModelUnitSystem.[0].$.LumpedReactionSubstanceUnit}}]
+                      </span>
+                    </td>
                     <td data-title="Diffusion Constant">
                       {{~this.Diffusion~}}
                       <span class="unit">
@@ -629,7 +682,7 @@
             <caption>
               Specifications(Reaction) - {{value.$.Name}}
               <span class="dashboardBtn">
-                <a href="/curatedList/model/{{../../modelName}}#specsReaction0">
+                <a href="/curatedList/model/{{../../modelName}}#specsReaction{{@key}}">
                   <i class="fa fa-undo" aria-hidden="true"></i>
                   See in Dashboard
                 </a>
@@ -663,7 +716,7 @@
             <caption>
               Simulations - {{value.$.Name}}
               <span class="dashboardBtn">
-                <a href="/curatedList/model/{{../../modelName}}#simulations0">
+                <a href="/curatedList/model/{{../../modelName}}#simulations{{@key}}">
                   <i class="fa fa-undo" aria-hidden="true"></i>
                   See in Dashboard
                 </a>
@@ -702,6 +755,197 @@
         </table>
     </div>
 </div>
+
+{{!-- Assignment Rules Table --}}
+{{#each this.AssignmentRules}}
+{{#if (isListNotNull this.AssignmentRule)}}
+<div class="pmTable optionData" id="raterules{{@key}}">
+    <div class="container">
+        <table class="responsive-table">
+            <caption>
+              Assignment Rules - {{value.$.Name}}
+              <span class="dashboardBtn">
+                <a href="/curatedList/model/{{../../modelName}}#assignments{{@key}}">
+                  <i class="fa fa-undo" aria-hidden="true"></i>
+                  See in Dashboard
+                </a>
+              </span>
+            </caption>
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Variable</th>
+                    <th scope="col">Assignment Function Expression</th>
+                </tr>
+            </thead>
+            <tbody>
+              {{#each this.AssignmentRule}}
+              <tr>
+                  <td>{{this.$.Name}}</td>
+                  <td>{{this.$.AssignmentRuleVariable}}</td>
+                  <td>{{this._}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{/if}}
+{{/each}}
+
+{{!-- Rate Rules Table --}}
+{{#each this.RateRules}}
+{{#if (isListNotNull this.RateRule)}}
+<div class="pmTable optionData" id="raterules{{@key}}">
+    <div class="container">
+        <table class="responsive-table">
+            <caption>
+              Rate Rules - {{value.$.Name}}
+              <span class="dashboardBtn">
+                <a href="/curatedList/model/{{../../modelName}}#raterules{{@key}}">
+                  <i class="fa fa-undo" aria-hidden="true"></i>
+                  See in Dashboard
+                </a>
+              </span>
+            </caption>
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Variable</th>
+                    <th scope="col">Rate Expression</th>
+                </tr>
+            </thead>
+            <tbody>
+              {{#each this.RateRule}}
+              <tr>
+                  <td>{{this.$.Name}}</td>
+                  <td>{{this.$.RateRuleVariable}}</td>
+                  <td>{{this._}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{/if}}
+{{/each}}
+
+{{!-- Events Table --}}
+{{#each this.BioEvents}}
+{{#if (isListNotNull this.BioEvent)}}
+<div class="pmTable optionData" id="events{{key}}">
+    <div class="container">
+        <table class="responsive-table">
+            <caption>
+              Events - {{value.$.Name}}
+              <span class="dashboardBtn">
+                <a href="/curatedList/model/{{../../modelName}}#events{{@key}}">
+                  <i class="fa fa-undo" aria-hidden="true"></i>
+                  See in Dashboard
+                </a>
+              </span>
+            </caption>
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Trigger Type</th>
+                    <th scope="col">Variable Assignment</th>
+                </tr>
+            </thead>
+            <tbody>
+              {{#each this.BioEvent}}
+              <tr>
+                  <td>{{this.$.Name}}</td>
+                  <td>
+                    {{convertTrigger this}}
+                  </td>
+                  <td>
+                    {{~#each EventAssignment~}}
+                    {{this.$.Variable}} --> {{this._~}}
+                    {{#if (greater ../this.EventAssignment.length (add 1 @index))~}}
+                    ,
+                    {{/if~}}
+                    {{/each~}}
+                  </td>
+              </tr>
+              {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{/if}}
+{{/each}}
+
+{{!-- Geometry Table --}}
+<div id="geometry{{key}}" class="optionData pmTable">
+    <div class="container">
+      {{#each this.Geometry}}
+        <table class="responsive-table">
+            <caption>
+              Geometry {{this.$.Name}}
+              <span class="dashboardBtn">
+                <a href="/curatedList/model/{{../../../modelName}}#geometry{{key}}">
+                  <i class="fa fa-undo" aria-hidden="true"></i>
+                  See in Dashboard
+                </a>
+              </span>
+              <br>
+              (Origin:
+              {{#each this.Origin~}}
+              {{this.$.X}},
+              {{this.$.Y}},
+              {{this.$.Z}}
+              {{~/each}}; Extent:
+              {{#each this.Extent~}}
+              {{this.$.X}},
+              {{this.$.Y}},
+              {{this.$.Z}}
+              {{~/each}}
+              {{~#each this.ImageData~}}
+              ; Image:
+              {{this.$.X}},
+              {{this.$.Y}},
+              {{this.$.Z}}
+              {{~/each}}<span class="unit">[{{../../this.Model.[0].ModelUnitSystem.[0].$.LengthUnit}}]</span>)
+            </caption>
+            <thead>
+                <tr>
+                    <th>Dimension</th>
+                    <th>Type</th>
+                    <th>Subdomain</th>
+                    <th>Adjacent Subvolumes</th>
+                    <th>Size</th>
+                    <th>Mapped Compartment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each (listIndex ../../../geometryList key)}}
+                <tr>
+                    <td>
+                      {{this.geometry}}
+                    </td>
+                    <td>
+                      {{this.type}}
+                    </td>
+                    <td>
+                      {{this.name}}
+                    </td>
+                    <td>
+                      {{this.adjacent}}
+                    </td>
+                    <td>
+                      {{this.size}} <span class="unit">{{this.unit}}</span>
+                    </td>
+                    <td>
+                      {{this.compartment}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{/each}}
 {{/each}}
 {{/each}}
 
@@ -740,7 +984,7 @@
 
                             {{!-- universal ID's  --}}
                             <div class="printUID" id="parameterUID-{{this.$.Name}}">
-                                <p class="heading">Universal ID's: </p>
+
                             </div>
                         </div>
                     </td>
@@ -748,7 +992,7 @@
                         <div class="printAnnotation">
                             {{!-- annotation --}}
                             <div class="printTA" id="parameterTA-{{this.$.Name}}">
-                                <p class="heading"> Text Annotations: </p>
+
                             </div>
                         </div>
                     </td>
@@ -768,9 +1012,25 @@
 <script src="/js/main.js"></script>
 
 {{!-- drawing graphics--}}
-<script>{{> model-graphics}}</script>
+<script src="/js/model-graphics.js"></script>
 
 <script>
+  //function to extract text from HTML string
+  //credit to https://stackoverflow.com/questions/28899298/extract-the-text-out-of-html-string-using-javascript
+  function extractContent(s, space=false) {
+    var span= document.createElement('span');
+    span.innerHTML= s;
+    if(space) {
+      var children= span.querySelectorAll('*');
+      for(var i = 0 ; i < children.length ; i++) {
+        if(children[i].textContent)
+          children[i].textContent+= ' ';
+        else
+          children[i].innerText+= ' ';
+      }
+    }
+    return [span.textContent || span.innerText].toString().replace(/ +/g,' ');
+  };
 
   //remove trailing syntax
   function removeTrailingSyntax(element) {
@@ -807,27 +1067,28 @@
     bioNetGen = canvasElm.id;
     if (drawType == 'g') {
 
-        var drawObj = new Graphic(bioNetGen);
-        dims = drawObj.draw(canvasElm, 0, 0);
+        var drawObj = new Graphic(bioNetGen, canvasElm.innerHTML);
+        drawObj.draw(canvasElm, 0, 0);
+        let dims = [drawObj.x, drawObj.y];
 
         //resize canvas
         canvasElm.width = dims[0];
         canvasElm.height = dims[1];
 
         //draw graphic
-        drawObj.draw(canvasElm, 0, 0);
+        drawObj.doDrawList();
 
     } else if (drawType == 'm') {
 
         var drawObj = new Molecule(bioNetGen);
-        dims = drawObj.drawComplex(canvasElm, 0, 0);
+        dims = drawObj.initDrawList(canvasElm, 1, 1);
 
         //resize canvas
         canvasElm.width = dims[0] + 5;
         canvasElm.height = dims[1] + 5;
 
         //draw graphic
-        drawObj.drawComplex(canvasElm, 1, 1);
+        drawObj.doDrawList();
 
     } else {
         throw 'drawType ' + drawType + ' is not valid, use only m or g';
@@ -838,6 +1099,232 @@
     cvsElm = canvasElements[i];
     drawType = cvsElm.title;
     drawGraphicsPrintable(cvsElm, drawType);
+  }
+
+  //species initial conditions
+  function removeItemAll(arr, value) {
+    let i = 0;
+    while (i < arr.length) {
+      if (arr[i] === value) {
+        arr.splice(i, 1);
+      } else {
+        ++i;
+      }
+    }
+    return arr;
+  }
+  let nameBngMap = {};
+  {{#each data.vcml.BioModel}}
+  {{#each this.Model}}
+  {{#each this.ModelUnitSystem}}
+  let MembraneSubstanceUnit = "{{this.$.MembraneSubstanceUnit}}";
+  let VolumeSubstanceUnit = "{{this.$.VolumeSubstanceUnit}}";
+  {{/each}}
+  {{/each}}
+  {{/each}}
+  let speciesRows = document.getElementById("print-species-table").rows;
+  let structuresRows = document.getElementById("print-structures-table").rows;
+  let strucNameTypeMap = {};
+  //add structure to name-type map
+  for (let i = 1; i < structuresRows.length; i += 2) {
+    let row = structuresRows.item(i).cells;
+    let name = row.item(0).innerHTML.trim();
+    let type = row.item(1).childNodes[1].innerHTML.trim();
+    strucNameTypeMap[name] = type;
+  }
+  //set species initial conditions
+  for (let i = 1; i < speciesRows.length; i += 2) {
+    let row = speciesRows.item(i).cells;
+    let structure = row.item(1).innerHTML.trim();
+    let type = strucNameTypeMap[structure];
+    let name = row.item(0).innerHTML.trim();
+    let bng = row.item(2).innerHTML.trim();
+    nameBngMap[name] = bng;
+  }
+
+  //add reaction graphics
+  //draw plus
+  function drawPlus(x, totalHeight, canvas) {
+    let plusLen = 30;
+    let ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.moveTo(x, totalHeight / 2);
+    ctx.lineTo(x + plusLen, totalHeight / 2);
+    ctx.moveTo(x + plusLen / 2, (plusLen + totalHeight) / 2);
+    ctx.lineTo(x + plusLen / 2, (-plusLen + totalHeight) / 2);
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.closePath();
+    ctx.lineWidth = 1;
+  }
+
+  //draw arrow
+  function drawArrow(x, totalHeight, canvas) {
+    let arrowLen = 30;
+    let ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.moveTo(x, totalHeight / 2);
+    ctx.lineTo(x + arrowLen - 10, totalHeight / 2);
+    ctx.moveTo(x + arrowLen, totalHeight / 2);
+    ctx.lineTo(x + arrowLen / 2, totalHeight / 2 + 10);
+    ctx.moveTo(x + arrowLen, totalHeight / 2);
+    ctx.lineTo(x + arrowLen / 2, totalHeight / 2 - 10);
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.closePath();
+    ctx.lineWidth = 1;
+  }
+
+  //get html elements
+  let reactionRows = document.getElementById("print-reactions-table").rows;
+  let drawMap = {};
+  let scale = 1;
+  //iterate through rows
+  for (let i = 1; i < reactionRows.length; i++) {
+    let row = reactionRows.item(i).cells;
+    if (i % 2 == 1) {
+      var reaction = row.item(0).innerHTML;
+    } else {
+      let canvas = row.item(3).childNodes[1];
+      let firstSpanIndex = reaction.indexOf('<span>');
+      let lastSpanIndex = reaction.indexOf('</span>');
+      let reactants = reaction.slice(0, firstSpanIndex).split('+');
+      let products = reaction.slice(lastSpanIndex + 7, reaction.length).split('+');
+      reactants = removeItemAll(reactants, '');
+      products = removeItemAll(products, '');
+      let totalLength = 0;
+      let totalHeight = 0;
+
+      //create list of draw functions
+      let drawList = [];
+
+      //reactants
+      for (let u = 0; u < reactants.length; u++) {
+        //init obj
+        let bng = nameBngMap[reactants[u]];
+        let drawObj = new Graphic(bng, 'compact');
+
+        //initial draw to get size
+        var dims = drawObj.draw(canvas, totalLength, 0);
+        if (dims) {
+          totalLength += dims[0];
+        }
+
+        //add draw function
+        drawList.push(
+          {
+            func: (canvas, totalLength, totalHeight) => {
+              drawObj.doDrawList();
+            },
+            x: totalLength
+          }
+        );
+
+        //add plus if not last reactant
+        if (u < reactants.length - 1) {
+          drawList.push(
+            {
+              func: (canvas, totalLength, totalHeight) => {
+                drawPlus(totalLength, totalHeight, canvas);
+              },
+              x: totalLength
+            }
+          );
+          totalLength += 30;
+        }
+
+        //add height
+        if (dims && dims[1] > totalHeight) {
+          totalHeight = dims[1];
+        }
+      }
+
+      drawList.push(
+        {
+          func: (canvas, totalLength, totalHeight) => {
+            drawArrow(totalLength, totalHeight, canvas);
+          },
+          x: totalLength
+        }
+      );
+      totalLength += 30;
+
+      //products
+      for (let u = 0; u < products.length; u++) {
+        //init obj
+        let bng = nameBngMap[products[u]];
+        let drawObj = new Graphic(bng, 'compact');
+
+        //initial draw to get size
+        var dims = drawObj.draw(canvas, totalLength, 0, scale);
+        if (dims) {
+          totalLength += dims[0];
+        }
+
+        //add draw function
+        drawList.push(
+          {
+            func: (canvas, totalLength, totalHeight) => {
+              drawObj.doDrawList();
+            },
+            x: totalLength
+          }
+        );
+
+        //add plus if not last reactant
+        if (u < products.length - 1) {
+          drawList.push(
+            {
+              func: (canvas, totalLength, totalHeight) => {
+                drawPlus(totalLength, totalHeight, canvas);
+              },
+              x: totalLength
+            }
+          );
+          totalLength += 30;
+        }
+
+        //add height
+        if (dims && dims[1] > totalHeight) {
+          totalHeight = dims[1];
+        }
+      }
+
+      //resize canvas
+      canvas.width = totalLength;
+      canvas.height = totalHeight;
+
+      //draw all elements
+      for (let u = 0; u < drawList.length; u++) {
+        let elm = drawList[u];
+        elm.func(canvas, elm.x, totalHeight);
+      }
+    }
+  }
+
+  //remove empty rows
+  //fix this
+  let empties = document.querySelectorAll('.if-empty');
+  for (let i = 0; i < empties.length; i++) {
+    let row = empties[i];
+    let children = row.children;
+    for (let u = 0; u < children.length; u++) {
+      let child = children[u];
+      let html = child.innerHTML;
+      if (html.includes("</canvas>") && html.includes('width="0"')) {
+        let fIndex = html.indexOf("<canvas");
+        let lIndex = html.indexOf("</canvas>");
+        html = html.slice(0, fIndex) + html.slice(lIndex + "</canvas>".length, html.length);
+      }
+      //if element is whitespace dont display
+      if (extractContent(html).trim().length == 0) {
+        //child.style.display = "none";
+      } else {
+        console.log(child);
+      }
+    }
   }
 
   //fix link scrolling

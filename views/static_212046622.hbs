@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="../public/css/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <div class="sectionDescription">
+       
+      <span class="dashboardBtn"
+        ><a href="/curatedList/model/CM_PM12779457_MB1::Cell_Ca_oscillation#dashboard"
+          ><i class="fa fa-undo" aria-hidden="true"></i> Dashboard</a
+        ></span
+      >
+      <h2>Name - <span>CM_PM12779457_MB1::Cell_Ca_oscillation</span></h2>
+      <h2>BioModel ID - <span>212046622</span></h2>
+       
+    </div>
+
+    <div class="rxnDiagram">
+      <h2 class="sectionTitle">Reaction Diagram</h2>
+       
+      <img
+        class="image-zoom-available"
+        src="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/212046622/diagram"
+        alt="reactionDiagram"
+        draggable="false"
+      />
+       
+    </div>
+
+    <h2 class="sectionTitle">Physiology</h2>
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Reactions
+            <span class="dashboardBtn"
+              ><a href="/curatedList/model/#reactions"
+                ><i class="fa fa-undo" aria-hidden="true"></i> See in
+                Dashboard</a
+              ></span
+            >
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Reaction</th>
+              <th scope="col">Name</th>
+              <th scope="col">Structure</th>
+              <th scope="col">Kinetics</th>
+            </tr>
+          </thead>
+          <tbody>
+              
+            <tr>
+              <td data-title="Reaction">
+                                <span style="color: #666666">--></span>
+                 Ca_cell1 
+              </td>
+              <td data-title="Name">IP3R mediated Ca release Cell1</td>
+              <td data-title="Structure">Cytosol</td>
+              <td data-title="Kinetics">
+                 GeneralLumpedKinetics 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="reactionUID-IP3R mediated Ca release Cell1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="reactionTA-IP3R mediated Ca release Cell1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+               
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA">
+                    <p class="heading">
+                      Reaction rate: (Cytosol * kf * pow(((p * IP3R_cell1 * Phi1_c1) / ((Phi1_c1 * p) + Phi_minus1_c1)),4.0))
+                      <span class="unit">[umol.s-1]</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+              
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA">
+                    <p class="heading">
+                      Reaction rate: 0.2778
+                      <span class="unit">[tbd]</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+              
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA">
+                    <p class="heading">
+                      Reaction rate: 28.0
+                      <span class="unit">[tbd]</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+               
+            </tr>
+            
+            <tr>
+              <td data-title="Reaction">
+                 Ca_cell1
+                <span style="color: #666666">--></span>
+                
+              </td>
+              <td data-title="Name">ATPase pump mediated Ca release Cell1</td>
+              <td data-title="Structure">Cytosol</td>
+              <td data-title="Kinetics">
+                 GeneralLumpedKinetics 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="reactionUID-ATPase pump mediated Ca release Cell1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="reactionTA-ATPase pump mediated Ca release Cell1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+               
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA">
+                    <p class="heading">
+                      Reaction rate: (Cytosol * ((Vp * pow(Ca_cell1,2.0)) / (pow(Kp,2.0) + pow(Ca_cell1,2.0))))
+                      <span class="unit">[umol.s-1]</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+              
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA">
+                    <p class="heading">
+                      Reaction rate: 0.18
+                      <span class="unit">[tbd]</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+              
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA">
+                    <p class="heading">
+                      Reaction rate: 1.2
+                      <span class="unit">[tbd]</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+               
+            </tr>
+            
+            <tr>
+              <td data-title="Reaction">
+                                <span style="color: #666666">--></span>
+                 Ca_cell1 
+              </td>
+              <td data-title="Name">IP3R independent Ca release Cell1</td>
+              <td data-title="Structure">Cytosol</td>
+              <td data-title="Kinetics">
+                 GeneralLumpedKinetics 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="reactionUID-IP3R independent Ca release Cell1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="reactionTA-IP3R independent Ca release Cell1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+               
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA">
+                    <p class="heading">
+                      Reaction rate: (Cytosol * Jleak)
+                      <span class="unit">[umol.s-1]</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+              
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA">
+                    <p class="heading">
+                      Reaction rate: 0.2
+                      <span class="unit">[umol.s-1.litre-1]</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+               
+            </tr>
+            
+            <tr>
+              <td data-title="Reaction">
+                                <span style="color: #666666">--></span>
+                 IP3R_cell1 
+              </td>
+              <td data-title="Name">IP3R Inactive to Shut transtition cell1</td>
+              <td data-title="Structure">Cytosol</td>
+              <td data-title="Kinetics">
+                 GeneralLumpedKinetics 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="reactionUID-IP3R Inactive to Shut transtition cell1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="reactionTA-IP3R Inactive to Shut transtition cell1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+               
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA">
+                    <p class="heading">
+                      Reaction rate: (Cytosol * Phi3_c1 * (1.0 - IP3R_cell1))
+                      <span class="unit">[umol.s-1]</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+               
+            </tr>
+            
+            <tr>
+              <td data-title="Reaction">
+                 IP3R_cell1
+                <span style="color: #666666">--></span>
+                
+              </td>
+              <td data-title="Name">IP3R Open_to_Inactivated_Cell1</td>
+              <td data-title="Structure">Cytosol</td>
+              <td data-title="Kinetics">
+                 GeneralLumpedKinetics 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="reactionUID-IP3R Open_to_Inactivated_Cell1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="reactionTA-IP3R Open_to_Inactivated_Cell1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+               
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA">
+                    <p class="heading">
+                      Reaction rate: ((Cytosol * Phi1_c1 * Phi2_c1 * IP3R_cell1 * p) / ((Phi1_c1 * p) + Phi_minus1_c1))
+                      <span class="unit">[umol.s-1]</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+              
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA">
+                    <p class="heading">
+                      Reaction rate: 0.2778
+                      <span class="unit">[tbd]</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+               
+            </tr>
+              
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Structures
+            <span class="dashboardBtn"
+              ><a href="/curatedList/model/#structures"
+                ><i class="fa fa-undo" aria-hidden="true"></i> See in
+                Dashboard</a
+              ></span
+            >
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Electrical (Membrane Polarity)</th>
+            </tr>
+          </thead>
+          <tbody>
+                   
+            <tr>
+              <td data-title="Name">Cytosol</td>
+              <td data-title="Type">Compartment</td>
+              <td data-title="Electrical">
+                (+) &nbsp;
+                (-)
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="structureUID-Cytosol">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="structureTA-Cytosol">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+              
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Species
+            <span class="dashboardBtn"
+              ><a href="/curatedList/model/#species"
+                ><i class="fa fa-undo" aria-hidden="true"></i> See in
+                Dashboard</a
+              ></span
+            >
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Structure</th>
+            </tr>
+          </thead>
+          <tbody>
+              
+            <tr>
+              <td data-title="Name">Ca_cell1</td>
+              <td data-title="Structure">Cytosol</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="speciesUID-Ca_cell1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="speciesTA-Ca_cell1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">IP3R_cell1</td>
+              <td data-title="Structure">Cytosol</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="speciesUID-IP3R_cell1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="speciesTA-IP3R_cell1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+              
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Molecules
+            <span class="dashboardBtn"
+              ><a href="/curatedList/model/#molecules"
+                ><i class="fa fa-undo" aria-hidden="true"></i> See in
+                Dashboard</a
+              ></span
+            >
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+                
+
+            <tr>
+              <td data-title="Name">Ca</td>
+
+              <td data-title="Description">
+                
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-Ca">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-Ca">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+
+            <tr>
+              <td data-title="Name">IP3R_cell1</td>
+
+              <td data-title="Description">
+                 Ca_bs  . 
+              </td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="moleculesUID-IP3R_cell1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="moleculesTA-IP3R_cell1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+                
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Observables
+            <span class="dashboardBtn"
+              ><a href="/curatedList/model/#observables"
+                ><i class="fa fa-undo" aria-hidden="true"></i> See in
+                Dashboard</a
+              ></span
+            >
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">BioNetGen Defination</th>
+              <th scope="col">Count</th>
+            </tr>
+          </thead>
+          <tbody>
+                
+
+            <tr>
+              <td data-title="Name">O0_Ca_tot</td>
+              <td data-title="Domain">Molecules</td>
+
+               
+              <td data-title="MolecularType">Ca</td>
+                
+              <td data-title="SequenceType">Multimolecular</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="observableUID-O0_Ca_tot">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="observableUID-O0_Ca_tot">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            
+
+            <tr>
+              <td data-title="Name">O0_IP3R_cell1_tot</td>
+              <td data-title="Domain">Molecules</td>
+
+               
+              <td data-title="MolecularType">IP3R_cell1</td>
+                
+              <td data-title="SequenceType">Multimolecular</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="observableUID-O0_IP3R_cell1_tot">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="observableUID-O0_IP3R_cell1_tot">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+                
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr />
+
+    <h2 class="sectionTitle">Applications</h2>
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Applications
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Math Type</th>
+              <th scope="col">Annotation</th>
+            </tr>
+          </thead>
+          <tbody>
+             
+            <tr>
+              <td data-title="Name">Deterministic 1</td>
+              <td data-title="Math Type"></td>
+              <td data-title="Annotation"></td>
+            </tr>
+
+            
+            <tr>
+              <td data-title="Name">Copy of Deterministic 1</td>
+              <td data-title="Math Type"></td>
+              <td data-title="Annotation">(copied from Deterministic 1) </td>
+            </tr>
+
+             
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+      
+    <h2 class="sectionTitle">0 - Deterministic 1</h2>
+
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Specifications(Species) - Deterministic 1
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Species</th>
+              <th scope="col">Initial Condition</th>
+              <th scope="col">Diffusion Constant</th>
+            </tr>
+          </thead>
+          <tbody>
+             
+            <tr>
+              <td data-title="Species">Ca_cell1</td>
+              <td data-title="Initial Condition">
+                0.3
+              </td>
+              <td data-title="Diffusion Constant">0.0</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Species">IP3R_cell1</td>
+              <td data-title="Initial Condition">
+                0.8
+              </td>
+              <td data-title="Diffusion Constant">0.0</td>
+            </tr>
+             
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Specifications(Reaction) - Deterministic 1
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Reaction Mapping</th>
+            </tr>
+          </thead>
+          <tbody>
+             
+            <tr>
+              <td data-title="Name">IP3R mediated Ca release Cell1</td>
+              <td data-title="ReactionMapping">included</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">ATPase pump mediated Ca release Cell1</td>
+              <td data-title="ReactionMapping">included</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">IP3R independent Ca release Cell1</td>
+              <td data-title="ReactionMapping">included</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">IP3R Inactive to Shut transtition cell1</td>
+              <td data-title="ReactionMapping">included</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">IP3R Open_to_Inactivated_Cell1</td>
+              <td data-title="ReactionMapping">included</td>
+            </tr>
+             
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Simulations - Deterministic 1
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">End Time</th>
+              <th scope="col">Output Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-title="Name">Simulation1</td>
+               
+              <td data-title="End Time">30.0</td>
+               
+              <td data-title="Output Options">
+                every 
+              </td>
+               
+            </tr>
+            <tr>
+              <td data-title="Name">Copy of Simulation1</td>
+               
+              <td data-title="End Time">30.0</td>
+               
+              <td data-title="Output Options">
+                every 
+              </td>
+               
+            </tr>
+            <tr>
+              <td data-title="Name">Copy of Copy of Simulation1</td>
+               
+              <td data-title="End Time">30.0</td>
+               
+              <td data-title="Output Options">
+                every 
+              </td>
+               
+            </tr>
+            <tr>
+              <td data-title="Name">Copy of Copy of Copy of Simulation1</td>
+               
+              <td data-title="End Time">30.0</td>
+               
+              <td data-title="Output Options">
+                every 
+              </td>
+               
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <h2 class="sectionTitle">1 - Copy of Deterministic 1</h2>
+
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Specifications(Species) - Copy of Deterministic 1
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Species</th>
+              <th scope="col">Initial Condition</th>
+              <th scope="col">Diffusion Constant</th>
+            </tr>
+          </thead>
+          <tbody>
+             
+            <tr>
+              <td data-title="Species">Ca_cell1</td>
+              <td data-title="Initial Condition">
+                0.3
+              </td>
+              <td data-title="Diffusion Constant">0.0</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Species">IP3R_cell1</td>
+              <td data-title="Initial Condition">
+                0.8
+              </td>
+              <td data-title="Diffusion Constant">0.0</td>
+            </tr>
+             
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Specifications(Reaction) - Copy of Deterministic 1
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Reaction Mapping</th>
+            </tr>
+          </thead>
+          <tbody>
+             
+            <tr>
+              <td data-title="Name">IP3R mediated Ca release Cell1</td>
+              <td data-title="ReactionMapping">included</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">ATPase pump mediated Ca release Cell1</td>
+              <td data-title="ReactionMapping">included</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">IP3R independent Ca release Cell1</td>
+              <td data-title="ReactionMapping">included</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">IP3R Inactive to Shut transtition cell1</td>
+              <td data-title="ReactionMapping">included</td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">IP3R Open_to_Inactivated_Cell1</td>
+              <td data-title="ReactionMapping">included</td>
+            </tr>
+             
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Simulations - Copy of Deterministic 1
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">End Time</th>
+              <th scope="col">Output Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-title="Name">Simulation1_1</td>
+               
+              <td data-title="End Time">30.0</td>
+               
+              <td data-title="Output Options">
+                every 
+              </td>
+               
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+     
+
+    <hr />
+    <h2 class="sectionTitle">Global Parameters</h2>
+
+    <div class="pmTable">
+      <div class="container">
+        <table class="responsive-table">
+          <caption>
+            Global Parameters
+            <span class="dashboardBtn"
+              ><a href="/curatedList/model/#global"
+                ><i class="fa fa-undo" aria-hidden="true"></i> See in
+                Dashboard</a
+              ></span
+            >
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Expression</th>
+            </tr>
+          </thead>
+          <tbody>
+               
+            <tr>
+              <td data-title="Name">Phi1_c1</td>
+              <td data-title="Expression">((r2 * Ca_cell1) / (R1 + Ca_cell1))</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="parameterUID-Phi1_c1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="parameterTA-Phi1_c1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">r2</td>
+              <td data-title="Expression">100.0</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="parameterUID-r2">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="parameterTA-r2">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">R1</td>
+              <td data-title="Expression">6.0</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="parameterUID-R1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="parameterTA-R1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">Phi_minus1_c1</td>
+              <td data-title="Expression">(k1 / (R3 + Ca_cell1))</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="parameterUID-Phi_minus1_c1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="parameterTA-Phi_minus1_c1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">k1</td>
+              <td data-title="Expression">44.0</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="parameterUID-k1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="parameterTA-k1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">R3</td>
+              <td data-title="Expression">50.0</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="parameterUID-R3">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="parameterTA-R3">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">Phi2_c1</td>
+              <td data-title="Expression">((k2 + (r4 * Ca_cell1)) / (R3 + Ca_cell1))</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="parameterUID-Phi2_c1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="parameterTA-Phi2_c1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">k2</td>
+              <td data-title="Expression">26.5</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="parameterUID-k2">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="parameterTA-k2">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">r4</td>
+              <td data-title="Expression">20.0</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="parameterUID-r4">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="parameterTA-r4">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">Phi3_c1</td>
+              <td data-title="Expression">(k3 / (R5 + Ca_cell1))</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="parameterUID-Phi3_c1">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="parameterTA-Phi3_c1">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">k3</td>
+              <td data-title="Expression">1.6</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="parameterUID-k3">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="parameterTA-k3">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td data-title="Name">R5</td>
+              <td data-title="Expression">1.6</td>
+            </tr>
+            <tr>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printUID" id="parameterUID-R5">
+                    <p class="heading">Universal ID's:</p>
+                  </div>
+                </div>
+              </td>
+              <td class="printAnnotationWrap">
+                <div class="printAnnotation">
+                  <div class="printTA" id="parameterTA-R5">
+                    <p class="heading">Text Annotations:</p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+               
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <hr />
+
+    <!-- <script src="/js/imageZoom.js"></script> -->
+
+    <script src="../public/js/curatedListTable.js"></script>
+    <script src="../public/js/subMenu.js"></script>
+    <script src="../public/js/navbar.js"></script>
+    <script src="../public/js/main.js"></script>
+    <script src="../public/js/searchForm.js"></script>
+    <script src="../public/js/search1.js"></script>
+  </body>
+</html>
