@@ -163,7 +163,7 @@
                 <div class="reactionDiagram" id="diagram">
                     {{#each data.vcml.BioModel}}
                     {{#each this.Version}}
-                    <img class="model-page-diagram" src="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.$.KeyValue}}/diagram"
+                    <img class="model-page-diagram" src="https://vcellapi.cam.uchc.edu/biomodel/{{this.$.KeyValue}}/diagram"
                         alt="reactionDiagram" draggable="false" />
                     {{/each}}
                     {{/each}}
@@ -1440,7 +1440,7 @@
                             <tr>
                                 <td>Virtual Cell Markup Language</td>
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.Version.[0].$.KeyValue}}/biomodel.vcml">
+                                  <a href="https://vcellapi.cam.uchc.edu/biomodel/{{this.Version.[0].$.KeyValue}}/biomodel.vcml">
                                     VCML File
                                   </a>
                                 </td>
@@ -1448,7 +1448,7 @@
                             <tr>
                                 <td>PDF Report</td>
                                 <td data-label="File" class="File">
-                                  <a href="https://vcellapi-beta.cam.uchc.edu:8080/biomodel/{{this.Version.[0].$.KeyValue}}/biomodel.pdf">
+                                  <a href="https://vcellapi.cam.uchc.edu/biomodel/{{this.Version.[0].$.KeyValue}}/biomodel.pdf">
                                     Report
                                   </a>
                                 </td>
@@ -1457,7 +1457,7 @@
                                 <td>COMBINE Archive</td>
                                 <td data-label="File" class="File">
                                   <a href=
-                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    "https://vcellapi.cam.uchc.edu/biomodel/
                                     {{~this.Version.[0].$.KeyValue~}}
                                     /biomodel.omex?appname={{convertSpace this.SimulationSpec.[0].$.Name}}"
                                   >
@@ -1469,7 +1469,7 @@
                                 <td>SEDML</td>
                                 <td data-label="File" class="File">
                                   <a href=
-                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    "https://vcellapi.cam.uchc.edu/biomodel/
                                     {{~this.Version.[0].$.KeyValue~}}
                                     /biomodel.sedml?appname={{convertSpace this.SimulationSpec.[0].$.Name}}"
                                   >
@@ -1499,7 +1499,7 @@
                                 <td data-label="File" class="File">
                                   {{#each SimulationSpec}}
                                   <a href=
-                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    "https://vcellapi.cam.uchc.edu/biomodel/
                                     {{~../this.Version.[0].$.KeyValue~}}
                                     /biomodel.bngl?appname={{convertSpace this.$.Name}}"
                                   >
@@ -1516,7 +1516,7 @@
                                 <td data-label="File" class="File">
                                   {{#each SimulationSpec}}
                                   <a href=
-                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    "https://vcellapi.cam.uchc.edu/biomodel/
                                     {{~../this.Version.[0].$.KeyValue~}}
                                     /biomodel.sbml?appname={{convertSpace this.$.Name}}"
                                   >
@@ -1533,7 +1533,7 @@
                                 <td data-label="File" class="File">
                                   {{#each SimulationSpec}}
                                   <a href=
-                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    "https://vcellapi.cam.uchc.edu/biomodel/
                                     {{~../this.Version.[0].$.KeyValue~}}
                                     /biomodel.m?appname={{convertSpace this.$.Name}}"
                                   >
@@ -1550,7 +1550,7 @@
                                 <td data-label="File" class="File">
                                   {{#each SimulationSpec}}
                                   <a href=
-                                    "https://vcellapi-beta.cam.uchc.edu:8080/biomodel/
+                                    "https://vcellapi.cam.uchc.edu/biomodel/
                                     {{~../this.Version.[0].$.KeyValue~}}
                                     /biomodel.xml?appname={{convertSpace this.$.Name}}"
                                   >
