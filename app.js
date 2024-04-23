@@ -296,7 +296,7 @@ async function getModelList(termMap) {
 
     //create link and fetch from API
     const api_url =
-      "https://vcellapi-beta.cam.uchc.edu:8080/biomodel?bmName=" + termMap["bmName"] + "&bmId=" + termMap["bmId"] + "&category=" + termMap["category"] + "&owner=" + termMap["owner"] + "&savedLow=" + termMap["savedLow"] + "&savedHigh=" + termMap["savedHigh"] + "&startRow=" + APIrow + "&maxRows=" + termMap['maxModels'] + "&orderBy=" + termMap["orderBy"];
+      "https://vcellapi.cam.uchc.edu/biomodel?bmName=" + termMap["bmName"] + "&bmId=" + termMap["bmId"] + "&category=" + termMap["category"] + "&owner=" + termMap["owner"] + "&savedLow=" + termMap["savedLow"] + "&savedHigh=" + termMap["savedHigh"] + "&startRow=" + APIrow + "&maxRows=" + termMap['maxModels'] + "&orderBy=" + termMap["orderBy"];
     const fetch_response = await fetch(api_url);
     json = await fetch_response.json();
   }
@@ -322,7 +322,7 @@ app.get("/curatedList/model", (req, res) => {
 });
 
 // main pages with dynamic content starts from here
-// Fetching Curated List of models from Vcel Beta API
+// Fetching Curated List of models from Vcel API
 app.get("/curatedList/:search", async (req, res) => {
   //TODO how to get max num of pages?
   //search parameter mirror the format of API Urls except for page term
@@ -423,7 +423,7 @@ app.get("/testCuratedList/:search", async (req, res) => {
 // main Dashboard for dynamic models selected from curated list page
 app.get("/curatedList/model/:name", (req, res) => {
   const api_url =
-    'https://vcellapi-beta.cam.uchc.edu:8080/biomodel/' + req.params.name + '/biomodel.vcml';
+    'https://vcellapi.cam.uchc.edu/biomodel/' + req.params.name + '/biomodel.vcml';
   var parser = new xml2js.Parser();
   fetch(api_url).then(function(response) {
     return response.text().then(function(text) {
@@ -479,7 +479,7 @@ app.get("/test/:name", (req, res) => {
 app.get("/curatedList/printModel/:name", (req, res) => {
   modelName = req.params.name;
   const api_url =
-    'https://vcellapi-beta.cam.uchc.edu:8080/biomodel/' + modelName + '/biomodel.vcml';
+    'https://vcellapi.cam.uchc.edu/biomodel/' + modelName + '/biomodel.vcml';
   var parser = new xml2js.Parser();
   fetch(api_url).then(function(response) {
     return response.text().then(function(text) {
@@ -513,7 +513,7 @@ app.get("/curatedList/printModel/:name", (req, res) => {
 });
 
 // displaying static pages (searched by GOOGLE)
-// Fetching Curated List of models from Vcel Beta API
+// Fetching Curated List of models from Vcel API
 app.get("/static/:name", async (req, res) => {
   res.render(`static_${req.params.name}`);
 });
