@@ -25,9 +25,13 @@ jobs:
           username: ${{ secrets.ACTION_USER }}
           password: ${{ secrets.ACTION_TOKEN }}
 
+      - name: Shorten SHA
+        id: shorten_sha
+        run: echo "SHORT_SHA=$(echo ${{ github.sha }} | cut -c 1-7)" >> $GITHUB_ENV
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}/modelbricks:${{ github.sha.substring(0, 7) }}
+          tags: ghcr.io/virtualcell/modelbricks:${{ env.SHORT_SHA }}
