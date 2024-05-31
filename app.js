@@ -8,7 +8,7 @@ const path = require("path");
 const xml2js = require("xml2js");
 const fetch = require("node-fetch");
 const aPrs = require("./helpers/annotation-parser.js");
-const PORT = process.env.PORT || 4002;
+const PORT = process.env.PORT || 3000;
 
 var indexRouter = require("./routes/index");
 
