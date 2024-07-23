@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: modelbricks
+  name: modelbricks
+spec:
+  selector:
+    matchLabels:
+      app: modelbricks
+  replicas: 0
+  template:
+    metadata:
+      labels:
+        app: modelbricks
+    spec:
+      containers:
+        - name: modelbricks
+          image: ghcr.io/virtualcell/modelbricks
+          imagePullPolicy: "Always"
+          resources:
+            requests:
+              memory: "400Mi"
+              cpu: "200m"
+            limits:
+              memory: "2000Mi"
+  #              cpu: "500m"
+
+          ports:
+          - containerPort: 3000
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: ghcr-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: modelbricks
+spec:
+  selector:
+    app: modelbricks
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000

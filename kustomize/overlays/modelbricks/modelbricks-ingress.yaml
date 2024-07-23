@@ -1,0 +1,26 @@
+# ingress for api
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: modelbricks-ingress
+  labels:
+    app: modelbricks-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - www.vcelldb.org
+      secretName: letsencrypt-modelbricks-tls
+  rules:
+    - host: www.vcelldb.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: modelbricks
+                port:
+                  number: 80
