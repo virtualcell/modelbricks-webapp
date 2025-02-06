@@ -11,27 +11,30 @@ const aPrs = require("./helpers/annotation-parser.js");
 const PORT = process.env.PORT || 3000;
 
 var indexRouter = require("./routes/index");
+const { title } = require("process");
 
 //todo:
 //fix column arrow search in biomodel name
 
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/", indexRouter);
 
 //read publications and curated file and store for use in curated list
 //publications
-var pubRaw = fs.readFileSync('json-data/publications.json');
+var pubRaw = fs.readFileSync("json-data/publications.json");
 const pubs = JSON.parse(pubRaw);
 delete pubRaw;
 //curated
-var curatedRaw = fs.readFileSync('json-data/curated.json');
+var curatedRaw = fs.readFileSync("json-data/curated.json");
 const curated = JSON.parse(curatedRaw);
 delete curatedRaw;
 //education
-var educationRaw = fs.readFileSync('json-data/education.json');
+var educationRaw = fs.readFileSync("json-data/education.json");
 const education = JSON.parse(educationRaw);
 delete educationRaw;
 //map
-var mapRaw = fs.readFileSync('json-data/pub-map.json');
+var mapRaw = fs.readFileSync("json-data/pub-map.json");
 const pubMap = JSON.parse(mapRaw);
 delete mapRaw;
 
@@ -43,26 +46,26 @@ const hbs = exphbs.create({
   // create custom helper
   helpers: {
     //the pubmed solutiuon implemented assumes any 8 digit num in model name is a pubmed num
-    getPubmedModelNum: function(name) {
+    getPubmedModelNum: function (name) {
       try {
         let lastIndex = name.indexOf("::") - 1;
         if (!lastIndex || lastIndex < 0) {
-          throw 'No Pubmed Model Num';
+          throw "No Pubmed Model Num";
         }
-        let index = lastIndex
+        let index = lastIndex;
         //while char is not number
         while (!isNaN(name.charAt(index))) {
-          index --;
+          index--;
         }
-        if (name.slice(index - 2, index + 1) != '_MB') {
-          throw 'No Pubmed Model Num';
+        if (name.slice(index - 2, index + 1) != "_MB") {
+          throw "No Pubmed Model Num";
         }
         return name.slice(index + 1, lastIndex + 1);
       } catch (e) {
         return "";
       }
     },
-    getPubmedID: function(name, alternateID) {
+    getPubmedID: function (name, alternateID) {
       try {
         if (alternateID) {
           return alternateID;
@@ -70,17 +73,17 @@ const hbs = exphbs.create({
           let firstNum = 0;
           //while char is not number
           while (isNaN(name.charAt(firstNum))) {
-            firstNum ++;
+            firstNum++;
             if (firstNum > 10000) {
-              throw 'infinite loop in getPubmedID';
+              throw "infinite loop in getPubmedID";
             }
           }
           let lastNum = firstNum;
           //while char is number
           while (!isNaN(name.charAt(lastNum))) {
-            lastNum ++;
+            lastNum++;
             if (lastNum > 10000) {
-              throw 'infinite loop in getPubmedID';
+              throw "infinite loop in getPubmedID";
             }
           }
           let pubmedID = name.slice(firstNum, lastNum);
@@ -90,12 +93,12 @@ const hbs = exphbs.create({
         return false;
       }
     },
-    getPubmedLink: function(pubmedID) {
+    getPubmedLink: function (pubmedID) {
       try {
         if (!pubmedID || pubmedID.length != 8) {
-          throw 'undefined pubmed id';
+          throw "undefined pubmed id";
         }
-        let link = "https://pubmed.ncbi.nlm.nih.gov/" + pubmedID + '/';
+        let link = "https://pubmed.ncbi.nlm.nih.gov/" + pubmedID + "/";
         return link;
       } catch (e) {
         return false;
@@ -128,44 +131,44 @@ const hbs = exphbs.create({
       let month = date.getMonth();
       month += 1;
       month = month.toString();
-      if(month.length === 1) {
+      if (month.length === 1) {
         month = "0" + month;
       }
       let day = date.getDate().toString();
-      if(day.length === 1) {
+      if (day.length === 1) {
         day = "0" + day;
       }
-      return (month + "/" + day + "/" + year);
+      return month + "/" + day + "/" + year;
     },
     convertSpace: function (s) {
       //convert spaces to %20 for use in URLs
-      return s.replace(/\s/g, '%20');
+      return s.replace(/\s/g, "%20");
     },
     convertTrigger: function (eventObj) {
       let params = eventObj.Parameter;
-      let timeList = 'at times: [';
-      let observable = 'Error';
+      let timeList = "at times: [";
+      let observable = "Error";
 
       //loop through params
       for (let i = 0; i < params.length; i++) {
         let param = params[i];
         let name = param.$.Name;
-        let val = param._
-        if (name == 'triggerTime') {
-          return('at time ' + val);
-        } else if (name == 'threshold') {
-          return('when ' + observable + ' is above/below ' + val);
-        } else if (name == 'observable') {
+        let val = param._;
+        if (name == "triggerTime") {
+          return "at time " + val;
+        } else if (name == "threshold") {
+          return "when " + observable + " is above/below " + val;
+        } else if (name == "observable") {
           observable = val;
-        } else if (name == 'triggerFunction') {
-          return('on condition: ' + val);
-        } else if (param.$.Role == 'TimeListItem') {
-          timeList += val + ',';
+        } else if (name == "triggerFunction") {
+          return "on condition: " + val;
+        } else if (param.$.Role == "TimeListItem") {
+          timeList += val + ",";
         }
       }
 
       //only reach here for time list
-      timeList = timeList.slice(0, timeList.length - 1) + ']';
+      timeList = timeList.slice(0, timeList.length - 1) + "]";
       return timeList;
     },
     nullCheck: function (inputString) {
@@ -188,21 +191,21 @@ const hbs = exphbs.create({
     },
     initUnits: function (conc, count, volUnit, lumpUnit) {
       if (conc) {
-        let pair = volUnit.split('.');
+        let pair = volUnit.split(".");
         return pair[0];
-      } else if (count){
+      } else if (count) {
         return lumpUnit;
       } else {
-        return 'unknown unit';
+        return "unknown unit";
       }
     },
-    shortString: function (s, length, dots=false) {
+    shortString: function (s, length, dots = false) {
       if (dots) {
         if (s) {
           if (s.length > length - 3) {
-            return s.slice(0, length - 3) + '...';
+            return s.slice(0, length - 3) + "...";
           } else {
-            return s.slice(0, length) + '...';
+            return s.slice(0, length) + "...";
           }
         } else {
           return "";
@@ -210,7 +213,7 @@ const hbs = exphbs.create({
       } else {
         if (s) {
           if (s.length > length - 3) {
-            return s.slice(0, length - 3) + '...';
+            return s.slice(0, length - 3) + "...";
           } else {
             return s.slice(0, length);
           }
@@ -234,69 +237,93 @@ const hbs = exphbs.create({
       }
     },
     or: function (a, b) {
-      return (a || b);
+      return a || b;
     },
-    not: function(a) {
+    not: function (a) {
       return !a;
     },
     isNull: function (s) {
-      return (s == null);
+      return s == null;
     },
     add: function (a, b) {
-      return (parseInt(a) + parseInt(b));
+      return parseInt(a) + parseInt(b);
     },
     sub: function (a, b) {
-      return (parseInt(a) - parseInt(b));
+      return parseInt(a) - parseInt(b);
     },
     greater: function (a, b) {
-      return (a > b);
+      return a > b;
     },
     eq: function (a, b) {
-      return (a == b);
+      return a == b;
     },
     includes: function (a, b) {
-      return (a.includes(b));
-    }
+      return a.includes(b);
+    },
   },
 });
 
 //function used in curated list to generate json model list
 async function getModelList(termMap) {
   //handle special case for publucations
-  if (termMap['category'] == 'publications') {
+  if (termMap["category"] == "publications") {
     //get index range
-    let page = termMap['page'];
-    let modelsPerPage = termMap['maxModels'];
+    let page = termMap["page"];
+    let modelsPerPage = termMap["maxModels"];
     let indexStart = (page - 1) * modelsPerPage;
     let indexEnd = page * modelsPerPage;
     //idk why pubs needs to be wrapped in async func, but it does
-    const func = async ()=> {return pubs.slice(indexStart, indexEnd);};
+    const func = async () => {
+      return pubs.slice(indexStart, indexEnd);
+    };
     var json = await func();
-  } else if (termMap['category'] == 'curated') {
+  } else if (termMap["category"] == "curated") {
     //get index range
-    let page = termMap['page'];
-    let modelsPerPage = termMap['maxModels'];
+    let page = termMap["page"];
+    let modelsPerPage = termMap["maxModels"];
     let indexStart = (page - 1) * modelsPerPage;
     let indexEnd = page * modelsPerPage;
     //same as pubs above
-    const func = async ()=> {return curated.slice(indexStart, indexEnd);};
+    const func = async () => {
+      return curated.slice(indexStart, indexEnd);
+    };
     var json = await func();
-  } else if (termMap['category'] == 'education') {
+  } else if (termMap["category"] == "education") {
     //get index range
-    let page = termMap['page'];
-    let modelsPerPage = termMap['maxModels'];
+    let page = termMap["page"];
+    let modelsPerPage = termMap["maxModels"];
     let indexStart = (page - 1) * modelsPerPage;
     let indexEnd = page * modelsPerPage;
     //same as pubs above
-    const func = async ()=> {return education.slice(indexStart, indexEnd);};
+    const func = async () => {
+      return education.slice(indexStart, indexEnd);
+    };
     var json = await func();
   } else {
     //calculate row var API uses
-    const APIrow = termMap['page'] * termMap['maxModels'] - termMap['maxModels'] - 1;
+    const APIrow =
+      termMap["page"] * termMap["maxModels"] - termMap["maxModels"] - 1;
 
     //create link and fetch from API
     const api_url =
-      "https://vcell.cam.uchc.edu/api/v0/biomodel?bmName=" + termMap["bmName"] + "&bmId=" + termMap["bmId"] + "&category=" + termMap["category"] + "&owner=" + termMap["owner"] + "&savedLow=" + termMap["savedLow"] + "&savedHigh=" + termMap["savedHigh"] + "&startRow=" + APIrow + "&maxRows=" + termMap['maxModels'] + "&orderBy=" + termMap["orderBy"];
+      "https://vcell.cam.uchc.edu/api/v0/biomodel?bmName=" +
+      termMap["bmName"] +
+      "&bmId=" +
+      termMap["bmId"] +
+      "&category=" +
+      termMap["category"] +
+      "&owner=" +
+      termMap["owner"] +
+      "&savedLow=" +
+      termMap["savedLow"] +
+      "&savedHigh=" +
+      termMap["savedHigh"] +
+      "&startRow=" +
+      APIrow +
+      "&maxRows=" +
+      termMap["maxModels"] +
+      "&orderBy=" +
+      termMap["orderBy"];
     const fetch_response = await fetch(api_url);
     json = await fetch_response.json();
   }
@@ -339,12 +366,12 @@ app.get("/curatedList/:search", async (req, res) => {
 
   //if there are no models in list
   let isNotEmpty = true;
-  let modelsPerPage = termMap['maxModels'];
+  let modelsPerPage = termMap["maxModels"];
   if (json.length == 0) {
     isNotEmpty = false;
   }
   //make json string for use in filters
-  let jsonString = (JSON.stringify(json));
+  let jsonString = JSON.stringify(json);
 
   //replace / escape char in date param
   termMap["savedLow"] = termMap["savedLow"].replace(/%2F/g, "/");
@@ -373,8 +400,9 @@ app.get("/advancedSearch/:search", async (req, res) => {
   var termMap = Object.fromEntries(terms);
 
   //some vars for startRow and maxRow terms
-  const APIrow = termMap['page'] * termMap['maxModels'] - termMap['maxModels'] - 1;
-  let modelsPerPage = termMap['maxModels'];
+  const APIrow =
+    termMap["page"] * termMap["maxModels"] - termMap["maxModels"] - 1;
+  let modelsPerPage = termMap["maxModels"];
 
   res.render("advancedSearch", {
     title: "ModelBricks - Search",
@@ -386,7 +414,7 @@ app.get("/advancedSearch/:search", async (req, res) => {
 // Curated List offline copy for testing
 app.get("/testCuratedList/:search", async (req, res) => {
   //read list json file
-  var json = fs.readFileSync('json-data/offlineList.json');
+  var json = fs.readFileSync("json-data/offlineList.json");
   json = JSON.parse(json);
 
   //TODO how to get max num of pages?
@@ -400,13 +428,14 @@ app.get("/testCuratedList/:search", async (req, res) => {
   var termMap = Object.fromEntries(terms);
 
   //some vars for startRow and maxRow terms
-  const APIrow = termMap['page'] * termMap['maxModels'] - termMap['maxModels'] - 1;
+  const APIrow =
+    termMap["page"] * termMap["maxModels"] - termMap["maxModels"] - 1;
 
   //const json = await fetch_response.json();
 
   //if page is empty
   let isNotEmpty = true;
-  let modelsPerPage = termMap['maxModels'];
+  let modelsPerPage = termMap["maxModels"];
   if (json.length == 0) {
     isNotEmpty = false;
   }
@@ -421,34 +450,88 @@ app.get("/testCuratedList/:search", async (req, res) => {
 });
 
 // main Dashboard for dynamic models selected from curated list page
-app.get("/curatedList/model/:name", (req, res) => {
-  const api_url =
-    'https://vcell.cam.uchc.edu/api/v0/biomodel/' + req.params.name + '/biomodel.vcml';
-  var parser = new xml2js.Parser();
-  fetch(api_url).then(function(response) {
-    return response.text().then(function(text) {
-      parser.parseString(text, (err, result) => {
-        data = result;
-        /*if (pubMap.hasOwnProperty(data.vcml.BioModel[0].Model[0].Version[0].$.KeyValue)) {
-          console.log(true);
-        } else {
-          console.log(false);
-        }*/
-        let annoObj = new aPrs.AnnParser(data);
-        let annoData = annoObj.getString();
-        let outputOptions = annoObj.getOutputOptions();
-        let geometryList = annoObj.getGeometry();
-        fs.writeFileSync("./public/json/" + "annotations" + ".json", annoData);
-        res.render("model", {
-          title: "ModelBricks - Model Page",
-          data,
-          outputOptions,
-          geometryList,
-        });
+
+app.get("/curatedList/model/:name", async (req, res) => {
+  try {
+    console.log("I got Clicked");
+    const modelName = req.params.name;
+    console.log("Model name:", modelName);
+
+    // Validate that the model name is only numbers
+    if (!/^\d+$/.test(modelName)) {
+      console.error("Invalid model name:", modelName);
+      return res.status(400).send("Invalid model name");
+    }
+
+    const apiUrl = `https://vcell.cam.uchc.edu/api/v0/biomodel/${modelName}/biomodel.vcml`;
+    const parser = new xml2js.Parser();
+
+    // Fetch data
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    // Parse text
+    const xmlText = await response.text();
+
+    // Parse XML
+    const data = await parser.parseStringPromise(xmlText);
+
+    const modifiedData = {
+      vcml: {
+        BioModel: data.vcml?.BioModel || [],
+      },
+    };
+
+    if (!modifiedData.vcml.BioModel?.[0]?.vcmetadata) {
+      throw new Error("BioModel structure is invalid or missing vcmetadata");
+    }
+
+    // Process data
+    let annoData, outputOptions, geometryList;
+    try {
+      const annoObj = new aPrs.AnnParser(modifiedData);
+      annoData = annoObj.getString();
+      outputOptions = annoObj.getOutputOptions();
+      geometryList = annoObj.getGeometry();
+    } catch (parserError) {
+      console.error("Annotation parser error:", parserError);
+      throw new Error("Failed to parse model annotations");
+    }
+
+    console.log("Type of annoData:", typeof annoData);
+
+    const outputDir = path.join(__dirname, "public/json");
+    const outputPath = path.join(outputDir, "annotations.json");
+    console.log("Writing to:", outputPath); // <-- Add this line
+
+    try {
+      await fs.promises.writeFile(outputPath, annoData, "utf8");
+      console.log("File written successfully");
+      res.render("model", {
+        title: "ModelBricks - Model Page",
+        data,
+        outputOptions,
+        geometryList,
       });
-    });
-  });
+    } catch (writeError) {
+      console.error("Error writing file:", writeError);
+      res.status(500).send("Failed to write annotations file");
+    }
+  } catch (error) {
+    console.error("Error in endpoint:", error);
+    res.status(500).send(error.message);
+  }
 });
+
+// Render template
+// res.render("test", {
+//   title: "ModelBricks - Model Page",
+//   data,
+//   outputOptions,
+//   geometryList,
+// });
 
 //page for offline testing
 app.get("/test/:name", (req, res) => {
@@ -457,7 +540,7 @@ app.get("/test/:name", (req, res) => {
     parser.parseString(data, (err, result) => {
       data = result;
       if (!data) {
-        res.send('no filed named ' + req.params.name + ".vcml");
+        res.send("no filed named " + req.params.name + ".vcml");
       } else {
         let annoObj = new aPrs.AnnParser(data);
         let annoData = annoObj.getString();
@@ -470,7 +553,7 @@ app.get("/test/:name", (req, res) => {
           outputOptions,
           geometryList,
         });
-      };
+      }
     });
   });
 });
@@ -479,10 +562,12 @@ app.get("/test/:name", (req, res) => {
 app.get("/curatedList/printModel/:name", (req, res) => {
   modelName = req.params.name;
   const api_url =
-    'https://vcell.cam.uchc.edu/api/v0/biomodel/' + modelName + '/biomodel.vcml';
+    "https://vcell.cam.uchc.edu/api/v0/biomodel/" +
+    modelName +
+    "/biomodel.vcml";
   var parser = new xml2js.Parser();
-  fetch(api_url).then(function(response) {
-    return response.text().then(function(text) {
+  fetch(api_url).then(function (response) {
+    return response.text().then(function (text) {
       parser.parseString(text, (err, result) => {
         data = result;
         let annoObj = new aPrs.AnnParser(data);
@@ -519,16 +604,14 @@ app.get("/static/:name", async (req, res) => {
 });
 
 //Declaring static informative pages folder (Home, About, motivation etc) - public
-app.use(express.static(path.join(__dirname, "public")));
 
 // Routing of informative pages - routes/index.js
-app.use("/", indexRouter);
 
 //catch all route, make sure its defined last
 app.get("*", async (req, res) => {
   let search = req.params;
   res.render("catch-all", {
-    search
+    search,
   });
 });
 
