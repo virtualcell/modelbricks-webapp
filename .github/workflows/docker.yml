@@ -35,3 +35,7 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/virtualcell/modelbricks:${{ env.SHORT_SHA }}
+
+      - name: Setup tmate session 3
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ failure() }}
