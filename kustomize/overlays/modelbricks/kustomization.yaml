@@ -5,7 +5,7 @@ namespace: modelbricks
 
 images:
 - name: ghcr.io/virtualcell/modelbricks
-  newTag: 0ef13e0
+  newTag: fcf5cca
 
 replicas:
 - count: 1
